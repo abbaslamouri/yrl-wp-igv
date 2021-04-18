@@ -1,0 +1,40 @@
+$color-grey-light: white;
+$color-grey-medium: #ddd;
+$color-grey-dark: #666;
+$color-black:#000;
+$color-green:green;
+
+.yrl_wp_igv {
+  font-size: 62.5%;  // 10px/16px = .625 makin 1rem = 10 px.
+  box-sizing: border-box;
+
+  *,
+  *::before,
+  *::after {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: inherit;
+  }
+
+  input,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.3rem 0.2rem;
+    border-radius: 3px;
+
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+
+  label {
+    font-weight: 600;
+  }
+  padding: 2rem;
+
+  .hidden {
+    display: none !important;
+  }
+}

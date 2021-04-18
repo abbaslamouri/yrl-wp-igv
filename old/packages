@@ -1,0 +1,17 @@
+{
+  "name": "axl-wp-ultimate",
+  "version": "1.0.0",
+  "description": "A multi-function plugin",
+  "main": "index.js",
+  "dependencies": {
+    "jshint": "^2.9.6",
+    "node-sass": "^4.9.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass --watch assets/scss -o assets/css"
+  },
+  "author": "Abbas Lamouri",
+  "license": "ISC"
+}

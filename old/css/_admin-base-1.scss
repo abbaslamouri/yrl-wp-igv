@@ -1,0 +1,282 @@
+// Global css
+
+#iwpgv-dashboard {
+
+  // admin field metabox container
+  #postbox-container-1 {
+
+    form {
+
+      &#chartForm {
+      
+        #dashboard-admin-fields {
+
+          &.accordion {
+
+            button {
+
+              &.accordionButton {
+
+
+
+              }  // END &.accordionButton
+            }  // END button
+
+            .panel {
+
+              .subpanel {
+
+                &.accordion {
+
+                } // END .accordion
+
+              } // END .subpanel
+
+
+            } // END .panel
+          } // END &.accordion
+        } // END #dashboard-admin-fields
+      } // END #chartForm
+    } // END form
+  } // END #postbox-container-1 
+
+
+
+  // Chart metabox container
+  #postbox-container-2 {
+
+  }
+
+
+  // .adminAjaxLoading {
+  //   width: 100%;
+  //   height: 100%;
+  //   top: 0;
+  //   left: 0;
+  //   position: fixed;
+  //   display: none;
+  //   opacity: 0.7;
+  //   background-color: #fff;
+  //   z-index: 99;
+  //    & img {
+  //     position: absolute;
+  //     top: 50%;
+  //     left: 50%;
+  //     z-index: 100;
+  //   }
+  // }
+
+  .hideOnLoad {
+       // display:none !important;
+      }
+
+
+  
+    #saveChart {
+      display:none;
+    }
+
+  // Accordion
+  .accordion {
+    button {
+      &.accordionButton {
+        //display:none;
+        background-color: #ccc;
+        color: #444;
+        cursor: pointer;
+        padding: 7px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+
+        &:first-of-type {
+          //display:block;
+        }
+
+        &:hover {
+          background-color: #ccc; 
+        }
+
+        &:after {
+          content: "\02C3"; //'\002B';
+          color: #777;
+          font-weight: bold;
+          float: right;
+          margin-left: 5px;
+        }
+
+        &.active {
+           background-color: #eee;
+          &:after {
+            content: "\02C5";
+          }
+        } 
+
+      }
+    }
+  }
+
+
+  
+
+  .panel {
+    padding: 10px 5px;
+    display: none;
+    background-color: white;
+    //overflow: hidden;
+    &:first-of-type {
+      //display:block;
+    }
+
+    .panelIntro {
+
+    }
+
+    .subPanel{
+
+      .panel {
+        display:none;
+        background-color: #ddd;
+        border-bottom: 1px solid grey;
+        border-right: 1px solid grey;
+        border-left: 1px solid grey;
+      }
+
+      .singleField {
+        position: relative;
+      }
+
+      .multipleFields {
+        position: relative;
+        display:flex !important;
+        flex-wrap: no-wrap;
+        justify-content: space-around;
+
+      }
+
+
+      .fieldWrapper {
+
+        //width:auto;
+
+        &.wpColorPicker {
+          text-align:center;
+        }
+
+        h2 {
+          font-weight:600;
+          font-size:80%;
+          margin: 8px 0px 3px 0px;
+          padding:0px;
+
+          .hint{
+            font-size:120%;
+            margin-left:5px;
+            cursor:pointer;
+          }
+        }
+
+        input[type = text] {
+          font-size: 90%;
+          padding:6px;
+          width:90%;
+          //vertical-align:middle;
+        }
+
+         input[type = number] {
+          font-size: 80%;
+          padding:6px;
+          width:80%;
+          //vertical-align:middle;
+        }
+
+         select {
+          font-size: 90%;
+          padding:6px;
+          width:90%;
+          vertical-align:middle;
+
+        }
+        .fieldSuffix {
+           display: inline-block;
+           width:10%;
+        }
+
+        .fieldHint {
+          width: 200px;
+          background-color: #426dc9;
+          color: #eee;
+          text-align: center;
+          border-radius: 6px;
+          padding: 15px 20px;
+          position: absolute;
+          z-index: 1;
+          top: 50%;
+          left: 0%;
+          display:none;
+          opacity:0;
+            //overflow: auto;
+            //margin-left: -60px;
+        }
+
+        // .wp-picker-container {
+        //   margin:auto;
+        // }
+
+      }
+
+     
+
+
+     
+
+    }
+
+  }
+
+
+
+  .chart-list {
+  #normal-sortables.meta-box-sortables {
+	 display: flex;
+	 flex-wrap:wrap;
+  }
+
+	 .postbox {
+		width:45%;
+		margin:20px;
+	 }
+  }
+
+
+  #filters-charts {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+  }
+
+
+
+  // #chartFont {
+  //   display:flex;
+  //    flex-wrap:nowrap;
+  //   justify-content: space-between;
+  // }
+
+  
+
+}
+
+
+
+
+
+
+
+
+
+
+

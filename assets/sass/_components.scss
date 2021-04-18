@@ -1,0 +1,334 @@
+.yrl_wp_igv {
+  /******************************************
+  ******************* CARD ******************
+  ******************************************/
+  .card {
+    background-color: #ccc;
+    padding: 1rem;
+    border: 1px solid red;
+    margin:1rem;
+    .chart-container {
+      position: relative;
+
+      .loading-spinner {
+        position: absolute;
+        width: 5rem;
+        height: 5rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &__heading {
+      text-align: center;
+      margin-bottom: .8rem;
+      font-size:.8rem;
+      color: #666;
+    }
+
+    &__footer {
+      display: flex;
+      padding: 1rem;
+      justify-content: space-between;
+      align-items: center;
+
+      .shortcode {
+        background-color: #ddd;
+        font-size: .7rem;
+        padding: 0.3rem .8rem;
+        border-radius: 3px;
+      }
+
+      svg {
+        width: .8rem;
+        height: .8rem;
+
+        &.edit {
+          fill: green !important;
+          margin-right: 1rem;
+        }
+
+        &.delete {
+          fill: red;
+        }
+      }
+    }
+  }
+
+  /******************************************
+  **************** FIELD GROUP **************
+  ******************************************/
+  .field-group {
+    display: grid;
+    grid-gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    .form-group {
+      // position:relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      // margin-right: 0.5rem;
+
+      &__label {
+        font-size: 0.6rem;
+        margin-bottom: 0.1rem;
+      }
+
+      &__input-box {
+        // box-sizing: content-box;
+        // text-align:center;
+        display:flex;
+        align-items: center;
+       
+
+        &.hasSuffix {
+          display: grid;
+          grid-template-columns: 10fr 1fr;
+          align-items: center;
+          grid-gap: 0.2rem;
+        }
+      }
+
+      &__tooltip {
+        position: relative;
+        display: inline-block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:2rem;
+        height:2rem;
+        background-color: red;
+        // margin-left: .3rem;
+        font-size: .8rem;
+        font-weight: 700;
+        cursor: pointer;
+
+        
+      }
+
+      &__tooltip:hover .form-group__tooltipText {
+        visibility: visible;
+        opacity: 1;
+      
+      }
+
+      &__tooltipText {
+        visibility: hidden;
+        width: 300px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: -200px;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+
+        ::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: #555 transparent transparent transparent;
+        }
+      }
+
+      // &__hint {
+      // //   position:absolute;
+      // //   top:1rem;
+      // //   background-color: white;
+      // //   left:0;
+      // //  color:red;
+      // }
+
+      &__input {
+        border-radius: 3px;
+        padding: 0.1rem 0.5rem;
+        font-size: 0.7rem;
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1;
+
+        &:not([type="checkbox"]) {
+          width: 100%;
+        }
+      }
+
+      // &__suffixes {
+      //   grid-column: 2 / span 1;
+      //   grid-row: 1 / span 1;
+      //   font-size: 0.65rem;
+
+      //   .suffix {
+      //     position: relative;
+      //     // border:red 1px solid;
+      //     height: 0.9rem;
+      //     margin: 0;
+      //     padding: 0;
+
+      //     label {
+      //       position: absolute;
+      //       top: 50%;
+      //       left: 50%;
+      //       transform: translate(-50%, -50%);
+      //       color: "#444";
+      //       margin: 0;
+      //       padding: 0;
+      //     }
+
+      //     input {
+      //       position: absolute;
+      //       top: 50%;
+      //       left: 50%;
+      //       transform: translate(-50%, -50%);
+      //       opacity: 0;
+      //       z-index: -1000;
+      //       width: 1px;
+      //       height: 1px;
+      //       margin: 0;
+      //       padding: 0;
+
+      //       &:checked + label {
+      //         color: #8e24aa;
+      //       }
+      //     }
+      //   }
+      // }
+
+      &__hint-alert {
+        grid-column: 1 / span 3;
+        grid-row: 3 / span 3;
+        cursor: pointer;
+      }
+    }
+
+    &.single-field {
+      grid-template-columns: 1fr; //repeat(2, minmax(min-content, 1fr);
+    }
+
+    &.dual-field {
+      grid-template-columns: repeat(2, 1fr); //repeat(2, minmax(min-content, 1fr);
+    }
+
+    &.triple-field {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+
+
+  .form{
+    &__group:not(:last-child){
+      margin-bottom: 2rem;
+    }
+
+    &__input{
+      font-size:1rem;
+      font-family: inherit;
+      color:inherit;
+      padding: .3rem 1.5rem;
+      border-radius: 2px;
+      background-color: rgba($color-grey-medium, .5);
+      border:none;
+      border-bottom: 5px solid transparent;
+      display:block;
+      width:90%;
+
+      &:focus{
+        outline: none;
+        box-shadow: 0 .2rem .4rem rgba($color-black, .5);
+        border-bottom: 5px solid $color-green;
+
+        &:invalid {
+          border-bottom: 5px solid orangered;
+        }
+      }
+
+      &::-webkit-input-placeholder {
+        color:$color-grey-dark;
+      }
+
+      &:placeholder-shown + .form__label {
+        opacity:0;
+        visibility:hidden;
+        transform: translate(0,-2.7rem);
+      }
+    }
+
+    &__label{
+      font-size:1rem;
+      font-weight:500;
+      margin-top:.5rem;
+      margin-left:1.45rem;
+      display:block;
+      transition: all .3s
+    }
+
+   
+  }
+
+  /******************************************
+  **************** TABLE **************
+  ******************************************/
+  // table {
+  //   // border: 1px solid teal;
+  //   width: 100%;
+  //   border-collapse: collapse;
+  //   margin-top: 1rem;
+
+  //   tr {
+  //     border-bottom: 1px solid #000;
+  //     padding: 2rem;
+
+  //     th {
+  //       text-align: center;
+  //       padding: 0.5rem 0;
+  //     }
+
+  //     td {
+  //       text-align: center;
+  //       padding: 0.5rem 0;
+  //     }
+  //   }
+  // }
+
+  /******************************************
+  **************** NAV TABS **************
+  ******************************************/
+  .nav-tabs-wrapper {
+    display: flex;
+    border-bottom: 1px solid #bbb;
+
+    .nav-tab {
+      padding: 0.5rem 2rem;
+      font-size: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 3px;
+      display: block;
+      color: #555;
+
+      &:link,
+      &:visited {
+        text-decoration: none;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &-active {
+        color: red;
+        z-index: 10;
+        box-shadow: 1px 1px 0 #fff;
+      }
+    }
+  }
+}

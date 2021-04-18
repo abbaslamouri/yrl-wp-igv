@@ -1,0 +1,143 @@
+@charset "UTF-8";
+/*Plugin Name: Interactive WP Google Visualization
+Version: 1.0.0
+Description: Google visualization 
+Author: Abbas Lamouri
+Author URI: http://www.axlphotography.com
+*/
+/* Import Global Variables*/
+/* Import Global mixins*/
+/* Import admin sass*/
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion button.accordionButton {
+  background-color: #ccc;
+  color: #444;
+  cursor: pointer;
+  padding: 7px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion button.accordionButton:hover {
+  background-color: #ccc;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion button.accordionButton:after {
+  content: "˃";
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion button.accordionButton.active {
+  background-color: #eee;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion button.accordionButton.active:after {
+  content: "˅";
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel {
+  padding: 10px 5px;
+  display: none;
+  background-color: white;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper {
+  width: 100%;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper.wpColorPicker {
+  text-align: center;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper h2 {
+  font-weight: 600;
+  font-size: 80%;
+  margin: 8px 0px 3px 0px;
+  padding: 0px;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper h2 .hint {
+  font-size: 120%;
+  margin-left: 5px;
+  cursor: pointer;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper select {
+  font-size: 90%;
+  width: 95%;
+  padding: 0px 5px;
+  align: middle;
+  margin-right: 5px;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper input[type=text] {
+  font-size: 90%;
+  padding: 6px;
+  width: 90%;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper input[type=number] {
+  margin-top: 3px;
+  width: 75%;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper input[type=checkbox] {
+  width: auto;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper .fieldHint {
+  width: 200px;
+  background-color: #426dc9;
+  color: #eee;
+  text-align: left;
+  border-radius: 6px;
+  padding: 15px 20px;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 0%;
+  display: none;
+  opacity: 0;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .fieldWrapper .fieldSuffix {
+  display: inline-block;
+  width: 10%;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .singleField {
+  position: relative;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .multipleFields {
+  position: relative;
+  display: flex !important;
+  flex-wrap: no-wrap;
+  justify-content: space-around;
+}
+#iwpgv-dashboard #postbox-container-1 form#chartForm #dashboard-admin-fields.accordion .panel .subPanel.accordion .multipleFields.wpColorPicker {
+  display: block;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox .minmaxavg-header-row {
+  color: red !important;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #adminAjaxLoading {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: none;
+  opacity: 0.7;
+  background-color: #fff;
+  z-index: 99;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #adminAjaxLoading img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #chart-editChart-div {
+  text-align: center;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #chart-editChart-div:first-child:first-child {
+  margin: auto;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #nrfHighLowInputs {
+  display: none;
+}
+#iwpgv-dashboard #postbox-container-2 #chart-metabox #crfStartEndInputs {
+  display: none;
+}
+
+/*# sourceMappingURL=admin.css.map */

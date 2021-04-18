@@ -1,0 +1,37 @@
+@import "_base";
+
+.accordion {
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    background-color: $color-grey-medium;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid $color-grey-dark;
+    border-radius: 2px;
+    margin: 0.1rem 0;
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+
+  &__content {
+    transition: all 0.2s ease-in-out;
+    background-color:#ddd;
+    padding: 0.5rem;
+    border: 1px solid grey;
+    border-radius: 2px;
+
+    .panel, .subpanel {
+      background-color:#eee;
+    }
+
+   
+  }
+}

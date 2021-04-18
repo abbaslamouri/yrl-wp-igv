@@ -1,0 +1,153 @@
+// Global css
+
+.axl-wp-ultimate {
+
+  // global admin css
+  //padding:20px;
+
+  // h1{
+  //   padding:20px;
+  // }
+
+  // .nav-tab {
+  //   border-radius:$border-radius;
+  //   margin:0px;
+  //   border-bottom:none;
+  //   padding:5px 20px;
+
+  //   &.nav-tab-active {
+  //     background-color:$white;
+  //   }
+  // }
+
+  // .nav-tab-wrapper {
+  //   a {
+  //     //background-color: red;
+  //   }
+  // }
+
+  // .content-wrapper {
+  //   background-color:$white;
+  //   padding:20px;
+  //   border:none;
+  // }
+
+  // .admin-header {
+  //   color:$green;
+  //   //font-weight:bold;
+  //   margin-bottom:20px;
+  // }
+
+  // All admin radio buttons
+  .admin-radio {
+    display:block;
+    margin:5px 10px;
+  }
+
+  table {
+
+    &.list {
+      width: 100%;
+      border: 1px gray solid;
+      text-align: center; ;
+      border-collapse: collapse;
+      background-color:$white !important;
+
+      th, td {
+        border: 1px gray solid;
+        text-align: center;
+        padding:10px;
+
+        &.move {
+          cursor:pointer;
+        }
+      }
+
+      form { 
+        display:inline-block;
+
+        #submit{ 
+          display:inline-block;
+          margin:5px;
+        }
+      }
+    }
+     &#settings-options{
+      width: 100%;
+      // sborder:1px solid $grey;
+      th, td {
+        padding:10px;
+        border-bottom: 1px gray solid;
+      }
+
+    }
+
+  }
+
+  
+
+
+  textarea {
+    width:100%;
+  }
+
+
+  .admin-errors {
+    color:$dark-red;
+  }
+
+  #add-new-field {
+    display:none;
+
+  }
+
+
+
+} // END .axl-wp-ultimate {
+
+
+
+ // Woocommerce order actions
+.widefat {
+  .column-wc_actions {
+     a {
+      &.axl-wp-ultimate-packing-slip {
+        &:after {
+          content: '\f497';
+        }
+      }
+
+       &.axl-wp-ultimate-invoice {
+        &:after {
+          content: '\f497';
+        }
+      }
+    }
+  }
+}
+
+
+// Woocommerce
+
+// .widefat .column-wc_actions { 
+
+//   a.axl-wp-ultimate-packing-slip {
+//     &:after {
+//       content: '\f495';
+//     }
+//   }
+
+//   a.axl-wp-ultimate-invoice {
+//     &:after {
+//       content: '\f491';
+//     }
+//   }
+
+
+// }
+
+
+
+
+
+

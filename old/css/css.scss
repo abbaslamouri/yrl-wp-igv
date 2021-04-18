@@ -1,0 +1,22 @@
+/*Plugin Name: AXL WP Ultimate
+Version: 1.0.0
+Description: Multi purpose ctheme
+Author: Abbas Lamouri
+Author URI: http://www.axlphotography.com
+*/
+
+
+/* Import Font icomoon fonts*/
+@import "icomoon";
+
+/* Import Global Variables*/
+@import "variables";
+
+/* Import Global mixins*/
+@import "mixins";
+
+/* Import admin sass*/
+@import "admin";
+
+/* Import public sass*/
+@import "public";
