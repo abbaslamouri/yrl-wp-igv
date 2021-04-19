@@ -1,4 +1,6 @@
 import Plotly from 'plotly.js-basic-dist'
+import ChartParams from "./ChartParams"
+import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import {
   toggleElement,
@@ -38,17 +40,19 @@ import colorPicker from "./color-picker"
 
 // import colorPicker from "./color-picker"
 
-const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
+const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
 
   // Show spinner and hide warning, chart, table minmax table and minmax input fields
-  toggleElement( `${prefix}__spinner` )
-  hideElement( `${prefix}__warning` )
-  hideElement( `${prefix}__plotlyChart` )
-  hideElement( `${prefix}__plotlyTableContainer` )
-  hideElement( `${prefix}__plotMinMaxTableContainer` )
-  hideElement( `${prefix}__plotMinMax` )
+  // toggleElement( `${prefix}__spinner` )
+  // hideElement( `${prefix}__warning` )
+  // hideElement( `${prefix}__plotlyChart` )
+  // hideElement( `${prefix}__plotlyTableContainer` )
+  // hideElement( `${prefix}__plotMinMaxTableContainer` )
+  // hideElement( `${prefix}__plotMinMax` )
 
   try {
+
+    // const chart = iwpgvCharts.chart
 
     // Create a form data object based on input change
     const form = target.closest("form")
@@ -59,70 +63,93 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
     // Create form data object
     const formData = new FormData(form)
 
-    // Initialize chart
-    const chart = {
-      "chartParams" : {},
-      "chartTraces" : {}
-    }
+    // // Initialize chart
+    // const chart = {
+    //   "chartParams" : {},
+    //   "chartTraces" : {}
+    // }
 
-    const panels = {
-      "chartTraces" :{
-        "id" : `${prefix}__chartTracesPanel`,
-        'cssClass' : ['chatTraces', 'chart'],
-        "title" : "Traces",
-        'sections' : {}
-      }
-    }
+    // const panels = {
+    //   "chartTraces" :{
+    //     "id" : `${prefix}__chartTracesPanel`,
+    //     'cssClass' : ['chatTraces', 'chart'],
+    //     "title" : "Traces",
+    //     'sections' : {}
+    //   }
+    // }
 
     // Loop throu the form data to to populate the chart and the panels
     for (const property of formData ) {
       const inputParams = chartOptionKey(property[0])
       const fieldId = inputParams.key
       const fieldValue = property[1]
-      chart[inputParams.control][fieldId] = fieldValue
+      iwpgvCharts.chart[inputParams.control][fieldId] = fieldValue
+    }
+
+    // Initialize panels
+    const panels = {} 
+
+    // Set panels chart params
+    const chartParamsInstance = new ChartParams( iwpgvCharts.chart.chartParams, iwpgvObj )
+    panels.chartParams = chartParamsInstance.panel()
+    iwpgvCharts.chart.chartParams = chartParamsInstance.options()
+
+    // Assemble chart and panels layout
+    if (! Object.keys(iwpgvCharts.chart.chartLayout).length ) {
+      const chartLayoutInstance = new ChartLayout( {}, iwpgvObj )
+      panels.chartLayout = chartLayoutInstance.panel()
+      iwpgvCharts.chart.chartLayout = chartLayoutInstance.options()
+  
     }
 
     // Bail if either the file, sheed or chart type is missing
-    if (! chart.chartParams.fileUpload || ! chart.chartParams.sheetId || ! chart.chartParams.chartType) {
+    if (! iwpgvCharts.chart.chartParams.fileUpload || ! iwpgvCharts.chart.chartParams.sheetId || ! iwpgvCharts.chart.chartParams.chartType) {
       throw new Error(  "Please select a file, a sheet and chart type to proceed." )
     }
+
+
     // Assemble chart traces and add to panels
-    // const chartTraces = Object.keys( chart.chartTraces ).length ? chart.chartTraces : {}
+    if (! Object.keys(iwpgvCharts.chart.chartTraces).length ) {
+      panels.chartTraces = {
+        "id" : `${iwpgvObj.prefix}__chartTracesPanel`,
+        'cssClass' : ['chatTraces', 'chart'],
+        "title" : "Traces",
+        'sections' : {}
+      }
 
-    // Set traces
-    // chart[`${this.prefix}__chartTracesPanel`] = [];
-    // panels.chartTraces = {
-    //   "id" : `${prefix}__chartTracesPanel`,
-    //   'cssClass' : ['chatTraces', 'chart'],
-    //   "title" : "Traces",
-    //   'sections' : []
-    // }
+      let index = 1;
+      
 
-    let index = 1;
-    // let chartTrace = {}
-    let chartTraceInstance = {}
-    while (index < spreadsheet[chart.chartParams.sheetId]["labels"].length) {
-      chart.chartTraces[index-1] = {}
-      // chartTrace = ( Object.keys( chart.chartTraces ).length && chart.chartTraces[index-1] !== "undefined" ) ? chart.chartTraces[index-1] : {}
-      chartTraceInstance = new ChartTrace( {}, index, spreadsheet[chart.chartParams.sheetId]["labels"], chart.chartParams.chartType, prefix )
-      // $trace_options_instance = new TraceOption( $trace_option , index, $sheet['labels'], $chart_type );
-      // console.log("VVVVVVVVV",chart.chartTraces[index-1])
-      // console.log(Object.keys( chart.chartTraces ).length)
-      // console.log("Instance",chartTraceInstance)
-      // console.log("trace",chartTrace)
-      // console.log("chart.chartTraces",chart.chartTraces)
-      chart.chartTraces[index-1] = chartTraceInstance.options();
-      chart.chartTraces[index-1]["x"] = spreadsheet[chart.chartParams.sheetId]["data"][0];
-      chart.chartTraces[index-1]["y"] = spreadsheet[chart.chartParams.sheetId]["data"][index];
-      panels.chartTraces.sections[index-1] = {}
-      panels.chartTraces.sections[index-1].id = `${prefix}__chartTracesPanel__trace[${index}-1]`;
-      panels.chartTraces.sections[index-1].title = (spreadsheet[chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(spreadsheet[chart.chartParams.sheetId]["labels"])[index] : "";
-      panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel();
-      // console.log("INDEX", index)
-      index++;
+      while (index < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
+        iwpgvCharts.chart.chartTraces[index-1] = {}
+        const chartTraceInstance = new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, jsonRes  )
+        iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options();
+        iwpgvCharts.chart.chartTraces[index-1]["x"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][0];
+        iwpgvCharts.chart.chartTraces[index-1]["y"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][index];
+        panels.chartTraces.sections[index-1] = {}
+        panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index}-1]`;
+        panels.chartTraces.sections[index-1].title = (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : "";
+        panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel();
+        index++;
+      }
     }
 
-    console.log("C", chart)
+    // Remove old acordion panel and Render Accordion Panels
+    form.innerHTML = ""
+    renderPanels(panels, iwpgvObj);
+
+     // Unhide chart div, Set its width and render plot
+     showElement( `${iwpgvObj.prefix}__plotlyChart` )
+
+     document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${iwpgvCharts.chart.chartLayout.width}%`
+     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, iwpgvCharts.chart.chartTraces, iwpgvCharts.chart.chartLayout, getConfig())
+
+    // Enable save button
+    document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
+
+   
+
+    console.log("C", iwpgvCharts.chart)
     console.log("P", panels)
 
 
@@ -132,11 +159,11 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
 
     // console.log("P", panels)
 
-    formData.append("action", iwpgvObj.fetch_chart_options_n_panels_action);
-    formData.append("nonce", iwpgvObj.fetch_chart_options_n_panels_nonce);
+    // formData.append("action", iwpgvObj.fetch_chart_options_n_panels_action);
+    // formData.append("nonce", iwpgvObj.fetch_chart_options_n_panels_nonce);
 
     // Wait for response
-    const jsonRes = await fetchData(formData)
+    // const jsonRes = await fetchData(formData)
 
     // console.log("jsonRes",jsonRes.panels)
 
@@ -147,9 +174,7 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
     // Render chart and panels on success
     // if (jsonRes.status && jsonRes.status === "success") {
       
-      // Remove old acordion panel and Render Accordion Panels
-      // form.innerHTML = ""
-      // renderPanels(panels)
+      
 
       // Set sheet Id select field
       // setSheetId(jsonRes.spreadsheet, jsonRes.chart.chartParams.sheetId)
@@ -157,12 +182,11 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
       // Set chart type select field to 
       // setChartTypeId(jsonRes.chart.chartParams.chartType)
 
-     // Enable save button
-      document.getElementById(`${prefix}__saveChart`).disabled = false
+    
 
       // Get x-axis min and max
-      let xAxisMin = getXAxisMinMax(jsonRes.sheet.data).xAxisMin.toFixed(3)
-      let xAxisMax = getXAxisMinMax(jsonRes.sheet.data).xAxisMax.toFixed(3)
+      // let xAxisMin = getXAxisMinMax(jsonRes.sheet.data).xAxisMin.toFixed(3)
+      // let xAxisMax = getXAxisMinMax(jsonRes.sheet.data).xAxisMax.toFixed(3)
 
       // Get traces
       // const traces = getTraces(jsonRes, getPlotData(jsonRes.sheet))
@@ -171,17 +195,13 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
       // if (! Array.isArray(traces)) throw new Error( traces )
 
       // Hide spinner
-      toggleElement( `${prefix}__spinner` )
+      toggleElement( `${iwpgvObj.prefix}__spinner` )
 
       // let traces = jsonRes.chart.traceOptions
 
       // console.log("TRACES", traces)
 
-      // Unhide chart div, Set its width and render plot
-      showElement( `${prefix}__plotlyChart` )
-
-      document.getElementById(`${prefix}__plotlyChart`).style.width = `${jsonRes.chart.chartLayout.width}%`
-      Plotly.newPlot(`${prefix}__plotlyChart`, chart.chartTraces, jsonRes.chart.chartLayout, getConfig())
+     
       
 
       // Render and show table if enableTableChart is true
@@ -189,23 +209,23 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
         let layout = {
           title: "DATA TABLE"
         }
-        showElement( `${prefix}__plotlyTable` )
-        Plotly.newPlot(`${prefix}__plotlyTable`, getTable(getTableHeader (jsonRes.sheet), getPlotData(jsonRes.sheet)), layout) 
+        showElement( `${iwpgvObj.prefix}__plotlyTable` )
+        Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, getTable(getTableHeader (jsonRes.sheet), getPlotData(jsonRes.sheet)), layout) 
       }
 
       // Render and show min max table if enableMinMaxTableChart is true
       if (jsonRes.chart.chartParams.enableMinMaxTableChart){
-        showElement( `${prefix}__plotlyMinMaxTable` )
-        Plotly.newPlot(`${prefix}__plotlyMinMaxTable`, getTable(getMinMaxAvgTableHeader(), getMinMaxAvgData(jsonRes.sheet))) 
+        showElement( `${iwpgvObj.prefix}__plotlyMinMaxTable` )
+        Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, getTable(getMinMaxAvgTableHeader(), getMinMaxAvgData(jsonRes.sheet))) 
       }
 
       // Unhide and set range slider min and max input fields if enableChartRangeSlider
       if ( jsonRes.chart.chartParams.enableChartRangeSlider && ! isNaN(xAxisMin) && ! isNaN(xAxisMax) ) {
-        showElement( `${prefix}__plotMinMax` )
-        document.getElementById(`${prefix}__rangeMinInput`).closest(".form__group").classList.remove("hidden")
-        document.getElementById(`${prefix}__rangeMinInput`).value =  xAxisMin
-        document.getElementById(`${prefix}__rangeMaxInput`).closest(".form__group").classList.remove("hidden")
-        document.getElementById(`${prefix}__rangeMaxInput`).value = xAxisMax
+        showElement( `${iwpgvObj.prefix}__plotMinMax` )
+        document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).closest(".form__group").classList.remove("hidden")
+        document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  xAxisMin
+        document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).closest(".form__group").classList.remove("hidden")
+        document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = xAxisMax
       }
 
       // set color pickers
@@ -321,148 +341,6 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
     )
 
 
-     // Set accordion
-     new Accordion({ collapsed: false })
-
-
-
-     
-
-      // Set sheetId and chart type
-      // const sheetId = chart.chartParams.sheetId || chart.chartParams.sheetId === 0 ? chart.chartParams.sheetId : null
-
-      // console.log("ZZZZZZxxxxxxx",sheetId)
-      
-      // setSheetId(jsonRes.spreadsheet, sheetId)
-      // setChartTypeId(chart.chartParams.chartType)
- 
-      
-
-      
- 
-
-      // const allRows = jsonRes.sheet.data
-      // const labels = jsonRes.sheet.labels
-
-      // // Get chart
-      // const chart = jsonRes.chart
-
-
-      // const tableHeader  = []
-      // for ( const property in Object.values(jsonRes.sheet.labels)) {
-      //   tableHeader.push([`<b>${Object.values(jsonRes.sheet.labels)[property]}</b>`])
-      // }
-      // console.log("HEADER", tableHeader)
-  
-      // Assemble table data (transpose sheet data array of objects)
-      // const tableData = []
-      // for (var j = 0 j < Object.keys(labels).length j++) {
-      //   tableData[j] = []
-      //   for (var i=0 i < allRows.length i++) {
-      //     var row = allRows[i]
-      //     tableData[j].push(Object.values(row)[j])
-      //   }
-      // }
-  
-      // Assemble traces
-      // let  traces = []
-      // for (var j=1 j < Object.keys(labels).length j++) {
-      //   traces.push({ 
-      //     x : tableData[0],
-      //     y : tableData[j],
-      //     mode: 'lines+markers',
-      //     line: {
-      //       color:jsonRes.colors[j],
-      //       width: 5
-      //     },
-      //     marker: {
-      //       color: 'green',
-      //       size: 8
-      //     },
-      //     name: Object.values(labels)[j],
-      //     connectgaps: chart.chartLayout.connectgaps
-      //   })
-      // }
-  
-     
-
-     
-
-  
-      // const layout = {
-      //   paper_bgcolor:chart.chartLayout.paper_bgcolor,
-      //   height:chart.chartLayout.height,
-
-      //   title: {
-      //     text: chart.chartLayout.title.text,
-      //     font: {
-      //       family: chart.chartLayout.title.font.family,
-      //       size: chart.chartLayout.title.font.size,
-      //       color: chart.chartLayout.title.font.color,
-      //     },
-      //     // xref: "paper",
-      //     x: chart.chartLayout.title.x,
-      //     // xanchor:"auto",
-
-      //     // yref: "paper",
-      //     y: chart.chartLayout.title.y,
-      //     // yanchor:"auto"
-      //   },
-      //   xaxis: {
-      //     // rangeselector: selectorOptions,
-      //     rangeslider: {},
-      //     automargin: true,
-      //     // autorange: 'reversed'
-      //   },
-      //   yaxis: {
-      //     fixedrange: true,
-      //     // autorange: 'reversed'
-      //   },
-      //   autosize: true, // set autosize to rescale,
-  
-      //   //  width:800,
-        
-
-      //   plot_bgcolor:"red",
-       
-      // }
-  
-      // const config = {
-      //   responsive: true
-      // }
-
-    
-     
-  
-     
-  
-      // var data = [{
-      //   type: 'table',
-      //   header: {
-      //     values: tableHeader,
-      //     align: "center",
-      //     line: {width: 1, color: 'black'},
-      //     fill: {color: "grey"},
-      //     font: {family: "Arial", size: 12, color: "white"}
-      //   },
-      //   cells: {
-      //     values: tableData,
-      //     align: "center",
-      //     line: {color: "black", width: 1},
-      //     font: {family: "Arial", size: 11, color: ["black"]}
-      //   }
-      // }]
-      
-      
-
-      
-
-    
-
-      
-
-     
-
      
 
       // // Set chart width and chart area width
@@ -538,9 +416,8 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
 
   } catch (error) {
 
-    const message = `<div class='notice notice-error is-dismissible'><p>${error.message}</p></div>`
-    displayAdminMessage(message)
-    console.log(error)
+    displayAdminMessage(error.message, "error",  iwpgvObj)
+    console.log("CAUGHT ERROR", error)
 
   } finally {
 
@@ -548,6 +425,13 @@ const drawChart = async function (target, iwpgvObj, prefix, spreadsheet) {
     // showElement( `${prefix}__plotlyChart` )
 
   }
+
+  // Set accordion
+  new Accordion( { collapsed: false } )
+
 }
+
+
+
 
 export default drawChart

@@ -3,12 +3,12 @@
 
 class ChartLayout{
 
-  constructor(layout, prefix) {
+  constructor(layout, iwpgvObj) {
 
     // super(chartTypes, colors,pointShapes, lineWidth, markerSize, fontNames);
 
     this.layout = layout
-    this.prefix = prefix
+    this.prefix = iwpgvObj.prefix
    
   }
 

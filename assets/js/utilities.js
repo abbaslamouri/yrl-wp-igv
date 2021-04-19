@@ -25,8 +25,8 @@ const hideElement = function (elementId) {
   if (element) element.classList.add("hidden");
 };
 
-const displayAdminMessage = function (message) {
-  document.querySelector(`.${prefix} .admin-messages`).innerHTML = message;
+const displayAdminMessage = function (message, status, iwpgvObj) {
+  document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`;
 };
 
 

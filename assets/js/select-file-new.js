@@ -10,23 +10,20 @@ import {
   chartOptionKey
 } from "./utilities";
 
-const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
+const selectFile = async function (iwpgvObj, prefix) {
 
-  toggleElement( `${iwpgvObj.prefix}__spinner` );
-  toggleElement( `${iwpgvObj.prefix}__warning`);
-  // hideElement( `${iwpgvObj.prefix}__plotlyChart`);
+  toggleElement( `${prefix}__spinner` );
+  toggleElement( `${prefix}__warning`);
+  // hideElement( `${prefix}__plotlyChart`);
 
 
   try {
 
-    // throw new Error( "Hello There")
-
-
     // Create a form data object
-    const form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+    const form = document.getElementById( `${prefix}__chartOptionsForm` )
 
     // Bail if no foem is found
-    if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
+    if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${prefix}__chartOptionsForm` )
 
     // Create form object
     const formData = new FormData( form )
@@ -52,17 +49,20 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
       // Deselect chart type select field
       setChartTypeId("");
 
-      // Add change event listener to all inputs with class containg iwpgvObj.prefix__chartParams
+      // Add change event listener to all inputs with class containg prefix__chartParams
       document.addEventListener("change", async function (event) {
+        // Reset admin messages
+        // const adminMessages = document.querySelector(`.${prefix} .admin-messages`);
+        // if (adminMessages) adminMessages.innerHTML = "";
 
-        if (event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) {
 
-          event.preventDefault();
+        if (event.target.closest("form").id === `${prefix}__chartOptionsForm`) {
 
-          drawChart(event.target, iwpgvObj, iwpgvCharts, jsonRes);
+        event.preventDefault();
+
+        drawChart(event.target, iwpgvObj, prefix, jsonRes.spreadsheet);
 
         }
-        
       });
       
     } else {
@@ -70,12 +70,12 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
     }
   } catch (error) {
 
-    displayAdminMessage(error.message, "error",  iwpgvObj)
+    displayAdminMessage(error.message, "error",  iwpgvObj.prefix)
     console.log("CAUGHT ERROR", error)
 
   } finally {
-    toggleElement(`${iwpgvObj.prefix}__spinner`);
-    toggleElement(`${iwpgvObj.prefix}__warning`);
+    toggleElement(`${prefix}__spinner`);
+    toggleElement(`${prefix}__warning`);
   }
 
 };

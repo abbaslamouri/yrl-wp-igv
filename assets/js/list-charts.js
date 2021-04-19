@@ -11,9 +11,11 @@ import renderChart from "./render-chart";
 
 // const iwpgvCharts = yrl_wp_igv_charts
 // const iwpgvObj = yrl_wp_igv_obj
-// const prefix = iwpgvObj.prefix
+// const iwpgvObj.prefix = iwpgvObj.iwpgvObj.prefix
 
-const listCharts = async function (payload, prefix) {
+const listCharts = async function ( iwpgvCharts, iwpgvObj) {
+
+  const payload = iwpgvCharts.charts
   
   Object.values(payload).forEach(async (el) => {
 
@@ -36,19 +38,19 @@ const listCharts = async function (payload, prefix) {
 
     // const containers = {...containers}
     // containers.chart = `iwpgv__chart__${el.chartParams.chartId}`
-    renderChart(el, el.chartParams.sheet, {chart:`${prefix}__chart__${el.chartParams.chartId}`}, "list")
+    renderChart(el, el.chartParams.sheet, {chart:`${iwpgvObj.prefix}__chart__${el.chartParams.chartId}`}, "list")
   
   });
 
   // Toggle Spinner, Wraning and Dasjbaord Div
-  // toggleElement(`${prefix}__spinner`);
-  // hideElement(`${prefix}__warning`);
-  // hideElement(`${prefix}__dashboard`);
+  // toggleElement(`${iwpgvObj.prefix}__spinner`);
+  // hideElement(`${iwpgvObj.prefix}__warning`);
+  // hideElement(`${iwpgvObj.prefix}__dashboard`);
 
 
   // try {
   //   const formData = new FormData(
-  //      document.getElementById(`${prefix}__chartOptionsForm`)
+  //      document.getElementById(`${iwpgvObj.prefix}__chartOptionsForm`)
   //   );
 
     
@@ -73,8 +75,8 @@ const listCharts = async function (payload, prefix) {
   //   console.log("ERRROR", error)
   //   displayAdminMessage(error.message);
   // } finally {
-  //   toggleElement(`${prefix}__spinner`);
-  //   showElement(`${prefix}__warning`);
+  //   toggleElement(`${iwpgvObj.prefix}__spinner`);
+  //   showElement(`${iwpgvObj.prefix}__warning`);
   // }
 };
 

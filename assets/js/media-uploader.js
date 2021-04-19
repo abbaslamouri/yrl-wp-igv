@@ -1,6 +1,6 @@
 import selectFile from "./select-file";
 
-const mediaUploader = function (iwpgvObj, prefix) {
+const mediaUploader = function (iwpgvObj, iwpgvCharts) {
   let mediaUploader;
   if (mediaUploader) {
     mediaUploader.open();
@@ -15,10 +15,10 @@ const mediaUploader = function (iwpgvObj, prefix) {
   });
   mediaUploader.on("select", function (event) {
     var attachment = mediaUploader.state().get("selection").first().toJSON();
-    let fileUpload = document.getElementById(`${prefix}__chartParams[fileUpload]`);
+    let fileUpload = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`);
     if (fileUpload) {
       fileUpload.value = attachment.filename;
-      selectFile(iwpgvObj, prefix);
+      selectFile(iwpgvObj, iwpgvCharts);
     }
   });
   mediaUploader.open();

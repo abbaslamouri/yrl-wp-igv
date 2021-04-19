@@ -3,12 +3,21 @@ import ChartDefault from "./ChartDefault"
 
 class ChartParams {
 
-  constructor(params, prefix) {
+  constructor(params, iwpgvObj) {
 
     // super(chartTypes, colors,pointShapes, lineWidth, markerSize, fontNames);
 
     this.params = params
-    this.prefix = prefix
+    this.prefix = iwpgvObj.prefix
+
+    this.chartTypes = {						// All chart types supported by this plugin
+      "" 						: "Select Chart Type",
+			"LineChart" 	: "Line Chart",
+			"ScatterChart" : "Scatter Chart",
+			"BarChart" 		: "Bar Chart",
+			"ColumnChart" : "Column Chart",
+			"PieChart" 		: "Pie Chart",
+    }
    
   }
 
@@ -94,18 +103,21 @@ class ChartParams {
               [
                 {
                   "id": "chartParams[enableChartRangeSlider]",
+                  'cssClasses' : ['hidden'],
                   "title":"Enable Range Slider",
                   "type": "checkbox",
                   "value": this.options()['enableChartRangeSlider'],
                 },
                 {
                   "id": "chartParams[enableMinMaxTableChart]",
+                  'cssClasses' : ['hidden'],
                   "title": "Enable Min/Max Table",
                   "type": "checkbox",
                   "value": this.options()['enableMinMaxTableChart'],
                 },
                 {
                   "id": "chartParams[enableTableChart]",
+                  'cssClasses' : ['hidden'],
                   "title": "Enable Table Chart",
                   "type": "checkbox",
                   "value": this.options()['enableTableChart'],

@@ -1565,16 +1565,18 @@ if (!class_exists('Dashboard')) {
 
         try {
 
+					$chart_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+
           // Bail if action is not equal "edit-chart"
 				  if ($_GET['action'] !== 'edit-chart') {
             throw new \Exception(  __( wp_kses_post("Invalid request. Something went badly wrong!"), $this->plugin ) );
           }
 
-          if (  isset ( $_GET['chartId'] ) ) {
-            if ( isset($charts[$_GET['chartId']] ) ) {
-              $chart = $charts[$_GET['chartId']];
+          if (  isset ( $chart_id ) ) {
+            if ( isset($charts[$chart_id] ) ) {
+              $chart = $charts[$chart_id];
             } else {
-              throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$_GET['chartId']}"), $this->plugin ) );
+              throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
           } else {
             $chart = [ 
@@ -1585,7 +1587,7 @@ if (!class_exists('Dashboard')) {
           }
 
           // Set response
-          $response = [ 'status' => "success", 'action' => 'editChart', "chart" => $chart];
+          $response = [ 'status' => "success", 'action' => 'editChart', "chartId" => $chart_id, "chart" => $chart];
 
         } catch (\Exception $e) {
   

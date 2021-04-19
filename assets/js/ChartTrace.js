@@ -1,16 +1,16 @@
 import ChartDefault from "./ChartDefault"
 
 
-class ChartTrace extends ChartDefault{
+class ChartTrace{
 
-  constructor(trace, index, labels, chartType, prefix, chartTypes, colors, pointShapes, lineWidth, markerSize, fontNames) {
+  constructor(trace, index, iwpgvObj, iwpgvCharts, jsonRes) {
 
-    super(chartTypes, colors, pointShapes, lineWidth, markerSize, fontNames);
+    // super(chartTypes, colors, pointShapes, lineWidth, markerSize, fontNames);
 
     this.trace = trace;
-    this.labels = Object.values(labels);
+    this.labels = Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"]);
     this.index = index;
-    this.chartType = chartType;
+    this.chartType = iwpgvCharts.chart.chartParams.chartType;
 
     switch (this.chartType) {
       case "LineChart":
@@ -23,7 +23,11 @@ class ChartTrace extends ChartDefault{
         this.mode = null;   
     }
 
-    this.prefix = prefix
+    this.prefix = iwpgvObj.prefix
+
+    this.colors = [ 								// Possible chart colors
+			"#D32F2F", "#FF5733", "#536DFE", "#F9A825", "#558B2F", '#1976D2', '#00796B', '#581845', '#455A64', '#263238', '#303F9F', '#33691E', '#7B1FA2', '#0097A7', '#EF6C00', '#795548', '#FFA000'
+		]
    
   }
 
@@ -52,26 +56,28 @@ class ChartTrace extends ChartDefault{
   panel() {
 
     return [
-      {
-        "id" : `chartTrace[${this.index}][name]`,  
-        "title" : "Label in Legend",  
-        "type" : "text",
-        'value' : this.options()['name'],
-        "hint" : "The trace name appear as the legend item and on hover."
-      },
-      {
-        "id" : `chartTrace[${this.index}][mode]`, 
-        "title" : "Mode", 	
-        "type" : "select", 
-        "options" : {
-          "none" : "None",
-          "markers" : "Markers",
-          "lines" : "LInes",
-          "lines+markers" : "LInes & Markers"
+      [
+        {
+          "id" : `chartTrace[${this.index}][name]`,  
+          "title" : "Label in Legend",  
+          "type" : "text",
+          'value' : this.options()['name'],
+          "hint" : "The trace name appear as the legend item and on hover."
         },
-        'value' :  this.options()['mode'],
-        "hint" : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
-      },
+        {
+          "id" : `chartTrace[${this.index}][mode]`, 
+          "title" : "Mode", 	
+          "type" : "select", 
+          "options" : {
+            "none" : "None",
+            "markers" : "Markers",
+            "lines" : "LInes",
+            "lines+markers" : "LInes & Markers"
+          },
+          'value' :  this.options()['mode'],
+          "hint" : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
+        },
+      ]
     ]
   }
 

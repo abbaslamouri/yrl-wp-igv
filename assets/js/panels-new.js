@@ -1,4 +1,16 @@
-const renderPanels = function (panels, iwpgvObj) {
+const renderPanels = function (panels, prefix) {
+
+  // const= yrl_wp_igv_obj
+  // const prefix =prefix
+
+  // let panels = payload
+
+  // If no chart is being edited set panels to chart params only
+  // if (iwpgvCharts.chart.length == 0) {
+  //   panels.chartParams = payload.chartParams
+  // } else {
+  //   panels.chartParams = payload
+  // }
 
   // Create accordion div
   const panelAccordion = document.createElement("div")
@@ -70,7 +82,7 @@ const renderPanels = function (panels, iwpgvObj) {
           const formGroup = setFormGroup(
             field,
             panels[panel]["cssClasses"],
-            iwpgvObj
+            prefix
           );
           fieldGroup.appendChild(formGroup);
 
@@ -92,15 +104,15 @@ const renderPanels = function (panels, iwpgvObj) {
 
 
   // Add accordion div to form
-  const form = document.getElementById(`${iwpgvObj.prefix}__chartOptionsForm`)
+  const form = document.getElementById(`${prefix}__chartOptionsForm`)
   form.insertAdjacentElement("beforeEnd", panelAccordion)
 
   // Add save button to form
   const saveChartBtn = document.createElement("button")
   saveChartBtn.classList.add("button")
   saveChartBtn.classList.add("button-primary")
-  saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
-  saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
+  saveChartBtn.id = `${prefix}__saveChart`
+  saveChartBtn.name = `${prefix}__saveChart`
   saveChartBtn.disabled = true;
   const saveChartBtnText = document.createTextNode("Save Chart")
   saveChartBtn.appendChild(saveChartBtnText)
@@ -186,7 +198,7 @@ function accordionContent(id, cssClasses, panelIntroText = "") {
 }
 
 
-function setFormGroup(field, panelCssClasses, iwpgvObj) {
+function setFormGroup(field, panelCssClasses, prefix) {
   // Create form group
   const formGroup = document.createElement("div")
   formGroup.classList.add("form-group");
@@ -195,7 +207,7 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   if (field["type"] !== "hidden") {
     const labelElem = document.createElement("label")
     labelElem.classList.add("form-group__label");
-    labelElem.htmlFor = `${iwpgvObj.prefix}__${field["id"]}`
+    labelElem.htmlFor = `${prefix}__${field["id"]}`
     const labelText = field["title"]
       ? document.createTextNode(field["title"])
       : document.createTextNode("\u00A0");
@@ -234,8 +246,8 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   }
 
   // Set field id, name, classlist and value attributes
-  inputField.id = `${iwpgvObj.prefix}__${field["id"]}`
-  inputField.name = `${iwpgvObj.prefix}__${field["id"]}`
+  inputField.id = `${prefix}__${field["id"]}`
+  inputField.name = `${prefix}__${field["id"]}`
   if (field["type"] === "checkbox") {
     if (field["value"]) inputField.checked = true
   } else {
