@@ -27,7 +27,7 @@ class ChartTrace{
 
     this.prefix = iwpgvObj.prefix
 
-    this.colors = [ 								// Possible chart colors
+    this.colors = [								// Possible chart colors
 			"#D32F2F", "#FF5733", "#536DFE", "#F9A825", "#558B2F", '#1976D2', '#00796B', '#581845', '#455A64', '#263238', '#303F9F', '#33691E', '#7B1FA2', '#0097A7', '#EF6C00', '#795548', '#FFA000'
 		]
    
@@ -50,7 +50,7 @@ class ChartTrace{
       },
       'marker' : {
         'color' : ( typeof ( this.trace['marker'] ) !== "undefined" && typeof ( this.trace['marker']['color'] ) !== "undefined" ) ? this.trace['marker']['color'] : this.colors[this.index],
-        'size': ( typeof ( this.trace['marker'] ) !== "undefined" && typeof ( this.trace['marker']['size'] ) !== "undefined" ) ? this.trace['marker']['size'] : 10
+        'size': ( typeof ( this.trace['marker'] ) !== "undefined" && typeof ( this.trace['marker']['size'] ) !== "undefined" ) ? this.trace['marker']['size'] : 5
       },
 
     }
@@ -63,14 +63,14 @@ class ChartTrace{
     return [
       [
         {
-          "id" : `chartTrace[${this.index}][name]`,  
+          "id" : `chartTraces[trace-${this.index-1}][name]`,  
           "title" : "Label in Legend",  
           "type" : "text",
           'value' : this.options()['name'],
           "hint" : "The trace name appear as the legend item and on hover."
         },
         {
-          "id" : `chartTrace[${this.index}][mode]`, 
+          "id" : `chartTraces[${this.index-1}][mode]`, 
           "title" : "Mode", 	
           "type" : "select", 
           "options" : {

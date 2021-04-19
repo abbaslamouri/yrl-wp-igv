@@ -1,6 +1,6 @@
 // const iwpgvCharts = yrl_wp_igv_charts
-const iwpgvObj = yrl_wp_igv_obj
-const prefix = iwpgvObj.prefix
+// const iwpgvObj = yrl_wp_igv_obj
+// const prefix = iwpgvObj.prefix
 
 // Toggle spinner
 const toggleElement = function (elementId) {
@@ -118,16 +118,11 @@ const getPlotData = function (sheet) {
 
 
 
-const getXAxisMinMax = function(data) {
-  // Find X-Axis min and max values
-  const xAxisArr = []
-  for (var i=0; i < data.length; i++) {
-    var row = data[i];
-    xAxisArr.push(Object.values(row).shift())
-  }
+// const getXAxisMinMax = function(data) {
  
-  return {"xAxisMin": Math.min(...xAxisArr), "xAxisMax": Math.max(...xAxisArr)}
-}
+//   return {"xAxisMin": Math.min(data), "xAxisMax": Math.max(data)}
+
+// }
 
 
 const getLayout = function (chart, xAxisMin = null, xAxisMax = null) {
@@ -264,10 +259,10 @@ const getTable = function (tableHeader, plotData) {
 
 
 // Show sheet select field
-const setSheetId = function (spreadsheet, value) {
+const setSheetId = function (spreadsheet, value, iwpgvObj) {
 
   // Get sheet node
-  const sheetId = document.getElementById(`${prefix}__chartParams[sheetId]`);
+  const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`);
 
   // Remove all options
   sheetId.options.length = 0;
@@ -298,18 +293,18 @@ const setSheetId = function (spreadsheet, value) {
   }
 
   // Add/Remove classes
-  sheetId.classList.remove("hidden");
-  sheetId.closest(".form-group").classList.remove("hidden");
-  sheetId.closest(".field-group").classList.remove("hidden");
+  // sheetId.classList.remove("hidden");
+  // sheetId.closest(".form-group").classList.remove("hidden");
+  // sheetId.closest(".field-group").classList.remove("hidden");
 };
 
 // Show chart type select field
-const setChartTypeId = function (value) {
-  chartTypeId = document.getElementById(`${prefix}__chartParams[chartType]`);
-  chartTypeId.value = value;
-  chartTypeId.classList.remove("hidden");
-  chartTypeId.closest(".form-group").classList.remove("hidden");
-  chartTypeId.closest(".field-group").classList.remove("hidden");
+const unhideInputField = function (fieldId) {
+  // chartTypeId = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`);
+  // chartTypeId.value = value;
+  fieldId.classList.remove("hidden");
+  fieldId.closest(".form-group").classList.remove("hidden");
+  fieldId.closest(".field-group").classList.remove("hidden");
 };
 
 const setChartWidth = function (widthInput, boundingBoxId) {
@@ -446,13 +441,12 @@ module.exports = {
   getMinMaxAvgTableHeader,
   getPlotData,
   getMinMaxAvgData,
-  getXAxisMinMax,
+  // getXAxisMinMax,
   getLayout,
   getConfig,
   getTraces,
   getTable,
   setSheetId,
-  setChartTypeId,
   displayAdminMessage,
   setChartWidth,
   setChartArea,
@@ -460,6 +454,7 @@ module.exports = {
   setDependentFields,
   chartOptionKey,
   formatArrayFields,
+  unhideInputField
   // setChartOption,
   // // toggleWarning,
   // // setChartFieldsOptions,
