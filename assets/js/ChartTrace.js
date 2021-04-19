@@ -8,9 +8,11 @@ class ChartTrace{
     // super(chartTypes, colors, pointShapes, lineWidth, markerSize, fontNames);
 
     this.trace = trace;
-    this.labels = Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"]);
+    this.spreadsheet = jsonRes.spreadsheet
+    this.chart = iwpgvCharts.chart
+    this.labels = Object.values(this.spreadsheet[this.chart.chartParams.sheetId]["labels"]);
     this.index = index;
-    this.chartType = iwpgvCharts.chart.chartParams.chartType;
+    this.chartType = this.chart.chartParams.chartType;
 
     switch (this.chartType) {
       case "LineChart":
@@ -37,7 +39,10 @@ class ChartTrace{
 
       'type' : ( typeof ( this.trace['type'] ) !== "undefined" ) ? this.trace['type'] :  this.type ,
       'mode' : typeof ( this.trace['mode'] ) !== "undefined" ? this.trace['mode'] : this.mode,
-      'name' : typeof ( this.trace['mode'] ) !== "undefined" ?  this.trace['mode'] : this.labels[ this.index],
+      'name' : this.labels[ this.index],
+      'x' : this.spreadsheet[this.chart.chartParams.sheetId]["data"][0],
+      'y' : this.spreadsheet[this.chart.chartParams.sheetId]["data"][this.index],
+      
       'connectgaps' : typeof ( this.trace['connectgaps'] ) !== "undefined" ?  this.trace['connectgaps'] : false,
       'line' : {
         'color' : ( typeof ( this.trace['line'] ) !== "undefined" && typeof ( this.trace['line']['color'] ) !== "undefined" ) ? this.trace['line']['color'] : this.colors[this.index],

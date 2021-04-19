@@ -123,14 +123,14 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
       while (index < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
         iwpgvCharts.chart.chartTraces[index-1] = {}
         const chartTraceInstance = new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, jsonRes  )
-        iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options();
-        iwpgvCharts.chart.chartTraces[index-1]["x"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][0];
-        iwpgvCharts.chart.chartTraces[index-1]["y"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][index];
+        iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options()
+        // iwpgvCharts.chart.chartTraces[index-1]["x"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][0]
+        // iwpgvCharts.chart.chartTraces[index-1]["y"] = jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["data"][index]
         panels.chartTraces.sections[index-1] = {}
-        panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index}-1]`;
-        panels.chartTraces.sections[index-1].title = (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : "";
-        panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel();
-        index++;
+        panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index}-1]`
+        panels.chartTraces.sections[index-1].title = (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : ""
+        panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
+        index++
       }
     }
 
