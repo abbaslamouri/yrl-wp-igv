@@ -129,7 +129,7 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     renderPanels(panels, iwpgvObj);
 
     // set color pickers
-    colorPicker()
+    // colorPicker()
 
     // Set sheet Id select field
     setSheetId(jsonRes.spreadsheet, iwpgvCharts.chart.chartParams.sheetId, iwpgvObj)
