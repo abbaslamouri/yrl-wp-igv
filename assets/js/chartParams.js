@@ -1,6 +1,3 @@
-import ChartDefault from "./ChartDefault"
-
-
 class ChartParams {
 
   constructor(params, iwpgvObj) {

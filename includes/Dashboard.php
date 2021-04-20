@@ -1582,6 +1582,7 @@ if (!class_exists('Dashboard')) {
             $chart = [ 
               "chartParams" => [], 
               "chartLayout" => [], 
+              "chartConfig" => [], 
               "chartTraces" => [] 
             ];
           }

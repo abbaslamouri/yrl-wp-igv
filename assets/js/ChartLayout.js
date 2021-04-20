@@ -17,7 +17,7 @@ class ChartLayout{
     return {
 
       "paper_bgcolor" : ( typeof( this.layout.paper_bgcolor ) !== "undefined" ) ? this.layout.paper_bgcolor: "#CCC",
-      "plot_bgcolor" : ( typeof( this.layout['plot_bgcolor'] ) !== "undefined" ) ? this.layout['plot_bgcolor'] : "#FFF",
+      "plot_bgcolor" : ( typeof( this.layout.plot_bgcolor ) !== "undefined" ) ? this.layout.plot_bgcolor : "#FFF",
       "height" : ( typeof( this.layout.height ) !== "undefined" ) ? this.layout['height'] : 400,
       "autosize" : ( typeof ( this.layout['autosize']) !== "undefined" ) ? this.layout['autosize'] : true,
       "title" : {

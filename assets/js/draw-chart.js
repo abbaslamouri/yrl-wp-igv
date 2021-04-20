@@ -1,6 +1,7 @@
 import Plotly from 'plotly.js-basic-dist'
 import ChartParams from "./ChartParams"
 import ChartLayout from "./ChartLayout"
+import ChartConfig from "./ChartConfig"
 import ChartTrace from "./ChartTrace"
 import {
   toggleElement,
@@ -87,6 +88,14 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
   
     }
 
+    // Assemble chart and panels configuration
+    if (! Object.keys(iwpgvCharts.chart.chartConfig).length ) {
+      const chartConfigInstance = new ChartConfig( {}, iwpgvObj )
+      panels.chartConfig = chartConfigInstance.panel()
+      iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
+  
+    }
+
     // Bail if either the file, sheed or chart type is missing
     if (! iwpgvCharts.chart.chartParams.fileUpload || ! iwpgvCharts.chart.chartParams.sheetId || ! iwpgvCharts.chart.chartParams.chartType) {
       throw new Error(  "Please select a file, a sheet and chart type to proceed." )
@@ -119,6 +128,9 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     form.innerHTML = ""
     renderPanels(panels, iwpgvObj);
 
+    // set color pickers
+    colorPicker()
+
     // Set sheet Id select field
     setSheetId(jsonRes.spreadsheet, iwpgvCharts.chart.chartParams.sheetId, iwpgvObj)
 
@@ -138,7 +150,7 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     // Unhide chart div, Set its width and render plot
     showElement( `${iwpgvObj.prefix}__plotlyChart` )
     document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${iwpgvCharts.chart.chartLayout.width}%`
-    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, iwpgvCharts.chart.chartTraces, iwpgvCharts.chart.chartLayout, getConfig())
+    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, iwpgvCharts.chart.chartTraces, iwpgvCharts.chart.chartLayout, iwpgvCharts.chart.chartConfig)
 
     yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
       // console.log('eventData',eventData)
@@ -193,10 +205,10 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     // }
 
     // Render and show min max table if enableMinMaxTableChart is true
-    if (iwpgvCharts.chart.chartParams.enableMinMaxTableChart){
-      showElement( `${iwpgvObj.prefix}__plotlyMinMaxTable` )
-      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, getTable(getMinMaxAvgTableHeader(), getMinMaxAvgData(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data))) 
-    }
+    // if (iwpgvCharts.chart.chartParams.enableMinMaxTableChart){
+    //   showElement( `${iwpgvObj.prefix}__plotlyMinMaxTable` )
+    //   Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, getTable(getMinMaxAvgTableHeader(), getMinMaxAvgData(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data))) 
+    // }
 
 
     console.log("C", iwpgvCharts.chart)
@@ -256,8 +268,7 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
 
     //   
 
-    //   // set color pickers
-    //   // colorPicker(getLayout( jsonRes.chart, xAxisMin, xAxisMax), jsonRes.chart.traceOptions, getConfig())
+    
 
     //   
 
