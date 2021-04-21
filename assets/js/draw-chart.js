@@ -27,7 +27,7 @@ import {
 import fetchData from "./fetch-data"
 import renderChart from "./render-chart"
 import renderPanels from "./panels"
-import Accordion from "./accordion"
+import Accordion from "./Accordion"
 import colorPicker from "./color-picker"
 
 // const iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}

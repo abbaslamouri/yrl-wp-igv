@@ -1,4 +1,5 @@
-import Accordion from "./accordion"
+import Accordion from "./Accordion"
+import ColorPicker from "./ColorPicker"
 import ChartParams from "./ChartParams"
 import ChartLayout from "./ChartLayout"
 import mediaUploader from "./media-uploader"
@@ -15,10 +16,32 @@ const iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
 console.log("iwpgvObj", iwpgvObj)
 console.log("iwpgvCharts", iwpgvCharts)
 
+
+
+
 // Toggle Spinner, Wraning and Dasjbaord Div
 // toggleElement( `${iwpgvObj.prefix}__spinner` );
 // toggleElement( `${iwpgvObj.prefix}__warning `);
 // hideElement( `${prefix}__plotlyChart`);
+
+// const canvas = document.getElementById("main-canvas")
+
+// canvas.width = window.innerWidth
+// canvas.height = window.innerHeight
+
+// const ctx = canvas.getContext("2d")
+// ctx.beginPath()
+// ctx.rect(25,5,200,100)
+// ctx.fillStyle = 'teal'
+// ctx.stroke()
+// ctx.fill()
+
+// ctx.beginPath()
+// ctx.arc(400, 200, 100, 0, 2*Math.PI, )
+// ctx.strokeStyle = "blue"
+// ctx.fillStyle = 'yellow'
+// ctx.stroke()
+// ctx.fill()
 
 try {
 

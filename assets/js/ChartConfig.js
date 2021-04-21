@@ -61,4 +61,4 @@ class ChartLayout{
 
 }
 
-export default ChartLayout;
+export default ChartLayout
