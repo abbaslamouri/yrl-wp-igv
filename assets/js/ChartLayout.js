@@ -27,6 +27,7 @@ class ChartLayout{
       raleway: "Raleway"
     }
 
+
    
   }
 
@@ -58,7 +59,21 @@ class ChartLayout{
           size: ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.font ) !== "undefined" && typeof( this.layout.legend.font.size ) !== "undefined" ) ? this.layout.legend.font.size : 20,
           color : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.font ) !== "undefined" && typeof( this.layout.legend.font.color ) !== "undefined" ) ? this.layout.legend.font.color : "#39796b",
         },
-        orientation : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.orientation ) !== "undefined" ) ? this.layout.legend.orientation : 'h',
+        title: {
+          text : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.text ) !== "undefined" ) ? this.layout.legend.text : 'My Legend',
+          font : {
+            family: ( typeof( this.layout.legend ) !== "undefined" &&  typeof( this.layout.legend.title ) !== "undefined" && typeof( this.layout.legend.title.font ) !== "undefined" && typeof( this.layout.legend.title.font.family ) !== "undefined"  ) ? this.layout.legend.title.font.family : Object.keys(this.fontFamily)[1],
+            size: ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.title ) !== "undefined" && typeof( this.layout.legend.title.font ) !== "undefined" && typeof( this.layout.legend.title.font.size ) !== "undefined" ) ? this.layout.legend.title.font.size : 20,
+            color : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.title ) !== "undefined" && typeof( this.layout.legend.title.font ) !== "undefined" && typeof( this.layout.legend.title.font.color ) !== "undefined" ) ? this.layout.legend.title.font.color : "#ae52d4",
+          },
+        },
+        orientation : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.orientation ) !== "undefined" ) ? this.layout.legend.orientation : 'v',
+        itemsizing : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.itemsizing ) !== "undefined" ) ? this.layout.legend.itemsizing : 'constant',
+        itemwidth : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.itemwidth ) !== "undefined" ) ? this.layout.legend.itemwidth : 100,
+        itemclick : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.itemclick ) !== "undefined" ) ? this.layout.legend.itemclick : "toggle",
+        x : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.x ) !== "undefined" ) ? this.layout.legend.x : 1.01,
+        y : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.y ) !== "undefined" ) ? this.layout.legend.y : 0.5,
+        valign : ( typeof( this.layout.legend ) !== "undefined" && typeof( this.layout.legend.valign ) !== "undefined" ) ? this.layout.legend.valign : "middle",
       },
       xaxis : {
         automargin : ( typeof( this.layout.xaxis ) !== "undefined" && typeof( this.layout.xaxis.automargin ) !== "undefined" ) ? this.layout.xaxis.automargin : true,
@@ -225,6 +240,112 @@ class ChartLayout{
                 },
                 value : this.options().legend.orientation,
                 hint: "Sets the orientation of the legend."
+              },
+            ],
+            [
+              {
+                id : "chartLayout[legend][itemsizing]",
+                title : "Item Sizing",	
+                type : "select",
+                options : {
+                  trace: "trace",
+                  constant: "Constant"
+                },
+                value : this.options().legend.itemsizing,
+                hint: "Determines if the legend items symbols scale with their corresponding 'trace' attributes or remain 'constant' independent of the symbol size on the graph."
+              },
+              {
+                id : "chartLayout[legend][itemwidth]",
+                title : "Item Width",	
+                type : "number",
+                min : 30,
+                max : 1000,
+                step : 1,
+                value : this.options().legend.itemwidth,
+                hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text)."
+              },
+              {
+                id : "chartLayout[legend][itemclick]",
+                title : "Item Click Behaviour",	
+                type : "select",
+                options : {
+                  toggle: "Toggle",
+                  toggleothers: "Toggle Other",
+                  false: "Disable"
+                },
+                value : this.options().legend.itemclick,
+                hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
+              },
+            ],
+            [
+              {
+                id : "chartLayout[legend][x]",
+                title : "Horizontal Position",	
+                type : "number",
+                min : -2,
+                max : 3,
+                step : 0.01,
+                value : this.options().legend.x,
+                hint: "Sets the x position (in normalized coordinates) of the legend. Defaults to '1.02' for vertical legends and defaults to '0' for horizontal legends."
+              },
+              {
+                id : "chartLayout[legend][y]",
+                title : "Vertical Position",	
+                type : "number",
+                min : -2,
+                max : 3,
+                step : 0.01,
+                value : this.options().legend.y,
+                hint: "Sets the y position (in normalized coordinates) of the legend. Defaults to '1' for vertical legends, defaults to '-0.1' for horizontal legends on graphs w/o range sliders and defaults to '1.1' for horizontal legends on graph with one or multiple range sliders."
+              },
+            ],
+            [
+              {
+                id : "chartLayout[legend][valign]",
+                title : "Text symbol Alignment",	
+                type : "select",
+                options : {
+                  top: "Top",
+                  middle: "Middle",
+                  bottom: "Bottom"
+                },
+                value : this.options().legend.valign,
+                hint: "Sets the vertical alignment of the symbols with respect to their associated text."
+              },
+            ],
+            [
+              {
+                id : "chartLayout[legend][title][text]",
+                title : "Title",
+                type : "text", 
+                value : this.options().legend.title.text,
+                hint: "Sets the title of the legend."
+              },
+            ],
+            [
+              {
+                id : "chartLayout[legend][title][font][family]",
+                title : "Legend Title Font",	
+                type : "select",
+                options : this.fontFamily,
+                value : this.options().legend.title.font.family,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : "chartLayout[legend][title][font][size]", 
+                title : "Legend Title Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : this.options().legend.title.font.size,
+                hint : "number greater than or equal to 1"
+              },
+              {
+                id : "chartLayout[legend][title][font][color]",
+                title : "Legend Title Font Color",
+                type : "color", 
+                value : this.options().legend.title.font.color,
               },
             ],
           ]  
