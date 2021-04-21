@@ -8,15 +8,13 @@
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix), admin_url('admin.php')); ?>" title="<?php esc_attr_e( 'Go Back' ); ?>"><?php esc_attr_e( 'Cancel' ); ?></a>
   </div>
 
-  <div class="container" style="width:100%; height:100%; border:1px red solid;">
+  <!-- <div class="container" style="width:100%; height:100%; border:1px red solid;">
     <canvas id="color-picker" class="" style="border:3px solid rgba(15,15,15,0.2);"></canvas>
     <div class="info">
       <h3>Selected Color</h3>
       <div class="selected" style="width:50px; height:50px; border-radius:100%; border:3px solid rgba(15,15,15,0.2);"></div>
     </div>
-  </div>
-
-  <input type="color" style="height:50px;">
+  </div> -->
 
 
   <!-- Admin messages -->

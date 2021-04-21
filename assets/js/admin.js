@@ -1,5 +1,5 @@
 import Accordion from "./Accordion"
-import ColorPicker from "./ColorPicker"
+// import ColorPicker from "./ColorPicker"
 import ChartParams from "./ChartParams"
 import ChartLayout from "./ChartLayout"
 import mediaUploader from "./media-uploader"

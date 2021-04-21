@@ -61,9 +61,10 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
       // Add change event listener to all inputs with class containg iwpgvObj.prefix__chartParams
       document.addEventListener("change", async function (event) {
 
-        if (event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) {
+        if (event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm` && event.target.id.includes(`${iwpgvObj.prefix}__chartParams`)) {
 
           event.preventDefault();
+          console.log(event.target.checked)
 
           drawChart(event.target, iwpgvObj, iwpgvCharts, jsonRes);
 

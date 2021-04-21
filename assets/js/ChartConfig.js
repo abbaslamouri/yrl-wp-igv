@@ -17,7 +17,7 @@ class ChartLayout{
     return {
 
       "responsive" : ( typeof( this.config.responsive ) !== "undefined" ) ? this.config.responsive: true,
-      "displayModeBar" : ( typeof( this.config.displayModeBar ) !== "undefined" ) ? this.config.displayModeBar : false,
+      "displayModeBar" : ( typeof( this.config.displayModeBar ) !== "undefined" ) ? this.config.displayModeBar : true,
     }
 
   }

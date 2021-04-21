@@ -72,6 +72,8 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
       iwpgvCharts.chart[inputParams.control][fieldId] = fieldValue
     }
 
+    console.log("KKKKKK",{...iwpgvCharts.chart})
+
     // Initialize panels
     const panels = {} 
 
@@ -81,20 +83,15 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     iwpgvCharts.chart.chartParams = chartParamsInstance.options()
 
     // Assemble chart and panels layout
-    if (! Object.keys(iwpgvCharts.chart.chartLayout).length ) {
-      const chartLayoutInstance = new ChartLayout( {}, iwpgvObj )
-      panels.chartLayout = chartLayoutInstance.panel()
-      iwpgvCharts.chart.chartLayout = chartLayoutInstance.options()
-  
-    }
+    const chartLayoutInstance = ( ! Object.keys(iwpgvCharts.chart.chartLayout).length )  ?  new ChartLayout( {}, iwpgvObj ) : new ChartLayout( iwpgvCharts.chart.chartLayout, iwpgvObj ) 
+    panels.chartLayout = chartLayoutInstance.panel()
+    iwpgvCharts.chart.chartLayout = chartLayoutInstance.options()  
 
     // Assemble chart and panels configuration
-    if (! Object.keys(iwpgvCharts.chart.chartConfig).length ) {
-      const chartConfigInstance = new ChartConfig( {}, iwpgvObj )
-      panels.chartConfig = chartConfigInstance.panel()
-      iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
+    const chartConfigInstance = (! Object.keys(iwpgvCharts.chart.chartConfig).length ) ?  new ChartConfig( {}, iwpgvObj ) : new ChartConfig( iwpgvCharts.chart.chartConfig, iwpgvObj )
+    panels.chartConfig = chartConfigInstance.panel()
+    iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
   
-    }
 
     // Bail if either the file, sheed or chart type is missing
     if (! iwpgvCharts.chart.chartParams.fileUpload || ! iwpgvCharts.chart.chartParams.sheetId || ! iwpgvCharts.chart.chartParams.chartType) {
@@ -103,33 +100,32 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
 
 
     // Assemble chart traces chart and panels
-    if (! Object.keys(iwpgvCharts.chart.chartTraces).length ) {
-      panels.chartTraces = {
-        "id" : `${iwpgvObj.prefix}__chartTracesPanel`,
-        'cssClass' : ['chatTraces', 'chart'],
-        "title" : "Traces",
-        'sections' : {}
-      }
-
-      let index = 1;
-      while (index < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
-        iwpgvCharts.chart.chartTraces[index-1] = {}
-        const chartTraceInstance = new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, jsonRes  )
-        iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options()
-        panels.chartTraces.sections[index-1] = {}
-        panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index-1}]`
-        panels.chartTraces.sections[index-1].title = (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : ""
-        panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
-        index++
-      }
+    panels.chartTraces = {
+      "id" : `${iwpgvObj.prefix}__chartTracesPanel`,
+      'cssClass' : ['chatTraces', 'chart'],
+      "title" : "Traces",
+      'sections' : {}
     }
+
+    let index = 1;
+    while (index < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
+      iwpgvCharts.chart.chartTraces[index-1] = {}
+      const chartTraceInstance = (! Object.keys(iwpgvCharts.chart.chartTraces).length )? new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, jsonRes  ) : new ChartTrace( iwpgvCharts.chart.chartTraces[index-1], index, iwpgvObj, iwpgvCharts, jsonRes  )  
+      iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options()
+      panels.chartTraces.sections[index-1] = {}
+      panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index-1}]`
+      panels.chartTraces.sections[index-1].title = (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : ""
+      panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
+      index++
+    }
+    
 
     // Remove old acordion panel and Render Accordion Panels
     form.innerHTML = ""
     renderPanels(panels, iwpgvObj);
 
     // set color pickers
-    colorPicker()
+    // colorPicker()
 
     // Set sheet Id select field
     setSheetId(jsonRes.spreadsheet, iwpgvCharts.chart.chartParams.sheetId, iwpgvObj)
@@ -147,9 +143,51 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
 
+    // Unhide and set range slider min and max input fields if enableChartRangeSlider
+    if ( iwpgvCharts.chart.chartParams.enableChartRangeSlider ) {
+      showElement( `${iwpgvObj.prefix}__plotMinMax` )
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
+
+      iwpgvCharts.chart.chartLayout.xaxis.rangeslider.visible = true
+      // const update = {
+      //   "xaxis.rangeslider.visible" : true  // updates the xaxis range
+      //  }
+      // Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
+
+        // Add change event listener on all the document
+      // document.addEventListener("change", function (event) {
+      
+      //   event.preventDefault()
+
+      //   // Bail if input id is range min or ranmge max
+      //   if (event.target.id === `${iwpgvObj.prefix}__rangeMinInput` || event.target.id == `${iwpgvObj.prefix}__rangeMaxInput` ) {
+
+      //     const update = {
+      //       'xaxis.range': [
+      //         document.getElementById( `${iwpgvObj.prefix}__rangeMinInput` ).value,
+      //         document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).value
+      //       ],   // updates the xaxis range
+      //     };
+      //     Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
+      //   }
+      // })
+
+    } else {
+      hideElement( `${iwpgvObj.prefix}__plotMinMax` )
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
+
+      iwpgvCharts.chart.chartLayout.xaxis.rangeslider.visible = false
+    }
+
     // Unhide chart div, Set its width and render plot
     showElement( `${iwpgvObj.prefix}__plotlyChart` )
-    document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${iwpgvCharts.chart.chartLayout.width}%`
+    // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${iwpgvCharts.chart.chartLayout.width}%`
     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, iwpgvCharts.chart.chartTraces, iwpgvCharts.chart.chartLayout, iwpgvCharts.chart.chartConfig)
 
     yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
@@ -160,40 +198,6 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
     })
-
-    // Unhide and set range slider min and max input fields if enableChartRangeSlider
-    if ( iwpgvCharts.chart.chartParams.enableChartRangeSlider ) {
-      showElement( `${iwpgvObj.prefix}__plotMinMax` )
-      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
-      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
-
-      iwpgvCharts.chart.chartLayout.xaxis.rangeslider.visible = true
-      const update = {
-        "xaxis.rangeslider.visible" : true  // updates the xaxis range
-       }
-      Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
-
-        // Add change event listener on all the document
-      document.addEventListener("change", function (event) {
-      
-        event.preventDefault()
-
-        // Bail if input id is range min or ranmge max
-        if (event.target.id === `${iwpgvObj.prefix}__rangeMinInput` || event.target.id == `${iwpgvObj.prefix}__rangeMaxInput` ) {
-
-          const update = {
-            'xaxis.range': [
-              document.getElementById( `${iwpgvObj.prefix}__rangeMinInput` ).value,
-              document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).value
-            ],   // updates the xaxis range
-          };
-          Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
-        }
-      })
-
-    }
 
     // // Render and show table if enableTableChart is true
     // if (jsonRes.chart.chartParams.enableTableChart){
