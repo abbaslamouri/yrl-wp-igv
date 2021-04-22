@@ -13,7 +13,6 @@ import {
 
 const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
 
-  let jsonRes = ( jsonRes === "undefined"  )? {} : jsonRes
 
 
   toggleElement( `${iwpgvObj.prefix}__spinner` );
@@ -23,8 +22,9 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
 
   try {
 
+    
 
-    console.log("JSON", jsonRes)
+
 
     // throw new Error( "Hello There")
 
@@ -47,7 +47,7 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
     formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value);
 
     //send ajax resquest
-    jsonRes = await fetchData(formData);
+   const jsonRes = await fetchData(formData);
 
     console.log("JSONRESPONSE", jsonRes)
 
