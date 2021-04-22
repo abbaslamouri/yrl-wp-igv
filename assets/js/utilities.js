@@ -259,16 +259,16 @@ const getTable = function (tableHeader, plotData) {
 
 
 // Show sheet select field
-const setSheetId = function (spreadsheet, value, iwpgvObj) {
+const setSheetIdOptions = function (spreadsheet, sheetIdInput) {
 
-  // Get sheet node
-  const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`);
+  // // Get sheet node
+  // const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
 
   // Remove all options
-  sheetId.options.length = 0;
+  sheetIdInput.options.length = 0;
 
   // Add default option
-  sheetId.options[sheetId.options.length] = new Option(
+  sheetIdInput.options[sheetIdInput.options.length] = new Option(
     "Select Sheet",
     "",
     false,
@@ -277,7 +277,7 @@ const setSheetId = function (spreadsheet, value, iwpgvObj) {
 
   // Loop through all sheets in the spreadsheet and set options
   for (const prop in spreadsheet) {
-    sheetId.options[sheetId.options.length] = new Option(
+    sheetIdInput.options[sheetIdInput.options.length] = new Option(
       spreadsheet[prop]["sheetName"],
       prop,
       false,
@@ -285,26 +285,27 @@ const setSheetId = function (spreadsheet, value, iwpgvObj) {
     );
   }
 
-  // Set value
-  if (value) {
-    sheetId.value = value;
-  } else {
-    if (sheetId.options.length === 2) sheetId.value = sheetId.options[1].value;
-  }
+  // // Set value
+  // if (value) {
+  //   sheetIdInput.value = value;
+  // } else {
+  //   if (sheetIdInput.options.length === 2) sheetIdInput.value = sheetIdInput.options[1].value;
+  // }
+  // return sheetIdInput.value
 
   // Add/Remove classes
-  // sheetId.classList.remove("hidden");
-  // sheetId.closest(".form-group").classList.remove("hidden");
-  // sheetId.closest(".field-group").classList.remove("hidden");
+  // sheetIdInput.classList.remove("hidden");
+  // sheetIdInput.closest(".form-group").classList.remove("hidden");
+  // sheetIdInput.closest(".field-group").classList.remove("hidden");
 };
 
 // Show chart type select field
 const unhideInputField = function (fieldId) {
   // chartTypeId = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`);
   // chartTypeId.value = value;
-  fieldId.classList.remove("hidden");
-  fieldId.closest(".form-group").classList.remove("hidden");
-  fieldId.closest(".field-group").classList.remove("hidden");
+  if (fieldId.classList.contains("hidden") ) fieldId.classList.remove("hidden");
+  if (fieldId.closest(".form-group").classList.contains("hidden") ) fieldId.closest(".form-group").classList.remove("hidden");
+  if (fieldId.closest(".field-group").classList.contains("hidden") )fieldId.closest(".field-group").classList.remove("hidden");
 };
 
 const setChartWidth = function (widthInput, boundingBoxId) {
@@ -446,7 +447,7 @@ module.exports = {
   getConfig,
   getTraces,
   getTable,
-  setSheetId,
+  setSheetIdOptions,
   displayAdminMessage,
   setChartWidth,
   setChartArea,

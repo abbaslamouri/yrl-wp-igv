@@ -41,7 +41,7 @@ import colorPicker from "./color-picker"
 
 // import colorPicker from "./color-picker"
 
-const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
+const drawChart = async function (iwpgvObj, iwpgvCharts, jsonRes) {
 
   // Show spinner and hide warning, chart, table minmax table and minmax input fields
   toggleElement( `${iwpgvObj.prefix}__spinner` )
@@ -50,6 +50,8 @@ const drawChart = async function (target, iwpgvObj, iwpgvCharts, jsonRes) {
   // hideElement( `${prefix}__plotlyTableContainer` )
   // hideElement( `${prefix}__plotMinMaxTableContainer` )
   // hideElement( `${prefix}__plotMinMax` )
+
+  console.log("here")
 
   try {
 

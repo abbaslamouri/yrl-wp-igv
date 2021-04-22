@@ -100,6 +100,9 @@ try {
 
     // Add click event listener
     document.addEventListener("click", function (event) {
+
+      // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
+      if (! event.target.classList.contains( `${iwpgvObj.prefix}__chartParams`) || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) return
     
       // file uploader event listener
       if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {

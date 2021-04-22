@@ -4,7 +4,7 @@ import {
   toggleElement,
   hideElement,
   showElement,
-  setSheetId,
+  setSheetIdOptions,
   setChartTypeId,
   displayAdminMessage,
   unhideInputField,
@@ -13,6 +13,9 @@ import {
 
 const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
 
+  let jsonRes = ( jsonRes === "undefined"  )? {} : jsonRes
+
+
   toggleElement( `${iwpgvObj.prefix}__spinner` );
   toggleElement( `${iwpgvObj.prefix}__warning`);
   // hideElement( `${iwpgvObj.prefix}__plotlyChart`);
@@ -20,7 +23,13 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
 
   try {
 
+
+    console.log("JSON", jsonRes)
+
     // throw new Error( "Hello There")
+
+    // console.log("OBJ", iwpgvObj)
+    // console.log("CHART", iwpgvCharts)
 
 
     // Create a form data object
@@ -35,9 +44,10 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
     // Add action and nonce to form
     formData.append("action", iwpgvObj.file_select_action);
     formData.append("nonce", iwpgvObj.file_select_nonce);
+    formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value);
 
     //send ajax resquest
-    const jsonRes = await fetchData(formData);
+    jsonRes = await fetchData(formData);
 
     console.log("JSONRESPONSE", jsonRes)
 
@@ -46,12 +56,39 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
     
     // Success handler
     if (jsonRes.status && jsonRes.status === "success") {
+      
+      // Update sheetID select field options and value
+      const sheetIdInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+      setSheetIdOptions(jsonRes.spreadsheet, sheetIdInput)
+      sheetIdInput.value = (sheetIdInput.options.length === 2)  ? sheetIdInput.options[1].value : sheetIdInput.options[0].value
+
+      // Update chart type select field value
+      const chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
+      chartTypeInput.value = jsonRes.post[`${iwpgvObj.prefix}__chartParams`].chartType
+
+      // Reset form data ( eliminate action and nonce ans add sheetId and chart type values)
+      formData.delete("action");
+      formData.delete("nonce");
+      formData.append(`${iwpgvObj.prefix}__chartParams[sheetId]`, sheetIdInput.value );
+      formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, chartTypeInput.value );
+
+        // Loop throu the form data to to populate the chart and the panels
+      for (const property of formData ) {
+        const inputParams = chartOptionKey(property[0])
+        const fieldId = inputParams.key
+        const fieldValue = property[1]
+        iwpgvCharts.chart[inputParams.control][fieldId] = fieldValue
+     }
+
+      console.log("KKKKKK",{...iwpgvCharts.chart})
+
+      if ( iwpgvCharts.chart.chartParams.fileUpload && (iwpgvCharts.chart.chartParams.sheetId || iwpgvCharts.chart.chartParams.sheetId == 0 ) &&  iwpgvCharts.chart.chartParams.chartType) {
+        drawChart(iwpgvObj, iwpgvCharts, jsonRes);
+      }
 
       // Set sheet Id select field
-      setSheetId(jsonRes.spreadsheet, "", iwpgvObj);
 
-      // Set chart type select field
-      document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value = ""
+      
 
 
       // Unhide sheed Id and chart type input fields
@@ -60,21 +97,17 @@ const selectFile = async function ( iwpgvObj, iwpgvCharts ) {
 
       // Add change event listener to all inputs with class containg iwpgvObj.prefix__chartParams
       document.addEventListener("change", async function (event) {
+        
+        // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
+        if (! event.target.closest("form") || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) return
 
-        if (event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm` && event.target.id.includes(`${iwpgvObj.prefix}__chartParams`)) {
-
-          event.preventDefault();
-          console.log(event.target.checked)
-
-          drawChart(event.target, iwpgvObj, iwpgvCharts, jsonRes);
-
-        }
+        if ( event.target.id.includes(`${iwpgvObj.prefix}__chartParams`)) {
+          selectFile(iwpgvObj, iwpgvCharts)
+        } 
         
       });
       
-    } else {
-      throw new Error( jsonRes.message)
-    }
+    } 
   } catch (error) {
 
     displayAdminMessage(error.message, "error",  iwpgvObj)
