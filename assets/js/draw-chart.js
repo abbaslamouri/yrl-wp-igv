@@ -131,9 +131,13 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
 
     // console.log("ZZZZZZZQQQQQQQQ",  spreadsheet)
 
-    if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
-      iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+1)
-    }
+    console.log("NUMBERS", spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length, iwpgvCharts.chart.chartTraces.length)
+
+    // if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
+
+    //   console.log("NUMBERS", spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length, iwpgvCharts.chart.chartTraces.length)
+    //   iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+100)
+    // }
 
 
     // Assemble chart traces chart and panels

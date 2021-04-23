@@ -8,7 +8,11 @@ import {
   toggleElement
  } from "./utilities"
 
+ let iwpgvCharts
+
 const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
+
+ 
 
   // Initialize the media uploader
   let mediaUploader;
@@ -138,6 +142,13 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
         if (! event.target.closest("form") || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) return
 
         if ( event.target.id === sheetIdInput.id || event.target.id === chartTypeInput.id && ( sheetIdInput.value && chartTypeInput.value )) {
+
+          iwpgvCharts.chart = {
+            chartParams: {},
+            chartLayout: {},
+            chartConfig:{},
+            chartTraces : []
+          }
           
           drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
         } 
