@@ -68,22 +68,30 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
     // // Create form object
     // const formData = new FormData( form )
 
-    // // Create a form data object based on input change
+    // Create a form data object based on input change
     // const form = target.closest("form")
 
     // Bail if no foem is found
-    if ( !form ) throw new Error(  `Something went terribly wrong, we cannot find form ${form}` )
+    // if ( !form ) throw new Error(  `Something went terribly wrong, we cannot find form ${form}` )
 
     // Create form data object
-    const formData = new FormData( form )
+    // const formData = new FormData( form )
 
     // Loop throu the form data to to populate the chart and the panels
-    for (const property of formData ) {
-      const inputParams = chartOptionKey(property[0])
-      const fieldId = inputParams.key
-      const fieldValue = property[1]
-      iwpgvCharts.chart[inputParams.control][fieldId] = fieldValue
-    }
+    // for (const property of formData ) {
+    //   const inputParams = chartOptionKey(property[0])
+    //   const fieldId = inputParams.key
+    //   const fieldValue = property[1]
+    //   // console.log(inputParams)
+    //   // console.log(inputParams+ "=====" + fieldId + "=======" + fieldValue)
+    //   iwpgvCharts.chart[inputParams.control][fieldId] = fieldValue
+    // }
+
+    
+
+    iwpgvCharts.chart.chartParams.fileUpload = document.getElementById( `${iwpgvObj.prefix}__chartParams[fileUpload]` ).value
+    iwpgvCharts.chart.chartParams.sheetId = document.getElementById( `${iwpgvObj.prefix}__chartParams[sheetId]` ).value
+    iwpgvCharts.chart.chartParams.chartType = document.getElementById( `${iwpgvObj.prefix}__chartParams[chartType]` ).value
 
     console.log("KKKKKK",{...iwpgvCharts.chart})
 
@@ -96,28 +104,36 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
     iwpgvCharts.chart.chartParams = chartParamsInstance.options()
 
     // Assemble chart and panels layout
-    const chartLayoutInstance = ( ! Object.keys(iwpgvCharts.chart.chartLayout).length )  ?  new ChartLayout( {}, iwpgvObj ) : new ChartLayout( iwpgvCharts.chart.chartLayout, iwpgvObj ) 
+    // const chartLayoutInstance = ( ! Object.keys(iwpgvCharts.chart.chartLayout).length )  ?  new ChartLayout( {}, iwpgvObj ) : new ChartLayout( iwpgvCharts.chart.chartLayout, iwpgvObj ) 
+    const chartLayoutInstance = new ChartLayout( iwpgvCharts.chart.chartLayout, iwpgvObj ) 
     panels.chartLayout = chartLayoutInstance.panel()
     iwpgvCharts.chart.chartLayout = chartLayoutInstance.options()
 
-    iwpgvCharts.chart.chartLayout.xaxis.range = {}
+    // iwpgvCharts.chart.chartLayout.xaxis.range[0] = Math.min(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
+    // iwpgvCharts.chart.chartLayout.xaxis.range[1] = Math.max(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
+    // // iwpgvCharts.chart.chartLayout.xaxis.autorange =false
 
-    iwpgvCharts.chart.chartLayout.xaxis.range[0] = Math.min(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
-    iwpgvCharts.chart.chartLayout.xaxis.range[1] = Math.max(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
-    // iwpgvCharts.chart.chartLayout.xaxis.autorange =false
-
-    console.log(iwpgvCharts.chart.chartLayout.xaxis.range)
+    // console.log(iwpgvCharts.chart.chartLayout.xaxis.range)
 
     // Assemble chart and panels configuration
-    const chartConfigInstance = (! Object.keys(iwpgvCharts.chart.chartConfig).length ) ?  new ChartConfig( {}, iwpgvObj ) : new ChartConfig( iwpgvCharts.chart.chartConfig, iwpgvObj )
+    // const chartConfigInstance = (! Object.keys(iwpgvCharts.chart.chartConfig).length ) ?  new ChartConfig( {}, iwpgvObj ) : new ChartConfig( iwpgvCharts.chart.chartConfig, iwpgvObj )
+    const chartConfigInstance = new ChartConfig( iwpgvCharts.chart.chartConfig, iwpgvObj )
     panels.chartConfig = chartConfigInstance.panel()
     iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
+
+    // console.log("LLLLLLL",{...iwpgvCharts.chart})
   
 
     // // Bail if either the file, sheed or chart type is missing
     // if (! iwpgvCharts.chart.chartParams.fileUpload || ! iwpgvCharts.chart.chartParams.sheetId || ! iwpgvCharts.chart.chartParams.chartType) {
     //   throw new Error(  "Please select a file, a sheet and chart type to proceed." )
     // }
+
+    // console.log("ZZZZZZZQQQQQQQQ",  spreadsheet)
+
+    if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
+      iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+1)
+    }
 
 
     // Assemble chart traces chart and panels
@@ -128,24 +144,25 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
       'sections' : {}
     }
 
-    console.log("ZZZZZZZ",  iwpgvCharts.chart.chartTraces)
-    console.log(spreadsheet)
 
-    iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length)
 
-    const newArr = []
-    for (let j =0; j< spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length; j++ ) {
-      console.log("TR",iwpgvCharts.chart.chartTraces)
-      newArr[j] = iwpgvCharts.chart.chartTraces[j] 
-    }
+    
+    // console.log("ZZZZZZ-1",iwpgvCharts.chart.chartTraces)
 
-    // let j = 1
-    // while (j<1000) {
-    //   if ( j > spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length ) delete iwpgvCharts.chart.chartTraces[j-1]
-    //   j++
+
+    // const newArr = []
+    // for (let j =0; j< spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length; j++ ) {
+    //   newArr[j] = iwpgvCharts.chart.chartTraces[j]
     // }
 
-    console.log("YYYYYYY",  [...newArr])
+    // // let j = 1
+    // // while (j<1000) {
+    // //   if ( j > spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length ) delete iwpgvCharts.chart.chartTraces[j-1]
+    // //   j++
+    // // }
+
+    // console.log("YYYYYYY",  newArr)
+    // console.log(spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length)
 
     // if (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length <5) return
 
@@ -153,19 +170,29 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
 
     let index = 1;
     while (index < spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
-      iwpgvCharts.chart.chartTraces[index-1] = {}
-      const chartTraceInstance = (! Object.keys(iwpgvCharts.chart.chartTraces).length )? new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, jsonRes  ) : new ChartTrace( iwpgvCharts.chart.chartTraces[index-1], index, iwpgvObj, iwpgvCharts, spreadsheet  )  
+      // iwpgvCharts.chart.chartTraces[index-1] = {}
+      // console.log("1111", {...iwpgvCharts.chart.chartTraces[index-1]})
+      // const chartTraceInstance = (iwpgvCharts.chart.chartTraces.length &&  iwpgvCharts.chart.chartTraces[index-1] !== "undefined" )? new ChartTrace( iwpgvCharts.chart.chartTraces[index-1], index, iwpgvObj, iwpgvCharts, spreadsheet  )  : new ChartTrace( {}, index, iwpgvObj, iwpgvCharts, spreadsheet  )
+      const chartTraceInstance =  new ChartTrace( iwpgvCharts.chart.chartTraces[index-1], index, iwpgvObj, iwpgvCharts, spreadsheet  ) 
       iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options()
+
+     
+      // iwpgvCharts.chart.chartTraces[index-1].x = spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0] 
+      // iwpgvCharts.chart.chartTraces[index-1].y = spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[index]
+
+      // console.log("22222",iwpgvCharts.chart.chartTraces[index-1])
+
+
+      // x : this.spreadsheet[this.chart.chartParams.sheetId].data[0],
+      // y : this.spreadsheet[this.chart.chartParams.sheetId].data[this.index],
+
       panels.chartTraces.sections[index-1] = {}
-      // panels.chartTraces.sections[index-1].x = spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0] 
-      // panels.chartTraces.sections[index-1].y = spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[index-1]
       panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index-1}]`
       panels.chartTraces.sections[index-1].title = (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : ""
       panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
       index++
     }
     
-
     // Remove old acordion panel and Render Accordion Panels
     form.innerHTML = ""
     renderPanels(panels, iwpgvObj);

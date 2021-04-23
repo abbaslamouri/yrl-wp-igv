@@ -107,7 +107,7 @@ try {
       // file uploader event listener
       if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
         event.preventDefault();
-        mediaUploader( iwpgvObj, iwpgvCharts);
+        mediaUploader( iwpgvCharts, iwpgvObj );
       }
 
       // save chart

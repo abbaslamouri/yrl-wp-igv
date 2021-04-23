@@ -37,21 +37,21 @@ class ChartTrace{
 
     return {
 
-      'type' : ( typeof ( this.trace['type'] ) !== "undefined" ) ? this.trace['type'] :  this.type ,
-      'mode' : typeof ( this.trace['mode'] ) !== "undefined" ? this.trace['mode'] : this.mode,
-      'name' : this.labels[ this.index],
-      'x' : this.spreadsheet[this.chart.chartParams.sheetId]["data"][0],
-      'y' : this.spreadsheet[this.chart.chartParams.sheetId]["data"][this.index],
+      // type : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.type ) !== "undefined" ) ? this.trace.type :  this.type ,
+      mode : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.mode ) !== "undefined" ) ? this.trace.mode : this.mode,
+      name : this.labels[ this.index],
+      x : this.spreadsheet[this.chart.chartParams.sheetId].data[0],
+      y : this.spreadsheet[this.chart.chartParams.sheetId].data[this.index],
       
-      'connectgaps' : typeof ( this.trace['connectgaps'] ) !== "undefined" ?  this.trace['connectgaps'] : false,
-      'line' : {
-        'color' : ( typeof ( this.trace['line'] ) !== "undefined" && typeof ( this.trace['line']['color'] ) !== "undefined" ) ? this.trace['line']['color'] : this.colors[this.index],
-        'width': ( typeof ( this.trace['line'] ) !== "undefined" && typeof ( this.trace['line']['width'] ) !== "undefined" ) ? this.trace['line']['width'] : 2
-      },
-      'marker' : {
-        'color' : ( typeof ( this.trace['marker'] ) !== "undefined" && typeof ( this.trace['marker']['color'] ) !== "undefined" ) ? this.trace['marker']['color'] : this.colors[this.index],
-        'size': ( typeof ( this.trace['marker'] ) !== "undefined" && typeof ( this.trace['marker']['size'] ) !== "undefined" ) ? this.trace['marker']['size'] : 5
-      },
+      // connectgaps : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.connectgaps ) !== "undefined" ) ?  this.trace.connectgaps : false,
+      // line : {
+      //   color : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.line ) !== "undefined" && typeof ( this.trace.line.color ) !== "undefined" ) ? this.trace.line.color : this.colors[this.index],
+      //   'width': ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.line ) !== "undefined" && typeof ( this.trace.line.width ) !== "undefined" ) ? this.trace.line.width : 2
+      // },
+      // marker : {
+      //   color : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.marker ) !== "undefined" && typeof ( this.trace.marker.color ) !== "undefined" ) ? this.trace.marker.color : this.colors[this.index],
+      //   size: ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.marker ) !== "undefined" && typeof ( this.trace.marker.size ) !== "undefined" ) ? this.trace.marker.size : 5
+      // },
 
     }
 
@@ -63,7 +63,7 @@ class ChartTrace{
     return [
       [
         {
-          "id" : `chartTraces[trace-${this.index-1}][name]`,  
+          "id" : `chartTraces[${this.index-1}][name]`,  
           "title" : "Label in Legend",  
           "type" : "text",
           'value' : this.options()['name'],
