@@ -29,7 +29,7 @@ class ChartLayout{
 
       "id" : `${this.prefix}__chartConfigPanel`,
       'cssClasses' : ['chartConfig', 'chart'],
-      "title" : "Chart Configuration",
+      "title" : "Configuration",
       "intro" : "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
       "sections" : {
         "general" : {

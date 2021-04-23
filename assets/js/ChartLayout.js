@@ -131,7 +131,7 @@ class ChartLayout{
 
       id : `${this.prefix}__chartLayoutPanel`,
       cssClasses : ['chartLayout', 'chart'],
-      title : "Chart Layout",
+      title : "Layout",
       intro : "This is the layout pnel",
       sections : {
         General: {

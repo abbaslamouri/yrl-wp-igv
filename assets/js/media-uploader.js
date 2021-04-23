@@ -5,10 +5,26 @@ import {
   displayAdminMessage,
   setSheetIdOptions,
   unhideInputField,
-  toggleElement
- } from "./utilities"
+  toggleElement,
+  showElement
+} from "./utilities"
 
-const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
+
+let jsonRes = {} // Server response
+let form // THis is the only form
+let sheetIdInput // Spreadsheet Sheet Id select field
+let chartTypeInput // Chart type select field
+let fileUploadInput // file (spreadsheet) name
+
+
+const mediaUploader = function (iwpgvCharts, iwpgvObj) {
+
+  // Get form, sheet Id and chart type input fields
+  form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+  sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+  chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
+  fileUploadInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`)
+
 
   // Initialize the media uploader
   let mediaUploader;
@@ -29,12 +45,35 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
 
     // Hide warning and show spinner
     toggleElement( `${iwpgvObj.prefix}__spinner` );
-    toggleElement( `${iwpgvObj.prefix}__warning`);
+    // showElement( `${iwpgvObj.prefix}__warning`);
     
-    try {      
-
+    try { 
+      
+      // REset sheet Id and chart tpe
+      sheetIdInput.value = "" // (sheetIdInput.options.length === 2)  ? sheetIdInput.options[1].value : sheetIdInput.options[0].value
+      chartTypeInput.value = "" // jsonRes.post[`${iwpgvObj.prefix}__chartParams`].chartType
+      
       // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).innerHTML =""
       Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`);
+
+      // remove layout panel toggle and panel
+      if (document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`))  {
+        document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`).previousSibling.remove()
+        document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`).remove()
+      }
+
+      // remove chart traces panel toggle and panel
+      if (document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`))  {
+        document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`).previousSibling.remove()
+        document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`).remove()
+      }
+
+      // remove chart traces panel toggle and panel
+      if (document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`))  {
+        document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`).previousSibling.remove()
+        document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`).remove()
+      }
+           
 
       // Get attachment
       const attachment = mediaUploader.state().get("selection").first().toJSON()
@@ -45,28 +84,21 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
       // Set file upload input field value
       document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename
 
+
       
-
-
-
-      // Initialize form, sheet Id and chart type input fields
-      const form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
-      const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-      let chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
-
       // Bail if no foem is found
       if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
 
       // Create form object
-      let formData = new FormData( form )
+      const formData = new FormData( form )
 
       // Add action and nonce to form
       formData.append("action", iwpgvObj.file_select_action);
       formData.append("nonce", iwpgvObj.file_select_nonce);
-      formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, chartTypeInput.value);
+      // formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, chartTypeInput.value);
 
       //send ajax resquest
-      const jsonRes = await fetchData(formData);
+      jsonRes = await fetchData(formData);
 
       console.log("JSONRESPONSE", jsonRes)
       
@@ -75,76 +107,31 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
         
       // Set sheet Id select field options, update sheet Id and chart type select field values and unhide both fields
       setSheetIdOptions(jsonRes.spreadsheet, sheetIdInput)
-      sheetIdInput.value = (sheetIdInput.options.length === 2)  ? sheetIdInput.options[1].value : sheetIdInput.options[0].value
-      chartTypeInput.value = jsonRes.post[`${iwpgvObj.prefix}__chartParams`].chartType
+      sheetIdInput.value = "" // (sheetIdInput.options.length === 2)  ? sheetIdInput.options[1].value : sheetIdInput.options[0].value
+      chartTypeInput.value = "" // jsonRes.post[`${iwpgvObj.prefix}__chartParams`].chartType
       unhideInputField( sheetIdInput );
       unhideInputField( chartTypeInput );
 
-
-
-
-
-
-      if ( attachment.filename && (sheetIdInput.value || sheetIdInput.value === 0 ) &&  chartTypeInput.value) {
-        console.log("QQQQQQQ",sheetIdInput.value, chartTypeInput.value)
-
-        drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj);
-      }
+      // Enable save button
+      document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = true
 
       // Add change event listener to all inputs with class containg iwpgvObj.prefix__chartParams
       document.addEventListener("change", async function (event) {
 
-        // Create form object
-      formData = new FormData( form )
-
-      // Add action and nonce to form
-      formData.append("action", iwpgvObj.file_select_action);
-      formData.append("nonce", iwpgvObj.file_select_nonce);
-
-      // chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
-      formData.append(`${iwpgvObj.prefix}__chartParams[chartType]`, chartTypeInput.value);
-
-        //send ajax resquest
-        const jsonRes = await fetchData(formData);
-
-        console.log("JSONRESPONSE", jsonRes)
-
-        // // Initialize form, sheet Id and chart type input fields
-        // const form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
-        // const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-        // const chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
-
-        console.log("FILE", document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value)
-
-        // document.getElementById(event.target.id).value = event.target.value
-
-
-        
-        // Bail is server response status = error
-        if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
-          
-        // Set sheet Id select field options, update sheet Id and chart type select field values and unhide both fields
-        // setSheetIdOptions(jsonRes.spreadsheet, sheetIdInput)
-        // sheetIdInput.value = (sheetIdInput.options.length === 2)  ? sheetIdInput.options[1].value : sheetIdInput.options[0].value
-        // chartTypeInput.value = jsonRes.post[`${iwpgvObj.prefix}__chartParams`].chartType
-        unhideInputField( sheetIdInput );
-        unhideInputField( chartTypeInput );
-
-        // console.log("OOOOO",sheetIdInput.id, chartTypeInput.id)
-        //     console.log(sheetIdInput.value, chartTypeInput.value)
-        //   console.log("JJJJJJJJJ",jsonRes.spreadsheet)
-      
         // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
-        if (! event.target.closest("form") || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm`) return
+        if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` || ( event.target.id !== sheetIdInput.id && event.target.id !== chartTypeInput.id ) ) return 
 
-        if ( event.target.id === sheetIdInput.id || event.target.id === chartTypeInput.id && ( sheetIdInput.value && chartTypeInput.value )) {
+        // Bail if no sheet Id or chart type
+        if( ! sheetIdInput.value || ! chartTypeInput.value  ) return
+
+        iwpgvCharts.chart.chartParams.fileUpload = fileUploadInput.value
+        iwpgvCharts.chart.chartParams.sheetId = sheetIdInput.value
+        iwpgvCharts.chart.chartParams.chartType = chartTypeInput.value
           
-          drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
-        } 
-      
+        // Draw chart
+        drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
+        
       });
-
-
 
       
     } catch (error) {
@@ -156,7 +143,7 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
 
       // Hide warning and show spinner
       toggleElement( `${iwpgvObj.prefix}__spinner` );
-      toggleElement( `${iwpgvObj.prefix}__warning`);
+      showElement( `${iwpgvObj.prefix}__warning`);
 
     }
 
