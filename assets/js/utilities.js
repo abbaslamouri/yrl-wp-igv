@@ -297,7 +297,22 @@ const setSheetIdOptions = function (spreadsheet, sheetIdInput) {
   // sheetIdInput.classList.remove("hidden");
   // sheetIdInput.closest(".form-group").classList.remove("hidden");
   // sheetIdInput.closest(".field-group").classList.remove("hidden");
-};
+}
+
+const appendFormSaveBtn = function (form, iwpgvObj) {
+
+  const saveChartBtn = document.createElement("button")
+  saveChartBtn.classList.add("button")
+  saveChartBtn.classList.add("button-primary")
+  saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
+  saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
+  saveChartBtn.disabled = true;
+  const saveChartBtnText = document.createTextNode("Save Chart")
+  saveChartBtn.appendChild(saveChartBtnText)
+  form.appendChild(saveChartBtn)
+
+}
+
 
 // Show chart type select field
 const unhideInputField = function (fieldId) {
@@ -455,7 +470,8 @@ module.exports = {
   setDependentFields,
   chartOptionKey,
   formatArrayFields,
-  unhideInputField
+  unhideInputField,
+  appendFormSaveBtn
   // setChartOption,
   // // toggleWarning,
   // // setChartFieldsOptions,

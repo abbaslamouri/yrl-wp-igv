@@ -86,25 +86,31 @@ const renderPanels = function (panels, iwpgvObj) {
     }
 
     // Append panel tooggle and content to accordion div
+
     panelAccordion.appendChild(panelToggle)
     panelAccordion.appendChild(panelContent)
   }
 
+  const saveChartBtn = document.getElementById( `${iwpgvObj.prefix}__saveChart` )
+
+
 
   // Add accordion div to form
   const form = document.getElementById(`${iwpgvObj.prefix}__chartOptionsForm`)
-  form.insertAdjacentElement("beforeEnd", panelAccordion)
+  // form.insertAdjacentElement("beforeEnd", panelAccordion)
+
+  form.insertBefore(panelAccordion, saveChartBtn )
 
   // Add save button to form
-  const saveChartBtn = document.createElement("button")
-  saveChartBtn.classList.add("button")
-  saveChartBtn.classList.add("button-primary")
-  saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
-  saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
-  saveChartBtn.disabled = true;
-  const saveChartBtnText = document.createTextNode("Save Chart")
-  saveChartBtn.appendChild(saveChartBtnText)
-  form.appendChild(saveChartBtn)
+  // const saveChartBtn = document.createElement("button")
+  // saveChartBtn.classList.add("button")
+  // saveChartBtn.classList.add("button-primary")
+  // saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
+  // saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
+  // saveChartBtn.disabled = true;
+  // const saveChartBtnText = document.createTextNode("Save Chart")
+  // saveChartBtn.appendChild(saveChartBtnText)
+  // form.appendChild(saveChartBtn)
 
 }
 

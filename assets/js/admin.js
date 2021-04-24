@@ -6,7 +6,7 @@ import mediaUploader from "./media-uploader"
 import renderPanels from "./panels"
 import saveChart from "./save-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage } from "./utilities"
+import { displayAdminMessage, appendFormSaveBtn } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -96,7 +96,9 @@ try {
   if (iwpgvCharts.action && iwpgvCharts.action === "editChart") {
 
     // Display panels
+    appendFormSaveBtn(document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm`), iwpgvObj)
     renderPanels(panels, iwpgvObj);
+    
 
     // Add click event listener
     document.addEventListener("click", function (event) {
@@ -107,7 +109,7 @@ try {
       // file uploader event listener
       if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
         event.preventDefault();
-        mediaUploader( iwpgvCharts, iwpgvObj );
+        mediaUploader( iwpgvObj );
       }
 
       // save chart

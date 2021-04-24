@@ -37,7 +37,7 @@ class ChartLayout{
 
       paper_bgcolor : ( typeof( this.layout.paper_bgcolor ) !== "undefined" ) ? this.layout.paper_bgcolor: "#CCCCCC",
       plot_bgcolor : ( typeof( this.layout.plot_bgcolor ) !== "undefined" ) ? this.layout.plot_bgcolor : "#FFFFFF",
-      width : ( typeof( this.layout.width ) !== "undefined" ) ? this.layout.width : 1000,
+      width : ( typeof( this.layout.width ) !== "undefined" ) ? this.layout.width : 100,
       height : ( typeof( this.layout.height ) !== "undefined" ) ? this.layout.height : 400,
       autosize : ( typeof ( this.layout['autosize']) !== "undefined" ) ? this.layout['autosize'] : true,
       hovermode : ( typeof ( this.layout['hovermode']) !== "undefined" ) ? this.layout['hovermode'] : "closest",
@@ -85,6 +85,7 @@ class ChartLayout{
       },
       xaxis : {
         automargin : ( typeof( this.layout.xaxis ) !== "undefined" && typeof( this.layout.xaxis.automargin ) !== "undefined" ) ? this.layout.xaxis.automargin : true,
+        autorange : ( typeof( this.layout.xaxis ) !== "undefined" && typeof( this.layout.xaxis.autorange ) !== "undefined" ) ? this.layout.xaxis.autorange : true,
         rangeslider : {
           visible : ( typeof( this.layout.xaxis ) !== "undefined" && typeof( this.layout.xaxis.rangeslider ) !== "undefined" && typeof( this.layout.xaxis.rangeslider.visible ) !== "undefined" ) ? this.layout.xaxis.rangeslider.visible : false,
           bgcolor : ( typeof( this.layout.xaxis ) !== "undefined" && typeof( this.layout.xaxis.rangeslider ) !== "undefined" && typeof( this.layout.xaxis.rangeslider.bgcolor ) !== "undefined" ) ? this.layout.xaxis.rangeslider.bgcolor : "teal",

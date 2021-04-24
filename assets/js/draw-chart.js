@@ -17,7 +17,7 @@ import Accordion from "./Accordion"
 let form
 
 
-const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
+const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
 
   form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
@@ -28,27 +28,32 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
   try {
 
     // Bail if no foem is found
-    if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
+    // if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
+
+    // const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
+    // console.log(sheetId)
 
     // Initialize panels
     const panels = {} 
 
-    // Set panels chart params
-    const chartParamsInstance = new ChartParams( iwpgvCharts.chart.chartParams, iwpgvObj )
-    panels.chartParams = chartParamsInstance.panel()
-    iwpgvCharts.chart.chartParams = chartParamsInstance.options()
+    // // Set panels chart params
+    // const chartParamsInstance = new ChartParams( chart.chartParams, iwpgvObj )
+    // panels.chartParams = chartParamsInstance.panel()
+    // chart.chartParams = chartParamsInstance.options()
 
     // Assemble chart and panels layout
-    const chartLayoutInstance = new ChartLayout( iwpgvCharts.chart.chartLayout, iwpgvObj ) 
+    const chartLayoutInstance = new ChartLayout( chart.chartLayout, iwpgvObj ) 
     panels.chartLayout = chartLayoutInstance.panel()
-    iwpgvCharts.chart.chartLayout = chartLayoutInstance.options()
-    const chartConfigInstance = new ChartConfig( iwpgvCharts.chart.chartConfig, iwpgvObj )
-    panels.chartConfig = chartConfigInstance.panel()
-    iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
+    chart.chartLayout = chartLayoutInstance.options()
 
-    if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
-      iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+1)
-    }
+
+    const chartConfigInstance = new ChartConfig( chart.chartConfig, iwpgvObj )
+    panels.chartConfig = chartConfigInstance.panel()
+    chart.chartConfig = chartConfigInstance.options()
+
+    // if ( typeof (spreadsheet[chart.chartParams.sheetId]) !== "undefined" && spreadsheet[chart.chartParams.sheetId]["labels"].length < chart.chartTraces.length ) {
+    //   chart.chartTraces.splice(0,spreadsheet[chart.chartParams.sheetId]["labels"].length+1)
+    // }
 
     // Assemble chart traces chart and panels
     panels.chartTraces = {
@@ -60,43 +65,45 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
 
 
     let index = 1;
-    while (index < spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) {
-      const chartTraceInstance =  new ChartTrace( iwpgvCharts.chart.chartTraces[index-1], index, iwpgvObj, iwpgvCharts, spreadsheet  ) 
-      iwpgvCharts.chart.chartTraces[index-1] = chartTraceInstance.options()
+    while (index < spreadsheet[chart.chartParams.sheetId]["labels"].length) {
+      const chartTraceInstance =  new ChartTrace( chart.chartTraces[index-1], index, iwpgvObj, chart, spreadsheet  ) 
+      chart.chartTraces[index-1] = chartTraceInstance.options()
       panels.chartTraces.sections[index-1] = {}
       panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index-1}]`
-      panels.chartTraces.sections[index-1].title = (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"])[index] : ""
+      panels.chartTraces.sections[index-1].title = (spreadsheet[chart.chartParams.sheetId]["labels"].length) > 1 ? Object.values(spreadsheet[chart.chartParams.sheetId]["labels"])[index] : ""
       panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
       index++
     }
+
+    console.log("KKKKKKK",chart)
     
     // Remove old acordion panel and Render Accordion Panels
-    form.innerHTML = ""
+    // form.innerHTML = ""
     renderPanels(panels, iwpgvObj);
 
-    // Set sheet Id select field
-    setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
-    document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = iwpgvCharts.chart.chartParams.sheetId
+    // // Set sheet Id select field
+    // setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
+    // document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = chart.chartParams.sheetId
 
     // Unhide sheed Id select field, chart type select field and enableChartRangeSlider, enableMinMaxTableChart, enableTableChart checkboxes
-    unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
-    unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
-    unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableChartRangeSlider]`) )
-    unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
-    unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
+    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
+    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
+    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
+    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
 
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
 
     // Unhide and set range slider min and max input fields if enableChartRangeSlider
-    if ( iwpgvCharts.chart.chartParams.enableChartRangeSlider ) {
+    if ( chart.chartParams.enableChartRangeSlider ) {
       showElement( `${iwpgvObj.prefix}__plotMinMax` )
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0]).toFixed(3)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
 
-      iwpgvCharts.chart.chartLayout.xaxis.rangeslider.visible = true
+      // chart.chartLayout.xaxis.rangeslider.visible = true
 
     } else {
       hideElement( `${iwpgvObj.prefix}__plotMinMax` )
@@ -105,28 +112,31 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
 
-      iwpgvCharts.chart.chartLayout.xaxis.rangeslider.visible = false
+      // chart.chartLayout.xaxis.rangeslider.visible = false
     }
 
     // Unhide chart div, Set its width and render plot
-    showElement( `${iwpgvObj.prefix}__plotlyChart` )
+    // showElement( `${iwpgvObj.prefix}__plotlyChart` )
+    
      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).innerHTML =""
      Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`);
 
-    // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${iwpgvCharts.chart.chartLayout.width}%`
-    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, iwpgvCharts.chart.chartTraces, iwpgvCharts.chart.chartLayout, iwpgvCharts.chart.chartConfig)
+    document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+
+    // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig)
     
 
     yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
       // console.log('eventData',eventData)
-      const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
-      const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[iwpgvCharts.chart.chartParams.sheetId].data[0])
+      const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.sheetId].data[0])
+      const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.sheetId].data[0])
       // console.log(x_start+"----"+x_end)
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
     })
 
-    console.log("C", iwpgvCharts.chart)
+    console.log("C", chart)
     console.log("P", panels)
 
 

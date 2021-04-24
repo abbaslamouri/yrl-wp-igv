@@ -3,13 +3,13 @@ import ChartDefault from "./ChartDefault"
 
 class ChartTrace{
 
-  constructor(trace, index, iwpgvObj, iwpgvCharts, spreadsheet) {
+  constructor(trace, index, iwpgvObj, chart, spreadsheet) {
 
     // super(chartTypes, colors, pointShapes, lineWidth, markerSize, fontNames);
 
     this.trace = trace;
     this.spreadsheet = spreadsheet
-    this.chart = iwpgvCharts.chart
+    this.chart = chart
     this.labels = Object.values(this.spreadsheet[this.chart.chartParams.sheetId]["labels"]);
     this.index = index;
     this.chartType = this.chart.chartParams.chartType;

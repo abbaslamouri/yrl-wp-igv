@@ -27,10 +27,10 @@ class ChartParams {
       "sheetId" : ( typeof ( this.params.sheetId ) !== "undefined" ) ? this.params.sheetId : null,
       "chartType" : ( typeof ( this.params.chartType ) !== "undefined" ) ? this.params.chartType : null,
       "chartId" : ( typeof ( this.params.chartId ) !== "undefined" ) ? this.params.chartId : null,
-      'enableChartRangeSlider' : ( this.params.enableChartRangeSlider ) ? true : false,
+      'enableRangeSlider' : ( this.params.enableChartRangeSlider ) ? true : false,
       'enableMinMaxTableChart' : ( this.params.enableMinMaxTableChart  ) ? true : false,
       'enableTableChart' : ( this.params.enableTableChart ) ? true : false,
-      "theme" : ( typeof ( this.paramstheme ) !== "undefined" ) ? this.paramstheme : null
+      // "theme" : ( typeof ( this.paramstheme ) !== "undefined" ) ? this.paramstheme : null
 
     }
 
@@ -99,11 +99,11 @@ class ChartParams {
               ],
               [
                 {
-                  "id": "chartParams[enableChartRangeSlider]",
+                  "id": "chartParams[enableRangeSlider]",
                   'cssClasses' : ['hidden'],
                   "title":"Enable Range Slider",
                   "type": "checkbox",
-                  "value": this.options()['enableChartRangeSlider'],
+                  "value": this.options()['enableRangeSlider'],
                 },
                 {
                   "id": "chartParams[enableMinMaxTableChart]",
