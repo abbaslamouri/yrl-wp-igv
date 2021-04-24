@@ -115,4 +115,6 @@ class Accordion {
   }
 }
 
+// new Accordion( { collapsed: false } );
+
 export default Accordion;

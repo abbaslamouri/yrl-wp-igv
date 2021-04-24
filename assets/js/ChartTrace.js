@@ -37,20 +37,20 @@ class ChartTrace{
 
     return {
 
-      // type : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.type ) !== "undefined" ) ? this.trace.type :  this.type ,
-      mode : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.mode ) !== "undefined" ) ? this.trace.mode : this.mode,
+      // type : ( this.trace !== undefined &&  this.trace.type !== undefined ) ? this.trace.type :  this.type ,
+      mode : ( this.trace !== undefined &&  this.trace.mode !== undefined ) ? this.trace.mode : this.mode,
       name : this.labels[ this.index],
       x : this.spreadsheet[this.chart.chartParams.sheetId].data[0],
       y : this.spreadsheet[this.chart.chartParams.sheetId].data[this.index],
       
-      // connectgaps : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.connectgaps ) !== "undefined" ) ?  this.trace.connectgaps : false,
+      // connectgaps : ( this.trace !== undefined &&  this.trace.connectgaps !== undefined ) ?  this.trace.connectgaps : false,
       // line : {
-      //   color : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.line ) !== "undefined" && typeof ( this.trace.line.color ) !== "undefined" ) ? this.trace.line.color : this.colors[this.index],
-      //   'width': ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.line ) !== "undefined" && typeof ( this.trace.line.width ) !== "undefined" ) ? this.trace.line.width : 2
+      //   color : ( this.trace !== undefined &&  this.trace.line !== undefined && this.trace.line.color !== undefined ) ? this.trace.line.color : this.colors[this.index],
+      //   'width': ( this.trace !== undefined &&  this.trace.line !== undefined && this.trace.line.width !== undefined ) ? this.trace.line.width : 2
       // },
       // marker : {
-      //   color : ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.marker ) !== "undefined" && typeof ( this.trace.marker.color ) !== "undefined" ) ? this.trace.marker.color : this.colors[this.index],
-      //   size: ( typeof ( this.trace ) !== "undefined" &&  typeof ( this.trace.marker ) !== "undefined" && typeof ( this.trace.marker.size ) !== "undefined" ) ? this.trace.marker.size : 5
+      //   color : ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.color !== undefined ) ? this.trace.marker.color : this.colors[this.index],
+      //   size: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.size ) !== undefined ) ? this.trace.marker.size : 5
       // },
 
     }

@@ -23,14 +23,13 @@ class ChartParams {
     return {
 
       "mediaUploadBtn" : 'Upload New File',
-      "fileUpload" : ( typeof ( this.params.fileUpload ) !== "undefined") ? this.params.fileUpload : null,
-      "sheetId" : ( typeof ( this.params.sheetId ) !== "undefined" ) ? this.params.sheetId : null,
-      "chartType" : ( typeof ( this.params.chartType ) !== "undefined" ) ? this.params.chartType : null,
-      "chartId" : ( typeof ( this.params.chartId ) !== "undefined" ) ? this.params.chartId : null,
+      "fileUpload" : (this.params.fileUpload !== undefined) ? this.params.fileUpload : null,
+      "sheetId" : (this.params.sheetId !== undefined ) ? this.params.sheetId : null,
+      "chartType" : (this.params.chartType !== undefined ) ? this.params.chartType : null,
+      "chartId" : (this.params.chartId !== undefined ) ? this.params.chartId : null,
       'enableRangeSlider' : ( this.params.enableChartRangeSlider ) ? true : false,
       'enableMinMaxTableChart' : ( this.params.enableMinMaxTableChart  ) ? true : false,
       'enableTableChart' : ( this.params.enableTableChart ) ? true : false,
-      // "theme" : ( typeof ( this.paramstheme ) !== "undefined" ) ? this.paramstheme : null
 
     }
 

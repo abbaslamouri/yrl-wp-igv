@@ -82,6 +82,7 @@
         <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" action='options.php' method='post' novalidate>
 
           <!-- Accordion will be injected here -->
+          <button class="button button-primary hidden" id="<?php echo "{$this->prefix}__saveChart"; ?>" name="<?php echo "{$this->prefix}__saveChart"; ?>" disabled>Save Chart</button>
 
         </form>
 

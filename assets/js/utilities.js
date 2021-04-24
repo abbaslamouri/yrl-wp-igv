@@ -1,33 +1,98 @@
-// const iwpgvCharts = yrl_wp_igv_charts
-// const iwpgvObj = yrl_wp_igv_obj
-// const prefix = iwpgvObj.prefix
+const displayAdminMessage = function (message, status, iwpgvObj) {
+  document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
+}
 
-// Toggle spinner
-const toggleElement = function (elementId) {
-  const element = document.getElementById(elementId);
-
-  if (element && element.classList.contains("hidden")) {
-    showElement(elementId);
-  } else {
-    hideElement(elementId);
-  }
-};
 
 // Show Element
-const showElement = function (elementId) {
-  const element = document.getElementById(elementId);
-  if (element) element.classList.remove("hidden");
-};
+const showElementById = function (elementId) {
+  const element = document.getElementById(elementId)
+  if (element) element.classList.remove("hidden")
+}
 
 // Hide Element
-const hideElement = function (elementId) {
-  const element = document.getElementById(elementId);
-  if (element) element.classList.add("hidden");
-};
+const hideElementById = function (elementId) {
+  const element = document.getElementById(elementId)
+  if (element) element.classList.add("hidden")
+}
 
-const displayAdminMessage = function (message, status, iwpgvObj) {
-  document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`;
-};
+
+// Toggle spinner
+const toggleElementById = function (elementId) {
+  const element = document.getElementById(elementId)
+  if (element && element.classList.contains("hidden")) {
+    showElementById(elementId)
+  } else {
+    hideElementById(elementId)
+  }
+}
+
+
+
+// Show input fields
+const showInputField = function (fieldId) {
+
+  // if (fieldId.classList.contains("hidden") ) {
+    fieldId.classList.remove("hidden");
+    fieldId.closest(".form-group").classList.remove("hidden")
+  // } else {
+  //   fieldId.classList.add("hidden");
+  //   fieldId.closest(".form-group").classList.add("hidden")
+  // }
+
+}
+
+
+
+
+// Show input fields
+const hideInputField = function (fieldId) {
+
+  // if (fieldId.classList.contains("hidden") ) {
+  //   fieldId.classList.remove("hidden");
+  //   fieldId.closest(".form-group").classList.remove("hidden")
+  // } else {
+    fieldId.classList.add("hidden");
+    fieldId.closest(".form-group").classList.add("hidden")
+  // }
+
+}
+
+
+
+// Show input fields
+const toggleInputField = function (fieldId) {
+
+  if (fieldId.classList.contains("hidden") ) {
+    showInputField
+  } else {
+    hideInputField
+  }
+
+}
+
+
+
+
+
+
+
+const removePanel =  ( panelId ) => {
+
+  if (panelId)  {
+    panelId.previousSibling.remove()
+    panelId.remove()
+  }
+
+}
+
+
+
+
+
+
+
+
+
 
 
 const getTableHeader = function (sheet) {
@@ -314,14 +379,7 @@ const appendFormSaveBtn = function (form, iwpgvObj) {
 }
 
 
-// Show chart type select field
-const unhideInputField = function (fieldId) {
-  // chartTypeId = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`);
-  // chartTypeId.value = value;
-  if (fieldId.classList.contains("hidden") ) fieldId.classList.remove("hidden");
-  if (fieldId.closest(".form-group").classList.contains("hidden") ) fieldId.closest(".form-group").classList.remove("hidden");
-  if (fieldId.closest(".field-group").classList.contains("hidden") )fieldId.closest(".field-group").classList.remove("hidden");
-};
+
 
 const setChartWidth = function (widthInput, boundingBoxId) {
   let width;
@@ -450,9 +508,18 @@ function chartOptionKey(fieldId) {
 }
 
 module.exports = {
-  toggleElement,
-  showElement,
-  hideElement,
+  displayAdminMessage,
+  showElementById,
+  hideElementById,
+  toggleElementById,
+  showInputField,
+  hideInputField,
+  toggleInputField,
+  setSheetIdOptions,
+  removePanel,
+
+
+  
   getTableHeader,
   getMinMaxAvgTableHeader,
   getPlotData,
@@ -462,15 +529,12 @@ module.exports = {
   getConfig,
   getTraces,
   getTable,
-  setSheetIdOptions,
-  displayAdminMessage,
   setChartWidth,
   setChartArea,
   resizeChartArea,
   setDependentFields,
   chartOptionKey,
   formatArrayFields,
-  unhideInputField,
   appendFormSaveBtn
   // setChartOption,
   // // toggleWarning,

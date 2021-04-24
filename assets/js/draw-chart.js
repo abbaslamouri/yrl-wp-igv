@@ -1,12 +1,13 @@
-import Plotly from 'plotly.js-basic-dist'
+import Plotly from 'plotly.js-dist'
 import ChartParams from "./ChartParams"
 import ChartLayout from "./ChartLayout"
 import ChartConfig from "./ChartConfig"
 import ChartTrace from "./ChartTrace"
+import TableChart from "./TableChart"
 import {
-  toggleElement,
-  showElement,
-  hideElement,
+  toggleElementById,
+  showElementById,
+  hideElementById,
   displayAdminMessage,
   setSheetIdOptions,
   unhideInputField
@@ -16,30 +17,21 @@ import Accordion from "./Accordion"
 
 let form
 
-
-const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
+const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
   form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
   // Show spinner and hide warning, chart, table minmax table and minmax input fields
-  toggleElement( `${iwpgvObj.prefix}__spinner` )
-  toggleElement( `${iwpgvObj.prefix}__warning` )
+  toggleElementById( `${iwpgvObj.prefix}__spinner` )
+  toggleElementById( `${iwpgvObj.prefix}__warning` )
+
+  // Hide form
+  toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
   try {
 
-    // Bail if no foem is found
-    // if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
-
-    // const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
-    // console.log(sheetId)
-
     // Initialize panels
     const panels = {} 
-
-    // // Set panels chart params
-    // const chartParamsInstance = new ChartParams( chart.chartParams, iwpgvObj )
-    // panels.chartParams = chartParamsInstance.panel()
-    // chart.chartParams = chartParamsInstance.options()
 
     // Assemble chart and panels layout
     const chartLayoutInstance = new ChartLayout( chart.chartLayout, iwpgvObj ) 
@@ -51,10 +43,6 @@ const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
     panels.chartConfig = chartConfigInstance.panel()
     chart.chartConfig = chartConfigInstance.options()
 
-    // if ( typeof (spreadsheet[chart.chartParams.sheetId]) !== "undefined" && spreadsheet[chart.chartParams.sheetId]["labels"].length < chart.chartTraces.length ) {
-    //   chart.chartTraces.splice(0,spreadsheet[chart.chartParams.sheetId]["labels"].length+1)
-    // }
-
     // Assemble chart traces chart and panels
     panels.chartTraces = {
       "id" : `${iwpgvObj.prefix}__chartTracesPanel`,
@@ -62,7 +50,6 @@ const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
       "title" : "Traces",
       'sections' : {}
     }
-
 
     let index = 1;
     while (index < spreadsheet[chart.chartParams.sheetId]["labels"].length) {
@@ -75,70 +62,120 @@ const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
       index++
     }
 
-    console.log("KKKKKKK",chart)
     
-    // Remove old acordion panel and Render Accordion Panels
-    // form.innerHTML = ""
-    renderPanels(panels, iwpgvObj);
 
-    // // Set sheet Id select field
-    // setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
-    // document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = chart.chartParams.sheetId
+    
+  
 
-    // Unhide sheed Id select field, chart type select field and enableChartRangeSlider, enableMinMaxTableChart, enableTableChart checkboxes
-    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
-    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
-    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
-    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
-    // unhideInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+    
 
-    // Enable save button
-    document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
-
-    // Unhide and set range slider min and max input fields if enableChartRangeSlider
-    if ( chart.chartParams.enableChartRangeSlider ) {
-      showElement( `${iwpgvObj.prefix}__plotMinMax` )
+    // Unhide and set range slider min and max input fields if enableChartRangeSlider is true
+    if ( chart.chartParams.enableRangeSlider ) {
+      showElementById( `${iwpgvObj.prefix}__plotMinMax` )
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
 
-      // chart.chartLayout.xaxis.rangeslider.visible = true
-
+      // Set range slider to true
+      chart.chartLayout.xaxis.rangeslider = true
     } else {
-      hideElement( `${iwpgvObj.prefix}__plotMinMax` )
+      hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
 
-      // chart.chartLayout.xaxis.rangeslider.visible = false
+      // Set range slider to false
+      chart.chartLayout.xaxis.rangeslider =false
     }
-
-    // Unhide chart div, Set its width and render plot
-    // showElement( `${iwpgvObj.prefix}__plotlyChart` )
-    
-     // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).innerHTML =""
-     Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`);
-
-    document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
 
     // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig)
+    // .then (function() {
+
+    //   toggleElementById( `${iwpgvObj.prefix}__spinner` )
+    //   console.log("Done plotting Chart")
+
+    // })
+
     
 
+    // Add range slider event handler
     yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
-      // console.log('eventData',eventData)
       const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.sheetId].data[0])
       const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.sheetId].data[0])
-      // console.log(x_start+"----"+x_end)
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
     })
 
+
+    // Unhide and set chart Table if if enableTableChart is true
+    if ( chart.chartParams.enableTableChart ) {
+
+      console.log("KKKKKKKZZZZZZ")
+      // Assemble chart and panels layout
+      const tableChartConfigInstance = new TableChart( chart.tableChartConfig, iwpgvObj, spreadsheet ) 
+      panels.tableChartConfig = tableChartConfigInstance.panel()
+      chart.tableChartConfig = tableChartConfigInstance.options()
+
+      const headerValues = []
+      for ( let  i = 0; i < spreadsheet[chart.chartParams.sheetId]["labels"].length; i++ ) {
+        headerValues.push([`<b>${spreadsheet[chart.chartParams.sheetId]["labels"][i]}</b>`]);
+      }
+      console.log(headerValues)
+
+      const cellsValues = []
+      for ( let  i = 0; i < spreadsheet[chart.chartParams.sheetId]["labels"].length; i++ ) {
+        cellsValues.push(spreadsheet[chart.chartParams.sheetId].data[i]);
+      }
+      console.log(cellsValues)
+
+      chart.tableChartConfig.header.values = headerValues
+      chart.tableChartConfig.cells.values = cellsValues
+
+      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChartConfig])
+      // .then (function() {
+
+      //   toggleElementById( `${iwpgvObj.prefix}__spinner` )
+      //   console.log("Done plotting Table")
+
+      // })
+    
+    }
+
     console.log("C", chart)
     console.log("P", panels)
 
+    // Render and display the accordion panels
+    renderPanels(panels, iwpgvObj);
+
+    // Enable save button
+    document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
+
+    
+
+
+    // Add change event listener on all the document
+    document.addEventListener("change", function (event) {
+      
+      event.preventDefault()
+
+      // Rabge Min and Range Max handlere
+      if (event.target.id === `${iwpgvObj.prefix}__rangeMinInput` || event.target.id == `${iwpgvObj.prefix}__rangeMaxInput` ) {
+        const newXAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value ?  document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value : xAxisMin
+        const newXAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value ? document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value : xAxisMax
+
+        const update = {
+          'xaxis.range': [newXAxisMin, newXAxisMax],   // updates the xaxis range
+        };
+        Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
+
+        return
+      }
+
+    })
 
   } catch (error) {
 
@@ -147,17 +184,18 @@ const drawChart = async function ( spreadsheet, chart, iwpgvObj) {
 
   } finally {
 
-    toggleElement( `${iwpgvObj.prefix}__spinner` )
-    // showElement( `${prefix}__plotlyChart` )
+    // Load accordion
+    new Accordion( { collapsed: false } )
+
+    // Show form
+    toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+    // toggleElementById( `${iwpgvObj.prefix}__spinner` )
+    // showElementById( `${prefix}__plotlyChart` )
 
   }
 
-  // Set accordion
-  new Accordion( { collapsed: false } )
+  
 
 }
-
-
-
 
 export default drawChart

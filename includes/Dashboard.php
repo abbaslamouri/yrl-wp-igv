@@ -1579,12 +1579,7 @@ if (!class_exists('Dashboard')) {
               throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
           } else {
-            $chart = [ 
-              "chartParams" => [], 
-              "chartLayout" => [], 
-              "chartConfig" => [], 
-              "chartTraces" => [] 
-            ];
+            $chart = [];
           }
 
           // Set response

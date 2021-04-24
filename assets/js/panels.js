@@ -75,9 +75,9 @@ const renderPanels = function (panels, iwpgvObj) {
           fieldGroup.appendChild(formGroup);
 
           // Hide field group if form group has a hidden class
-          if (formGroup.classList.contains("hidden")) {
-            fieldGroup.classList.add("hidden")
-          }
+          // if (formGroup.classList.contains("hidden")) {
+          //   fieldGroup.classList.add("hidden")
+          // }
         }
 
         // Add field group to subpanel content
