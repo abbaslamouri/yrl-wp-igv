@@ -48,8 +48,13 @@ const mediaUploader = function (chart, iwpgvObj) {
       document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename
 
       // Purge chart
-      Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`);
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
+      // Hide min/max inputs if visible
+      hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
+  
       // Get from node
       const form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
@@ -99,12 +104,16 @@ const mediaUploader = function (chart, iwpgvObj) {
         // Bail if no file, sheet Id or chart type
         if( ! fileUploadInput.value ||  ! sheetIdInput.value || ! chartTypeInput.value   ) return
 
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`);
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
         // remove layout panel toggle and panel
         removePanel( document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`) )
         removePanel( document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`) )
         removePanel( document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`) )
+        removePanel( document.getElementById(`${iwpgvObj.prefix}__tableChartConfigPanel`) )
+        removePanel( document.getElementById(`${iwpgvObj.prefix}__minMaxTableChartConfigPanel`) )
 
         // Update chart
         chart.chartParams.fileUpload = fileUploadInput.value,
@@ -117,6 +126,7 @@ const mediaUploader = function (chart, iwpgvObj) {
         chart.chartConfig = {},
         chart.chartTraces = [],
         chart.tableChartConfig = {}
+        chart.minMaxTableChartConfig = {}
 
         // Draw chart
         drawChart(jsonRes.spreadsheet, chart, iwpgvObj)

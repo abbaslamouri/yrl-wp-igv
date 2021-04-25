@@ -18,6 +18,8 @@ class ChartLayout{
 
       "responsive" : ( this.config.responsive  !== undefined ) ? this.config.responsive: true,
       "displayModeBar" : ( this.config.displayModeBar  !== undefined ) ? this.config.displayModeBar : true,
+      "displaylogo" : ( this.config.displaylogo  !== undefined ) ? this.config.displaylogo : false,
+      
     }
 
   }

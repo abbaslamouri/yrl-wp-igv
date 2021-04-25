@@ -27,9 +27,9 @@ class ChartParams {
       "sheetId" : (this.params.sheetId !== undefined ) ? this.params.sheetId : null,
       "chartType" : (this.params.chartType !== undefined ) ? this.params.chartType : null,
       "chartId" : (this.params.chartId !== undefined ) ? this.params.chartId : null,
-      'enableRangeSlider' : ( this.params.enableChartRangeSlider ) ? true : false,
-      'enableMinMaxTableChart' : ( this.params.enableMinMaxTableChart  ) ? true : false,
-      'enableTableChart' : ( this.params.enableTableChart ) ? true : false,
+      'enableRangeSlider' : ( this.params.enableChartRangeSlider ) ? true : true,
+      'enableMinMaxTableChart' : ( this.params.enableMinMaxTableChart  ) ? true : true,
+      'enableTableChart' : ( this.params.enableTableChart ) ? true : true,
 
     }
 

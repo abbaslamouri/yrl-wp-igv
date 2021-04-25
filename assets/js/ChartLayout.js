@@ -1,33 +1,18 @@
 // import ChartDefault from "./ChartDefault"
 
+import ChartDefault from "./ChartDefault";
 
-class ChartLayout{
 
-  constructor(layout, iwpgvObj) {
+class ChartLayout extends ChartDefault {
 
-    // super(chartTypes, colors,pointShapes, lineWidth, markerSize, fontNames);
+  constructor(layout, iwpgvObj, fontFamily) {
+
+    super(fontFamily);
 
     this.layout = layout
     this.prefix = iwpgvObj.prefix
 
-    this.fontFamily = {	
-      "" : "Select Font Family",
-      arial : "Arial",
-      balto: "Balto",
-      TimesNewRoman: "Times New Roman",
-      courierNew: "Courier New",
-      droidSans: "Droid Sans",
-      droidSerif: "Droid Serif",
-      droidSansMono: "Droid Sans Mono",
-      gravitasOne: "Gravitas One",
-      oldStandardTT: " Old Standard TT",
-      openSans: "Open Sans",
-      overpass: "Overpass",
-      ptSansNarrow: "PT Sans Narrow",
-      raleway: "Raleway"
-    }
-
-
+    // this.fontFamily = fontFamily
    
   }
 
@@ -35,9 +20,15 @@ class ChartLayout{
 
     return {
 
+      config:{
+        responsive : ( this.layout.config  !== undefined && this.layout.config.responsive  !== undefined ) ? this.layout.config.responsive: true,
+        displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : true,
+        displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : true
+      },
+
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
       plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#FFFFFF",
-      width : ( this.layout.width !== undefined ) ? this.layout.width : 1000,
+      width : ( this.layout.width !== undefined ) ? this.layout.width : null,
       height : ( this.layout.height !== undefined ) ? this.layout.height : 400,
       autosize : ( this.layout['autosize']!== undefined ) ? this.layout['autosize'] : true,
       hovermode : ( this.layout['hovermode']!== undefined ) ? this.layout['hovermode'] : "closest",
@@ -56,7 +47,7 @@ class ChartLayout{
           color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#008080",
         }
       },
-      showlegend : ( this.layout.showlegend !== undefined ) ? this.layout.showlegend : true,
+      showlegend : ( this.layout.showlegend !== undefined ) ? this.layout.showlegend : false,
       legend : {
         bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#ffc246',
         bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#67daff',
@@ -340,7 +331,7 @@ class ChartLayout{
                 type : "number",
                 min : 0,
                 max : 1,
-                step : 0.1,
+                step : 0.01,
                 value : this.options().title.x,
                 hint: "Sets the x position from '0' (left) to '1' (right)."
               },
@@ -350,7 +341,7 @@ class ChartLayout{
                 type : "number",
                 min : 0,
                 max : 1,
-                step : 0.1,
+                step : 0.01,
                 value : this.options().title.y,
                 hint: "Sets the y position from '0' (bottom) to '1' (top)."
               },
@@ -666,6 +657,36 @@ class ChartLayout{
                 type : "color", 
                 value : this.options().modebar.activecolor,
                 hint: "Sets the color of the active or hovered on icons in the modebar."
+              },
+            ],
+          ]  
+        },
+        config : {
+          intro : "Here you can modify the plot configuration",
+          id : `${this.prefix}__chartLayoutPanel__config`,
+          title : "Configuration",
+          fields : [
+            [
+              {
+                id : "chartLayout[config][responsive]",
+                title : "Responsive ?",
+                type : "checkbox", 
+                value : this.options().config.responsive,
+                hint: ""
+              },
+              {
+                id : "chartLayout[config][displayModeBar]",
+                title : "Display ModeBar ?",
+                type : "checkbox", 
+                value : this.options().config.displayModeBar,
+                hint: ""
+              },
+              {
+                id : "chartLayout[config][displaylogo]",
+                title : "Display Plotly Logo ?",
+                type : "checkbox", 
+                value : this.options().config.displaylogo,
+                hint: ""
               },
             ],
           ]  
