@@ -1,6 +1,7 @@
 <!-- Create a header in the default WordPress 'wrap' container -->
  <div class='<?php echo $this->prefix; ?>'>
 
+
  
   <!-- Show module title -->
   <div class="admin-heading">
@@ -81,7 +82,25 @@
         <!-- Create the form that will be used to render our options -->
         <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" action='options.php' method='post' novalidate>
 
+          <div class="accordion">
+            <?php foreach ( $payload["chart"] as $element ) :?>
+              <div class="accordion__toggle">
+                <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
+                <svg class="accordion__svg">
+                  <use href="http://sandbox/wp-content/plugins/yrl-wp-igv/assets/img/icons.svg#icon-keyboard_arrow_right"></use>
+                </svg>
+              </div>
+              <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
+                <div class="panelIntro">
+                  <?php echo $element["panel"]["intro"]?>
+                </div>
+                <div class="accordion"></div>
+              </div>
+            <?php endforeach ?>
+          </div>
+
           <!-- Accordion will be injected here -->
+          <button class="button button-primary hidden" id="<?php echo "{$this->prefix}__saveChart"; ?>" name="<?php echo "{$this->prefix}__saveChart"; ?>" disabled>Save Chart</button>
 
         </form>
 

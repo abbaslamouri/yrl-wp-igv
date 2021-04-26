@@ -1579,12 +1579,28 @@ if (!class_exists('Dashboard')) {
               throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
           } else {
-            $chart = [ 
-              "chartParams" => [], 
-              "chartLayout" => [], 
-              "chartConfig" => [], 
-              "chartTraces" => [] 
-            ];
+            $chart = [
+							"chartParams" => [
+								"options" => [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartParamsPanel",
+									"cssClasses" => 	["chartParams", "openOnLoad"],
+									"title" => __("Chart Parameters", $this->plugin),
+									"intro" => "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+									"sections" => []
+								]
+							],
+							"chartLayout" => [
+								"options" => [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartLayoutPanel",
+									"cssClasses" => ["chartLayout"],
+									"title" => __("Chart Layout", $this->plugin),
+									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
+									"sections" => []
+								]
+							]
+						];
           }
 
           // Set response
@@ -1599,7 +1615,7 @@ if (!class_exists('Dashboard')) {
 
         // Set template, payload and response
         $template = "edit-chart";
-        $payload = [];
+        $payload = ["chart" => $chart];
 				
 			}
 

@@ -48,14 +48,14 @@ class Accordion {
       // Get the next sibling to the .accordion__toggle class
       // const contents = accordion.querySelectorAll(".accordion__content");
       contents.forEach((content, i) => {
-        // Close al acordions
+        // Close all acordions
         this.closeAccordion(content);
 
         // Open accrodions with no toggle
         if (
-          !content.previousSibling ||
-          (content.previousSibling &&
-            !content.previousSibling.classList.contains("accordion__toggle"))
+          !content.previousElementSibling ||
+          (content.previousElementSibling &&
+            !content.previousElementSibling.classList.contains("accordion__toggle"))
         )
           this.openAccordion(content);
 
@@ -114,5 +114,7 @@ class Accordion {
     content.style.overflow = "hidden";
   }
 }
+
+// new Accordion( { collapsed: false } );
 
 export default Accordion;
