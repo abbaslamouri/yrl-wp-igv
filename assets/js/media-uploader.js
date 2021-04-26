@@ -17,14 +17,19 @@ let chartTypeInput // Chart type select field
 let fileUploadInput // file (spreadsheet) name
 
 
-const mediaUploader = function (iwpgvCharts, iwpgvObj) {
+// const mediaUploader = function (iwpgvCharts, iwpgvObj) {
 
-  // Get form, sheet Id and chart type input fields
-  form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
-  sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-  chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
-  fileUploadInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`)
+//   // Get form, sheet Id and chart type input fields
+//   form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+//   sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+//   chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
+//   fileUploadInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`)
 
+ let iwpgvCharts
+
+const mediaUploader = function (iwpgvCharts, iwpgvObj, ) {
+
+ 
 
   // Initialize the media uploader
   let mediaUploader;
@@ -121,15 +126,18 @@ const mediaUploader = function (iwpgvCharts, iwpgvObj) {
         // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
         if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` || ( event.target.id !== sheetIdInput.id && event.target.id !== chartTypeInput.id ) ) return 
 
-        // Bail if no sheet Id or chart type
-        if( ! sheetIdInput.value || ! chartTypeInput.value  ) return
+        if ( event.target.id === sheetIdInput.id || event.target.id === chartTypeInput.id && ( sheetIdInput.value && chartTypeInput.value )) {
 
-        iwpgvCharts.chart.chartParams.fileUpload = fileUploadInput.value
-        iwpgvCharts.chart.chartParams.sheetId = sheetIdInput.value
-        iwpgvCharts.chart.chartParams.chartType = chartTypeInput.value
+          iwpgvCharts.chart = {
+            chartParams: {},
+            chartLayout: {},
+            chartConfig:{},
+            chartTraces : []
+          }
           
-        // Draw chart
-        drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
+          // Draw chart
+          drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
+        }
         
       });
 

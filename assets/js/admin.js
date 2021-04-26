@@ -14,7 +14,7 @@ let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts 
 let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
 
 console.log("iwpgvObj", iwpgvObj)
-console.log("iwpgvCharts", iwpgvCharts)
+// console.log("iwpgvCharts", iwpgvCharts)
 
 
 

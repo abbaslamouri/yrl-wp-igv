@@ -46,9 +46,23 @@ const drawChart = async function ( spreadsheet, iwpgvCharts, iwpgvObj) {
     panels.chartConfig = chartConfigInstance.panel()
     iwpgvCharts.chart.chartConfig = chartConfigInstance.options()
 
-    if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
-      iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+1)
-    }
+    // console.log("LLLLLLL",{...iwpgvCharts.chart})
+  
+
+    // // Bail if either the file, sheed or chart type is missing
+    // if (! iwpgvCharts.chart.chartParams.fileUpload || ! iwpgvCharts.chart.chartParams.sheetId || ! iwpgvCharts.chart.chartParams.chartType) {
+    //   throw new Error(  "Please select a file, a sheet and chart type to proceed." )
+    // }
+
+    // console.log("ZZZZZZZQQQQQQQQ",  spreadsheet)
+
+    console.log("NUMBERS", spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length, iwpgvCharts.chart.chartTraces.length)
+
+    // if ( typeof (spreadsheet[iwpgvCharts.chart.chartParams.sheetId]) !== "undefined" && spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length < iwpgvCharts.chart.chartTraces.length ) {
+
+    //   console.log("NUMBERS", spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length, iwpgvCharts.chart.chartTraces.length)
+    //   iwpgvCharts.chart.chartTraces.splice(0,spreadsheet[iwpgvCharts.chart.chartParams.sheetId]["labels"].length+100)
+    // }
 
     // Assemble chart traces chart and panels
     panels.chartTraces = {
