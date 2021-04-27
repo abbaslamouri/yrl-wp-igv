@@ -48,7 +48,7 @@ class ChartParams {
         id : `${this.prefix}__chartParamsSubpanel-general`,
         cssClasses:["chartParams", "subPanel"],
         title : "",
-        intro : "general gfhfhjfj jsdkjfsdjkdfsjk lkdkklsd",
+        intro : "",
         fields : [
           [
             {

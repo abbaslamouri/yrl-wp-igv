@@ -14,6 +14,10 @@ let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
 console.log("iwpgvObj", iwpgvObj)
 console.log("iwpgvCharts", {...iwpgvCharts})
 
+// Unhide the panel toogle and content divs
+document.querySelector( `.accordion__toggle` ).classList.remove("hidden")
+document.querySelector( `.accordion__content` ).classList.remove("hidden")
+
 try {
 
   // Check if server error

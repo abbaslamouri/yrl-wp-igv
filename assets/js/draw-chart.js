@@ -10,6 +10,7 @@ import {
   hideElementById,
   displayAdminMessage,
   chartOptionKey,
+  getMinMaxAvgData
 } from "./utilities"
 
 let form
@@ -20,8 +21,8 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
 
   // Show spinner and hide warning, chart, table minmax table and minmax input fields
-  // toggleElementById( `${iwpgvObj.prefix}__spinner` )
-  // toggleElementById( `${iwpgvObj.prefix}__warning` )
+  toggleElementById( `${iwpgvObj.prefix}__spinner` )
+  toggleElementById( `${iwpgvObj.prefix}__warning` )
 
   // Hide form
   // toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
@@ -80,7 +81,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartConfig.options).then (function() {
 
-      // toggleElementById( `${iwpgvObj.prefix}__spinner` )
+      toggleElementById( `${iwpgvObj.prefix}__spinner` )
       console.log("Done plotting Chart")
 
     })
@@ -91,13 +92,23 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
+
+      chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, x_start, x_end)
+      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+      // Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
+
+      //   console.log("Done plotting MIn Max Table")
+
+      // })
+
+      Plotly.restyle(`${iwpgvObj.prefix}__plotlyMinMaxTable`,  chart.minMaxAvgTableChart.options );
     })
 
     // Set chart Table if enableTableChart is true
     if ( chart.chartParams.options.enableTableChart ) {
 
       // Assemble table chart and panels layout
-      const tableChartInstance = new TableChart( chart.tableChart.options, iwpgvObj, "tableChartConfig", "Table Chart" )
+      const tableChartInstance = new TableChart( chart.tableChart.options, iwpgvObj, "tableChart", "Table Chart" )
       chart.tableChart.options = tableChartInstance.options()
       chart.tableChart.panel.sections = tableChartInstance.sections()
 
@@ -112,9 +123,6 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       chart.tableChart.options.header.values = headerValues
 
 
-      // Set table default cell values
-      chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
-
       // Round cells values if rounding is not 0
       if ( chart.tableChart.options.rounding) {
         const cellsValues = []
@@ -125,6 +133,9 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
           }  
         }
         chart.tableChart.options.cells.values = cellsValues  
+      } else {
+        // Set table default cell values
+        chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
       }
 
       // Set table cells alignment
@@ -150,7 +161,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     if ( chart.chartParams.options.enableMinMaxTableChart ) {
 
       // Assemble Min/Max table chart options and panel
-      const minMaxAvgTableChartInstance = new TableChart( chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChartConfig", "Min/Max/Avg Table Chart" )
+      const minMaxAvgTableChartInstance = new TableChart( chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "Min/Max/Avg Table Chart" )
       chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
       chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
 
@@ -161,46 +172,10 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
       chart.minMaxAvgTableChart.options.header.values = headerValues
 
-      // Remove first row from data (xaxis data)
-      const data = [...spreadsheet[chart.chartParams.options.sheetId].data]
-      data.shift()
+      const xAxisMin = Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+      const xAxisMax = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
 
-      // Set cell values
-      const cellsValues = [[],[],[],[]];
-
-      // Fetch header row and format as fist column for min-max-avg first column
-      for ( const property in Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)) {
-        cellsValues[0].push(Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)[property])
-      }
-
-      // Remove first column header
-      cellsValues[0].shift()
-
-      // Loop through plot data and remove all non-numeric rows (min, max and average require numbic data) and calculate min, max and avg
-      data.forEach(element => {
-        const newElement = []
-        let k = 0
-        for ( let j = 0; j <= element.length; j++) {
-          if ( typeof element[j] === "number") {
-            newElement[k] = element[j]
-            k++
-          }
-        }
-        const average = newElement.reduce((a, c) => a + c,) / newElement.length
-
-        // Round if rounding is set
-        if ( chart.minMaxAvgTableChart.options.rounding) {
-          cellsValues[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-          cellsValues[2].push( parseFloat( average.toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-          cellsValues[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-        } else {
-          cellsValues[1].push( Math.min(...newElement ) )
-          cellsValues[2].push( average )
-          cellsValues[3].push( Math.max( ...newElement ) )
-        }
-      });
-
-      chart.minMaxAvgTableChart.options.cells.values = cellsValues
+      chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
 
       // Set table cells alignment
       chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
@@ -225,6 +200,14 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
 
+    document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
+      element.classList.remove("hidden")
+    })
+
+    document.querySelectorAll(`.accordion__content`).forEach (element=> {
+      element.classList.remove("hidden")
+    })
+
     // Add change event listener on all the document
     document.addEventListener("change", function (event) {
       
@@ -247,7 +230,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return 
 
       // Chart layout event handler
-      if ( event.target.classList.contains( `${iwpgvObj.prefix}__chartLayout` ) ) {
+      // if ( event.target.classList.contains( `${iwpgvObj.prefix}__chartLayout` ) ) {
 
         if (chartOptionKey(event.target.id).key.includes("config")) {
           console.log("PPPPPP",chartOptionKey(event.target.id).key.split(".")[1])
@@ -259,10 +242,46 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
           Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig)
           // Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, {}, { [chartOptionKey(event.target.id).key.split(".")[1]]: event.target.type === 'checkbox' ? event.target.checked : event.target.value} )
         } else {
-          Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value})
+          console.log("PPPPPP",chartOptionKey(event.target.id))
+
+          const parts = chartOptionKey(event.target.id).key.split(".")
+          console.log("PARTS",parts)
+
+          // let plotType
+
+          switch(chartOptionKey(event.target.id).control) {
+            case "tableChart":
+              switch(parts.length){
+                case 1:
+                  // chart.tableChart.options[] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+                  break
+                case 2:
+                  chart.tableChart.options[parts[0]][parts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+                  break
+                case 3:
+                  chart.tableChart.options[parts[0]][parts[1]][parts[2]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+                  break
+              }
+              Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartConfig)
+              console.log(chart.tableChart.options)
+              break
+            default:
+             
+             break
+          }
+
+          // Plotly.relayout(`${iwpgvObj.prefix}__${plotType}`, { [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value})
+
         }
 
-      }
+      // }
+
+      //  // Chart layout event handler
+      //  if ( event.target.classList.contains( `${iwpgvObj.prefix}__tableChart` ) ) {
+
+      //  console.log({ [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value})
+      //  Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value})
+      //  }
 
       // Chart traces event handler
       if ( event.target.classList.contains( `${iwpgvObj.prefix}__chartTraces` ) ) {

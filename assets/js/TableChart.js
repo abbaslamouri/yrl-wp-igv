@@ -38,7 +38,7 @@ class TableChart extends ChartDefault{
       rounding: ( this.tableConfig.rounding  !== undefined ) ? this.tableConfig.rounding : 2,
       header:{
         align : ( this.tableConfig.header  !== undefined && this.tableConfig.header.align  !== undefined ) ? this.tableConfig.header.align : "center",
-        height : ( this.tableConfig.header  !== undefined && this.tableConfig.header.height  !== undefined ) ? this.tableConfig.header.height : 40,
+        height : ( this.tableConfig.header  !== undefined && this.tableConfig.header.height  !== undefined ) ? this.tableConfig.header.height : 10,
         line: {
           width: ( this.tableConfig.header  !== undefined && this.tableConfig.header.line  !== undefined && this.tableConfig.header.line.width  !== undefined ) ? this.tableConfig.header.line.width : 2,
           color: ( this.tableConfig.header  !== undefined && this.tableConfig.header.line  !== undefined && this.tableConfig.header.line.color  !== undefined ) ? this.tableConfig.header.line.color : "#AD1457",
@@ -83,10 +83,33 @@ class TableChart extends ChartDefault{
       // intro : "THis is where you set all your table configurations",
       // sections : {
         general : {
-          intro : "lorem udfujdfsjsdj",
+          intro : "",
           id : `${this.prefix}__${this.panelId}Panel__general`,
           title : "",
           fields : [
+            [
+              {
+                id: `${this.panelId}[header][height]`, 
+                title : "Header Row Height", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().header.height,
+                hint : "Sets The height of cells."
+              },
+              {
+                id: `${this.panelId}[header][align]`,
+                title: "Header Alignment",
+                type: "select",
+                options: {
+                  left: "Left",
+                  center: "Center",
+                  right: "Right"
+                },
+                value: this.options().header.align
+              },
+            ],
             [
               {
                 id: `${this.panelId}[firstColAlign]`,
@@ -118,17 +141,6 @@ class TableChart extends ChartDefault{
             ],
             [
               {
-                id: `${this.panelId}[header][align]`,
-                title: "Header Alignment",
-                type: "select",
-                options: {
-                  left: "Left",
-                  center: "Center",
-                  right: "Right"
-                },
-                value: this.options().header.align
-              },
-              {
                 id: `${this.panelId}[cells][align]`,
                 title: "Cells Alignment",
                 type: "select",
@@ -138,6 +150,16 @@ class TableChart extends ChartDefault{
                   right: "Right"
                 },
                 value: this.options().cells.align
+              },
+              {
+                id: `${this.panelId}[cells][line][width]`, 
+                title : "Cells Line Width", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().cells.line.width,
+                hint : ""
               },
             ],
           ]  

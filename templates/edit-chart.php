@@ -84,18 +84,20 @@
 
           <div class="accordion">
             <?php foreach ( $payload["chart"] as $element ) :?>
-              <div class="accordion__toggle">
-                <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
-                <svg class="accordion__svg">
-                  <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
-                </svg>
-              </div>
-              <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
-                <div class="panelIntro">
-                  <?php echo $element["panel"]["intro"]?>
+              <?php if ($element["panel"]["id"] !== "{$this->prefix}__chartConfigPanel") :?>
+                <div class="accordion__toggle hidden">
+                  <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
+                  <svg class="accordion__svg">
+                    <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
+                  </svg>
                 </div>
-                <div class="accordion"></div>
-              </div>
+                <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
+                  <div class="panelIntro">
+                    <?php echo $element["panel"]["intro"]?>
+                  </div>
+                  <div class="accordion"></div>
+                </div>
+              <?php endif; ?>
             <?php endforeach ?>
           </div>
 

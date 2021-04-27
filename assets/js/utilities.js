@@ -112,36 +112,115 @@ const getMinMaxAvgTableHeader = function () {
 }
 
 
-const getMinMaxAvgData = function (sheet) {
+const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax = null ) {
 
-  // Initialize min-max-avg array
+
+  const min = ( xAxisMin ) ? xAxisMin : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+  const max = ( xAxisMax ) ? xAxisMax : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+
+  // Remove first row from data (xaxis data)
+  const data = [...spreadsheet[chart.chartParams.options.sheetId].data]
+  // console.log("DATA",[...data])
+  const indeces = []
+  let i=0
+  data[0].forEach(element => {
+    // console.log(element)
+    if (element > min && element < max ) {
+      indeces.push(i) 
+    }
+    i++
+  })
+
+
+  const newData =[]
+  data.forEach(element => {
+    // console.log(element)
+    const newElement = []
+    let k=0
+    for ( let j = 0; j < indeces.length; j++) {
+      newElement[k] = element[indeces[j]]
+      k++
+    }
+
+    newData.push(newElement)
+
+  })
+
+  
+
+
+
+
+  newData.shift()
+
+  // Set cell values
   const minMaxAvgTableData = [[],[],[],[]];
-       
-  // Fetch plot data and remove first element of plot Data (x-axis)
-  const plotData = getPlotData(sheet)
-  plotData.shift()
 
   // Fetch header row and format as fist column for min-max-avg first column
-  for ( const property in Object.values(sheet.labels)) {
-    minMaxAvgTableData[0].push(Object.values(sheet.labels)[property])
+  for ( const property in Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)) {
+    minMaxAvgTableData[0].push(Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)[property])
   }
+
+  // Remove first column header
   minMaxAvgTableData[0].shift()
-  
+
+
   // Loop through plot data and remove all non-numeric rows (min, max and average require numbic data) and calculate min, max and avg
-  plotData.forEach(element => {
+  newData.forEach(element => {
     const newElement = []
     let k = 0
     for ( let j = 0; j <= element.length; j++) {
-      if ( typeof element[j] === "number") {
+      if ( typeof element[j] === "number" ) {
         newElement[k] = element[j]
         k++
       }
     }
+
     const average = newElement.reduce((a, c) => a + c,) / newElement.length
-    minMaxAvgTableData[1].push(Math.min(...newElement))
-    minMaxAvgTableData[2].push(parseFloat(average.toFixed(3)))
-    minMaxAvgTableData[3].push(Math.max(...newElement))
+
+    // Round if rounding is set
+    if ( chart.minMaxAvgTableChart.options.rounding) {
+      minMaxAvgTableData[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+      minMaxAvgTableData[2].push( parseFloat( average.toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+      minMaxAvgTableData[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+    } else {
+      minMaxAvgTableData[1].push( Math.min(...newElement ) )
+      minMaxAvgTableData[2].push( average )
+      minMaxAvgTableData[3].push( Math.max( ...newElement ) )
+    }
   });
+
+
+
+
+  // // Initialize min-max-avg array
+  // const minMaxAvgTableData = [[],[],[],[]];
+       
+  // // Fetch plot data and remove first element of plot Data (x-axis)
+  // const plotData = getPlotData(sheet)
+  // plotData.shift()
+
+  // // Fetch header row and format as fist column for min-max-avg first column
+  // for ( const property in Object.values(sheet.labels)) {
+  //   minMaxAvgTableData[0].push(Object.values(sheet.labels)[property])
+  // }
+  // minMaxAvgTableData[0].shift()
+  
+  // // Loop through plot data and remove all non-numeric rows (min, max and average require numbic data) and calculate min, max and avg
+  // plotData.forEach(element => {
+  //   const newElement = []
+  //   let k = 0
+  //   for ( let j = 0; j <= element.length; j++) {
+  //     if ( typeof element[j] === "number") {
+  //       newElement[k] = element[j]
+  //       k++
+  //     }
+  //   }
+  //   const average = newElement.reduce((a, c) => a + c,) / newElement.length
+  //   minMaxAvgTableData[1].push(Math.min(...newElement))
+  //   minMaxAvgTableData[2].push(parseFloat(average.toFixed(3)))
+  //   minMaxAvgTableData[3].push(Math.max(...newElement))
+  // });
   
   return minMaxAvgTableData
 
