@@ -32,7 +32,7 @@ class TableChart extends ChartDefault{
         },
       },
       firstColAlign: ( this.tableConfig.firstColAlign  !== undefined ) ? this.tableConfig.firstColAlign : "left",
-      otherColsAlign: ( this.tableConfig.otherColsAlign  !== undefined ) ? this.tableConfig.otherColsAlign : "center",
+      // otherColsAlign: ( this.tableConfig.otherColsAlign  !== undefined ) ? this.tableConfig.otherColsAlign : "center",
       evenRowColor: ( this.tableConfig.evenRowColor  !== undefined ) ? this.tableConfig.evenRowColor : "#CFD8DC",
       oddRowColor: ( this.tableConfig.oddRowColor  !== undefined ) ? this.tableConfig.oddRowColor : "#90A4AE",
       rounding: ( this.tableConfig.rounding  !== undefined ) ? this.tableConfig.rounding : 2,
@@ -73,20 +73,49 @@ class TableChart extends ChartDefault{
   }
 
 
-  panel() {
+  sections() {
 
     return {
 
-      id: `${this.prefix}__${this.panelId}Panel`,
-      cssClasses : ['tableConfig', 'table'],
-      title : `${this.panelTitle}`,
-      intro : "THis is where you set all your table configurations",
-      sections : {
+      // id: `${this.prefix}__${this.panelId}Panel`,
+      // cssClasses : ['tableConfig', 'table'],
+      // title : `${this.panelTitle}`,
+      // intro : "THis is where you set all your table configurations",
+      // sections : {
         general : {
           intro : "lorem udfujdfsjsdj",
           id : `${this.prefix}__${this.panelId}Panel__general`,
-          title : "hhhhh",
+          title : "",
           fields : [
+            [
+              {
+                id: `${this.panelId}[firstColAlign]`,
+                title: "First Column Alignment",
+                type: "select",
+                options: {
+                  left: "Left",
+                  center: "Center",
+                  right: "Right"
+                },
+                value: this.options().firstColAlign
+              },
+            ],
+            [
+              {
+                id: `${this.panelId}[evenRowColor]`,
+                title: "Even Row Color",
+                type: "color",
+                value: this.options().evenRowColor,
+                hint:""
+              },
+              {
+                id: `${this.panelId}[oddRowColor]`,
+                title: "Odd Row Color",
+                type: "color",
+                value: this.options().oddRowColor,
+                hint:""
+              },
+            ],
             [
               {
                 id: `${this.panelId}[header][align]`,
@@ -113,7 +142,7 @@ class TableChart extends ChartDefault{
             ],
           ]  
         }
-      }
+      // }
     }
     
   }

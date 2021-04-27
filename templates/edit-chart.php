@@ -87,7 +87,7 @@
               <div class="accordion__toggle">
                 <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
                 <svg class="accordion__svg">
-                  <use href="http://sandbox/wp-content/plugins/yrl-wp-igv/assets/img/icons.svg#icon-keyboard_arrow_right"></use>
+                  <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
                 </svg>
               </div>
               <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >

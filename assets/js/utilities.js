@@ -95,6 +95,7 @@ const removePanel =  ( panelId ) => {
 
 
 
+
 const getTableHeader = function (sheet) {
   const tableHeader  = []
   for ( const property in Object.values(sheet.labels)) {
@@ -517,6 +518,7 @@ module.exports = {
   toggleInputField,
   setSheetIdOptions,
   removePanel,
+  
 
 
   

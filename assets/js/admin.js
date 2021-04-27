@@ -1,9 +1,7 @@
 import Accordion from "./Accordion"
 import ChartParams from "./ChartParams"
-// import ChartLayout from "./ChartLayout"
 import mediaUploader from "./media-uploader"
-import renderPanels from "./panels"
-import renderSections from "./render-sections"
+import renderPanel from "./renderPanel"
 import saveChart from "./save-chart"
 import listCharts from "./list-charts"
 import { displayAdminMessage, showElementById } from "./utilities"
@@ -37,97 +35,14 @@ try {
 
     // Assemble chart Params chart and panels
     const chartParamsInstance = new ChartParams( chart.chartParams.options, iwpgvObj )
-    chart.chartParams.panel.sections = chartParamsInstance.panel()
     chart.chartParams.options = chartParamsInstance.options()
+    chart.chartParams.panel.sections = chartParamsInstance.sections()
 
-    // Loop through the chart params sections
-    for (const section in chart.chartParams.panel.sections) {
-
-      // Add  subpanel accordion toggle to panel content if there is a heading title
-      if (chart.chartParams.panel.sections[section]["title"]) {
-        // Create panel toggle div
-        const subPanelToggle = document.createElement("div")
-        subPanelToggle.classList.add("accordion__toggle")
-
-        // Create toggle heading title div
-        const panelHeadingTitle = document.createElement("div")
-        panelHeadingTitle.classList.add("accordion__heading-title")
-
-        // Create haeding title text
-        const headingTitle = document.createTextNode(chart.chartParams.panel.sections[section]["title"])
-
-        // Append title text to heading title div
-        panelHeadingTitle.appendChild(headingTitle)
-
-        // Append panel heading title to panel toggle
-        subPanelToggle.appendChild(panelHeadingTitle)
-
-        // Create svg element
-        const svgElem = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-        svgElem.classList.add("accordion__svg")
-        const useElem = document.createElementNS("http://www.w3.org/2000/svg", "use")
-        useElem.href.baseVal = `${yrl_wp_igv_obj.url}assets/img/icons.svg#icon-keyboard_arrow_right`
-        svgElem.appendChild(useElem)
-
-        // Append svg to panel toggle
-        subPanelToggle.appendChild(svgElem)
-
-        const subpanelAccordion = document.getElementById( chart.chartParams.panel.id).querySelector(".accordion")
-        console.log(subpanelAccordion)
-
-        subpanelAccordion.appendChild(subPanelToggle)
-
-
-      }
-    }
-
-    
-    // chart.chartParams = {}
-    // const panels = { 
-    //   chartParams:{
-    //     // id : `${iwpgvObj.prefix}__chartParamsPanel`,
-    //     // cssClasses : ['chartParams', 'openOnLoad'],
-    //     // title : "Parameters",
-    //     // intro : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    //     // sections : {}
-    //   },
-    //   // chartLayout: {
-    //   //   id : `${iwpgvObj.prefix}__chartLayoutPanel`,
-    //   //   cssClasses : ['chartLayout', 'chart'],
-    //   //   title : "Layout",
-    //   //   intro : "This is the layout pnel",
-    //   //   sections : {}
-    //   // }
-    // }
-
-    // const panels1 = { chartParams1:{}}
-    
-    // Assemble chart Params chart and panels
-    // const chartParamsInstance = new ChartParams( chart.chartParams, iwpgvObj )
-    // panels.chartParams = chartParamsInstance.panel()
-    // chart.chartParams = chartParamsInstance.options()
-
-    // const chartParamsInstance1 = new ChartParams( chart.chartParams, iwpgvObj )
-    // panels1.chartParams1 = chartParamsInstance1.panel().sections
-    // console.log("PANELS1",panels1)
-
-    // for (const section in panels1) {
-
-    //   // Add  subpanel accordion toggle to panel content if there is a heading title
-    //   if (sections[section]["title"]) {
-    //     const subpanelToggle = accordionToggle(sections[section]["title"])
-    //     subpanelAccordion.appendChild(subpanelToggle);
-    //   }
-
-    // }
-
+    // Render chart params panel
+    renderPanel(chart.chartParams.panel, iwpgvObj)
 
       // Add new or edit an existing chart
     if (iwpgvCharts.action && iwpgvCharts.action === "editChart") {
-
-      // Render and display the accordion panels
-      // renderPanels(panels, iwpgvObj);
-      // renderSections(panels1, iwpgvObj);
 
       showElementById (`${iwpgvObj.prefix}__saveChart` )
       

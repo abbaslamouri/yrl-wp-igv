@@ -1584,24 +1584,65 @@ if (!class_exists('Dashboard')) {
 								"options" => [],
 								"panel" => [
 									"id" => "{$this->prefix}__chartParamsPanel",
-									"cssClasses" => 	["chartParams", "openOnLoad"],
+									"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
 									"title" => __("Chart Parameters", $this->plugin),
 									"intro" => "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
 									"sections" => []
-								]
+							  ]
 							],
 							"chartLayout" => [
 								"options" => [],
 								"panel" => [
 									"id" => "{$this->prefix}__chartLayoutPanel",
-									"cssClasses" => ["chartLayout"],
+									"cssClasses" => ["chartLayout", "panel"],
 									"title" => __("Chart Layout", $this->plugin),
 									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
 									"sections" => []
-								]
-							]
+							  ]
+              ],
+              "chartConfig" => [
+								"options" => [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartConfigPanel",
+									"cssClasses" => ["chartConfig", "panel"],
+									"title" => __("Chart Config", $this->plugin),
+									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
+									"sections" => []
+							  ]
+              ],
+              "chartTraces" => [
+                "options" => [],
+                "panel" => [
+                  "id" => "{$this->prefix}__chartTracesPanel",
+                  "cssClasses" => ["chartTraces", "panel"],
+                  "title" => __("Chart Traces", $this->plugin),
+                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+                  "sections" => []
+                ]
+              ],
+              "tableChart" => [
+                "options" => [],
+                "panel" => [
+                  "id" => "{$this->prefix}__tableChartPanel",
+                  "cssClasses" => ["tableChart", "panel"],
+                  "title" => __("Table Chart", $this->plugin),
+                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+                  "sections" => []
+                ]
+              ],
+              "minMaxAvgTableChart" => [
+                "options" => [],
+                "panel" => [
+                  "id" => "{$this->prefix}__minMaxAvgTableChartPanel",
+                  "cssClasses" => ["minMaxAvgTableChart", "panel"],
+                  "title" => __("Min/Max/Avg Table Chart", $this->plugin),
+                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+                  "sections" => []
+                ]
+              ]
 						];
           }
+
 
           // Set response
           $response = [ 'status' => "success", 'action' => 'editChart', "chartId" => $chart_id, "chart" => $chart];

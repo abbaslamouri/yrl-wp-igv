@@ -2,7 +2,7 @@ import Plotly from 'plotly.js-dist'
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
-import renderPanels from "./panels"
+import renderPanel from "./renderPanel"
 import Accordion from "./Accordion"
 import {
   toggleElementById,
@@ -18,59 +18,53 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
   form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
+
   // Show spinner and hide warning, chart, table minmax table and minmax input fields
-  toggleElementById( `${iwpgvObj.prefix}__spinner` )
-  toggleElementById( `${iwpgvObj.prefix}__warning` )
+  // toggleElementById( `${iwpgvObj.prefix}__spinner` )
+  // toggleElementById( `${iwpgvObj.prefix}__warning` )
 
   // Hide form
-  toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+  // toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
   try {
 
-    // Initialize panels
-    const panels = {} 
+    Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+    Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+    Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
-    // Assemble chart and panels layout
-    const chartLayoutInstance = new ChartLayout( chart.chartLayout, iwpgvObj ) 
-    panels.chartLayout = chartLayoutInstance.panel()
-    chart.chartLayout = chartLayoutInstance.options()
+    // Assemble chart Params chart and panels
+    const chartLayoutInstance = new ChartLayout( chart.chartLayout.options, iwpgvObj )
+    chart.chartLayout.options = chartLayoutInstance.options()
+    chart.chartLayout.panel.sections = chartLayoutInstance.sections()
 
     // set chart configuration
-    chart.chartConfig = chart.chartLayout.config
-    
-    // const chartConfigInstance = new ChartConfig( chart.chartConfig, iwpgvObj )
-    // panels.chartConfig = chartConfigInstance.panel()
-    // chart.chartConfig = chartConfigInstance.options()
+    chart.chartConfig.options = chart.chartLayout.options.config
 
-    // Assemble chart traces chart and panels
-    panels.chartTraces = {
-      id : `${iwpgvObj.prefix}__chartTracesPanel`,
-      cssClasses : ['chartTraces', 'chart'],
-      title : "Traces",
-      sections : {}
-    }
+    // Render chart layout panel
+    renderPanel(chart.chartLayout.panel, iwpgvObj)
 
     let index = 1;
-    while (index < spreadsheet[chart.chartParams.sheetId].labels.length) {
-      const chartTraceInstance =  new ChartTrace( chart.chartTraces[index-1], index, iwpgvObj, chart, spreadsheet  ) 
-      chart.chartTraces[index-1] = chartTraceInstance.options()
-      panels.chartTraces.sections[index-1] = {}
-      panels.chartTraces.sections[index-1].id = `${iwpgvObj.prefix}__chartTracesPanel__trace[${index-1}]`
-      panels.chartTraces.sections[index-1].title = (spreadsheet[chart.chartParams.sheetId].labels.length) > 1 ? Object.values(spreadsheet[chart.chartParams.sheetId].labels)[index] : ""
-      panels.chartTraces.sections[index-1].fields = chartTraceInstance.panel()
+    while (index < spreadsheet[chart.chartParams.options.sheetId].labels.length) {
+      chart.chartTraces.options[index-1] = ( chart.chartTraces.options[index-1] !== undefined )? chart.chartTraces.options[index-1] : {}
+      const chartTraceInstance =  new ChartTrace( chart.chartTraces.options[index-1], spreadsheet, index, chart.chartParams.options.sheetId, chart.chartParams.options.chartType, iwpgvObj ) 
+      chart.chartTraces.options[index-1] = chartTraceInstance.options()
+      chart.chartTraces.panel.sections[`trace_${index-1}`] = chartTraceInstance.sections()
       index++
     }
 
+    // Render chart traces panel
+    renderPanel(chart.chartTraces.panel, iwpgvObj)
+
     // Unhide and set range slider min and max input fields if enableChartRangeSlider is true
-    if ( chart.chartParams.enableRangeSlider ) {
+    if ( chart.chartParams.options.enableRangeSlider ) {
       showElementById( `${iwpgvObj.prefix}__plotMinMax` )
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.sheetId].data[0]).toFixed(3)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
 
       // Set range slider to true
-      chart.chartLayout.xaxis.rangeslider = true
+      chart.chartLayout.options.xaxis.rangeslider = true
     } else {
       hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
@@ -79,69 +73,72 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
 
       // Set range slider to false
-      chart.chartLayout.xaxis.rangeslider =false
+      chart.chartLayout.options.xaxis.rangeslider =false
+
     }
 
-    // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig).then (function() {
+     // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartConfig.options).then (function() {
 
-      toggleElementById( `${iwpgvObj.prefix}__spinner` )
+      // toggleElementById( `${iwpgvObj.prefix}__spinner` )
       console.log("Done plotting Chart")
 
     })
 
     // Add range slider event handler
     yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
-      const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.sheetId].data[0])
-      const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.sheetId].data[0])
+      const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+      const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
       document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
       document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
     })
 
-
-    // Unhide and set chart Table if enableTableChart is true
-    if ( chart.chartParams.enableTableChart ) {
+    // Set chart Table if enableTableChart is true
+    if ( chart.chartParams.options.enableTableChart ) {
 
       // Assemble table chart and panels layout
-      const tableChartConfigInstance = new TableChart( chart.tableChartConfig, iwpgvObj, "tableChartConfig", "Table Chart") 
-      panels.tableChartConfig = tableChartConfigInstance.panel()
-      chart.tableChartConfig = tableChartConfigInstance.options()
+      const tableChartInstance = new TableChart( chart.tableChart.options, iwpgvObj, "tableChartConfig", "Table Chart" )
+      chart.tableChart.options = tableChartInstance.options()
+      chart.tableChart.panel.sections = tableChartInstance.sections()
+
+      // Render chart traces panel
+      renderPanel(chart.tableChart.panel, iwpgvObj)
 
       // Set table header values
       const headerValues = []
-      for ( let  i = 0; i < spreadsheet[chart.chartParams.sheetId].labels.length; i++ ) {
-        headerValues.push([`<b>${spreadsheet[chart.chartParams.sheetId].labels[i]}</b>`]);
+      for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
+        headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
       }
-      chart.tableChartConfig.header.values = headerValues
+      chart.tableChart.options.header.values = headerValues
 
 
       // Set table default cell values
-      chart.tableChartConfig.cells.values = spreadsheet[chart.chartParams.sheetId].data
+      chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
 
       // Round cells values if rounding is not 0
-      if ( chart.tableChartConfig.rounding) {
+      if ( chart.tableChart.options.rounding) {
         const cellsValues = []
-        for ( let  i = 0; i < spreadsheet[chart.chartParams.sheetId].data.length; i++ ) {
+        for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
           cellsValues[i] =[]
-          for ( let  j = 0; j < spreadsheet[chart.chartParams.sheetId].data[i].length; j++ ) {
-            cellsValues[i][j] = ( parseFloat( spreadsheet[chart.chartParams.sheetId].data[i][j].toFixed( chart.tableChartConfig.rounding ) ) )
+          for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
+            cellsValues[i][j] = ( parseFloat( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) )
           }  
         }
-        chart.tableChartConfig.cells.values = cellsValues  
+        chart.tableChart.options.cells.values = cellsValues  
       }
 
       // Set table cells alignment
-      chart.tableChartConfig.cells.align = [chart.tableChartConfig.firstColAlign , chart.tableChartConfig.otherColsAlign]
+      chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign , chart.tableChart.options.otherColsAlign]
 
       // Set table even and odd row colors
       const rowFillColors = []
-      for ( let  j = 0; j < spreadsheet[chart.chartParams.sheetId].data[0].length; j++ ) {
-        rowFillColors[j] = (j % 2 === 0) ? chart.tableChartConfig.evenRowColor : chart.tableChartConfig.oddRowColor
+      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+        rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.evenRowColor : chart.tableChart.options.oddRowColor
       }
-      chart.tableChartConfig.cells.fill.color = [rowFillColors]
+      chart.tableChart.options.cells.fill.color = [rowFillColors]
 
       // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChartConfig], chart.tableChartConfig.layout, chart.chartConfig).then (function() {
+      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartConfig).then (function() {
 
         console.log("Done plotting Table")
 
@@ -149,29 +146,31 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     
     }
 
-
     // Unhide and set chart Table if enableMinMaxTableChart is true
-    if ( chart.chartParams.enableMinMaxTableChart ) {
+    if ( chart.chartParams.options.enableMinMaxTableChart ) {
 
-      // Assemble Min/Max table chart and panels layout
-      const minMaxTableChartConfigInstance = new TableChart( chart.minMaxTableChartConfig, iwpgvObj, "minMaxTableChartConfig", "Min/Max/Avg Table Chart") 
-      panels.minMaxTableChartConfig = minMaxTableChartConfigInstance.panel()
-      chart.minMaxTableChartConfig = minMaxTableChartConfigInstance.options()
+      // Assemble Min/Max table chart options and panel
+      const minMaxAvgTableChartInstance = new TableChart( chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChartConfig", "Min/Max/Avg Table Chart" )
+      chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
+      chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
+
+      // Render chart traces panel
+      renderPanel(chart.minMaxAvgTableChart.panel, iwpgvObj)
 
       // Set table header
       const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
-      chart.minMaxTableChartConfig.header.values = headerValues
+      chart.minMaxAvgTableChart.options.header.values = headerValues
 
       // Remove first row from data (xaxis data)
-      const data = [...spreadsheet[chart.chartParams.sheetId].data]
+      const data = [...spreadsheet[chart.chartParams.options.sheetId].data]
       data.shift()
 
       // Set cell values
       const cellsValues = [[],[],[],[]];
 
       // Fetch header row and format as fist column for min-max-avg first column
-      for ( const property in Object.values(spreadsheet[chart.chartParams.sheetId].labels)) {
-        cellsValues[0].push(Object.values(spreadsheet[chart.chartParams.sheetId].labels)[property])
+      for ( const property in Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)) {
+        cellsValues[0].push(Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)[property])
       }
 
       // Remove first column header
@@ -190,10 +189,10 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
         const average = newElement.reduce((a, c) => a + c,) / newElement.length
 
         // Round if rounding is set
-        if ( chart.minMaxTableChartConfig.rounding) {
-          cellsValues[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxTableChartConfig.rounding ) ) )
-          cellsValues[2].push( parseFloat( average.toFixed( chart.minMaxTableChartConfig.rounding ) ) )
-          cellsValues[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxTableChartConfig.rounding ) ) )
+        if ( chart.minMaxAvgTableChart.options.rounding) {
+          cellsValues[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+          cellsValues[2].push( parseFloat( average.toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+          cellsValues[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
         } else {
           cellsValues[1].push( Math.min(...newElement ) )
           cellsValues[2].push( average )
@@ -201,65 +200,51 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
         }
       });
 
-      chart.minMaxTableChartConfig.cells.values = cellsValues
+      chart.minMaxAvgTableChart.options.cells.values = cellsValues
 
       // Set table cells alignment
-      chart.minMaxTableChartConfig.cells.align = [chart.minMaxTableChartConfig.firstColAlign , chart.minMaxTableChartConfig.otherColsAlign]
+      chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
 
       // Set table even and odd row colors
       const rowFillColors = []
-      for ( let  j = 0; j < spreadsheet[chart.chartParams.sheetId].data[0].length; j++ ) {
-        rowFillColors[j] = (j % 2 === 0) ? chart.minMaxTableChartConfig.evenRowColor : chart.minMaxTableChartConfig.oddRowColor
+      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+        rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
       }
-      chart.minMaxTableChartConfig.cells.fill.color = [rowFillColors]
+      chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
 
 
       // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [chart.minMaxTableChartConfig], chart.minMaxTableChartConfig.layout, chart.chartConfig).then (function() {
+      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
 
         console.log("Done plotting MIn Max Table")
 
       })
 
-
-
-
     }
-
-    console.log("C", chart)
-    console.log("P", panels)
-
-    // Render and display the accordion panels
-    renderPanels(panels, iwpgvObj);
 
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
-
-    
-
 
     // Add change event listener on all the document
     document.addEventListener("change", function (event) {
       
       event.preventDefault()
 
-      console.log(event.target.classList)
+      console.log(event.target.id)
 
-      // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
-      if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return 
+      // Range Min and Range Max handler
+      if (event.target.closest("form") && event.target.closest("form").id == `${iwpgvObj.prefix}__plotMinMax` && ( event.target.id === `${iwpgvObj.prefix}__rangeMinInput` || event.target.id == `${iwpgvObj.prefix}__rangeMaxInput`) ) {
 
-      // Rabge Min and Range Max handlere
-      if (event.target.id === `${iwpgvObj.prefix}__rangeMinInput` || event.target.id == `${iwpgvObj.prefix}__rangeMaxInput` ) {
         const newXAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value ?  document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value : xAxisMin
         const newXAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value ? document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value : xAxisMax
 
-        const update = {
-          'xaxis.range': [newXAxisMin, newXAxisMax],   // updates the xaxis range
-        }
-        Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, update)
+        Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { 'xaxis.range': [newXAxisMin, newXAxisMax] })
 
         return
       }
+
+      // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
+      if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return 
 
       // Chart layout event handler
       if ( event.target.classList.contains( `${iwpgvObj.prefix}__chartLayout` ) ) {
@@ -304,11 +289,13 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
   } finally {
 
+    
+
     // Load accordion
     new Accordion( { collapsed: false } )
 
     // Show form
-    toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
+    // toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
     // toggleElementById( `${iwpgvObj.prefix}__spinner` )
     // showElementById( `${prefix}__plotlyChart` )
 

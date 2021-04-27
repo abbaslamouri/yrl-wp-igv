@@ -104,29 +104,25 @@ const mediaUploader = function (chart, iwpgvObj) {
         // Bail if no file, sheet Id or chart type
         if( ! fileUploadInput.value ||  ! sheetIdInput.value || ! chartTypeInput.value   ) return
 
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-
         // remove layout panel toggle and panel
-        removePanel( document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`) )
-        removePanel( document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`) )
-        removePanel( document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`) )
-        removePanel( document.getElementById(`${iwpgvObj.prefix}__tableChartConfigPanel`) )
-        removePanel( document.getElementById(`${iwpgvObj.prefix}__minMaxTableChartConfigPanel`) )
+        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`) )
+        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`) )
+        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`) )
+        // removePanel( document.getElementById(`${iwpgvObj.prefix}__tableChartConfigPanel`) )
+        // removePanel( document.getElementById(`${iwpgvObj.prefix}__minMaxTableChartConfigPanel`) )
 
         // Update chart
-        chart.chartParams.fileUpload = fileUploadInput.value,
-        chart.chartParams.sheetId = sheetIdInput.value,
-        chart.chartParams.chartType = chartTypeInput.value,
-        chart.chartParams.enableRangeSlider = enableRangeSliderInput.checked,
-        chart.chartParams.enableMinMaxTableChart = enableMinMaxTableChartInput.checked,
-        chart.chartParams.enableTableChart = enableTableChartInput.checked,
-        chart.chartLayout = {},
-        chart.chartConfig = {},
-        chart.chartTraces = [],
-        chart.tableChartConfig = {}
-        chart.minMaxTableChartConfig = {}
+        chart.chartParams.options.fileUpload = fileUploadInput.value,
+        chart.chartParams.options.sheetId = sheetIdInput.value,
+        chart.chartParams.options.chartType = chartTypeInput.value,
+        chart.chartParams.options.enableRangeSlider = enableRangeSliderInput.checked,
+        chart.chartParams.options.enableMinMaxTableChart = enableMinMaxTableChartInput.checked,
+        chart.chartParams.options.enableTableChart = enableTableChartInput.checked,
+        // chart.chartLayout = {},
+        // chart.chartConfig = {},
+        // chart.chartTraces = [],
+        // chart.tableChartConfig = {}
+        // chart.minMaxTableChartConfig = {}
 
         // Draw chart
         drawChart(jsonRes.spreadsheet, chart, iwpgvObj)

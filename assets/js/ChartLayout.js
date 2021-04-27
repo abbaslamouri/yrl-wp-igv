@@ -116,7 +116,7 @@ class ChartLayout extends ChartDefault {
   }
 
 
-  panel() {
+  sections() {
 
     return {
 
@@ -128,6 +128,7 @@ class ChartLayout extends ChartDefault {
       general: {
         intro : "Here you can modify the plot general",
         id : `${this.prefix}__chartLayoutPanel__general`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "General",
         fields : [
           [
@@ -288,6 +289,7 @@ class ChartLayout extends ChartDefault {
       title : {
         intro : "Here you can modify the plot title",
         id : `${this.prefix}__chartLayoutPanel__title`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "Title",
         fields : [
           [
@@ -351,6 +353,7 @@ class ChartLayout extends ChartDefault {
       legend : {
         intro : "Here you can modify the plot legend",
         id : `${this.prefix}__chartLayoutPanel__legend`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "Legend",
         fields : [
           [
@@ -548,6 +551,7 @@ class ChartLayout extends ChartDefault {
       hoverLabel : {
         intro : "Here you can modify the plot Hover Label",
         id : `${this.prefix}__chartLayoutPanel__hoverlabel`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "Hover Label",
         fields : [
           [
@@ -621,6 +625,7 @@ class ChartLayout extends ChartDefault {
       modebar : {
         intro : "Here you can modify the plot modebar",
         id : `${this.prefix}__chartLayoutPanel__modebar`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "Modebar",
         fields : [
           [
@@ -664,6 +669,7 @@ class ChartLayout extends ChartDefault {
       config : {
         intro : "Here you can modify the plot configuration",
         id : `${this.prefix}__chartLayoutPanel__config`,
+        cssClasses:["chartLayout", "subPanel"],
         title : "Configuration",
         fields : [
           [
