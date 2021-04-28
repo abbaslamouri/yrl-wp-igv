@@ -29,9 +29,9 @@ class ChartLayout extends ChartDefault {
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
       plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#FFFFFF",
       width : ( this.layout.width !== undefined ) ? this.layout.width : null,
-      height : ( this.layout.height !== undefined ) ? this.layout.height : 400,
-      autosize : ( this.layout['autosize']!== undefined ) ? this.layout['autosize'] : true,
-      hovermode : ( this.layout['hovermode']!== undefined ) ? this.layout['hovermode'] : "closest",
+      height : ( this.layout.height !== undefined ) ? this.layout.height : 600,
+      autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
+      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : false,
       font : {
         family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
         size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
@@ -69,7 +69,7 @@ class ChartLayout extends ChartDefault {
         orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
         itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'constant',
         itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 100,
-        itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : "toggle",
+        itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
         x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.01,
         y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 0.5,
         valign : ( this.layout.legend !== undefined && this.layout.legend.valign !== undefined ) ? this.layout.legend.valign : "middle",
@@ -276,11 +276,11 @@ class ChartLayout extends ChartDefault {
                 x: "X",
                 y: "Y",
                 closest: "Closest",
-                "false": "Disabled",
+                disabled: "Disabled",
                 "x unified": "X Unified",
                 "y unified": "Y Unified"
               },
-              value : this.options().hovermode,
+              value : (this.options().hovermode)? this.options().hovermode : "disabled",
               hint: "Determines the mode of hover interactions. If 'closest', a single hoverlabel will appear for the 'closest' point within the `hoverdistance`. If 'x' (or 'y'), multiple hoverlabels will appear for multiple points at the 'closest' x- (or y-) coordinate within the `hoverdistance`, with the caveat that no more than one hoverlabel will appear per trace. If 'x unified' (or 'y unified'), a single hoverlabel will appear multiple points at the closest x- (or y-) coordinate within the `hoverdistance` with the caveat that no more than one hoverlabel will appear per trace. In this mode, spikelines are enabled by default perpendicular to the specified axis. If false, hover interactions are disabled. If `clickmode` includes the 'select' flag, `hovermode` defaults to 'closest'. If `clickmode` lacks the 'select' flag, it defaults to 'x' or 'y' (depending on the trace's `orientation` value) for plots based on cartesian coordinates. For anything else the default value is 'closest'."
             },
           ]
@@ -457,9 +457,9 @@ class ChartLayout extends ChartDefault {
               options : {
                 toggle: "Toggle",
                 toggleothers: "Toggle Other",
-                false: "Disable"
+                disabled: "Disabled"
               },
-              value : this.options().legend.itemclick,
+              value : ( this.options().legend.itemclick ) ? this.options().legend.itemclick : "disabled",
               hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
             },
           ],

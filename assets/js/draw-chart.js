@@ -78,6 +78,8 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
     }
 
+    chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
+
      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartConfig.options).then (function() {
 
@@ -122,29 +124,31 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       }
       chart.tableChart.options.header.values = headerValues
 
+       // Set table header alignment
+      chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
+
 
       // Round cells values if rounding is not 0
       if ( chart.tableChart.options.rounding) {
-        const cellsValues = []
+        const cellValues = []
         for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
-          cellsValues[i] =[]
+          cellValues[i] =[]
           for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
-            cellsValues[i][j] = ( parseFloat( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) )
+            cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
           }  
         }
-        chart.tableChart.options.cells.values = cellsValues  
+        chart.tableChart.options.cells.values = cellValues  
       } else {
-        // Set table default cell values
         chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
       }
 
-      // Set table cells alignment
-      chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign , chart.tableChart.options.otherColsAlign]
+       // Set table cells alignment
+       chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
 
       // Set table even and odd row colors
       const rowFillColors = []
       for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-        rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.evenRowColor : chart.tableChart.options.oddRowColor
+        rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
       }
       chart.tableChart.options.cells.fill.color = [rowFillColors]
 
@@ -227,52 +231,107 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
       }
 
       // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
-      if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return 
+      if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return
+
+        const control = chartOptionKey(event.target.id).control
+        const key = chartOptionKey(event.target.id).key
+        const parts = key.split(".")
+        let value = event.target.value
+        console.log("PARTS",control, key, parts, value)
+
 
       // Chart layout event handler
-      // if ( event.target.classList.contains( `${iwpgvObj.prefix}__chartLayout` ) ) {
+        if( control === "chartLayout" )  {
+          console.log("KRU",key)
 
-        if (chartOptionKey(event.target.id).key.includes("config")) {
-          console.log("PPPPPP",chartOptionKey(event.target.id).key.split(".")[1])
-          console.log({ [chartOptionKey(event.target.id).key.split(".")[1]]: event.target.type === 'checkbox' ? event.target.checked : event.target.value} )
-          Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+          if (key === "hovermode" || key === "legend.itemclick" ) value = ( value !== "disabled" ) ? value : false
+        
 
-          chart.chartConfig[chartOptionKey(event.target.id).key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-          console.log("GGGGGGG",chart.chartConfig )
-          Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig)
-          // Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, {}, { [chartOptionKey(event.target.id).key.split(".")[1]]: event.target.type === 'checkbox' ? event.target.checked : event.target.value} )
-        } else {
-          console.log("PPPPPP",chartOptionKey(event.target.id))
+          // switch(parts.length){
+          //   case 1:
+          //     chart[control].options[parts[0]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+          //     break
+          //   case 2:
+          //     // chart[control].options[parts[0]][parts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+          //     break
+          //   case 3:
+          //     // chart[control].options[parts[0]][parts[1]][parts[2]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+          //     break
+          //   case 4:
+          //       // chart[control].options[parts[0]][parts[1]][parts[2]][parts[3]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+          //     break
+          // }
 
-          const parts = chartOptionKey(event.target.id).key.split(".")
-          console.log("PARTS",parts)
+           Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.config)
+      //  }
 
-          // let plotType
+          if (chartOptionKey(event.target.id).key.includes("config")) {
+            console.log("PPPPPP",chartOptionKey(event.target.id).key.split(".")[1])
+            console.log({ [chartOptionKey(event.target.id).key.split(".")[1]]: event.target.type === 'checkbox' ? event.target.checked : event.target.value} )
+            Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
 
-          switch(chartOptionKey(event.target.id).control) {
-            case "tableChart":
-              switch(parts.length){
-                case 1:
-                  // chart.tableChart.options[] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-                  break
-                case 2:
-                  chart.tableChart.options[parts[0]][parts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-                  break
-                case 3:
-                  chart.tableChart.options[parts[0]][parts[1]][parts[2]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-                  break
-              }
-              Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartConfig)
-              console.log(chart.tableChart.options)
-              break
-            default:
-             
-             break
+            chart.chartConfig[chartOptionKey(event.target.id).key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+            console.log("GGGGGGG",chart.chartConfig )
+            Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, chart.chartTraces, chart.chartLayout, chart.chartConfig)
+           
+
           }
 
-          // Plotly.relayout(`${iwpgvObj.prefix}__${plotType}`, { [chartOptionKey(event.target.id).key]: event.target.type === 'checkbox' ? event.target.checked : event.target.value})
+         
+        } else if( control === "tableChart" || control ==="minMaxAvgTableChart" )  {
+
+          const plotlyTable = ( control === "tableChart" ) ? `${iwpgvObj.prefix}__plotlyTable` : ( control === "minMaxAvgTableChart" ) ? `${iwpgvObj.prefix}__plotlyMinMaxTable` : null
+
+          console.log("PPPfffPPPP")
+         
+          switch(parts.length){
+            case 1:
+              if (parts[0] === "firstColAlign") {
+                chart[control].options.cells.align = [event.target.value, chart[control].options.cells.align[1]]
+                chart[control].options.header.align = [event.target.value, chart[control].options.header.align[1]]
+              } else if (parts[0] === "rounding") {
+                const cellValues = []
+                for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+                  cellValues[i] =[]
+                  for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
+                    cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( event.target.value ) ) 
+                  }  
+                }
+                chart[control].options.cells.values = cellValues
+              } else if (  parts[0] === "evenRowColor" ) {
+                 // Set table even and odd row colors
+                const rowFillColors = []
+                for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+                  rowFillColors[j] = (j % 2 === 0) ? chart[control].options.oddRowColor : event.target.value 
+                }
+                chart[control].options.cells.fill.color = [rowFillColors]
+              } else if (  parts[0] === "oddRowColor" ) {
+                // Set table even and odd row colors
+                const rowFillColors = []
+                for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+                  rowFillColors[j] = (j % 2 === 0) ? event.target.value : chart[control].options.evenRowColor
+                }
+                chart[control].options.cells.fill.color = [rowFillColors]
+               } else {
+                chart[control].options[parts[0]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+              }
+              break
+            case 2:
+              chart[control].options[parts[0]][parts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+              break
+            case 3:
+              chart[control].options[parts[0]][parts[1]][parts[2]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+              break
+            case 4:
+                chart[control].options[parts[0]][parts[1]][parts[2]][parts[3]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+              break
+          }
+
+          if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout, chart.chartConfig)
+          
 
         }
+        
 
       // }
 
@@ -298,6 +357,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
 
       }
+      console.log(chart[control].options)
 
     })
 
