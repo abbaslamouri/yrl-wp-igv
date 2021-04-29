@@ -1,7 +1,5 @@
 <!-- Create a header in the default WordPress 'wrap' container -->
  <div class='<?php echo $this->prefix; ?>'>
-
-
  
   <!-- Show module title -->
   <div class="admin-heading">
@@ -80,12 +78,12 @@
       <div class="chart-options">
 
         <!-- Create the form that will be used to render our options -->
-        <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" action='options.php' method='post' novalidate>
+        <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" method='post' novalidate>
 
           <div class="accordion">
             <?php foreach ( $payload["chart"] as $element ) :?>
               <?php if ($element["panel"]["id"] !== "{$this->prefix}__chartConfigPanel") :?>
-                <div class="accordion__toggle hidden">
+                <div class="accordion__toggle hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>">
                   <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
                   <svg class="accordion__svg">
                     <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>

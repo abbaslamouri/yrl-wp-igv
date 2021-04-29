@@ -4,6 +4,7 @@ import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
 import renderPanel from "./renderPanel"
 import Accordion from "./Accordion"
+import saveChart from "./save-chart"
 import {
   toggleElementById,
   showElementById,
@@ -39,7 +40,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     chart.chartLayout.panel.sections = chartLayoutInstance.sections()
 
     // set chart configuration
-    chart.chartConfig.options = chart.chartLayout.options.config
+    // chart.chartLayout.options.config = chart.chartLayout.options.config
 
     // Render chart layout panel
     renderPanel(chart.chartLayout.panel, iwpgvObj)
@@ -81,7 +82,7 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
 
      // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartConfig.options).then (function() {
+     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config).then (function() {
 
       toggleElementById( `${iwpgvObj.prefix}__spinner` )
       // console.log("Done plotting Chart")
@@ -203,6 +204,17 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
 
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
+    
+    // Add click event listener to the chart params panel inoput fields
+    document.addEventListener("click", function (event) {
+      
+      // Save chart event handler
+      if (event.target.closest("form") && event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm` && event.target.id === `${iwpgvObj.prefix}__saveChart`) {
+        event.preventDefault()
+        saveChart(chart, iwpgvObj)
+      }
+      
+    })
 
     document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
       element.classList.remove("hidden")
@@ -245,8 +257,8 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
         if( control === "chartLayout" )  {
           if (key.includes("config")) {
             // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-            chart.chartConfig.options[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : value
-            Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartConfig.options)
+            chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : value
+            Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
           } else {
           if (key === "hovermode" || key === "legend.itemclick" ) value = ( value !== "disabled" ) ? value : false
           Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.config)

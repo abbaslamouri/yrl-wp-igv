@@ -52,6 +52,9 @@ const mediaUploader = function (chart, iwpgvObj) {
       Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
       Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
+      const oldSpreadsheet = {...jsonRes.spreadsheet}
+      // chart.chartParams.options.sheetId = null
+
       // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
       // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .panelIntro`).innerHTML = ""
 
@@ -102,13 +105,28 @@ const mediaUploader = function (chart, iwpgvObj) {
       document.addEventListener("change", function (event) {
 
         // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
-        if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ||  ! event.target.classList.contains(`${iwpgvObj.prefix}__chartParams`)  ) return 
+        if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ||  ! event.target.classList.contains(`${iwpgvObj.prefix}__chartParams`)  ) return
+
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
         // Bail if no file, sheet Id or chart type
         if( ! fileUploadInput.value ||  ! sheetIdInput.value || ! chartTypeInput.value   ) return
+        console.log("old", oldSpreadsheet)
+        console.log("new", jsonRes.spreadsheet)
+        console.log("=======",oldSpreadsheet == jsonRes.spreadsheet)
+
+        if (chart.chartParams.options.sheetId && oldSpreadsheet[chart.chartParams.options.sheetId] && jsonRes.spreadsheet[sheetIdInput.value].data.length < oldSpreadsheet[chart.chartParams.options.sheetId].data.length) {
+          console.log("HERE")
+          for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < oldSpreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+            delete chart.chartTraces.options[i]
+            delete chart.chartTraces.panel.sections[i]
+          }
+        }
         
         // Delete extra rows if the length of the existing data object is greater thatn the new datat object
-        if (chart.chartParams.options.sheetId && (jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
+        if (chart.chartParams.options.sheetId && jsonRes.spreadsheet[chart.chartParams.options.sheetId] && (jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
           for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
             delete chart.chartTraces.options[i]
             delete chart.chartTraces.panel.sections[i]

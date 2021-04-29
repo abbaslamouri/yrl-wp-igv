@@ -21,7 +21,7 @@
         foreach($payload as $chart_id => $chart):
           ?>
           <div class="card">
-            <h2 class="card__heading"><?php echo $chart['chartParams']['fileUpload']; ?></h2>
+            <h2 class="card__heading"><?php echo $chart['chartParams']['options']['fileUpload']; ?></h2>
             <div class="card_content">
               <div class="chart-container">
                 <div class="chart" id="<?php echo "{$this->prefix}__chart__{$chart_id}"; ?>"></div>

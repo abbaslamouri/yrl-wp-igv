@@ -1,3 +1,4 @@
+import Plotly from 'plotly.js-dist'
 import {
   toggleElement,
   hideElement,
@@ -9,75 +10,45 @@ import {
 import fetchData from "./fetch-data";
 import renderChart from "./render-chart";
 
-// const iwpgvCharts = yrl_wp_igv_charts
-// const iwpgvObj = yrl_wp_igv_obj
-// const iwpgvObj.prefix = iwpgvObj.iwpgvObj.prefix
 
-const listCharts = async function ( iwpgvCharts, iwpgvObj) {
 
-  const payload = iwpgvCharts.charts
+const listCharts = async function ( charts, iwpgvObj) {
+
   
-  Object.values(payload).forEach(async (el) => {
+  Object.values(charts).forEach(async (el) => {
+    console.log("EL", el)
 
-    delete el.chartOptions.annotations 
-    delete el.chartOptions.crosshair 
-    el.chartOptions.tooltip.trigger= "none"
-    el.chartOptions.width = '100%'
-    el.chartOptions.height = 200;
-    el.chartOptions.legend.position = 'none'
-    el.chartOptions.title= null
-    el.chartOptions.backgroundColor.strokeWidth = 2;
+    console.log(Object.values(el.chartTraces.options))
 
-    if (el.chartParams.chartType !== 'PieChart') {
-      el.chartOptions.chartArea.top = 40;
-      el.chartOptions.chartArea.left = 60;
-      el.chartOptions.chartArea.width = null;
-      el.chartOptions.chartArea.height = null;
-      el.chartOptions.chartArea.backgroundColor.strokeWidth = 1;
+    console.log(Object.values(el.chartTraces.options).length === el.sheet.data.length-1)
+
+    for ( let i=0; i < el.chartTraces.options.length; i++) {
+      console.log(i)
+      el.chartTraces.options[i].x = el.sheet.data[0]
+      el.chartTraces.options[i].y = el.sheet.data[i+1]
+      el.chartTraces.options[i].showlegend = false
+      el.chartLayout.hovermode = false
+      el.chartLayout.height = 200
+      el.chartLayout.margin ={
+        autoexpand: true,
+        t:10,
+        b:30,
+        l:60,
+        r:60,
+        pad:0
+      }
+      el.chartLayout.title = null
+      el.chartLayout.options.config.displayModeBar = false
     }
+    // el.chartTraces.options.x =
+    // el.chartTraces.options.y =
+    Plotly.newPlot(`${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout, el.chartLayout.options.config)
 
-    // const containers = {...containers}
-    // containers.chart = `iwpgv__chart__${el.chartParams.chartId}`
-    renderChart(el, el.chartParams.sheet, {chart:`${iwpgvObj.prefix}__chart__${el.chartParams.chartId}`}, "list")
+   
+    // renderChart(el, el.chartParams.sheet, {chart:`${iwpgvObj.prefix}__chart__${el.chartParams.chartId}`}, "list")
   
   });
 
-  // Toggle Spinner, Wraning and Dasjbaord Div
-  // toggleElement(`${iwpgvObj.prefix}__spinner`);
-  // hideElement(`${iwpgvObj.prefix}__warning`);
-  // hideElement(`${iwpgvObj.prefix}__dashboard`);
-
-
-  // try {
-  //   const formData = new FormData(
-  //      document.getElementById(`${iwpgvObj.prefix}__chartOptionsForm`)
-  //   );
-
-    
-  //   formData.append("action", iwpgvObj.file_select_action);
-  //   formData.append("nonce", iwpgvObj.file_select_nonce);
-
-  //   //send ajax resquest
-  //   const jsonRes = await fetchData(formData);
-    
-  //   if (jsonRes.message) {
-  //     displayAdminMessage(jsonRes.message);
-  //   }
-
-  //   // Success handler
-  //   if (jsonRes.status && jsonRes.status === "success") {
-  //     setSheetId(jsonRes.spreadsheet, "");
-  //     setChartTypeId("");
-  //   } else {
-  //     throw new Error( jsonRes.message)
-  //   }
-  // } catch (error) {
-  //   console.log("ERRROR", error)
-  //   displayAdminMessage(error.message);
-  // } finally {
-  //   toggleElement(`${iwpgvObj.prefix}__spinner`);
-  //   showElement(`${iwpgvObj.prefix}__warning`);
-  // }
 };
 
 export default listCharts;

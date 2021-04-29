@@ -235,15 +235,19 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
     // Enable save button
     document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
 
-    
-
-
     // Add change event listener on all the document
     document.addEventListener("change", function (event) {
       
       event.preventDefault()
 
       console.log(event.target.classList)
+
+          // save chart
+      if (event.target.id === `${iwpgvObj.prefix}__saveChart`) {
+        // event.preventDefault();
+        saveChart(chart, iwpgvObj);
+        return
+      }
 
       // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
       if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ) return 

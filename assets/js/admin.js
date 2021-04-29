@@ -2,10 +2,11 @@ import Accordion from "./Accordion"
 import ChartParams from "./ChartParams"
 import mediaUploader from "./media-uploader"
 import renderPanel from "./renderPanel"
-import saveChart from "./save-chart"
+import drawChart from "./draw-chart";
 import listCharts from "./list-charts"
 import { displayAdminMessage, showElementById } from "./utilities"
 import "../sass/admin.scss"
+import { drawMode } from "plotly.js-basic-dist"
 
 
 let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}
@@ -13,10 +14,6 @@ let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
 
 console.log("iwpgvObj", iwpgvObj)
 console.log("iwpgvCharts", {...iwpgvCharts})
-
-// Unhide the panel toogle and content divs
-document.querySelector( `.accordion__toggle` ).classList.remove("hidden")
-document.querySelector( `.accordion__content` ).classList.remove("hidden")
 
 try {
 
@@ -26,16 +23,12 @@ try {
   // List all charts
   if (iwpgvCharts.action && iwpgvCharts.action === "listCharts") {
 
-    listCharts( iwpgvCharts, iwpgvObj)
+    listCharts( iwpgvCharts.charts, iwpgvObj)
 
   } else {
-  
+
     // Initialize chart and panels
     const chart = iwpgvCharts.chart
-    for(const prop in chart) {
-      chart[prop].options = {...chart[prop].options}
-      chart[prop].panel.sections = {...chart[prop].panel.sections}
-    }
 
     // Assemble chart Params chart and panels
     const chartParamsInstance = new ChartParams( chart.chartParams.options, iwpgvObj )
@@ -44,6 +37,26 @@ try {
 
     // Render chart params panel
     renderPanel(chart.chartParams.panel, iwpgvObj)
+
+    // Unhide the panel toogle and content divs
+    document.querySelector( `.accordion__toggle` ).classList.remove("hidden")
+    document.querySelector( `.accordion__content` ).classList.remove("hidden")
+
+
+    if (iwpgvCharts.spreadsheet) {
+      console.log("HERE")
+
+      drawChart(iwpgvCharts.spreadsheet, chart, iwpgvObj)
+
+    } else {
+    
+      for(const prop in chart) {
+        chart[prop].options = {...chart[prop].options}
+        chart[prop].panel.sections = {...chart[prop].panel.sections}
+      }
+
+    
+    }
 
       // Add new or edit an existing chart
     if (iwpgvCharts.action && iwpgvCharts.action === "editChart") {
@@ -58,15 +71,8 @@ try {
       
         // file uploader event listener
         if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
-          event.preventDefault()
-          
+          event.preventDefault()          
           mediaUploader( chart, iwpgvObj )
-        }
-        
-        // Save chart event handler
-        if (event.target.id === `${iwpgvObj.prefix}__saveChart`) {
-          event.preventDefault()
-          saveChart()
         }
         
       })

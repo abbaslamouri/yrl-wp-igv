@@ -98,16 +98,18 @@ if (!class_exists('Dashboard')) {
 			// Add admin Submenus, section and fields
       add_action('admin_menu', array($this, 'admin_menu_register'));
 
-			// // Plugin options
-      $this->settings = get_option("{$this->prefix}_settings") ? get_option("{$this->prefix}_settings") : [];
-      $this->file_settings = isset($this->settings['files']) ? $this->settings['files'] : [];
-			$this->chart_settings = isset($this->settings['chart']) ? $this->settings['chart'] : [];
+			// // // Plugin options
+      // $this->settings = get_option("{$this->prefix}_settings") ? get_option("{$this->prefix}_settings") : [];
+      // $this->file_settings = isset($this->settings['files']) ? $this->settings['files'] : [];
+			// $this->chart_settings = isset($this->settings['chart']) ? $this->settings['chart'] : [];
 			
-			$this->settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : array();
+			// $this->settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : array();
 
-			$this->charts = (isset($this->settings["charts"]))? $this->settings["charts"] : array();
+			// $this->charts = (isset($this->settings["charts"]))? $this->settings["charts"] : array();
+
+			// get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 		
-			$this->files = (isset($this->settings["files"]))? $this->settings["files"] : array();
+			// $this->files = (isset($this->settings["files"]))? $this->settings["files"] : array();
 		
 
 			// Register styles and scripts
@@ -639,7 +641,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
 
-      // wp_send_json(($_POST));
+      //  wp_send_json($_POST);
 
 			try {
 				
@@ -653,126 +655,60 @@ if (!class_exists('Dashboard')) {
 				}
 				
 				// Verify if chart options are set
-				if (! isset($_POST["{$this->prefix}__chartOptions"])) { 
-          throw new \Exception (__("Chart options missing.", $this->plugin));
+				if ( ! isset($_POST["{$this->prefix}__traces"]) && ! empty( $_POST["{$this->prefix}__traces"] ) ) { 
+          throw new \Exception (__("Chart Traces missing.", $this->plugin));
 				}
 
 				// Verify if the axes are set
-				if ( $_POST["{$this->prefix}__chartParams"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
-          throw new \Exception (__("Axis options missing.", $this->plugin));
-				}
+				// if ( $_POST["{$this->prefix}__chartParams"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
+        //   throw new \Exception (__("Axis options missing.", $this->plugin));
+				// }
+       	// wp_send_json($_POST);
+
+				// Fetch all charts
+				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 
         // There is a chart Id (edit)
-        if (isset($_POST["{$this->prefix}__chartId"]) && $_POST["{$this->prefix}__chartId"] ) {
-					$chart_id = $_POST["{$this->prefix}__chartId"];
+        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"] ) {
+					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
 
 				// New chart
         } else {
-
-           // Pick a random 5 digit number  ($i id used to interupt the process in case the random number search exceeds 1000000)
-					$i = 1;
-					$chart_id = rand ( 10000 , 99999 );
-					if( ! empty( $this->charts)) {
-						while(in_array($chart_id, array_keys($this->charts)) && $i < 1000000) {
-							$chart_id = rand ( 10000 , 99999 );
-							$i++;
-						}
-					}
-
-					if ($i >= 999999999) {
-						throw new \Exception ( __("Unable to come up with a 5 digit chart id after 999999999 tries.", $this->plugin));
-					}
-
+					$last_chart = end( $charts );
+					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["{$this->prefix}__chartParams"]["chartId"] + 1 : 1032;
 				}
 				
 				// Assemble chart
-				// $chart = [];
-				// Set chart params
-				$chart["chartParams"] = $_POST["{$this->prefix}__chartParams"];
-				$chart["chartParams"]["chartId"] = $chart_id;
-				// $chart["chartParams"]["fileName"] 	= $_POST["{$this->prefix}__chartParams"]["fileUpload"];
-				// $chart["chartParams"]["sheetId"] = $_POST["{$this->prefix}__chartParams"]["sheetId"];
-				// $chart["chartParams"]["chartType"] = $_POST["{$this->prefix}__chartParams"]["chartType"];
-				
-				
-				// Set chart options
-				$chart["chartOptions"] = $_POST["{$this->prefix}__chartOptions"];
-				
-				// If linedashstyle is set convert to arrray
-        if (isset($chart["chartOptions"]["lineDashStyle"]) && $chart["chartOptions"]["lineDashStyle"]) {
-          $chart["chartOptions"]["lineDashStyle"] = explode(",", $_POST["{$this->prefix}__chartOptions"]["lineDashStyle"]);
-				}
-
-				// Set horizontal axis and convert axis ticks to array if any
-        if ( isset($_POST["{$this->prefix}__horAxisOptions"] ) ) {
-          $chart["horAxisOptions"] = $_POST["{$this->prefix}__horAxisOptions"];
-          if (isset($chart["horAxisOptions"]["hAxis"]["ticks"]) && $chart["horAxisOptions"]["hAxis"]["ticks"] ) {
-            $chart["horAxisOptions"]["hAxis"]["ticks"] = explode(",", $_POST["{$this->prefix}__horAxisOptions"]["hAxis"]["ticks"]);
-          }
-        } else {
-          $chart["horAxisOptions"]["hAxis"] = [];
-				}
-				
-        // Set left vertical axis and convert axis ticks to array if any
-        if (isset($_POST["{$this->prefix}__leftAxisOptions"])) {
-          $chart["leftAxisOptions"] = $_POST["{$this->prefix}__leftAxisOptions"];
-          if (isset($chart["leftAxisOptions"]["vAxes"][0]["ticks"]) && $chart["leftAxisOptions"]["vAxes"][0]["ticks"] ) {
-            $chart["leftAxisOptions"]["vAxes"][0]["ticks"] = explode(",", $_POST["{$this->prefix}__leftAxisOptions"]["vAxes"][0]["ticks"]);
-          }
-        } else {
-          $chart["leftAxisOptions"]["vAxes"][0] = [];
-        }
-
-				// Set right vertical axis and convert axis ticks to array if any
-        if ( isset($_POST["{$this->prefix}__rightAxisOptions"]) ) {
-          $chart["rightAxisOptions"] = $_POST["{$this->prefix}__rightAxisOptions"];
-          if (isset($chart["rightAxisOptions"]["vAxes"][0]["ticks"]) && $chart["rightAxisOptions"]["vAxes"][0]["ticks"] ) {
-            $chart["rightAxisOptions"]["vAxes"][1]["ticks"] = explode(",", $_POST["{$this->prefix}__rightAxisOptions"]["vAxes"][1]["ticks"]);
-          }
-        } else {
-          $chart["rightAxisOptions"]["vAxes"][1]  = [];
-        }
-				
-				// Set Pie Chart options if any
-				$chart["pieChartOptions"]= isset($_POST["{$this->prefix}__pieChartOptions"]) ? $_POST["{$this->prefix}__pieChartOptions"] : [];
-				
-				// Set series options if any
-				$chart["seriesOptions"] = isset($_POST["{$this->prefix}__seriesOptions"]) ? $_POST["{$this->prefix}__seriesOptions"] : [];
-				
-				// Set trendlines if any
-				$chart["trendlinesOptions"] = isset($_POST["{$this->prefix}__trendlinesOptions"]) ? $_POST["{$this->prefix}__trendlinesOptions"] : [];
-
-				// Set Number Range Slider if any
-				$chart["numRangeOptions"] = isset($_POST["{$this->prefix}__numRangeOptions"]) ? $_POST["{$this->prefix}__numRangeOptions"] : [];
-				
-				// Set Min Max table if any
-				$chart["minMaxTableChartOptions"] = isset($_POST["{$this->prefix}__minMaxTableChartOptions"]) ? $_POST["{$this->prefix}__minMaxTableChartOptions"] : [];
-				
-				// Add new chart to the charts array and update option
-				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-				$charts[$chart_id] = $chart;
+				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
+				$charts[$chart_id]["chartParams"]["options"]["chartId"] = $chart_id;
+				$charts[$chart_id]["chartLayout"]["options"] = ( isset( $_POST["{$this->prefix}__chartLayout"] ) ) ? $_POST["{$this->prefix}__chartLayout"] : [];
+				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
+				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+			
+	
         if (! update_option("{$this->prefix}_charts", $charts)) {
 					throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
 				}
-				
-				// Add success message
-				$status = "success";
-				$message = "<div class='notice notice-success is-dismissible'><p>Chart (ID = {$chart_id} ) saved successfully</p></div>";
+
+				// Compose response
+				$response = array(
+					"status" => "success",
+					"message" => "Chart saved successfully",
+				);
+
 
 			} catch (\Exception $e) {
 
 				// Prepare error output
-				$status = "error";
 				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
 
-			}
+				$response = [
+					"status"  => "error",
+					"message" => $message,
+				];
 
-			// Compose response
-			$response = array(
-				"status"	 => $status,
-        "message" => $message,
-        "post" => $_POST
-			);
+			}
 
 			// return ajax data
 			wp_send_json($response);
@@ -829,7 +765,7 @@ if (!class_exists('Dashboard')) {
 				);
 
 				// return ajax data
-				wp_send_json($response);
+				// wp_send_json($response);
 			
 			} catch (\Exception $e) {
 
@@ -840,692 +776,17 @@ if (!class_exists('Dashboard')) {
 					"status"  => "error",
           "message" => $message,
 				];
-					// return ajax data
-				wp_send_json($response, 200);
+				
 			}
+
+			// return ajax data
+			wp_send_json($response);
 
 		}  // END public function contact_form_process() {
 
 
 
     
-    /**
-     * Sets all parameters required to draw chart
-     *
-     * @return void
-     */
-		public function fetch_chart_options_n_panels() {
-
-			//  wp_send_json($_POST);
-	
-			try {
-
-				// Verify if action and nonce are valid
-				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_fetch_chart_options_n_panels_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__fetch_chart_options_n_panels_nonce")) {
-					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
-				}
-
-				// verify if a file was selected (file id submitted)
-				if (! isset($_POST["{$this->prefix}__chartParams"]["fileUpload"]) || ! isset($_POST["{$this->prefix}__chartParams"]["sheetId"]) ) { 
-					throw new \Exception (__("Please selecte a file and a sheet.", $this->plugin));
-			 }
-
-
-			 // Fetch chart type
-			 $chart_type = (isset($_POST["{$this->prefix}__chartParams"]["chartType"]) )? $_POST["{$this->prefix}__chartParams"]["chartType"] : null;
-
-				// process spreadsheet
-				$spreadsheet = $this->fetch_spreadsheet($_POST["{$this->prefix}__chartParams"]["fileUpload"]);
-
-				if ( is_wp_error($spreadsheet)) {
-					$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-					throw new \Exception ( __($message, $this->plugin));
-				}
-
-				// Get selected sheet
-				$sheet = $spreadsheet[$_POST["{$this->prefix}__chartParams"]["sheetId"]];
-
-				$panels = [];
-
-				$chart = [];
-
-				// Set chart params and fields
-				$chart_params = isset($_POST["{$this->prefix}__chartParams"]) ? $_POST["{$this->prefix}__chartParams"] : [];
-				$chart_params_instance = new ChartParams( $chart_params );
-				$chart['chartParams'] = $chart_params_instance->params();
-				$panels = array_merge($panels, $chart_params_instance->fields());
-
-				// Set chart layout and fields
-				$chart_layout = isset($_POST["{$this->prefix}__chartLayout"]) ? $_POST["{$this->prefix}__chartLayout"] : [];
-				$chart_layout_instance = new ChartLayout( $chart_layout  );
-				$chart['chartLayout'] = $chart_layout_instance->layout();
-				$panels = array_merge($panels, $chart_layout_instance->fields());
-
-			
-
-
-				// Set traces
-				$traces_options = isset( $_POST["{$this->prefix}__traceOptions"] ) ? $_POST["{$this->prefix}__traceOptions"] : [];
-				$chart['traceOptions'] = [];
-				$panels["traceOptions"] = [
-					"id" => "{$this->prefix}__traceOptionsPanel",
-					'cssClass' => ['traceOptions', 'chart'],
-					"title" => __("Trace Options", $this->plugin),
-					'sections' => [
-					]
-				];
-				$i = 1;
-				while ($i < count($sheet['labels'])) {
-					
-					$trace_option = ( ! empty($traces_options) && isset($traces_options[$i]) ) ? $traces_options[$i] : [];
-					$trace_options_instance = new TraceOption( $trace_option , $i, $sheet['labels'], $chart_type );
-					$chart['traceOptions'][$i-1] = $trace_options_instance->options();
-					$chart['traceOptions'][$i-1]["x"] = $sheet["data"][0];
-					$chart['traceOptions'][$i-1]["y"] = $sheet["data"][$i];
-					$panels["traceOptions"]['sections'][$i-1]['id'] = "{$this->prefix}__traceOptionsPanel__trace[{$i}-1]";
-					$panels["traceOptions"]['sections'][$i-1]['title'] = count($sheet['labels']) > 1 ? __(array_values($sheet['labels'])[$i], $this->plugin) : "";
-					$panels["traceOptions"]['sections'][$i-1]['fields'] = $trace_options_instance->fields();
-					$i++;
-				}
-
-				// array_shify($chart['traceOptions']);
-				// wp_send_json($chart['traceOptions']);
-				
-
-
-
-
-				 // Set series
-				//  if ( isset($options['chartParams']['enableSeries']) && $options['chartParams']['enableSeries'])
-					// 	// Initialize series panels and options
-				
-
-				
-
-
-				
-
-					// $chart['chartOptions']['series'] = $this->fetch_series_trendlines([], 'series',  $sheet)['options'];
-					// $panels['series'] = $this->fetch_series_trendlines([], 'series',  $sheet)['panel'];
-				// }
-
-				// wp_send_json($chart);
-
-
-
-
-
-
-				// public function fetch_series_trendlines($options = [], $target = "series", $sheet = []) {
-
-				// 	$errors = new \WP_Error();
-			
-				// 	if (! $sheet || ! $target ) {
-				// 		$message = "A sheet and a target are required to compile series and trendlines.";
-				// 		$errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
-				// 		// return $errors;
-				// 		return [];
-				// 	}
-			
-				// 	$id = $target === 'series' ?  'series' : 'trendlines';
-				// 	$title = $target === 'series' ?  'Series' : 'Trendlines';
-					
-				
-				// 	// Initialize series panels and options
-				// 	$panel = [
-				// 		"id" => "yrl_wp_igv__{$target}Panel",
-				// 		'cssClass' => $id === 'series' ? 'seriesOption' : 'trendlinesOption',
-				// 		"title" => __("{$title}", $this->plugin),
-				// 		'sections' => [
-				// 		]
-				// 	];
-					
-			
-				// 	$target_options = [];
-			
-				// 	// Populate series panels and options
-				// 	$i=0;
-				// 	$j=0;
-				// 	$labels = [];
-				// 	$series_options = [];
-				// 	while ($i < count($sheet['labels'])) {
-				// 		if ( array_values($sheet['dataTypes'])[$i] === 'number' && ( ! isset($sheet['roles']) || (isset($sheet['roles']) && array_values($sheet['roles'])[$i] === 'data'))) {
-				// 			$labels[$j] = array_values($sheet['labels'])[$i];
-			
-				// 			$instance = $target == 'series' ? new SeriesOption($options, $j, $labels) : new TrendlinesOption($options, $j, $labels);
-			
-				// 			$series_options[$j] = $instance->options();
-				// 			$seed = $instance->seed();
-				// 			$panel['sections']["{$id}-{$j}"]['id'] = "{$id}-{$i}";
-				// 			$panel['sections']["{$id}-{$j}"]['title'] = count($sheet['labels']) > 1 ? __(array_values($sheet['labels'])[$i], $this->plugin) : "";
-				// 			$panel['sections']["{$id}-{$j}"]['fields'] = $seed;
-				// 			$j++;
-				// 		}
-				// 		$i++;
-						
-				// 	};
-					
-				// 	return ['panel' => $panel, 'options' => $series_options];
-			
-				// }
-
-
-
-
-
-
-
-
-
- 
-
-				// $chart_params = isset ($_POST["{$this->prefix}__chartParams"] ) ? $_POST["{$this->prefix}__chartParams"] : [];
-
-				// // verify if a file was selected (file id submitted)
-				// if (! isset($chart_params["fileUpload"]) || ! isset($chart_params["sheetId"]) || ! isset ($chart_params["chartType"])) { 
-				// 	 throw new \Exception (__("Please selecte a file, a sheet and a chart type.", $this->plugin));
-				// }
-				
-				// $chart_options = isset ($_POST["{$this->prefix}__chartOptions"]) ? $_POST["{$this->prefix}__chartOptions"] :[];
-				// $hor_axis_options = isset ($_POST["{$this->prefix}__horAxisOptions"]) ? $_POST["{$this->prefix}__horAxisOptions"] : [];
-				// $left_axis_options = isset ($_POST["{$this->prefix}__leftAxisOptions"] ) ? $_POST["{$this->prefix}__leftAxisOptions"] : [];
-				// $right_axis_options = isset ( $_POST["{$this->prefix}__rightAxisOptions"] ) ? $_POST["{$this->prefix}__rightAxisOptions"] : [];
-				// $pie_Chart_options = isset ( $_POST["{$this->prefix}__pieChartOptions"] ) ? $_POST["{$this->prefix}__pieChartOptions"] : [];
-				// $trendlines_options = isset ( $_POST["{$this->prefix}__trendlinesOptions"] ) ? $_POST["{$this->prefix}__trendlinesOptions"] : [];
-				// $series_options = isset ( $_POST["{$this->prefix}__seriesOptions"] ) ? $_POST["{$this->prefix}__seriesOptions"] : [];
-				// $num_range_options = isset ( $_POST["{$this->prefix}__numRangeOptions"] ) ? $_POST["{$this->prefix}__numRangeOptions"] : [];
-				// $chart_range_options = isset ( $_POST["{$this->prefix}__chartRangeOptions"] ) ? $_POST["{$this->prefix}__chartRangeOptions"] : [];
-				// $min_max_table_options = isset ( $_POST["{$this->prefix}__minMaxTableChartOptions"] ) ? $_POST["{$this->prefix}__minMaxTableChartOptions"] : [];
-				// $table_chart_options = isset ( $_POST["{$this->prefix}__tableChartOptions"] ) ? $_POST["{$this->prefix}__tableChartOptions"] : [];
-
-
-        // // Convert chart linedashstyle to array if not null
-				//  if ( isset($chart_options["lineDashStyle"]) && $chart_options["lineDashStyle"] ) {
-				// 	$chart_options["lineDashStyle"] = convert_linedashes_n_ticks_to_array($chart_options["lineDashStyle"]);
-				// 	// $line_dash_style = explode(",", $chart_options["lineDashStyle"]);
-				// 	// array_walk($line_dash_style, function(&$element){$element = intval($element);});
-				// 	// $chart_options["lineDashStyle"] = $line_dash_style;
-				// } else {
-				// 	$chart_options["lineDashStyle"] = null;
-				// }
-
-			// 	// Convert chart linedashstyle to array if not null
-			// if ( ! isset($element_to_convert) || ! $element_to_convert )  return null;
-
-			// $style = explode(",", $element_to_convert);
-			// array_walk($style, function(&$element){$element = intval($element);});
-			// return $style;
-
-				// if ( $chart_options) {
-				// 	wp_send_json($chart_options);
-				// }
-				 
-				// Convert chart x-axis ticks to array if not null
-				// if ( isset($hor_axis_options["hAxis"]["ticks"]) && $hor_axis_options["hAxis"]["ticks"] ) {
-				// 	$hor_axis_options["hAxis"]["ticks"] = convert_linedashes_n_ticks_to_array($hor_axis_options["hAxis"]["ticks"]);
-				// 	// $axis_ticks = explode(",", $hor_axis_options["hAxis"]["ticks"]);
-				// 	// array_walk($axis_ticks, function(&$element){$element = intval($element);});
-				// 	// // wp_send_json($axis_ticks);
-				// 	// $hor_axis_options["hAxis"]["ticks"] = $axis_ticks;
-				//  } else {
-				// 	$hor_axis_options["hAxis"]["ticks"] = null;
-				//  }
-         
-        //  // // Convert chart left y-axis ticks to array if not null
-				// if ( isset($left_axis_options["vAxes"][0]["ticks"] ) && $left_axis_options["vAxes"][0]["ticks"] ) {
-				// 	$left_axis_options["vAxes"][0]["ticks"] = convert_linedashes_n_ticks_to_array($left_axis_options["vAxes"][0]["ticks"]);
-				// 	// $axis_ticks = explode(",", $left_axis_options["vAxes"][0]["ticks"]);
-				// 	// array_walk($axis_ticks, function(&$element){$element = intval($element);});
-				// 	// // wp_send_json($axis_ticks);
-				// 	// $left_axis_options["vAxes"][0]["ticks"] = $axis_ticks;
-				// } else {
-				// 	$left_axis_options["vAxes"][0]["ticks"] = null;
-				// }
-         
-        // // Convert  chart right y-axis ticks to array if not null
-				// if ( isset($right_axis_options["vAxes"][1]["ticks"] ) && $right_axis_options["vAxes"][1]["ticks"] ) {
-				// 	$right_axis_options["vAxes"][1]["ticks"] = convert_linedashes_n_ticks_to_array($right_axis_options["vAxes"][1]["ticks"]);
-				// 	// $axis_ticks = explode(",", $right_axis_options["vAxes"][1]["ticks"]);
-				// 	// array_walk($axis_ticks, function(&$element){$element = intval($element);});
-				// 	// // wp_send_json($axis_ticks);
-				// 	// $right_axis_options["vAxes"][1]["ticks"] = $axis_ticks;
-        // } else {
-				// 	$right_axis_options["vAxes"][1]["ticks"] = null;
-				// }
-
-				// // Reset haxis baseline if not set
-				// if ( ! isset($hor_axis_options["hAxis"]["baseline"] ) || ! $hor_axis_options["hAxis"]["baseline"] ) {
-				// 	$hor_axis_options["hAxis"]["baseline"] = null;
-				// }
-
-				// // Reset haxis min value if not set
-				// if ( ! isset($hor_axis_options["hAxis"]["minValue"] ) || ! $hor_axis_options["hAxis"]["minValue"] ) {
-				// 	$hor_axis_options["hAxis"]["minValue"] = null;
-				// }
-
-				// // Reset haxis max value if not set
-				// if ( ! isset($hor_axis_options["hAxis"]["maxValue"] ) || ! $hor_axis_options["hAxis"]["maxValue"] ) {
-				// 	$hor_axis_options["hAxis"]["maxValue"] = null;
-				// }
-
-				// // Reset haxis viewWindow min value if not set
-				// if ( ! isset($hor_axis_options["hAxis"]["viewWindow"]["min"] ) || ! $hor_axis_options["hAxis"]["viewWindow"]["min"] ) {
-				// 	$hor_axis_options["hAxis"]["viewWindow"]["min"] = null;
-				// }
-
-				// // Reset haxis viewWindow max value if not set
-				// if ( ! isset($hor_axis_options["hAxis"]["viewWindow"]["max"] ) || ! $hor_axis_options["hAxis"]["viewWindow"]["max"] ) {
-				// 	$hor_axis_options["hAxis"]["viewWindow"]["max"] = null;
-				// }
-
-				// // Reset right axis baseline if not set
-				// if ( ! isset($left_axis_options["vAxes"]["0"]["baseline"] ) || ! $left_axis_options["vAxes"]["0"]["baseline"] ) {
-				// 	$left_axis_options["vAxes"]["0"]["baseline"] = null;
-				// }
-
-				// // Reset left axis min value if not set
-				// if ( ! isset($left_axis_options["vAxes"]["0"]["minValue"] ) || ! $left_axis_options["vAxes"]["0"]["minValue"] ) {
-				// 	$left_axis_options["vAxes"]["0"]["minValue"] = null;
-				// }
-
-				// // Reset left axis max value if not set
-				// if ( ! isset($left_axis_options["vAxes"]["0"]["maxValue"] ) || ! $left_axis_options["vAxes"]["0"]["maxValue"] ) {
-				// 	$left_axis_options["vAxes"]["0"]["maxValue"] = null;
-				// }
-
-				// // Reset left axis viewWindow min value if not set
-				// if ( ! isset($left_axis_options["vAxes"]["0"]["viewWindow"]["min"] ) || ! $left_axis_options["vAxes"]["0"]["viewWindow"]["min"] ) {
-				// 	$left_axis_options["vAxes"]["0"]["viewWindow"]["min"] = null;
-				// }
-
-				// // Reset left axis viewWindow max value if not set
-				// if ( ! isset($left_axis_options["vAxes"]["0"]["viewWindow"]["max"] ) || ! $left_axis_options["vAxes"]["0"]["viewWindow"]["max"] ) {
-				// 	$left_axis_options["vAxes"]["0"]["viewWindow"]["max"] = null;
-				// }
-
-				// // Reset right axis baseline if not set
-				// if ( ! isset($right_axis_options["vAxes"]["1"]["baseline"] ) || ! $right_axis_options["vAxes"]["1"]["baseline"] ) {
-				// 	$right_axis_options["vAxes"]["1"]["baseline"] = null;
-				// }
-
-				// // Reset right axis min value if not set
-				// if ( ! isset($right_axis_options["vAxes"]["1"]["minValue"] ) || ! $right_axis_options["vAxes"]["1"]["minValue"] ) {
-				// 	$right_axis_options["vAxes"]["1"]["minValue"] = null;
-				// }
-
-				// // Reset right axis max value if not set
-				// if ( ! isset($right_axis_options["vAxes"]["1"]["maxValue"] ) || ! $right_axis_options["vAxes"]["1"]["maxValue"] ) {
-				// 	$right_axis_options["vAxes"]["1"]["maxValue"] = null;
-				// }
-
-				// // Reset right axis viewWindow min value if not set
-				// if ( ! isset($right_axis_options["vAxes"]["1"]["viewWindow"]["min"] ) || ! $right_axis_options["vAxes"]["1"]["viewWindow"]["min"] ) {
-				// 	$right_axis_options["vAxes"]["1"]["viewWindow"]["min"] = null;
-				// }
-
-				// // Reset right axis viewWindow max value if not set
-				// if ( ! isset($right_axis_options["vAxes"]["1"]["viewWindow"]["max"] ) || ! $right_axis_options["vAxes"]["1"]["viewWindow"]["max"] ) {
-				// 	$right_axis_options["vAxes"]["1"]["viewWindow"]["max"] = null;
-				// }
-
-
-        // // process spreadsheet
-				// $spreadsheet = $this->fetch_spreadsheet($chart_params["fileUpload"]);
-
-				// if ( is_wp_error($spreadsheet)) {
-				// 	$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-				// 	throw new \Exception ( __($message, $this->plugin));
-        // }
-
-        // // Get selected sheet
-        // $sheet = $spreadsheet[$chart_params["sheetId"]];
-
-        // Fetch plugin settings
-        // $settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : array();
-
-        // Gather all chart options post variables
-        // $options = [];
-        // $options["chartParams"] = $chart_params;
-        // $options["chartOptions"] = $chart_options;
-        // $options["pieChartOptions"] = $pie_chart_options;
-        // $options["horAxisOptions"]["hAxis"] = $hor_axis["hAxis"];
-        // $options["leftAxisOptions"]["vAxes"][0] = isset($left_axis_options["vAxes"][0]) ? $left_axis_options["vAxes"][0] : [];
-        // $options["rightAxisOptions"]["vAxes"][1] = isset($right_axis_options["vAxes"][1]) ? $right_axis_options["vAxes"][1] : [];
-        // $options["seriesOptions"]["series"] = $series_options["series"];
-        // $options["trendlinesOptions"]["trendlines"] = $trendlines_options["trendlines"];
-        // $options["numRangeOptions"] = $num_range_options;
-        // $options["chartRangeOptions"] = $chart_range_options;
-        // $options["minMaxTableChartOptions"] = $min_max_table_options;
-				// $options["tableChartOptions"] = $table_chart_options;
-
-
-
-			
-        
-        // Retreive admin field  and chart settings
-        // $chart_options_admin_fields = $this->chart_options_admin_fields($options, $sheet);
-        // if (is_wp_error($chart_options_admin_fields)) {
-        //   $message = array_combine($chart_options_admin_fields->get_error_codes(), $chart_options_admin_fields->get_error_messages())["error"];
-				// 	throw new \Exception ( __($message, $this->plugin));
-        // } else {
-        //   $chart =  $chart_options_admin_fields["chart"];
-        //   $panels = $chart_options_admin_fields["panels"];
-				// }
-				
-			
-
-				        
-				// Add success message
-				$message = "<div class='notice notice-success is-dismissible'><p>Sheet Select successful</p></div>";
- 
-				// Compose response
-			 	$response = array(
-					"status"	 	 		=> "success",
-          "message" 	 		=> null,
-          "chart"      		=> $chart,
-					"panels"     		=> $panels,
-					"spreadsheet" 	=> $spreadsheet,
-          "sheet"      		=> $sheet,
-					"lineWidth"			=> $this->line_width,
-					"markerSize"		=> $this->marker_size,
-          // "settings" 			=> $settings,
-					"post" 					=> $_POST,
-					'colors'				=> $this->colors
-					// "options"   		=> $options
-				);
-
-				// if ( $chart_options) {
-				// 	wp_send_json([$response]);
-				// }
-	
-				// return ajax data
-				wp_send_json($response);
- 
-			} catch (\Exception $e) {
- 
-				// Prepare error output
-				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
-
-				// Compose response
-				$response = array(
-					"status"	 => "error",
-					"message" => $message,
-				);
-	
-				// return ajax data
-				wp_send_json($response); wp_die();
-
-			}
-			 
-		}  // END public function fetch_chart_options_n_panels()
-
-
-
-
-		
-
-		/**
-		 * Takes a set of default options and renders the accordion panels and chart options
-		 *
-		 * @param array $options
-		 * @param array $sheet
-		 * @return void
-		 */
-    public function chart_options_admin_fields ($options, $sheet = null) {
-
-			// var_dump($sheet);die;
-			
-			$errors = new \WP_Error();
-
-      // Initialize admin Fields
-      $panels = [];
-
-      // Initialize chart
-			$chart = [];
-
-			// if ( isset($options['chartParams']['enableSeries'])  && $options['chartParams']['enableSeries'] ) {
-
-			// 	wp_send_json("KKKKKKKKK");
-			// }
-
-      // Set chart major axis type 
-      $major_axis_type = array_values($sheet["dataTypes"])[0] === "string" ? "discrete" : "continuous";
-
-      if ($major_axis_type === 'discrete' && in_array($options['chartParams']['chartType'], $this->continuous_chart_types)) {
-        $message = "This type of chart requires numeric values in the first column (domain column)";
-        $errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
-        return $errors;
-      }
-
-      // Set chart options and field
-      $chart_params = new ParamOption( $options['chartParams']  );
-      $chart['chartParams'] = $chart_params->options();
-      $panels = array_merge($panels, $chart_params->fields());
-
-      // Set chart options and field
-      $chart['chartOptions'] = [];
-      $chart_options = new ChartOption( $options['chartOptions'], $options['chartParams']['chartType']  );
-      $chart['chartOptions'] =  $chart_options->options();
-      $panels = array_merge($panels, $chart_options->fields());
-
-      // Set pie chart options and fields
-      if ( $options['chartParams']['chartType'] === 'PieChart') {
-        $pie_Chart_options = new PieChartOption($options['pieChartOptions'] );
-        $chart['chartOptions'] = array_merge($chart['chartOptions'], $pie_Chart_options->options());
-        $panels = array_merge($panels, $pie_Chart_options->fields());
-      }
-
-      // Set horizontal axis options and fields
-      if( $options['chartParams']['chartType'] !== 'PieChart') {
-      
-				// Set horizontal axis
-				$axis_params = ['id' => 'horAxisOption' , 'axis' =>'[hAxis]', 'panelId' =>'horizontalAxis', 'title' => 'Horzontal Axis'];
-				$hor_axis_options = new AxisOption($options['horAxisOptions']['hAxis'], $axis_params, $major_axis_type, $sheet['labels']);
-				$chart['chartOptions']['hAxis'] = $hor_axis_options->options();
-				$panels = array_merge($panels, $hor_axis_options->fields( ));
-
-				// Set left vertical axis
-				$axis_params = ['id' => 'leftAxisOption' , 'axis' =>'[vAxes][0]', 'panelId' =>'leftAxis', 'title' => 'Left Axis'];
-        $left_axis_options = new AxisOption($options['leftAxisOptions']['vAxes'][0], $axis_params, $major_axis_type, $sheet['labels']);
-        $chart['chartOptions']['vAxes'][0] =$left_axis_options->options();
-        $panels = array_merge($panels,$left_axis_options->fields( ));
-
-         // Set right vertical axis
-        if ( isset($options['chartParams']['enableSeries'])  && $options['chartParams']['enableSeries'] ) {
-				
-          $axis_params = ['id' => 'rightAxisOption' , 'axis' =>'[vAxes][1]', 'panelId' =>'rightAxis', 'title' => 'Right Axis'];
-          $right_axis_options = new AxisOption($options['rightAxisOptions']['vAxes'][1], $axis_params, $major_axis_type, $sheet['labels']);
-          $chart['chartOptions']['vAxes'][1] = $right_axis_options->options();
-          $panels = array_merge($panels, $right_axis_options->fields( ));
-        }
-      }
-
-      // Set series
-      if ( isset($options['chartParams']['enableSeries']) && $options['chartParams']['enableSeries']) {
-
-			
-
-        $chart['chartOptions']['series'] = $this->fetch_series_trendlines($options['seriesOptions']['series'], 'series',  $sheet)['options'];
-        $panels['series'] = $this->fetch_series_trendlines($options['seriesOptions']['series'], 'series',  $sheet)['panel'];
-      }
-       
-       // Set trendlines ( continuous axis only)
-      if ( isset($options['chartParams']['enableTrendlines']) &&  $options['chartParams']['enableTrendlines'] && $major_axis_type === 'continuous') {
-        $chart['chartOptions']['trendlines'] = $this->fetch_series_trendlines($options['trendlinesOptions']['trendlines'], 'trendlines', $sheet )['options'];
-        $panels['trendlines'] = $this->fetch_series_trendlines($options['trendlinesOptions']['trendlines'], 'trendlines', $sheet )['panel'];
-			}
-			
-      $filter_columns = $this->set_num_range_filter_columns($sheet);
-       
-      // Include number range slider if enabled
-      if (isset($options['chartParams']['enableNumRangeSlider']) && $options['chartParams']['enableNumRangeSlider'] ) {
-        $instance = new NumRangeOption( $options['numRangeOptions'], $filter_columns['num_range_filter_columns']  );
-        $chart['numRangeOptions'] = $instance->options();
-        $panels = array_merge($panels, $instance->fields());
-			}
-
-			 // Include number range slider if enabled
-       if (isset($options['chartParams']['enableChartRangeSlider']) && $options['chartParams']['enableChartRangeSlider'] ){
-        if ($filter_columns['role_filter_columns'] ) {
-          $chart_range_options = new ChartRangeOption( $options['chartRangeOptions'], $filter_columns['role_filter_columns']  );
-          $chart['chartRangeOptions'] = $chart_range_options->options();
-          $panels = array_merge($panels, $chart_range_options->fields());
-        } else {
-          $message = "Chart Range slider is not possible with type of chart data.";
-          $errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
-          return $errors;
-        }
-			}
-			
-       // Include minmax table chart if enabled
-      if (isset($options['chartParams']['enableMinMaxTableChart']) && $options['chartParams']['enableMinMaxTableChart'] ) {
-				$title = "Min Max Table";
-				$intro = "You must selecte at least one filter to display and use the table chart and the the Min, Max, Average tables.";
-        $min_max_table_options = new TableChartOption( $options['minMaxTableChartOptions'], "minMaxTableChartOptions", 'minMaxTableChart', 'minMaxTableChartOption', $title, $intro );
-        $chart['minMaxTableChartOptions'] = $min_max_table_options->options();
-        $panels = array_merge($panels, $min_max_table_options->fields());
-			}
-			
-			 // Include table chart if enabled
-			 if (isset($options['chartParams']['enableTableChart']) && $options['chartParams']['enableTableChart'] ) {
-				$title = "Table Chart";
-				$intro = "You must selecte at least one filter to display and use the table chart and the the Min, Max, Average tables.";
-        $table_chart_options = new TableChartOption( $options['tableChartOptions'], "tableChartOptions", 'tableChart', 'tableChartOption', $title, $intro );
-        $chart['tableChartOptions'] = $table_chart_options->options();
-        $panels = array_merge($panels, $table_chart_options->fields());
-      }
-
-       return ['chart' => $chart, 'panels' => $panels];
-		}
-
-
-
-		
-
-
-
-
-		public function convert_linedashes_n_ticks_to_array($element_to_convert) {
-			// Convert chart linedashstyle to array if not null
-			// if ( ! isset($element_to_convert) || ! $element_to_convert )  return null;
-
-			$style = explode(",", $element_to_convert);
-			array_walk($style, function(&$element){$element = intval($element);});
-			return $style;
-		
-		}
-
-
-
-
-
-
-      
-
-
-    public function set_num_range_filter_columns($sheet) {
-
-      if (!$sheet) return;
-      $num_range_filter_columns = [];
-      $role_filter_columns =[];
-      $i=0;
-      $j=0;
-      foreach (array_values($sheet['dataTypes']) as $value) {
-        if(isset($sheet['roles'])) {
-          
-          // Set filter columns
-          if ((array_values($sheet['roles'])[$i] === 'data' && $value === 'number') || ( array_values($sheet['roles'])[$i] === 'domain' &&  $value === 'number')) {
-            $num_range_filter_columns[$j]['colIndex'] = $i;
-            $num_range_filter_columns[$j]['colLabel'] = array_values($sheet['labels'])[$i];
-            $j++;
-          }
-
-        } else if ($value === 'number'){
-
-          // Set filter columns
-          $num_range_filter_columns[$j]['colIndex'] = $i;
-          $num_range_filter_columns[$j]['colLabel'] = array_values($sheet['labels'])[$i];
-          $j++;
-        }
-          $i++;
-      }
-      $j=0;
-      foreach (array_values($sheet['dataTypes']) as $value) {
-        if(isset($sheet['roles'])) {
-          
-          // Set Role filter columns
-          if (array_values($sheet['roles'])[$i] === 'domain' && $value === 'number' ) {
-            $role_filter_columns[$j]['colIndex'] = $i;
-            $role_filter_columns[$j]['colLabel'] = array_values($sheet['labels'])[$i];
-            $j++;
-          }
-
-        } 
-        $i++;
-      }
-
-      if (empty($role_filter_columns) && array_values($sheet['dataTypes'])[0] === 'number') {
-        $role_filter_columns[0]['colIndex'] = 0;
-        $role_filter_columns[0]['colLabel'] = array_values($sheet['labels'])[0];
-      } else {
-        $role_filter_columns = null;
-      }
-
-      return ['num_range_filter_columns' => $num_range_filter_columns, 'role_filter_columns' => $role_filter_columns];
-    }
-
-
-
-
-
-
-    
-    public function numRangeFilterColumns ($sheet, $column=null) {
-
-      if (empty($sheet)) return;
-
-      // wp_send_json($sheet);
-
-      
-      $sheet_columns_options = "<option value=''>Select Column</option> ";
-      foreach ($sheet['labels'] as $key => $value) {
-        $selected = ( $column == $key ) ? 'selected' : '';
-        $sheet_columns_options .= "<option value='{$key}' {$selected}>{$value}</option>";
-      }
-
-      return $sheet_columns_options;
-
-    }
-
-
-
-
-
-
-    public function sheet_id_options ($spreadsheet, $sheet_id = null) {
-
-      if (empty($spreadsheet)) return;
-      
-      $sheet_id_options = "<option value=''>Select Sheet</option> ";
-      if (count($spreadsheet) === 1) {
-        $sheet_id_options .= "<option value='".array_keys($spreadsheet)[0]."' selected>{$spreadsheet[0]['sheetName']}</option>";
-      } else {
-        foreach ($spreadsheet as $key => $value) {
-          $selected = ($sheet_id !== null && intval($key) == intval($sheet_id)) ? 'selected' : '';
-          $sheet_id_options .= "<option value='{$key}' {$selected}>{$value['sheetName']}</option>";
-        }
-      }
-
-      return $sheet_id_options;
-
-    }
-
-
-
-
-
-
-
 
 
 	 	/**
@@ -1535,30 +796,32 @@ if (!class_exists('Dashboard')) {
 		public function chart_library() {
 
 			// Fetch all chartss
-			$saved_charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-
-			// Initialize payload
-			$charts = [];
+			$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+			// var_dump($charts); die;
 
 			// If action is not set, display all charts
 			if ( ! isset($_GET['action']) ) {
 
-				// Assemble payload
-				foreach ($saved_charts as $chart_id => $chart) {
-					
-					// process spreadsheet
-					$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['fileUpload']);				
+				$payload = [];
 
-					// Get selected sheet and set chart[sheetId]
-					$chart['chartParams']['sheet'] = $spreadsheet[$chart['chartParams']['sheetId']];
-					$charts[$chart_id] = $chart;
+				// Assemble payload
+				foreach ($charts as $chart_id => $chart) {
+	
+					// Fetch spreadsheet
+					$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
+					$payload[$chart_id] = $chart;				
+
+					// // Get selected sheet and set chart[sheetId]
+					$payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+					// $charts[$chart_id] = $chart;
 
 				}
 
         // Set template, payload and response
         $template = "chart-library";
-        $payload = $charts;
-        $response = [ 'status' => "success", 'action'	=> 'listCharts', 'charts' => $charts ];
+				$response = [ 'status' => "success", 'action'	=> 'listCharts', 'charts' => $payload, ];
+        // $payload = $charts;
+       
 
 			// If action is set 
 			} else {
@@ -1575,77 +838,78 @@ if (!class_exists('Dashboard')) {
           if (  isset ( $chart_id ) ) {
             if ( isset($charts[$chart_id] ) ) {
               $chart = $charts[$chart_id];
+							// Fetch spreadsheet
+							$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
             } else {
               throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
           } else {
-            $chart = [
-							"chartParams" => [
-								"options" => [],
-								"panel" => [
-									"id" => "{$this->prefix}__chartParamsPanel",
-									"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
-									"title" => __("Chart Parameters", $this->plugin),
-									"intro" => "",
-									"sections" => []
-							  ]
-							],
-							"chartLayout" => [
-								"options" => [],
-								"panel" => [
-									"id" => "{$this->prefix}__chartLayoutPanel",
-									"cssClasses" => ["chartLayout", "panel"],
-									"title" => __("Chart Layout", $this->plugin),
-									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
-									"sections" => []
-							  ]
-              ],
-              "chartConfig" => [
-								"options" => [],
-								"panel" => [
-									"id" => "{$this->prefix}__chartConfigPanel",
-									"cssClasses" => ["chartConfig", "panel"],
-									"title" => __("Chart Config", $this->plugin),
-									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
-									"sections" => []
-							  ]
-              ],
-              "chartTraces" => [
-                "options" => [],
-                "panel" => [
-                  "id" => "{$this->prefix}__chartTracesPanel",
-                  "cssClasses" => ["chartTraces", "panel"],
-                  "title" => __("Chart Traces", $this->plugin),
-                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-                  "sections" => []
-                ]
-              ],
-              "tableChart" => [
-                "options" => [],
-                "panel" => [
-                  "id" => "{$this->prefix}__tableChartPanel",
-                  "cssClasses" => ["tableChart", "panel"],
-                  "title" => __("Table Chart", $this->plugin),
-                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-                  "sections" => []
-                ]
-              ],
-              "minMaxAvgTableChart" => [
-                "options" => [],
-                "panel" => [
-                  "id" => "{$this->prefix}__minMaxAvgTableChartPanel",
-                  "cssClasses" => ["minMaxAvgTableChart", "panel"],
-                  "title" => __("Min/Max/Avg Table Chart", $this->plugin),
-                  "intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-                  "sections" => []
-                ]
-              ]
-						];
+           $chart = [
+						"chartParams" => ["options" => []],
+						"chartLayout" => ["options" => []],
+						"chartTraces" => ["options" => []],
+						"tableChart" => ["options" => []],
+						"minMaxAvgTableChart" => ["options" => []],
+					 ];
+					 $spreadsheet = null;
           }
+
+					$chart = [
+						"chartParams" => [
+							"options" => $chart["chartParams"]["options"],
+							"panel" => [
+								"id" => "{$this->prefix}__chartParamsPanel",
+								"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
+								"title" => __("Chart Parameters", $this->plugin),
+								"intro" => "",
+								"sections" => []
+							]
+						],
+						"chartLayout" => [
+							"options" => $chart["chartLayout"]["options"],
+							"panel" => [
+								"id" => "{$this->prefix}__chartLayoutPanel",
+								"cssClasses" => ["chartLayout", "panel"],
+								"title" => __("Chart Layout", $this->plugin),
+								"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
+								"sections" => []
+							]
+						],
+						"chartTraces" => [
+							"options" => $chart["chartTraces"]["options"],
+							"panel" => [
+								"id" => "{$this->prefix}__chartTracesPanel",
+								"cssClasses" => ["chartTraces", "panel"],
+								"title" => __("Chart Traces", $this->plugin),
+								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+								"sections" => []
+							]
+						],
+						"tableChart" => [
+							"options" => $chart["tableChart"]["options"],
+							"panel" => [
+								"id" => "{$this->prefix}__tableChartPanel",
+								"cssClasses" => ["tableChart", "panel"],
+								"title" => __("Table Chart", $this->plugin),
+								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+								"sections" => []
+							]
+						],
+						"minMaxAvgTableChart" => [
+							"options" => $chart["minMaxAvgTableChart"]["options"],
+							"panel" => [
+								"id" => "{$this->prefix}__minMaxAvgTableChartPanel",
+								"cssClasses" => ["minMaxAvgTableChart", "panel"],
+								"title" => __("Min/Max/Avg Table Chart", $this->plugin),
+								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+								"sections" => []
+							]
+						]
+					];
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => 'editChart', "chartId" => $chart_id, "chart" => $chart];
+          $response = [ 'status' => "success", 'action' => 'editChart', "chart" => $chart, 'spreadsheet' => $spreadsheet];
 
         } catch (\Exception $e) {
   
