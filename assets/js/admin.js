@@ -59,6 +59,7 @@ try {
         // file uploader event listener
         if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
           event.preventDefault()
+          
           mediaUploader( chart, iwpgvObj )
         }
         

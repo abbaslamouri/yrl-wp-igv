@@ -52,6 +52,9 @@ const mediaUploader = function (chart, iwpgvObj) {
       Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
       Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
+      // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
+      // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .panelIntro`).innerHTML = ""
+
       // Hide min/max inputs if visible
       hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
   
@@ -103,26 +106,44 @@ const mediaUploader = function (chart, iwpgvObj) {
 
         // Bail if no file, sheet Id or chart type
         if( ! fileUploadInput.value ||  ! sheetIdInput.value || ! chartTypeInput.value   ) return
+        
+        // Delete extra rows if the length of the existing data object is greater thatn the new datat object
+        if (chart.chartParams.options.sheetId && (jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
+          for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+            delete chart.chartTraces.options[i]
+            delete chart.chartTraces.panel.sections[i]
+          }
+        }
 
         // remove layout panel toggle and panel
-        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartLayoutPanel`) )
+        document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
+        document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
+        document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
+        document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
         // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`) )
         // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`) )
         // removePanel( document.getElementById(`${iwpgvObj.prefix}__tableChartConfigPanel`) )
         // removePanel( document.getElementById(`${iwpgvObj.prefix}__minMaxTableChartConfigPanel`) )
 
         // Update chart
-        chart.chartParams.options.fileUpload = fileUploadInput.value,
-        chart.chartParams.options.sheetId = sheetIdInput.value,
-        chart.chartParams.options.chartType = chartTypeInput.value,
-        chart.chartParams.options.enableRangeSlider = enableRangeSliderInput.checked,
-        chart.chartParams.options.enableMinMaxTableChart = enableMinMaxTableChartInput.checked,
-        chart.chartParams.options.enableTableChart = enableTableChartInput.checked,
+        chart.chartParams.options.fileUpload = fileUploadInput.value
+        chart.chartParams.options.sheetId = sheetIdInput.value
+        chart.chartParams.options.chartType = chartTypeInput.value
+        chart.chartParams.options.enableRangeSlider = enableRangeSliderInput.checked
+        chart.chartParams.options.enableMinMaxTableChart = enableMinMaxTableChartInput.checked
+        chart.chartParams.options.enableTableChart = enableTableChartInput.checked
         // chart.chartLayout = {},
         // chart.chartConfig = {},
         // chart.chartTraces = [],
         // chart.tableChartConfig = {}
         // chart.minMaxTableChartConfig = {}
+       
+
+
+       
+
+        // chart.chartTraces.options.x = []
+        // chart.chartTraces.options.y =[]
 
         // Draw chart
         drawChart(jsonRes.spreadsheet, chart, iwpgvObj)

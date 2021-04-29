@@ -5,19 +5,19 @@ class ChartDefault {
     this.fontFamily = {	
 
       "" : "Select Font Family",
-      arial : "Arial",
-      balto: "Balto",
-      TimesNewRoman: "Times New Roman",
-      courierNew: "Courier New",
-      droidSans: "Droid Sans",
-      droidSerif: "Droid Serif",
-      droidSansMono: "Droid Sans Mono",
-      gravitasOne: "Gravitas One",
-      oldStandardTT: " Old Standard TT",
-      openSans: "Open Sans",
-      overpass: "Overpass",
-      ptSansNarrow: "PT Sans Narrow",
-      raleway: "Raleway"
+      Arial : "Arial",
+      Valto: "Balto",
+      "Times New Roman": "Times New Roman",
+      "Courier New": "Courier New",
+      "Droid Sans": "Droid Sans",
+      "Droid Serif": "Droid Serif",
+      "Droid Sans Mono": "Droid Sans Mono",
+      "Gravitas One": "Gravitas One",
+      "Old Standard TT": " Old Standard TT",
+      "Open Sans": "Open Sans",
+      Overpass: "Overpass",
+      "PT Sans Narrow": "PT Sans Narrow",
+      Raleway: "Raleway"
 
     }
 
