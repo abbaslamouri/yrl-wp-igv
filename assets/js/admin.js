@@ -4,7 +4,7 @@ import mediaUploader from "./media-uploader"
 import renderPanel from "./renderPanel"
 import drawChart from "./draw-chart";
 import listCharts from "./list-charts"
-import { displayAdminMessage, showElementById } from "./utilities"
+import { displayAdminMessage, showElementById, showInputField, setSheetIdOptions } from "./utilities"
 import "../sass/admin.scss"
 import { drawMode } from "plotly.js-basic-dist"
 
@@ -44,7 +44,18 @@ try {
 
 
     if (iwpgvCharts.spreadsheet) {
-      console.log("HERE")
+
+      // Set sheet Id select field options, update sheet Id select field values and unhide it
+      const sheetIdInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) 
+      setSheetIdOptions(iwpgvCharts.spreadsheet, sheetIdInput)
+      sheetIdInput.value = chart.chartParams.options.sheetId
+      showInputField( sheetIdInput )
+
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
 
       drawChart(iwpgvCharts.spreadsheet, chart, iwpgvObj)
 
@@ -55,7 +66,6 @@ try {
         chart[prop].panel.sections = {...chart[prop].panel.sections}
       }
 
-    
     }
 
       // Add new or edit an existing chart
@@ -72,12 +82,17 @@ try {
         // file uploader event listener
         if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
           event.preventDefault()          
-          mediaUploader( chart, iwpgvObj )
+          mediaUploader( chart, iwpgvCharts, iwpgvObj )
         }
         
       })
 
     }
+
+
+    
+
+
 
   }
 

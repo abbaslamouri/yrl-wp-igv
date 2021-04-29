@@ -14,7 +14,7 @@ import {
 
 let jsonRes = {} // Server response
 
-const mediaUploader = function (chart, iwpgvObj) {
+const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
 
   // Initialize the media uploader
   let mediaUploader;
@@ -52,7 +52,8 @@ const mediaUploader = function (chart, iwpgvObj) {
       Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
       Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
 
-      const oldSpreadsheet = {...jsonRes.spreadsheet}
+      const oldSpreadsheet = {...iwpgvCharts.spreadsheet}
+      // console.log("????????",iwpgvCharts)
       // chart.chartParams.options.sheetId = null
 
       // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""

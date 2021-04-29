@@ -627,166 +627,10 @@ if (!class_exists('Dashboard')) {
 
 		} // END admin_bar
 
-		
-
-
-
-		
-    
-
-		/**
-		 * Save Chart
-		 *
-		 * @return void
-		 */
-		public function save_chart() {
-
-      //  wp_send_json($_POST);
-
-			try {
-				
-				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_save_chart_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__save_chart_nonce")) {
-					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
-        }
-        
-        // verify if a file, a sheet and a chart type were selected
-				if (! isset($_POST["{$this->prefix}__chartParams"]["fileUpload"]) || ! isset($_POST["{$this->prefix}__chartParams"]["sheetId"]) || ! isset ($_POST["{$this->prefix}__chartParams"]["chartType"])) { 
-          throw new \Exception (__("Please selecte a file, a sheet and a chart type.", $this->plugin));
-				}
-				
-				// Verify if chart options are set
-				if ( ! isset($_POST["{$this->prefix}__traces"]) && ! empty( $_POST["{$this->prefix}__traces"] ) ) { 
-          throw new \Exception (__("Chart Traces missing.", $this->plugin));
-				}
-
-				// Verify if the axes are set
-				// if ( $_POST["{$this->prefix}__chartParams"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
-        //   throw new \Exception (__("Axis options missing.", $this->plugin));
-				// }
-       	// wp_send_json($_POST);
-
-				// Fetch all charts
-				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-
-        // There is a chart Id (edit)
-        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"] ) {
-					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
-
-				// New chart
-        } else {
-					$last_chart = end( $charts );
-					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["{$this->prefix}__chartParams"]["chartId"] + 1 : 1032;
-				}
-				
-				// Assemble chart
-				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
-				$charts[$chart_id]["chartParams"]["options"]["chartId"] = $chart_id;
-				$charts[$chart_id]["chartLayout"]["options"] = ( isset( $_POST["{$this->prefix}__chartLayout"] ) ) ? $_POST["{$this->prefix}__chartLayout"] : [];
-				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
-				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
-				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
-			
-	
-        if (! update_option("{$this->prefix}_charts", $charts)) {
-					throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
-				}
-
-				// Compose response
-				$response = array(
-					"status" => "success",
-					"message" => "Chart saved successfully",
-				);
-
-
-			} catch (\Exception $e) {
-
-				// Prepare error output
-				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
-
-				$response = [
-					"status"  => "error",
-					"message" => $message,
-				];
-
-			}
-
-			// return ajax data
-			wp_send_json($response);
-			
-
-		}  // END public function contact_form_process() {
 
 
 
 
-
-
-
-
-
-    /**
-     * Ajax file select handler
-     *
-     * @return void
-     */
-		public function file_select() {
-
-			//  wp_send_json($_POST);
-
-			try{
-
-				// Validate request
-				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_file_select_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__file_select_nonce")) {
-					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
-				}	
-
-				// Get file name and extension
-				$filename = wp_basename($_POST["{$this->prefix}__chartParams"]["fileUpload"]);
-
-				// Check file type
-				if ( !in_array(wp_check_filetype( $filename )["ext"], $this->file_types )) {
-					throw new \Exception(  __(wp_kses_post("Invalid file type.  Only excel spreadsheets are allowed"), $this->plugin));
-				}
-
-				// process spreadsheet
-				$spreadsheet = $this->fetch_spreadsheet($filename);
-				if ( is_wp_error($spreadsheet)) {
-					$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-					throw new \Exception ( __($message, $this->plugin));
-				}
-
-				// Compose response
-				$response = array(
-					"status" => "success",
-					// "sheetIdOptions" => $sheet_id_options,
-					"spreadsheet" => $spreadsheet,
-          "message" => null,
-          "post"    => $_POST
-				);
-
-				// return ajax data
-				// wp_send_json($response);
-			
-			} catch (\Exception $e) {
-
-				// Prepare error output
-				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
-
-				$response = [
-					"status"  => "error",
-          "message" => $message,
-				];
-				
-			}
-
-			// return ajax data
-			wp_send_json($response);
-
-		}  // END public function contact_form_process() {
-
-
-
-    
 
 
 	 	/**
@@ -939,59 +783,161 @@ if (!class_exists('Dashboard')) {
 
 
 
-	  public function fetch_series_trendlines($options = [], $target = "series", $sheet = []) {
 
-      $errors = new \WP_Error();
 
-      if (! $sheet || ! $target ) {
-        $message = "A sheet and a target are required to compile series and trendlines.";
-        $errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
-        // return $errors;
-        return [];
-      }
 
-      $id = $target === 'series' ?  'series' : 'trendlines';
-      $title = $target === 'series' ?  'Series' : 'Trendlines';
-      
+
+
+
+
+    /**
+     * Ajax file select handler
+     *
+     * @return void
+     */
+		public function file_select() {
+
+			//  wp_send_json($_POST);
+
+			try{
+
+				// Validate request
+				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_file_select_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__file_select_nonce")) {
+					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
+				}	
+
+				// Get file name and extension
+				$filename = wp_basename($_POST["{$this->prefix}__chartParams"]["fileUpload"]);
+
+				// Check file type
+				if ( !in_array(wp_check_filetype( $filename )["ext"], $this->file_types )) {
+					throw new \Exception(  __(wp_kses_post("Invalid file type.  Only excel spreadsheets are allowed"), $this->plugin));
+				}
+
+				// process spreadsheet
+				$spreadsheet = $this->fetch_spreadsheet($filename);
+				if ( is_wp_error($spreadsheet)) {
+					$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+					throw new \Exception ( __($message, $this->plugin));
+				}
+
+				// Compose response
+				$response = array(
+					"status" => "success",
+					// "sheetIdOptions" => $sheet_id_options,
+					"spreadsheet" => $spreadsheet,
+          "message" => null,
+          "post"    => $_POST
+				);
+
+				// return ajax data
+				// wp_send_json($response);
+			
+			} catch (\Exception $e) {
+
+				// Prepare error output
+				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
+
+				$response = [
+					"status"  => "error",
+          "message" => $message,
+				];
+				
+			}
+
+			// return ajax data
+			wp_send_json($response);
+
+		}  // END public function contact_form_process() {
+
+
+
     
-      // Initialize series panels and options
-      $panel = [
-        "id" => "yrl_wp_igv__{$target}Panel",
-        'cssClass' => $id === 'series' ? 'seriesOption' : 'trendlinesOption',
-        "title" => __("{$title}", $this->plugin),
-        'sections' => [
-        ]
-      ];
-      
+		/**
+		 * Save Chart
+		 *
+		 * @return void
+		 */
+		public function save_chart() {
 
-      $target_options = [];
+      //  wp_send_json($_POST);
 
-      // Populate series panels and options
-      $i=0;
-      $j=0;
-      $labels = [];
-      $series_options = [];
-      while ($i < count($sheet['labels'])) {
-        if ( array_values($sheet['dataTypes'])[$i] === 'number' && ( ! isset($sheet['roles']) || (isset($sheet['roles']) && array_values($sheet['roles'])[$i] === 'data'))) {
-          $labels[$j] = array_values($sheet['labels'])[$i];
-
-          $instance = $target == 'series' ? new SeriesOption($options, $j, $labels) : new TrendlinesOption($options, $j, $labels);
-
-          $series_options[$j] = $instance->options();
-          $seed = $instance->seed();
-          $panel['sections']["{$id}-{$j}"]['id'] = "{$id}-{$i}";
-          $panel['sections']["{$id}-{$j}"]['title'] = count($sheet['labels']) > 1 ? __(array_values($sheet['labels'])[$i], $this->plugin) : "";
-          $panel['sections']["{$id}-{$j}"]['fields'] = $seed;
-          $j++;
+			try {
+				
+				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_save_chart_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__save_chart_nonce")) {
+					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
         }
-        $i++;
         
-      };
-      
-      return ['panel' => $panel, 'options' => $series_options];
+        // verify if a file, a sheet and a chart type were selected
+				if (! isset($_POST["{$this->prefix}__chartParams"]["fileUpload"]) || ! isset($_POST["{$this->prefix}__chartParams"]["sheetId"]) || ! isset ($_POST["{$this->prefix}__chartParams"]["chartType"])) { 
+          throw new \Exception (__("Please selecte a file, a sheet and a chart type.", $this->plugin));
+				}
+				
+				// Verify if chart options are set
+				if ( ! isset($_POST["{$this->prefix}__traces"]) && ! empty( $_POST["{$this->prefix}__traces"] ) ) { 
+          throw new \Exception (__("Chart Traces missing.", $this->plugin));
+				}
 
-    }
-  
+				// Verify if the axes are set
+				// if ( $_POST["{$this->prefix}__chartParams"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
+        //   throw new \Exception (__("Axis options missing.", $this->plugin));
+				// }
+       	// wp_send_json($_POST);
+
+				// Fetch all charts
+				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+
+        // There is a chart Id (edit)
+        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"] ) {
+					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
+
+				// New chart
+        } else {
+					$last_chart = end( $charts );
+					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["{$this->prefix}__chartParams"]["chartId"] + 1 : 1032;
+				}
+				
+				// Assemble chart
+				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
+				$charts[$chart_id]["chartParams"]["options"]["chartId"] = $chart_id;
+				$charts[$chart_id]["chartLayout"]["options"] = ( isset( $_POST["{$this->prefix}__chartLayout"] ) ) ? $_POST["{$this->prefix}__chartLayout"] : [];
+				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
+				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+			
+	
+        if (! update_option("{$this->prefix}_charts", $charts)) {
+					throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
+				}
+
+				// Compose response
+				$response = array(
+					"status" => "success",
+					"message" => "Chart saved successfully",
+				);
+
+
+			} catch (\Exception $e) {
+
+				// Prepare error output
+				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
+
+				$response = [
+					"status"  => "error",
+					"message" => $message,
+				];
+
+			}
+
+			// return ajax data
+			wp_send_json($response);
+			
+
+		}  // END public function contact_form_process() {
+
+
+
+
 
 
 		
