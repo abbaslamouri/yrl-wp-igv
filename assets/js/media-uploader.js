@@ -1,20 +1,12 @@
 import Plotly from 'plotly.js-basic-dist'
-import fetchData from "./fetch-data";
-import drawChart from "./draw-chart";
-import { 
-  displayAdminMessage,
-  setSheetIdOptions,
-  showInputField,
-  toggleElementById,
-  showElementById,
-  hideElementById,
-  removePanel
-} from "./utilities"
+import fetchData from "./fetch-data"
+import drawChart from "./draw-chart"
+import { displayAdminMessage, setSheetIdOptions, showInputField } from "./utilities"
 
 
 let jsonRes = {} // Server response
 
-const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
+const mediaUploader = function ( iwpgvCharts, iwpgvObj ) {
 
   // Initialize the media uploader
   let mediaUploader;
@@ -33,9 +25,6 @@ const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
   // Add media uploader event handler
   mediaUploader.on("select", async function (event) {
 
-    // Hide warning and show spinner
-    toggleElementById( `${iwpgvObj.prefix}__spinner` );
-
     try {
 
       // Get attachment
@@ -44,25 +33,10 @@ const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
       // Bail if attachment can't be found
       if ( ! attachment ||  ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
-      // Set file upload input field value
-      document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename
-
-      // Purge chart
-      Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-      Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-      Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-
-      const oldSpreadsheet = {...iwpgvCharts.spreadsheet}
-      // console.log("????????",iwpgvCharts)
-      // chart.chartParams.options.sheetId = null
-
-      // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
-      // document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .panelIntro`).innerHTML = ""
-
-      // Hide min/max inputs if visible
-      hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
+      // Update selected file
+      document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename 
   
-      // Get from node
+      // Get from 
       const form = document.getElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
       // Bail if no form is found
@@ -74,33 +48,25 @@ const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
       formData.append("nonce", iwpgvObj.file_select_nonce);
 
       //send ajax resquest
-      jsonRes = await fetchData(formData);
-
-      console.log("JSONRESPONSE", jsonRes)
+      jsonRes = await fetchData(formData)
+      console.log("JSONRESPONSExxx", jsonRes)
       
       // Bail is server response status = error
       if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
 
-      const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-      const chartTypeInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`)
-      const fileUploadInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`)
-      const enableRangeSliderInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`)
-      const enableMinMaxTableChartInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`)
-      const enableTableChartInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`)
-          
-      // Set sheet Id select field options, update sheet Id select field values and unhide it
-      setSheetIdOptions(jsonRes.spreadsheet, sheetIdInput)
-      sheetIdInput.value = ""
-      showInputField( sheetIdInput )
+      // Set sheet Id select field options, update sheet Id select field values
+      setSheetIdOptions(jsonRes.spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
+      document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = ""
 
-      // Update chart type select field values and unhide it
-      chartTypeInput.value = ""
-      showInputField( chartTypeInput )
-
-      // Unhide remaining checkboxes
-      showInputField( enableRangeSliderInput )
-      showInputField( enableMinMaxTableChartInput )
-      showInputField( enableTableChartInput )
+      // Update chart type select field
+      document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value = ""
+      
+      // Show all chart params panel input fields
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
 
       // Add change event listener to all chart Params inputs
       document.addEventListener("change", function (event) {
@@ -108,78 +74,68 @@ const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
         // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
         if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ||  ! event.target.classList.contains(`${iwpgvObj.prefix}__chartParams`)  ) return
 
+        // Bail if no file, sheet Id or chart type
+        if( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value ||  ! document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value || ! document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value   ) return
+
+        // HIde chart and table charts
         Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
         Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
         Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-
-        // Bail if no file, sheet Id or chart type
-        if( ! fileUploadInput.value ||  ! sheetIdInput.value || ! chartTypeInput.value   ) return
-        console.log("old", oldSpreadsheet)
-        console.log("new", jsonRes.spreadsheet)
-        console.log("=======",oldSpreadsheet == jsonRes.spreadsheet)
-
-        if (chart.chartParams.options.sheetId && oldSpreadsheet[chart.chartParams.options.sheetId] && jsonRes.spreadsheet[sheetIdInput.value].data.length < oldSpreadsheet[chart.chartParams.options.sheetId].data.length) {
-          console.log("HERE")
-          for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < oldSpreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
-            delete chart.chartTraces.options[i]
-            delete chart.chartTraces.panel.sections[i]
-          }
-        }
-        
-        // Delete extra rows if the length of the existing data object is greater thatn the new datat object
-        if (chart.chartParams.options.sheetId && jsonRes.spreadsheet[chart.chartParams.options.sheetId] && (jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
-          for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
-            delete chart.chartTraces.options[i]
-            delete chart.chartTraces.panel.sections[i]
-          }
-        }
 
         // remove layout panel toggle and panel
         document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
         document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
         document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
         document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
-        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartConfigPanel`) )
-        // removePanel( document.getElementById(`${iwpgvObj.prefix}__chartTracesPanel`) )
-        // removePanel( document.getElementById(`${iwpgvObj.prefix}__tableChartConfigPanel`) )
-        // removePanel( document.getElementById(`${iwpgvObj.prefix}__minMaxTableChartConfigPanel`) )
 
-        // Update chart
-        chart.chartParams.options.fileUpload = fileUploadInput.value
-        chart.chartParams.options.sheetId = sheetIdInput.value
-        chart.chartParams.options.chartType = chartTypeInput.value
-        chart.chartParams.options.enableRangeSlider = enableRangeSliderInput.checked
-        chart.chartParams.options.enableMinMaxTableChart = enableMinMaxTableChartInput.checked
-        chart.chartParams.options.enableTableChart = enableTableChartInput.checked
-        // chart.chartLayout = {},
-        // chart.chartConfig = {},
-        // chart.chartTraces = [],
-        // chart.tableChartConfig = {}
-        // chart.minMaxTableChartConfig = {}
+        // Update chart params options
+        iwpgvCharts.chart.chartParams.options.fileUpload = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value
+        iwpgvCharts.chart.chartParams.options.sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
+        iwpgvCharts.chart.chartParams.options.chartType = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value
+        iwpgvCharts.chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
+        iwpgvCharts.chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
+        iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
+
+        console.log("======", jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId], iwpgvCharts.chart.chartTraces.options)
+
+        const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+        // if (iwpgvCharts.chart.chartTraces.options.length && iwpgvCharts.chart.chartParams.options.sheetId && iwpgvCharts.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length) {
+          if (jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
+          // console.log("HERE")
+          for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {
+            delete iwpgvCharts.chart.chartTraces.options[i]
+            delete iwpgvCharts.chart.chartTraces.panel.sections[i]
+          }
+        }
+        
+        // Delete extra rows if the length of the existing data object is greater thatn the new datat object
+        // if (iwpgvCharts.chart.chartParams.options.sheetId && jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
+        //   for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length; i++ ) {
+        //     delete iwpgvCharts.chart.chartTraces.options[i]
+        //     delete iwpgvCharts.chart.chartTraces.panel.sections[i]
+        //   }
+        // }
+
        
-
+        
 
        
-
-        // chart.chartTraces.options.x = []
-        // chart.chartTraces.options.y =[]
+        
 
         // Draw chart
-        drawChart(jsonRes.spreadsheet, chart, iwpgvObj)
+        drawChart(jsonRes.spreadsheet, iwpgvCharts.chart, iwpgvObj)
 
       });
+
+
+      
+      document.addEventListener("change", sayHello)
 
       
     } catch (error) {
 
       displayAdminMessage(error.message, "error",  iwpgvObj)
       console.log("CAUGHT ERROR", error)
-
-    } finally {
-
-      // Hide warning and show spinner
-      toggleElementById( `${iwpgvObj.prefix}__spinner` );
-      showElementById( `${iwpgvObj.prefix}__warning`);
 
     }
 
@@ -188,6 +144,13 @@ const mediaUploader = function (chart, iwpgvCharts, iwpgvObj) {
 
   mediaUploader.open()
 
+}
+
+const sayHello = (event) => {
+  // Add change event listener to all chart Params inputs
+  // if (event.target.id.contains(`chartParams[sheetId]`))
+  console.log("HI THere", event.id)
+  document.removeEventListener('click', sayHello);
 }
 
 export default mediaUploader;

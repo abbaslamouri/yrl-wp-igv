@@ -25,14 +25,7 @@ if (!class_exists('Dashboard')) {
 		public $prefix = YRL_WP_IGV_PREFIX; 		// prefix (YRL_WP_IGV)
     public $plugin = YRL_WP_IGV_PLUGIN; 		// plugin (axl-wp-ugv)
 		
-		public $chart_types = [						// All chart types supported by this plugin
-      "" 							=> "Select Chart Type",
-			"LineChart" 		=> "Line Chart",
-			"ScatterChart" 	=> "Scatter Chart",
-			"BarChart" 			=> "Bar Chart",
-			"ColumnChart" 	=> "Column Chart",
-			"PieChart" 			=> "Pie Chart",
-		];
+	
 		
     public $plugin_options = [        // This plugin options
 			"version" => "1.0.0"
@@ -41,38 +34,6 @@ if (!class_exists('Dashboard')) {
 		protected $file_types = [        	// Possible file types
 			"xlsx", "Xlsx", "xls", "Xls", "csv", "Csv", "xlsm", "Xlsm"
 		];
-		// public $data_types = array(				// Possible chart types
-		// 	"string", "number", "boolean", "date", "datetime", "timeofday"
-		// ); 
-		// public $role_types = array(				// Possible role type
-		// 	"domain", "data", "annotation", "annotationText", "interval", "certainty", "emphasis", "scope", "style", "tooltip"
-		// );
-
-    public $colors = [ 								// Possible chart colors
-			"#D32F2F", "#FF5733", "#536DFE", "#F9A825", "#558B2F", '#1976D2', '#00796B', '#581845', '#455A64', '#263238', '#303F9F', '#33691E', '#7B1FA2', '#0097A7', '#EF6C00', '#795548', '#FFA000'
-		];
-      
-    public $point_shape_types = [		// Possible chart point types
-			'circle', 'square', 'triangle', 'diamond', 'star', 'polygon','circle', 'square', 'triangle', 'diamond', 'star', 'polygon'
-		];
-
-		public $line_width = 5;
-		public $marker_size = 16;
-
-
-    public $font_names = [					// Chart possible fonts
-      "arial" => "Arial",
-      'Times-Roman' => "Times Roman",
-      "courier" => "Courier",
-      "verdana" => "Verdana",
-      "georgia" => " Georgia",
-      "tahoma" => "Tahoma"
-		];
-		
-    // protected $continuous_chart_types = [  // POssible continuous chart types
-    //   'LineChart', 'ComboChart', 'ScatterChart', 'BarChart', 'ColumnChart'
-		// ];
-		
 
 
 		/**
@@ -234,11 +195,7 @@ if (!class_exists('Dashboard')) {
 		} // END render_shortcode
     
 
-    public function field_attributes() {
-      return [
-				'id', 'title', 'cssClass', 'wrapperClass', 'tab', 'fieldType', 'fieldTitle',  'fieldSize', 'fieldMin', 'fieldMax', 'required', 'disabled', 'pattern', 'placeholder', 'option_none', 'value', 'field_options', 'textareaCols', 'textareaRows', 'hint', 'nullOption', 'dependentField', 'readOnly', 'fieldStep', 'dependents'
-      ];
-		}
+  
 
 
 	
@@ -327,71 +284,6 @@ if (!class_exists('Dashboard')) {
 
 
 
-		/**
-		 * Render input field based on type
-		 *
-		 * @param array $args
-		 * @return void
-		 */
-		public function input_field_render($field) {
-
-			// var_dump($field);die;
-
-
-			 // Populate all field attributes
-			 foreach ($this->field_attributes() as $attribute) {
-				if (! isset($field[$attribute])) {
-					$field[$attribute] = null;
-				} 
-			}
-
-			// settings options
-			$options = (get_option($field['section'])) ? get_option($field['section']) : array();
-
-			// field value
-			$field['value'] = (isset($options[$field['id']])) ? $this->sanitize_field_type($options[$field['id']], $field['fieldType']) : null;
-
-			// show template if it exists
-			if (file_exists($this->path . "templates/" . $field['fieldType'] . ".php")) {
-
-				echo $this->get_template_html($field['fieldType'], $field);
-
-			} else {
-
-				_e("<div class = 'admin-errors'> Template " . $this->path . "templates/" . $field['fieldType'] . ".php does not exist</div>", $this->plugin);
-
-			}
-
-		} // END input_field_render
-
-
-
-
-
-		/**
-		 * Sanitizes input fields based on type
-		 *
-		 * @param string $value
-		 * @param string $type
-		 * @return void
-		 */
-		public function sanitize_field_type($value, $type) {
-
-			if (strpos($type, 'text')) {
-				return sanitize_text_field($value);
-			} elseif (strpos($type, 'email')) { // check if text email
-				return sanitize_text_email($value);
-			} elseif (strpos($type, 'textarea')) { // check if text textarea
-				return wp_kses(stripslashes_deep($value, wp_kses_allowed_html('post')));
-			} else {
-				return $value;
-      }
-      
-		} // END sanitize_field_type
-
-
-
-
 
     	/**
 		 * Register and Enque admin stylesheet and scripts.  Hooks into 
@@ -435,24 +327,8 @@ if (!class_exists('Dashboard')) {
 
 			wp_enqueue_media();
 
-			// wp_register_script("{$this->plugin}-media-uploader", "{$this->url}assets/src/media-uploader.js", ["jquery" ], false, true);
-			// wp_enqueue_script("{$this->plugin}-media-uploader");
-
-			 //Register and Enque/Load Plotly
-			//  wp_register_script('plotly-graphing-library','https://cdn.plot.ly/plotly-latest.min.js');
-			//  wp_enqueue_script( 'plotly-graphing-library' );
-
-			
-
-      //Register and Enque/Load Google Visualization API
-			// wp_register_script('google-visualization-api','https://www.gstatic.com/charts/loader.js');
-			// wp_enqueue_script( 'google-visualization-api' );
-
-			// Add the color picker css file       
-			wp_enqueue_style( 'wp-color-picker' ); 
-
 			// Enqueue Stylesheet
-			wp_register_style($this->plugin, $this->url . "assets/bundle/admin.css", ["wp-color-picker"], false, 'all');
+			wp_register_style($this->plugin, $this->url . "assets/bundle/admin.css", [], false, 'all');
 			wp_enqueue_style($this->plugin);
 
 
@@ -469,18 +345,10 @@ if (!class_exists('Dashboard')) {
 					"prefix" => $this->prefix,
 					'url' => $this->url,
           'plugin_url' => add_query_arg(["page" => $this->plugin], admin_url('admin.php')),
-					// "file_upload_action"   => "{$this->prefix}_file_upload_action",
-          // "file_upload_nonce"  => wp_create_nonce("{$this->prefix}__file_upload_nonce" ),
           "file_select_action"   => "{$this->prefix}_file_select_action",
 					"file_select_nonce"  => wp_create_nonce("{$this->prefix}__file_select_nonce" ),
-					"fetch_chart_options_n_panels_action"   => "{$this->prefix}_fetch_chart_options_n_panels_action",
-          "fetch_chart_options_n_panels_nonce"  => wp_create_nonce("{$this->prefix}__fetch_chart_options_n_panels_nonce" ),
           "save_chart_action"   => "{$this->prefix}_save_chart_action",
           "save_chart_nonce"  => wp_create_nonce("{$this->prefix}__save_chart_nonce" ),
-          "add_new_file_action"   => "{$this->prefix}_add_new_file_action",
-          "add_new_file_nonce"  => wp_create_nonce("{$this->prefix}__add_new_file_nonce" ),
-          "delete_file_action"   => "{$this->prefix}_delete_file_action",
-					"delete_file_nonce"  => wp_create_nonce("{$this->prefix}__delete_file_nonce" ),
 				)
       );
       
@@ -876,15 +744,19 @@ if (!class_exists('Dashboard')) {
 				// Fetch all charts
 				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 
+			
+
         // There is a chart Id (edit)
-        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"] ) {
+        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"]) {
 					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
+					wp_send_json("ID = {$chart_id}");
 
 				// New chart
         } else {
 					$last_chart = end( $charts );
-					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["{$this->prefix}__chartParams"]["chartId"] + 1 : 1032;
+					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["chartParams"]["options"]["chartId"] + 1 : 1032;
 				}
+
 				
 				// Assemble chart
 				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
@@ -903,6 +775,7 @@ if (!class_exists('Dashboard')) {
 				$response = array(
 					"status" => "success",
 					"message" => "Chart saved successfully",
+					"chartId" => $chart_id
 				);
 
 
@@ -913,7 +786,7 @@ if (!class_exists('Dashboard')) {
 
 				$response = [
 					"status"  => "error",
-					"message" => $message,
+					"message" => $message
 				];
 
 			}
@@ -972,69 +845,7 @@ if (!class_exists('Dashboard')) {
 				);
 			}
 
-
-
-			// If no admin sections
-      if (empty($this->admin_sections())) return;
-
-			// Register sections, section settings snd section options
-			foreach ($this->admin_sections() as $section_id => $section) {
-
-				if ( $section['registerSetting'] ) {
-                
-          // Register section  settings
-          register_setting(
-            $section_id,
-            $section_id,
-            array($this, 'pre_save_sanitize')
-          );
-
-          // Add  a settings section
-          add_settings_section(
-            $section_id, //id
-            $section['title'], // Title
-            $section['callback'], // callback to render section
-            $section_id // id of admin submenu to which this section belongs
-          );
-        }
-
-			}
-
-			// If no admin fields
-			if (empty($this->admin_fields())) return;
-			
-			// Register admin fields
-			foreach ($this->admin_fields() as $field_id => $field) {
-
-				// Add settings this->get_admin_fields()
-				add_settings_field(
-					$field_id, // id-name to identify the field. Used in the 'id' attribute of tags.
-					$field['fieldTitle'], // Formatted title of the field. Shown as the label for the field during output.
-					array($this, 'input_field_render'), //$field['callback'],   // callback to render the field
-					$field['section'], // The id-name of the menu page on which to show the input field
-					$field['section'], // The id-name of the section in which to show the box.
-					array_merge( // $args:  Extra arguments used when outputting the field.
-						$field,
-						array('id' => $field_id, 'label_for' => $field['fieldTitle'])
-					)
-				);
-			}
-
-		// 	// If no admin sections
-		// 	if (empty($this->plugin_settings())) return;
-			
-		// 	foreach ($this->plugin_settings() as $field_id => $field) {
-
-		// 		add_settings_field(
-		// 			$field_id, // id-name to identify the field. Used in the 'id' attribute of tags.
-		// 			$field['fieldTitle'], // Formatted title of the field. Shown as the label for the field during output.
-		// 			[$this, 'input_field_render'], //$field['callback'],   // callback to render the field
-		// 			$field['section'], // The id-name of the menu page on which to show the input field
-		// 			$field['section'], // The id-name of the section in which to show the box.
-		// 			array_merge($field, []) // $args:  Extra arguments used when outputting the 
-		// 		);
-		// 	}
-		 }
+		}
 
 
 
@@ -1158,67 +969,8 @@ if (!class_exists('Dashboard')) {
 
 
 
-		public function admin_fields() {
-			return [
-        [
-					"id" => "enableTableChart",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Enable Table Chart", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-        ],
-        [
-					"id" => "enableMinMaxTable",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Min/Max/Average Table", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-        ],
-        [
-					"id" => "includeMinMaxTableFirstCol",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Include Min/Max/Ave Table First Column", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-				],
-				[
-					"id" => "enableNumRangeSlider",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Enable Number Range Slider", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-        ], 
-        [
-					"id" => "enableSeries",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Enable Series", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-        ],  
-        [
-					"id" => "enableTrendlines",
-					"section" => 	"{$this->prefix}_settings",
-					"fieldTitle" => __("Enable Trendlines", $this->plugin),
-					"fieldType" => "settings-checkbox",
-					"value" => false
-        ], 
-        
-			];
-		}
 		
-
 		
-		/**
-		 * Process Settings API fields before being saved by WP
-		 *
-		 * @param array $input
-		 * @return array
-		 */
-		public function pre_save_sanitize($input){
-
-			return $input;
-
-		} // END pre_save_sanitize
 
 
 

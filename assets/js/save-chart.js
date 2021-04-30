@@ -42,6 +42,9 @@ const saveChart = async function (chart, iwpgvObj) {
     // Bail is server response status = error
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
 
+    // Update chart Id field
+    document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`).value = jsonRes.chartId
+
     // Success handler
     if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
 

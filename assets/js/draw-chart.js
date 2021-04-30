@@ -2,7 +2,7 @@ import Plotly from 'plotly.js-dist'
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
-import renderPanel from "./renderPanel"
+import renderPanel from "./render-panel"
 import Accordion from "./Accordion"
 import saveChart from "./save-chart"
 import {
@@ -29,6 +29,9 @@ const drawChart = function ( spreadsheet, chart, iwpgvObj) {
   // toggleElementById( `${iwpgvObj.prefix}__chartOptionsForm` )
 
   try {
+
+     // Hide min/max inputs if visible
+     hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
 
     Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
     Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)

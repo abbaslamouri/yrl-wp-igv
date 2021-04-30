@@ -1,15 +1,17 @@
+import Plotly from 'plotly.js-basic-dist'
 import Accordion from "./Accordion"
 import ChartParams from "./ChartParams"
 import mediaUploader from "./media-uploader"
-import renderPanel from "./renderPanel"
+import renderPanel from "./render-panel"
 import drawChart from "./draw-chart";
 import listCharts from "./list-charts"
-import { displayAdminMessage, showElementById, showInputField, setSheetIdOptions } from "./utilities"
+import { displayAdminMessage, showElementById, hideElementById, showInputField, setSheetIdOptions } from "./utilities"
 import "../sass/admin.scss"
 
 
 let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}
 let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
+
 
 console.log("iwpgvObj", {...iwpgvObj})
 console.log("iwpgvCharts", {...iwpgvCharts})
@@ -48,44 +50,48 @@ try {
     if (iwpgvCharts.spreadsheet) { // Edit an existing chart
 
       // Set sheet Id select field options, update sheet Id select field values
-      const sheetIdInput = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) 
+   
       setSheetIdOptions(iwpgvCharts.spreadsheet, sheetIdInput)
       sheetIdInput.value = chart.chartParams.options.sheetId
 
       // Show the remaining input fields in the chart params panel
+      showInputField( fileUploadInput )
       showInputField( sheetIdInput )
-      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
-      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`) )
-      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
-      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
-      showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+      showInputField( chartTypeInput )
+      showInputField( enableRangeSliderInput )
+      showInputField( enableTableChartInput )
+      showInputField( enableMinMaxTableChartInput )
+     
 
       // Call draw chart
-      drawChart(iwpgvCharts.spreadsheet, chart, iwpgvObj)
+      // drawChart(iwpgvCharts.spreadsheet, chart, iwpgvObj)
 
     }
-    // else { // Adding a new chart
-    
-      // for(const prop in chart) {
-      //   chart[prop].options = {...chart[prop].options}
-      //   chart[prop].panel.sections = {...chart[prop].panel.sections}
-      // }
 
-    // }
-
+    // Show saveChart button
     showElementById (`${iwpgvObj.prefix}__saveChart` )
       
-      // Add click event listener to the chart params panel inoput fields
-      document.addEventListener("click", function (event) {
+    // Add click event listener to the chart params panel inoput fields
+    document.addEventListener("click", function (event) {
 
-        // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
-        if ( ! event.target.closest("form") || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm` || ! event.target.classList.contains( `${iwpgvObj.prefix}__chartParams`) ) return
-      
-        // file uploader event listener
-        if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
-          event.preventDefault()          
-          mediaUploader( chart, iwpgvCharts, iwpgvObj )
-        }
+      // Bail if the clicked item is not inside the `${iwpgvObj.prefix}__chartOptionsForm` form 
+      if ( ! event.target.closest("form") || ! event.target.closest("form").id === `${iwpgvObj.prefix}__chartOptionsForm` || ! event.target.classList.contains( `${iwpgvObj.prefix}__chartParams`) ) return
+    
+      // file uploader event listener
+      if (event.target.id === `${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`) {
+        event.preventDefault()
+        
+        // HIde chart and table charts
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
+
+        // Hide min and max input fields
+        hideElementById (`${iwpgvObj.prefix}__plotMinMax` )
+
+        mediaUploader( iwpgvCharts, iwpgvObj )
+       
+      }
         
     })
 

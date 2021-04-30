@@ -56,12 +56,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 // Includes
 require_once YRL_WP_IGV_PATH . "includes/Dashboard.php";
-require_once YRL_WP_IGV_PATH . "includes/ChartParams.php";
-require_once YRL_WP_IGV_PATH . "includes/ChartLayout.php";
+// require_once YRL_WP_IGV_PATH . "includes/ChartParams.php";
+// require_once YRL_WP_IGV_PATH . "includes/ChartLayout.php";
 // require_once YRL_WP_IGV_PATH . "includes/NumRangeOption.php";
 // require_once YRL_WP_IGV_PATH . "includes/TableChartOption.php";
 // require_once YRL_WP_IGV_PATH . "includes/ChartRangeOption.php";
-require_once YRL_WP_IGV_PATH . "includes/TraceOption.php";
+// require_once YRL_WP_IGV_PATH . "includes/TraceOption.php";
 // require_once YRL_WP_IGV_PATH . "includes/TrendlinesOption.php";
 // require_once YRL_WP_IGV_PATH . "includes/AxisOption.php";
 // require_once YRL_WP_IGV_PATH . "includes/PieChartOption.php";
