@@ -641,34 +641,29 @@ if (!class_exists('Dashboard')) {
 
 			// Fetch all chartss
 			$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-			// var_dump($charts); die;
 
-			// If action is not set, display all charts
-			if ( ! isset($_GET['action']) ) {
+			if ( ! isset($_GET['action']) ) { // If action is not set, display all charts
 
-				$payload = [];
+				// Initialize payloas
+        $payload = [];
 
 				// Assemble payload
 				foreach ($charts as $chart_id => $chart) {
 	
-					// Fetch spreadsheet
-					$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
+					// Set payload by chart Id
 					$payload[$chart_id] = $chart;				
 
-					// // Get selected sheet and set chart[sheetId]
+          // Fetch and add sheet to payload
+					$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
 					$payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
-					// $charts[$chart_id] = $chart;
 
 				}
 
         // Set template, payload and response
         $template = "chart-library";
-				$response = [ 'status' => "success", 'action'	=> 'listCharts', 'charts' => $payload, ];
-        // $payload = $charts;
+				$response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
        
-
-			// If action is set 
-			} else {
+			} else { // If action is set 
 
         try {
 
@@ -688,19 +683,13 @@ if (!class_exists('Dashboard')) {
               throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
           } else {
-           $chart = [
-						"chartParams" => ["options" => []],
-						"chartLayout" => ["options" => []],
-						"chartTraces" => ["options" => []],
-						"tableChart" => ["options" => []],
-						"minMaxAvgTableChart" => ["options" => []],
-					 ];
+           $chart = [];
 					 $spreadsheet = null;
           }
 
 					$chart = [
 						"chartParams" => [
-							"options" => $chart["chartParams"]["options"],
+							"options" => isset( $chart["chartParams"]["options"] ) ? $chart["chartParams"]["options"] : [],
 							"panel" => [
 								"id" => "{$this->prefix}__chartParamsPanel",
 								"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
@@ -710,7 +699,7 @@ if (!class_exists('Dashboard')) {
 							]
 						],
 						"chartLayout" => [
-							"options" => $chart["chartLayout"]["options"],
+							"options" => isset( $chart["chartLayout"]["options"] ) ? $chart["chartLayout"]["options"] : [],
 							"panel" => [
 								"id" => "{$this->prefix}__chartLayoutPanel",
 								"cssClasses" => ["chartLayout", "panel"],
@@ -720,7 +709,7 @@ if (!class_exists('Dashboard')) {
 							]
 						],
 						"chartTraces" => [
-							"options" => $chart["chartTraces"]["options"],
+							"options" => isset( $chart["chartTraces"]["options"] ) ? $chart["chartTraces"]["options"] : [],
 							"panel" => [
 								"id" => "{$this->prefix}__chartTracesPanel",
 								"cssClasses" => ["chartTraces", "panel"],
@@ -730,7 +719,7 @@ if (!class_exists('Dashboard')) {
 							]
 						],
 						"tableChart" => [
-							"options" => $chart["tableChart"]["options"],
+							"options" => isset( $chart["tableChart"]["options"] ) ? $chart["tableChart"]["options"] : [],
 							"panel" => [
 								"id" => "{$this->prefix}__tableChartPanel",
 								"cssClasses" => ["tableChart", "panel"],
@@ -740,7 +729,7 @@ if (!class_exists('Dashboard')) {
 							]
 						],
 						"minMaxAvgTableChart" => [
-							"options" => $chart["minMaxAvgTableChart"]["options"],
+							"options" => isset( $chart["minMaxAvgTableChart"]["options"] ) ? $chart["minMaxAvgTableChart"]["options"] : [],
 							"panel" => [
 								"id" => "{$this->prefix}__minMaxAvgTableChartPanel",
 								"cssClasses" => ["minMaxAvgTableChart", "panel"],

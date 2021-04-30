@@ -8,7 +8,9 @@
 
   <?php // var_dump($payload);die; ?>
 
-
+  <!-- Admin messages -->
+  <div class="admin-messages"></div>
+  
   <div class="content-wrapper">
 
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "edit-chart"), admin_url('admin.php')); ?>" >
