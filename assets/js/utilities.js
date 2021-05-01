@@ -89,6 +89,56 @@ const removePanel =  ( panelId ) => {
 
 
 
+const charParamsChangeHandler = ( spreadsheet, chart, iwpgvObj ) => {
+
+
+  
+
+  // remove layout panel toggle and panel
+  document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
+  document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
+  document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
+  document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
+
+  // Update chart params options
+  chart.chartParams.options.fileUpload = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value
+  chart.chartParams.options.sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
+  chart.chartParams.options.chartType = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value
+  chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
+  chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
+  chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
+
+  console.log("======", spreadsheet[chart.chartParams.options.sheetId], chart.chartTraces.options)
+
+  const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+  // if (chart.chartTraces.options.length && chart.chartParams.options.sheetId && iwpgvCharts.spreadsheet[chart.chartParams.options.sheetId] && jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.spreadsheet[chart.chartParams.options.sheetId].data.length) {
+    if (spreadsheet[sheetIdInput.value].data.length < chart.chartTraces.options.length) {
+    // console.log("HERE")
+    for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < chart.chartTraces.options.length; i++ ) {
+      delete chart.chartTraces.options[i]
+      delete chart.chartTraces.panel.sections[i]
+    }
+  }
+  
+  // Delete extra rows if the length of the existing data object is greater thatn the new datat object
+  // if (iwpgvCharts.chart.chartParams.options.sheetId && jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
+  //   for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length; i++ ) {
+  //     delete iwpgvCharts.chart.chartTraces.options[i]
+  //     delete iwpgvCharts.chart.chartTraces.panel.sections[i]
+  //   }
+  // }
+
+ 
+
+  // // Draw chart
+  // drawChart(jsonRes.spreadsheet, iwpgvCharts.chart, iwpgvObj)
+
+}
+
+
+
+
+
 
 
 
@@ -597,6 +647,7 @@ module.exports = {
   toggleInputField,
   setSheetIdOptions,
   removePanel,
+  charParamsChangeHandler,
   
 
 

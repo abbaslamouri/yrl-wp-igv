@@ -24,6 +24,7 @@ class ChartParams {
 
       mediaUploadBtn : 'Upload New File',
       fileUpload : (this.params.fileUpload !== undefined) ? this.params.fileUpload : null,
+      fileId : (this.params.fileId !== undefined) ? this.params.fileId : null,
       sheetId : (this.params.sheetId !== undefined ) ? this.params.sheetId : null,
       chartType : (this.params.chartType !== undefined ) ? this.params.chartType : null,
       chartId : (this.params.chartId !== undefined ) ? this.params.chartId : null,
@@ -89,6 +90,12 @@ class ChartParams {
             },
           ],
           [
+            {
+              id : "chartParams[fileId]",
+              title : "",	
+              type : "",
+              value : this.options()['fileId'],
+            },
             {
               id : "chartParams[chartId]",
               title : "",	

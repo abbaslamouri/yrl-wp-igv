@@ -164,6 +164,12 @@ if (!class_exists('Dashboard')) {
         
 				// Get spreadsheet
         $spreadsheet = $this->fetch_spreadsheet( $saved_chart['chartParams']['fileName'] );
+
+        // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+        if (  is_wp_error( $spreadsheet ) ) {
+          $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+          throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+        } 
         
         // Get selected sheet
 				$sheet = $spreadsheet[$saved_chart['chartParams']['sheetId']];
@@ -370,24 +376,27 @@ if (!class_exists('Dashboard')) {
 		* @return  array $data (both raw and formatted Spreadsheet cols and rows data)
 		* @version  0.1
 		*/
-		public function fetch_spreadsheet($filename) {
+		public function fetch_spreadsheet( $file_id ) {
 
+      // Get file path from file Id
+      $file_path = get_attached_file( $file_id );
 
-			$errors = new \WP_Error();
-
-			$spreadsheet = [];
+			// Initialize spreadsheet
+      $spreadsheet = [];
 
 			// Check if the file is already in the upload directory
-			if ( ! file_exists ($this->upload_path.$filename)) {
-				$message = "File <strong>$this->upload_path.$filename</strong> does not exist.";
-				$errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
-				return $errors;
+			if ( ! file_exists ($file_path)) {
+				$message = "File <strong>$file_path</strong> does not exist.";
+				return new \WP_Error ( 'error', __( wp_kses_post ( $message ), $this->plugin));
 			}
-			
 
-		
+      // Check file type
+      if ( ! in_array(wp_check_filetype(wp_basename($file_path))["ext"], $this->file_types )) {
+        throw new \Exception(  __(wp_kses_post("Invalid file type, <strong>".wp_basename($file_path)."</strong> is not a valid file type.  Only excel and csv spreadsheets are allowed"), $this->plugin));
+      }
+			
 			// Identify input file type
-			$file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($this->upload_path.$filename);
+			$file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_path);
 
 			// Create a new Reader of the type that has been identified
 			$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
@@ -396,7 +405,7 @@ if (!class_exists('Dashboard')) {
 			$reader->setReadDataOnly(true);
 
 			// Load $input_file_path to a input_file Object
-			$input_file = $reader->load($this->upload_path.$filename);
+			$input_file = $reader->load($file_path);
 
 			// Identify all sheets by name in the spreasheet
 			$sheet_names = $input_file->getSheetNames();
@@ -442,7 +451,7 @@ if (!class_exists('Dashboard')) {
 				// Validate data
 				// Check if the file is already in the upload directory
 				if ( empty($labels) || empty($filtered_data)) {
-					$message = "File <strong>$this->upload_path.$filename</strong> contains invalid data (possible missing labels or empty columns).";
+					$message = "File <strong>{$file_path}</strong> contains invalid data (possible missing labels or empty columns).";
 					$errors->add ( 'error', __( wp_kses_post ( $message ), $this->plugin));
 					return $errors;
 				}
@@ -512,47 +521,78 @@ if (!class_exists('Dashboard')) {
 
 			if ( ! isset($_GET['action']) ) { // If action is not set, display all charts
 
-				// Initialize payloas
+        // Initialize payload
         $payload = [];
 
-				// Assemble payload
-				foreach ($charts as $chart_id => $chart) {
-	
-					// Set payload by chart Id
-					$payload[$chart_id] = $chart;				
-
-          // Fetch and add sheet to payload
-					$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
-					$payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
-
-				}
-
-        // Set template, payload and response
+        // Set template
         $template = "chart-library";
-				$response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
-       
-			} else { // If action is set 
 
         try {
 
-					$chart_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+          // Assemble payload
+          foreach ($charts as $chart_id => $chart) {
+    
+            // Set payload by chart Id
+            $payload[$chart_id] = $chart;
+
+            // Fetch spreadsheet
+            $spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
+
+            // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+            if (  is_wp_error( $spreadsheet ) ) {
+              $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+              throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+            }  	
+
+            // Fetch sheet
+            $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+
+          }
+
+          // Set payload and response
+          $response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
+
+        } catch (\Exception $e) {
+  
+          // Prepare error output
+          $response = ["status"	 => "error", "message" => $e->getMessage()];
+
+        }
+       
+			} else { // If action is set 
+
+        // Set template
+        $template = "edit-chart";
+        $chart = [];
+				$spreadsheet = null;
+
+        try {
 
           // Bail if action is not equal "edit-chart"
 				  if ($_GET['action'] !== 'edit-chart') {
             throw new \Exception(  __( wp_kses_post("Invalid request. Something went badly wrong!"), $this->plugin ) );
           }
 
-          if (  isset ( $chart_id ) ) {
+          $chart_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+
+          if ( $chart_id  ) {
             if ( isset($charts[$chart_id] ) ) {
+
               $chart = $charts[$chart_id];
+
 							// Fetch spreadsheet
-							$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileUpload']);
+							$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']);
+              
+              // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+              if (  is_wp_error( $spreadsheet ) ) {
+                $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+                throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+              } 
+            
             } else {
               throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
             }
-          } else {
-           $chart = [];
-					 $spreadsheet = null;
+
           }
 
 					$chart = [
@@ -619,8 +659,7 @@ if (!class_exists('Dashboard')) {
 
         }
 
-        // Set template, payload and response
-        $template = "edit-chart";
+        // Set payload
         $payload = ["chart" => $chart];
 				
 			}
@@ -654,7 +693,7 @@ if (!class_exists('Dashboard')) {
      */
 		public function file_select() {
 
-			//  wp_send_json($_POST);
+			// wp_send_json($_POST);
 
 			try{
 
@@ -663,41 +702,27 @@ if (!class_exists('Dashboard')) {
 					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
 				}	
 
-				// Get file name and extension
-				$filename = wp_basename($_POST["{$this->prefix}__chartParams"]["fileUpload"]);
+				// Fetch spreadsheet
+				$spreadsheet = $this->fetch_spreadsheet(  $_POST["fileId"]  );
 
-				// Check file type
-				if ( !in_array(wp_check_filetype( $filename )["ext"], $this->file_types )) {
-					throw new \Exception(  __(wp_kses_post("Invalid file type.  Only excel spreadsheets are allowed"), $this->plugin));
-				}
-
-				// process spreadsheet
-				$spreadsheet = $this->fetch_spreadsheet($filename);
-				if ( is_wp_error($spreadsheet)) {
-					$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-					throw new \Exception ( __($message, $this->plugin));
-				}
+        // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+        if (  is_wp_error( $spreadsheet ) ) {
+          $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+          throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+        } 
 
 				// Compose response
 				$response = array(
 					"status" => "success",
-					// "sheetIdOptions" => $sheet_id_options,
 					"spreadsheet" => $spreadsheet,
           "message" => null,
-          "post"    => $_POST
-				);
-
-				// return ajax data
-				// wp_send_json($response);
+        );
 			
 			} catch (\Exception $e) {
 
-				// Prepare error output
-				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
-
 				$response = [
 					"status"  => "error",
-          "message" => $message,
+          "message" => $e->getMessage(),
 				];
 				
 			}
@@ -705,7 +730,7 @@ if (!class_exists('Dashboard')) {
 			// return ajax data
 			wp_send_json($response);
 
-		}  // END public function contact_form_process() {
+		}  // END file_select() {
 
 
 
@@ -754,10 +779,9 @@ if (!class_exists('Dashboard')) {
 				// New chart
         } else {
 					$last_chart = end( $charts );
-					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["chartParams"]["options"]["chartId"] + 1 : 1032;
+					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["chartParams"]["options"]["chartId"] + 1 : 16327;
 				}
 
-				
 				// Assemble chart
 				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
 				$charts[$chart_id]["chartParams"]["options"]["chartId"] = $chart_id;
