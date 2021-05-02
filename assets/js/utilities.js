@@ -137,6 +137,100 @@ const charParamsChangeHandler = ( spreadsheet, chart, iwpgvObj ) => {
 
 
 
+const showchartParamsInputFields = ( iwpgvObj ) => {
+
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
+
+}
+
+
+const fetchTableChartOptions = function ( chart, spreadsheet ) {
+
+  // Set table header values
+  const headerValues = []
+  for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
+    headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
+  }
+  chart.tableChart.options.header.values = headerValues
+
+    // Set table header alignment
+  chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
+
+
+  // Round cells values if rounding is not 0
+  if ( chart.tableChart.options.rounding) {
+    const cellValues = []
+    for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+      cellValues[i] =[]
+      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
+        cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
+      }  
+    }
+    chart.tableChart.options.cells.values = cellValues  
+  } else {
+    chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
+  }
+
+    // Set table cells alignment
+    chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
+
+  // Set table even and odd row colors
+  const rowFillColors = []
+  for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
+  }
+  chart.tableChart.options.cells.fill.color = [rowFillColors]
+  
+  return chart.tableChart.options
+
+}
+
+
+
+const fetchMinMaxAvgTableChartOptions = function ( chart, spreadsheet ) {
+
+  // Set table header
+  const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+  chart.minMaxAvgTableChart.options.header.values = headerValues
+
+  const xAxisMin = Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+  const xAxisMax = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+
+  chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
+
+  // Set table cells alignment
+  chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+
+  // Set table even and odd row colors
+  const rowFillColors = []
+  for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
+  }
+  chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
+
+  return chart.minMaxAvgTableChart.options
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -160,6 +254,8 @@ const getMinMaxAvgTableHeader = function () {
   return  [["<b>Trace</b>"], ["<b>Min</b>"], ["<b>Average</b>"], ["<b>Max</b>"]]
 
 }
+
+
 
 
 const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax = null ) {
@@ -648,6 +744,9 @@ module.exports = {
   setSheetIdOptions,
   removePanel,
   charParamsChangeHandler,
+  showchartParamsInputFields,
+  fetchTableChartOptions,
+  fetchMinMaxAvgTableChartOptions,
   
 
 

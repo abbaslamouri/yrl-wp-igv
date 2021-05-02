@@ -2,7 +2,7 @@ import Plotly from 'plotly.js-dist'
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
-import renderPanel from "./render-panel"
+// import renderPanel from "./render-panel"
 import Accordion from "./Accordion"
 import saveChart from "./save-chart"
 import { toggleElementById, showElementById, hideElementById, displayAdminMessage, chartOptionKey, getMinMaxAvgData, charParamsChangeHandler } from "./utilities"
@@ -12,7 +12,7 @@ let iwpgvCharts
 let spreadsheet
 
 
-const drawChart = function ( xlSpreadsheet, ChartsObj, pluginObj) {
+const drawChart =  ( xlSpreadsheet, ChartsObj, pluginObj) => {
 
   iwpgvObj = {...pluginObj}
   iwpgvCharts = {...ChartsObj}
@@ -55,165 +55,165 @@ const drawChart = function ( xlSpreadsheet, ChartsObj, pluginObj) {
     // // Render chart layout panel
     // renderPanel(chart.chartLayout.panel, pluginObj)
 
-    let index = 1;
-    while (index < spreadsheet[chart.chartParams.options.sheetId].labels.length) {
-      chart.chartTraces.options[index-1] = ( chart.chartTraces.options[index-1] !== undefined )? chart.chartTraces.options[index-1] : {}
-      const chartTraceInstance =  new ChartTrace( chart.chartTraces.options[index-1], spreadsheet, index, chart.chartParams.options.sheetId, chart.chartParams.options.chartType, pluginObj ) 
-      chart.chartTraces.options[index-1] = chartTraceInstance.options()
-      chart.chartTraces.panel.sections[index-1] = chartTraceInstance.sections()
-      index++
-    }
+    // let index = 1;
+    // while (index < spreadsheet[chart.chartParams.options.sheetId].labels.length) {
+    //   chart.chartTraces.options[index-1] = ( chart.chartTraces.options[index-1] !== undefined )? chart.chartTraces.options[index-1] : {}
+    //   const chartTraceInstance =  new ChartTrace( chart.chartTraces.options[index-1], spreadsheet, index, chart.chartParams.options.sheetId, chart.chartParams.options.chartType, pluginObj ) 
+    //   chart.chartTraces.options[index-1] = chartTraceInstance.options()
+    //   chart.chartTraces.panel.sections[index-1] = chartTraceInstance.sections()
+    //   index++
+    // }
 
-    // Render chart traces panel
-    renderPanel(chart.chartTraces.panel, pluginObj)
+    // // Render chart traces panel
+    // renderPanel(chart.chartTraces.panel, pluginObj)
 
-    // Unhide and set range slider min and max input fields if enableChartRangeSlider is true
-    if ( chart.chartParams.options.enableRangeSlider ) {
-      showElementById( `${pluginObj.prefix}__plotMinMax` )
-      document.getElementById(`${pluginObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
-      document.getElementById(`${pluginObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
-      document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
+    // // Unhide and set range slider min and max input fields if enableChartRangeSlider is true
+    // if ( chart.chartParams.options.enableRangeSlider ) {
+    //   showElementById( `${pluginObj.prefix}__plotMinMax` )
+    //   document.getElementById(`${pluginObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
+    //   document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
+    //   document.getElementById(`${pluginObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
+    //   document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
 
-      // Set range slider to true
-      chart.chartLayout.options.xaxis.rangeslider = true
-    } else {
-      hideElementById( `${pluginObj.prefix}__plotMinMax` )
-      document.getElementById(`${pluginObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
-      document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value =  null
-      document.getElementById(`${pluginObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
-      document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = null
+    //   // Set range slider to true
+    //   chart.chartLayout.options.xaxis.rangeslider = true
+    // } else {
+    //   hideElementById( `${pluginObj.prefix}__plotMinMax` )
+    //   document.getElementById(`${pluginObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
+    //   document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value =  null
+    //   document.getElementById(`${pluginObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
+    //   document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = null
 
-      // Set range slider to false
-      chart.chartLayout.options.xaxis.rangeslider =false
+    //   // Set range slider to false
+    //   chart.chartLayout.options.xaxis.rangeslider =false
 
-    }
+    // }
 
-    chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
+    // chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
 
-     // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-     Plotly.newPlot(`${pluginObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config).then (function() {
+    //  // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+    //  Plotly.newPlot(`${pluginObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config).then (function() {
 
-      toggleElementById( `${pluginObj.prefix}__spinner` )
-      // console.log("Done plotting Chart")
+    //   toggleElementById( `${pluginObj.prefix}__spinner` )
+    //   // console.log("Done plotting Chart")
 
-    })
+    // })
 
-    // Add range slider event handler
-    yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
-      const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-      const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-      document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
-      document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
+    // // Add range slider event handler
+    // yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
+    //   const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+    //   const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+    //   document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
+    //   document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
 
-      chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, x_start, x_end)
-      // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-      // Plotly.newPlot(`${pluginObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
+    //   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, x_start, x_end)
+    //   // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+    //   // Plotly.newPlot(`${pluginObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
 
-      //   console.log("Done plotting MIn Max Table")
+    //   //   console.log("Done plotting MIn Max Table")
 
-      // })
+    //   // })
 
-      Plotly.restyle(`${pluginObj.prefix}__plotlyMinMaxTable`,  chart.minMaxAvgTableChart.options );
-    })
+    //   Plotly.restyle(`${pluginObj.prefix}__plotlyMinMaxTable`,  chart.minMaxAvgTableChart.options );
+    // })
 
     // Set chart Table if enableTableChart is true
-    if ( chart.chartParams.options.enableTableChart ) {
+    // if ( chart.chartParams.options.enableTableChart ) {
 
-      // Assemble table chart and panels layout
-      const tableChartInstance = new TableChart( chart.tableChart.options, pluginObj, "tableChart", "Table Chart" )
-      chart.tableChart.options = tableChartInstance.options()
-      chart.tableChart.panel.sections = tableChartInstance.sections()
+    //   // // Assemble table chart and panels layout
+    //   // const tableChartInstance = new TableChart( chart.tableChart.options, pluginObj, "tableChart", "Table Chart" )
+    //   // chart.tableChart.options = tableChartInstance.options()
+    //   // chart.tableChart.panel.sections = tableChartInstance.sections()
 
-      // Render chart traces panel
-      renderPanel(chart.tableChart.panel, pluginObj)
+    //   // // Render chart traces panel
+    //   // renderPanel(chart.tableChart.panel, pluginObj)
 
-      // Set table header values
-      const headerValues = []
-      for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
-        headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
-      }
-      chart.tableChart.options.header.values = headerValues
+    //   // Set table header values
+    //   const headerValues = []
+    //   for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
+    //     headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
+    //   }
+    //   chart.tableChart.options.header.values = headerValues
 
-       // Set table header alignment
-      chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
+    //    // Set table header alignment
+    //   chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
 
 
-      // Round cells values if rounding is not 0
-      if ( chart.tableChart.options.rounding) {
-        const cellValues = []
-        for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
-          cellValues[i] =[]
-          for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
-            cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
-          }  
-        }
-        chart.tableChart.options.cells.values = cellValues  
-      } else {
-        chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
-      }
+    //   // Round cells values if rounding is not 0
+    //   if ( chart.tableChart.options.rounding) {
+    //     const cellValues = []
+    //     for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+    //       cellValues[i] =[]
+    //       for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
+    //         cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
+    //       }  
+    //     }
+    //     chart.tableChart.options.cells.values = cellValues  
+    //   } else {
+    //     chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
+    //   }
 
-       // Set table cells alignment
-       chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
+    //    // Set table cells alignment
+    //    chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
 
-      // Set table even and odd row colors
-      const rowFillColors = []
-      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-        rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
-      }
-      chart.tableChart.options.cells.fill.color = [rowFillColors]
+    //   // Set table even and odd row colors
+    //   const rowFillColors = []
+    //   for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    //     rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
+    //   }
+    //   chart.tableChart.options.cells.fill.color = [rowFillColors]
 
-      // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-      Plotly.newPlot(`${pluginObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartConfig).then (function() {
+    //   // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+    //   Plotly.newPlot(`${pluginObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartConfig).then (function() {
 
-        // console.log("Done plotting Table")
+    //     // console.log("Done plotting Table")
 
-      })
+    //   })
     
-    }
+    // }
 
-    // Unhide and set chart Table if enableMinMaxTableChart is true
-    if ( chart.chartParams.options.enableMinMaxTableChart ) {
+    // // Unhide and set chart Table if enableMinMaxTableChart is true
+    // if ( chart.chartParams.options.enableMinMaxTableChart ) {
 
-      // Assemble Min/Max table chart options and panel
-      const minMaxAvgTableChartInstance = new TableChart( chart.minMaxAvgTableChart.options, pluginObj, "minMaxAvgTableChart", "Min/Max/Avg Table Chart" )
-      chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
-      chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
+    //   // Assemble Min/Max table chart options and panel
+    //   const minMaxAvgTableChartInstance = new TableChart( chart.minMaxAvgTableChart.options, pluginObj, "minMaxAvgTableChart", "Min/Max/Avg Table Chart" )
+    //   chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
+    //   chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
 
-      // Render chart traces panel
-      renderPanel(chart.minMaxAvgTableChart.panel, pluginObj)
+    //   // Render chart traces panel
+    //   renderPanel(chart.minMaxAvgTableChart.panel, pluginObj)
 
-      // Set table header
-      const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
-      chart.minMaxAvgTableChart.options.header.values = headerValues
+    //   // Set table header
+    //   const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+    //   chart.minMaxAvgTableChart.options.header.values = headerValues
 
-      const xAxisMin = Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-      const xAxisMax = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+    //   const xAxisMin = Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+    //   const xAxisMax = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
 
-      chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
+    //   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
 
-      // Set table cells alignment
-      chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+    //   // Set table cells alignment
+    //   chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
 
-      // Set table even and odd row colors
-      const rowFillColors = []
-      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-        rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
-      }
-      chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
+    //   // Set table even and odd row colors
+    //   const rowFillColors = []
+    //   for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    //     rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
+    //   }
+    //   chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
 
 
-      // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-      Plotly.newPlot(`${pluginObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
+    //   // document.getElementById(`${pluginObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+    //   Plotly.newPlot(`${pluginObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartConfig).then (function() {
 
-        // console.log("Done plotting MIn Max Table")
+    //     // console.log("Done plotting MIn Max Table")
 
-      })
+    //   })
 
-    }
+    // }
 
-    // Enable save button
-    document.getElementById(`${pluginObj.prefix}__saveChart`).disabled = false
+    // // Enable save button
+    // document.getElementById(`${pluginObj.prefix}__saveChart`).disabled = false
 
 
 
@@ -240,13 +240,13 @@ const drawChart = function ( xlSpreadsheet, ChartsObj, pluginObj) {
       
     })
 
-    document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
-      element.classList.remove("hidden")
-    })
+    // document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
+    //   element.classList.remove("hidden")
+    // })
 
-    document.querySelectorAll(`.accordion__content`).forEach (element=> {
-      element.classList.remove("hidden")
-    })
+    // document.querySelectorAll(`.accordion__content`).forEach (element=> {
+    //   element.classList.remove("hidden")
+    // })
 
     // Add change event listener on all the document
     document.addEventListener("change", function (event) {
