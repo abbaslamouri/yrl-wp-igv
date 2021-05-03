@@ -30,35 +30,31 @@
         <img id = "<?php echo "{$this->prefix}__spinner" ?>" class="loading-spinner hidden" src="<?php echo "{$this->url}assets/img/loading-spinner.svg" ?>" alt="Loading Spinner">
 
         <!-- Warning heading -->
-        <h3 id="<?php echo "{$this->prefix}__warning" ?>" class="warning">
-        To view a chart, you must select/upload a file, select a sheet, and chart type
-        </h3>
+        <h3 id="<?php echo "{$this->prefix}__warning" ?>" class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</h3>
 
         <div class="main">
 
           <!-- PLot goes here -->
           <div id="<?php echo "{$this->prefix}__plotlyChart" ?>"></div>
 
+          <!-- X-axis Min and Max inputs go here -->
+          <form id="<?php echo "{$this->prefix}__plotMinMax" ?>" class="form" action="#">
+            <div class="form__group hidden">
+              <input type="number" id = "<?php echo "{$this->prefix}__rangeMinInput" ?>" class="form__input" placeholder="Range Min" required>
+              <label class="form__label" for="<?php echo "{$this->prefix}__rangeMinInput" ?>">Range Min</label>
+            </div>
+            <div class="form__group hidden">
+              <input type="number" id = "<?php echo "{$this->prefix}__rangeMaxInput" ?>" class="form__input" placeholder="Range Max" required>
+              <label class="form__label" for="<?php echo "{$this->prefix}__rangeMaxInput" ?>">Range Max</label>
+            </div>
+          </form>
+
           <div class="minmaxavgtable">
 
              <!-- Min Max Data table goes here -->
             <div id="<?php echo "{$this->prefix}__plotlyMinMaxTable" ?>" class=''></div>
 
-            <!-- X-axis Min and Max inputs go here -->
-            <form id="<?php echo "{$this->prefix}__plotMinMax" ?>" class="form" action="#">
-              <div class="form__group hidden">
-                <input type="number" id = "<?php echo "{$this->prefix}__rangeMinInput" ?>" class="form__input" placeholder="Range Min" required>
-                <label class="form__label" for="<?php echo "{$this->prefix}__rangeMinInput" ?>">Range Min</label>
-              </div>
-              <div class="form__group hidden">
-                <input type="number" id = "<?php echo "{$this->prefix}__rangeMaxInput" ?>" class="form__input" placeholder="Range Max" required>
-                <label class="form__label" for="<?php echo "{$this->prefix}__rangeMaxInput" ?>">Range Max</label>
-              </div>
-            </form>
-
           </div>
-
-         
 
         </div>
 

@@ -277,18 +277,19 @@ const drawChart =  ( xlSpreadsheet, ChartsObj, pluginObj) => {
         console.log("PARTS",control, key, parts, value)
 
 
-      // Chart layout event handler
-        if( control === "chartLayout" )  {
-          if (key.includes("config")) {
-            // Plotly.purge(`${pluginObj.prefix}__plotlyChart`)
-            chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : value
-            Plotly.newPlot(`${pluginObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
-          } else {
-          if (key === "hovermode" || key === "legend.itemclick" ) value = ( value !== "disabled" ) ? value : false
-          Plotly.relayout(`${pluginObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.config)
-          }
+      // // Chart layout event handler
+      //   if( control === "chartLayout" )  {
+      //     if (key.includes("config")) {
+      //       // Plotly.purge(`${pluginObj.prefix}__plotlyChart`)
+      //       chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : value
+      //       Plotly.newPlot(`${pluginObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
+      //     } else {
+      //     if (key === "hovermode" || key === "legend.itemclick" ) value = ( value !== "disabled" ) ? value : false
+      //     Plotly.relayout(`${pluginObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.config)
+      //     }
 
-        } else if( control === "tableChart" || control ==="minMaxAvgTableChart" )  {
+      //   } 
+      if( control === "tableChart" || control ==="minMaxAvgTableChart" )  {
 
           const plotlyTable = ( control === "tableChart" ) ? `${pluginObj.prefix}__plotlyTable` : ( control === "minMaxAvgTableChart" ) ? `${pluginObj.prefix}__plotlyMinMaxTable` : null
          
@@ -340,21 +341,21 @@ const drawChart =  ( xlSpreadsheet, ChartsObj, pluginObj) => {
 
         }
 
-      // Chart traces event handler
-      if ( event.target.classList.contains( `${pluginObj.prefix}__chartTraces` ) ) {
+      // // Chart traces event handler
+      // if ( event.target.classList.contains( `${pluginObj.prefix}__chartTraces` ) ) {
 
-        console.log("Traces",chartOptionKey(event.target.id))
-        const keyArr = chartOptionKey(event.target.id).key.split(".")
-        console.log(keyArr)
-        const traceNumber = keyArr.shift()
-        const optionKey = keyArr.join(".")
-        console.log(traceNumber, optionKey)
-        console.log({ [optionKey]: event.target.type === 'checkbox' ? event.target.checked : event.target.value })
+      //   console.log("Traces",chartOptionKey(event.target.id))
+      //   const keyArr = chartOptionKey(event.target.id).key.split(".")
+      //   console.log(keyArr)
+      //   const traceNumber = keyArr.shift()
+      //   const optionKey = keyArr.join(".")
+      //   console.log(traceNumber, optionKey)
+      //   console.log({ [optionKey]: event.target.type === 'checkbox' ? event.target.checked : event.target.value })
 
-        Plotly.restyle(`${pluginObj.prefix}__plotlyChart`, { [optionKey]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }, traceNumber);
+      //   Plotly.restyle(`${pluginObj.prefix}__plotlyChart`, { [optionKey]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }, traceNumber);
 
 
-      }
+      // }
       console.log(chart[control].options)
 
     })

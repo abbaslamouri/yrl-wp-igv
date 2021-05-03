@@ -158,9 +158,7 @@ try {
           delete iwpgvCharts.chart.chartTraces.panel.sections[i]
         }
       }
-
       
-
       renderChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
     } )

@@ -57,7 +57,7 @@ class TableChart extends ChartDefault{
         }
       },
       layout: {
-        width: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.width !== undefined ) ? this.tableConfig.layout.width : 450,
+        // width: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.width !== undefined ) ? this.tableConfig.layout.width : 450,
         title: {
           text: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.text!== undefined ) ? this.tableConfig.layout.title.text : this.panelTitle,
           font : {

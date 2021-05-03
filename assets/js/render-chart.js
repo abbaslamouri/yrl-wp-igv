@@ -35,25 +35,6 @@ const renderChart = ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
 
   fixChart( iwpgvCharts, iwpgvObj, spreadsheet)
-  
-
-  // // Add range slider event handler
-  // yrl_wp_igv__plotlyChart.on('plotly_relayout',function(eventData){  
-  //   const x_start = (eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min(...spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data[0])
-  //   const x_end = (eventData  && eventData['xaxis.range']) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data[0])
-  //   document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(x_start).toFixed(3)
-  //   document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(x_end).toFixed(3)
-  //   // const minMaxAvgTableChartOptions = fetchMinMaxAvgTableChartOptions( chart, spreadsheet, x_start, x_end )    
-  //   // minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(iwpgvCharts.chart, spreadsheet, x_start, x_end)
-  //   // const minMaxAvgTableChartOptions = fetchMinMaxAvgTableChartOptions( iwpgvCharts.chart, spreadsheet )
-  //   console.log("?????", iwpgvCharts.chart.minMaxAvgTableChart.options)
-  //   // console.log("CCCCCC", iwpgvCharts.chart.minMaxAvgTableChart.options.cells.values)
-  //   Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-  //   // Plotly.restyle(`${iwpgvObj.prefix}__plotlyMinMaxTable`,  {"cells.values": getMinMaxAvgData(iwpgvCharts.chart, spreadsheet, x_start, x_end) }, [0,1,2,3] )
-  //   // Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [iwpgvCharts.chart.minMaxAvgTableChart.options])
-  //   // const minMaxAvgTableChartOptions = fetchMinMaxAvgTableChartOptions( iwpgvCharts.chart, spreadsheet )
-  //   Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`,  [iwpgvCharts.chart.minMaxAvgTableChart.options])
-  // })
 
   
   

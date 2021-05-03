@@ -185,8 +185,8 @@ class ChartTrace extends ChartDefault {
               title : "Trace Visible",  
               type : "select",
               options : {
-                true : true,
-                false : false,
+                enabled : "Enabled",
+                disabled : "Disabled",
                 legendonly : "Legend Only",
               },
               value : this.options().visible,
