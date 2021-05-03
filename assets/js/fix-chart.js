@@ -44,10 +44,10 @@ const fixChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   // Render table chart if enableTableChart is true
   if ( chart.chartParams.options.enableTableChart ) {
     const tableChartOptions = fetchTableChartOptions( chart, spreadsheet ) 
-    Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [tableChartOptions], tableChartOptions.layout, chart.chartLayout.options.config).
-    then (function() {
-      console.log("Done plotting Table")
-    })
+    // Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [tableChartOptions], tableChartOptions.layout, chart.chartLayout.options.config).
+    // then (function() {
+    //   console.log("Done plotting Table")
+    // })
   
   }
 
