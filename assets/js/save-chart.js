@@ -18,6 +18,7 @@ const saveChart = async function (chart, iwpgvObj) {
 
   try {
 
+
     // Bail if there are no chart traces, a file or a sheet id
     if (! Object.values(chart.chartTraces.options).length || ! chart.chartParams.options.fileUpload || ! chart.chartParams.options.sheetId ) {
       throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
@@ -37,7 +38,7 @@ const saveChart = async function (chart, iwpgvObj) {
     //send ajax resquest
     jsonRes = await fetchData(formData);
 
-    console.log("JSONRESPONSE", jsonRes)
+    console.log("JSONRES-SAVE", jsonRes)
 
     // Bail is server response status = error
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )

@@ -229,16 +229,16 @@ const drawChart =  ( xlSpreadsheet, ChartsObj, pluginObj) => {
 
 
     
-    // Add click event listener to the chart params panel inoput fields
-    document.addEventListener("click", function (event) {
+    // // Add click event listener to the chart params panel inoput fields
+    // document.addEventListener("click", function (event) {
       
-      // Save chart event handler
-      if (event.target.closest("form") && event.target.closest("form").id === `${pluginObj.prefix}__chartOptionsForm` && event.target.id === `${pluginObj.prefix}__saveChart`) {
-        event.preventDefault()
-        saveChart(chart, pluginObj)
-      }
+    //   // Save chart event handler
+    //   if (event.target.closest("form") && event.target.closest("form").id === `${pluginObj.prefix}__chartOptionsForm` && event.target.id === `${pluginObj.prefix}__saveChart`) {
+    //     event.preventDefault()
+    //     saveChart(chart, pluginObj)
+    //   }
       
-    })
+    // })
 
     // document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
     //   element.classList.remove("hidden")
@@ -256,16 +256,16 @@ const drawChart =  ( xlSpreadsheet, ChartsObj, pluginObj) => {
 
       if (event.target.classList.contains(`${pluginObj.prefix}__chartParams`)) return
 
-      // Range Min and Range Max handler
-      if (event.target.closest("form") && event.target.closest("form").id == `${pluginObj.prefix}__plotMinMax` && ( event.target.id === `${pluginObj.prefix}__rangeMinInput` || event.target.id == `${pluginObj.prefix}__rangeMaxInput`) ) {
+      // // Range Min and Range Max handler
+      // if (event.target.closest("form") && event.target.closest("form").id == `${pluginObj.prefix}__plotMinMax` && ( event.target.id === `${pluginObj.prefix}__rangeMinInput` || event.target.id == `${pluginObj.prefix}__rangeMaxInput`) ) {
 
-        const newXAxisMin = document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value ?  document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value : xAxisMin
-        const newXAxisMax = document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value ? document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value : xAxisMax
+      //   const newXAxisMin = document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value ?  document.getElementById(`${pluginObj.prefix}__rangeMinInput`).value : xAxisMin
+      //   const newXAxisMax = document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value ? document.getElementById(`${pluginObj.prefix}__rangeMaxInput`).value : xAxisMax
 
-        Plotly.relayout(`${pluginObj.prefix}__plotlyChart`, { 'xaxis.range': [newXAxisMin, newXAxisMax] })
+      //   Plotly.relayout(`${pluginObj.prefix}__plotlyChart`, { 'xaxis.range': [newXAxisMin, newXAxisMax] })
 
-        return
-      }
+      //   return
+      // }
 
       // Bail if the clicked item is not inside the `${pluginObj.prefix}__chartOptionsForm` form 
       if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${pluginObj.prefix}__chartOptionsForm` ) return

@@ -52,6 +52,10 @@
         background-color: $color-grey-light;
         border-radius: 3px;
 
+        .main {
+          // display: flex;
+        }
+
         #yrl_wp_igv__spinner {
           width: 8rem;
           height: 8rem;

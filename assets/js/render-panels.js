@@ -43,7 +43,7 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
 
 
 // Assemble Min/Max table chart options and panel
-  const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "Min/Max/Avg Table Chart" )
+  const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "" )
   iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
   iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
   panel(iwpgvCharts.chart.minMaxAvgTableChart.panel, iwpgvObj)

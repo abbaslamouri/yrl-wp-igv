@@ -28,8 +28,8 @@ class ChartLayout extends ChartDefault {
 
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
       plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#FFFFFF",
-      width : ( this.layout.width !== undefined ) ? this.layout.width : null,
-      height : ( this.layout.height !== undefined ) ? this.layout.height : 600,
+      // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
+      height : ( this.layout.height !== undefined ) ? this.layout.height : 400,
       autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
       hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : false,
       font : {
