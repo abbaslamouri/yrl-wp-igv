@@ -93,6 +93,10 @@ if (!class_exists('Dashboard')) {
       // Add ajax chart sheet selection capability
 			add_action( "wp_ajax_{$this->prefix}_save_chart_action", array($this, 'save_chart' ));
       add_action( "wp_ajax_nopriv_{$this->prefix}_save_chart_action", array($this, 'save_chart' ));
+
+			// Add ajax chart delete
+			add_action( "wp_ajax_{$this->prefix}_delete_chart_action", array($this, 'delete_chart' ));
+			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_chart_action", array($this, 'delete_chart' ));
       
       // Add new file
 			add_action( "wp_ajax_{$this->prefix}_add_new_file_action", array($this, 'add_new_file' ));
@@ -339,7 +343,7 @@ if (!class_exists('Dashboard')) {
 
 
 			// Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
-			wp_register_script("{$this->plugin}-admin", "{$this->url}assets/bundle/admin.js", ["jquery", "wp-color-picker" ], false, true);
+			wp_register_script("{$this->plugin}-admin", "{$this->url}assets/bundle/admin.js", [], false, true);
 			wp_enqueue_script("{$this->plugin}-admin");
 			wp_localize_script(
 				"{$this->plugin}-admin", //handle for the script
@@ -355,6 +359,8 @@ if (!class_exists('Dashboard')) {
 					"file_select_nonce"  => wp_create_nonce("{$this->prefix}__file_select_nonce" ),
           "save_chart_action"   => "{$this->prefix}_save_chart_action",
           "save_chart_nonce"  => wp_create_nonce("{$this->prefix}__save_chart_nonce" ),
+					"delete_chart_action"   => "{$this->prefix}_delete_chart_action",
+          "delete_chart_nonce"  => wp_create_nonce("{$this->prefix}__delete_chart_nonce" ),
 				)
       );
       
@@ -562,95 +568,138 @@ if (!class_exists('Dashboard')) {
 			} else { // If action is set 
 
         // Set template
-        $template = "edit-chart";
         $chart = [];
 				$spreadsheet = null;
 
         try {
 
           // Bail if action is not equal "edit-chart"
-				  if ($_GET['action'] !== 'edit-chart') {
-            throw new \Exception(  __( wp_kses_post("Invalid request. Something went badly wrong!"), $this->plugin ) );
-          }
+				  // if ($_GET['action'] === 'delete-chart') {
 
-          $chart_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+					// 	try {
 
-          if ( $chart_id  ) {
-            if ( isset($charts[$chart_id] ) ) {
+					// 		$chart_to_delete_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+					// 		unset($charts[$chart_to_delete_id]);
 
-              $chart = $charts[$chart_id];
+					// 		if (! update_option("{$this->prefix}_charts", $charts)) {
+					// 			throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
+					// 		}
 
-							// Fetch spreadsheet
-							$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']);
-              
-              // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-              if (  is_wp_error( $spreadsheet ) ) {
-                $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-                throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-              } 
-            
-            } else {
-              throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
-            }
+					// 		// Assemble payload
+					// 		foreach ($charts as $chart_id => $chart) {
+				
+					// 			// Set payload by chart Id
+					// 			$payload[$chart_id] = $chart;
+		
+					// 			// Fetch spreadsheet
+					// 			$spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
+		
+					// 			// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+					// 			if (  is_wp_error( $spreadsheet ) ) {
+					// 				$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+					// 				throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+					// 			}  	
+		
+					// 			// Fetch sheet
+					// 			$payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+		
+					// 		}
+		
+					// 		// Set payload and response
+					// 		$response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
+		
+					// 	} catch (\Exception $e) {
+			
+					// 		// Prepare error output
+					// 		$response = ["status"	 => "error", "message" => $e->getMessage()];
+		
+					// 	}
+          //   // throw new \Exception(  __( wp_kses_post("Invalid request. Something went badly wrong!"), $this->plugin ) );
+					// 	$template = "chart-library";
+					// 	$action = "deleteChart";
+          // } else {
 
-          }
+						$template = "edit-chart";
+						$action = "editChart";
 
-					$chart = [
-						"chartParams" => [
-							"options" => isset( $chart["chartParams"]["options"] ) ? $chart["chartParams"]["options"] : [],
-							"panel" => [
-								"id" => "{$this->prefix}__chartParamsPanel",
-								"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
-								"title" => __("Chart Parameters", $this->plugin),
-								"intro" => "",
-								"sections" => []
+						$chart_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
+
+						if ( $chart_id  ) {
+							if ( isset($charts[$chart_id] ) ) {
+
+								$chart = $charts[$chart_id];
+
+								// Fetch spreadsheet
+								$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']);
+								
+								// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+								if (  is_wp_error( $spreadsheet ) ) {
+									$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+									throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+								} 
+							
+							} else {
+								throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
+							}
+
+						}
+
+						$chart = [
+							"chartParams" => [
+								"options" => isset( $chart["chartParams"]["options"] ) ? $chart["chartParams"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartParamsPanel",
+									"cssClasses" => 	["chartParams", "panel", "openOnLoad"],
+									"title" => __("Chart Parameters", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"chartLayout" => [
+								"options" => isset( $chart["chartLayout"]["options"] ) ? $chart["chartLayout"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartLayoutPanel",
+									"cssClasses" => ["chartLayout", "panel"],
+									"title" => __("Chart Layout", $this->plugin),
+									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
+									"sections" => []
+								]
+							],
+							"chartTraces" => [
+								"options" => isset( $chart["chartTraces"]["options"] ) ? $chart["chartTraces"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartTracesPanel",
+									"cssClasses" => ["chartTraces", "panel"],
+									"title" => __("Chart Traces", $this->plugin),
+									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"sections" => []
+								]
+							],
+							"tableChart" => [
+								"options" => isset( $chart["tableChart"]["options"] ) ? $chart["tableChart"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__tableChartPanel",
+									"cssClasses" => ["tableChart", "panel"],
+									"title" => __("Table Chart", $this->plugin),
+									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"sections" => []
+								]
+							],
+							"minMaxAvgTableChart" => [
+								"options" => isset( $chart["minMaxAvgTableChart"]["options"] ) ? $chart["minMaxAvgTableChart"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__minMaxAvgTableChartPanel",
+									"cssClasses" => ["minMaxAvgTableChart", "panel"],
+									"title" => __("Min/Max/Avg Table Chart", $this->plugin),
+									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"sections" => []
+								]
 							]
-						],
-						"chartLayout" => [
-							"options" => isset( $chart["chartLayout"]["options"] ) ? $chart["chartLayout"]["options"] : [],
-							"panel" => [
-								"id" => "{$this->prefix}__chartLayoutPanel",
-								"cssClasses" => ["chartLayout", "panel"],
-								"title" => __("Chart Layout", $this->plugin),
-								"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
-								"sections" => []
-							]
-						],
-						"chartTraces" => [
-							"options" => isset( $chart["chartTraces"]["options"] ) ? $chart["chartTraces"]["options"] : [],
-							"panel" => [
-								"id" => "{$this->prefix}__chartTracesPanel",
-								"cssClasses" => ["chartTraces", "panel"],
-								"title" => __("Chart Traces", $this->plugin),
-								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-								"sections" => []
-							]
-						],
-						"tableChart" => [
-							"options" => isset( $chart["tableChart"]["options"] ) ? $chart["tableChart"]["options"] : [],
-							"panel" => [
-								"id" => "{$this->prefix}__tableChartPanel",
-								"cssClasses" => ["tableChart", "panel"],
-								"title" => __("Table Chart", $this->plugin),
-								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-								"sections" => []
-							]
-						],
-						"minMaxAvgTableChart" => [
-							"options" => isset( $chart["minMaxAvgTableChart"]["options"] ) ? $chart["minMaxAvgTableChart"]["options"] : [],
-							"panel" => [
-								"id" => "{$this->prefix}__minMaxAvgTableChartPanel",
-								"cssClasses" => ["minMaxAvgTableChart", "panel"],
-								"title" => __("Min/Max/Avg Table Chart", $this->plugin),
-								"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
-								"sections" => []
-							]
-						]
-					];
-
+						];
+					// }
 
           // Set response
-          $response = [ 'status' => "success", 'action' => 'editChart', "chart" => $chart, 'spreadsheet' => $spreadsheet];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet];
 
         } catch (\Exception $e) {
   
@@ -734,6 +783,8 @@ if (!class_exists('Dashboard')) {
 
 
 
+
+
     
 		/**
 		 * Save Chart
@@ -774,7 +825,6 @@ if (!class_exists('Dashboard')) {
         // There is a chart Id (edit)
         if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"]) {
 					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
-					wp_send_json("ID = {$chart_id}");
 
 				// New chart
         } else {
@@ -820,6 +870,65 @@ if (!class_exists('Dashboard')) {
 			
 
 		}  // END public function contact_form_process() {
+
+
+
+
+
+		
+    
+		/**
+		 * Save Chart
+		 *
+		 * @return void
+		 */
+		public function delete_chart() {
+
+        // wp_send_json($_POST);
+
+			try {
+				
+				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_delete_chart_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__delete_chart_nonce")) {
+					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
+        }
+				
+				// Verify if chart options are set
+				if (  ! isset( $_POST["chartId"] ) )  throw new \Exception (__("Chart ID missing.", $this->plugin));
+
+				// Fetch all charts
+				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+				unset($charts[$_POST["chartId"]]);
+	
+        if (! update_option("{$this->prefix}_charts", $charts)) {
+					throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
+				}
+
+				// Compose response
+				$response = array(
+					"status" => "success",
+					"message" => "Chart deleted successfully",
+					"chartId" => $_POST["chartId"],
+					"charts" => $charts
+				);
+
+
+			} catch (\Exception $e) {
+
+				// Prepare error output
+				$message = "<div class='notice notice-error is-dismissible'><p>{$e->getMessage()}</p></div>";
+
+				$response = [
+					"status"  => "error",
+					"message" => $message
+				];
+
+			}
+
+			// return ajax data
+			wp_send_json($response);
+			
+
+		}  // END public function delete_chart() 
 
 
 

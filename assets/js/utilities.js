@@ -1,5 +1,6 @@
 const displayAdminMessage = function (message, status, iwpgvObj) {
-  document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
+  const messageDiv = document.querySelector(`.${iwpgvObj.prefix} .admin-messages`)
+  if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
 }
 
 

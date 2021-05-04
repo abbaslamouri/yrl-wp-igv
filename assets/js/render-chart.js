@@ -142,6 +142,8 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
       const key = chartOptionKey(event.target.id).key
       const keyParts = key.split(".")
       let value = event.target.value
+
+      console.log(control, key, value)
     
       // Chart layout event handler
       if( control === "chartLayout" )  {
@@ -162,7 +164,6 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
         const optionKey = keyArr.join(".")
         if ( optionKey === "visible" && event.target.value === "disabled" ) value = false
         if ( optionKey === "visible" && event.target.value === "enabled" ) value = true
-        console.log(key,value )
         Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: event.target.type === 'checkbox' ? event.target.checked : value }, traceNumber);
       }
 
@@ -204,7 +205,11 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             }
             break
           case 2:
-            chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+            console.log(chart[control].options[keyParts[0]][keyParts[1]], chart[control].options.firstColAlign)
+            if ( key === "header.align" || key === "cells.align") {
+              chart[control].options[keyParts[0]][keyParts[1]] = [chart[control].options.firstColAlign, event.target.value]
+            }
+            // chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
             break
           case 3:
             chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value

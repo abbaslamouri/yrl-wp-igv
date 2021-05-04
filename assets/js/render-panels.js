@@ -31,26 +31,27 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
   document.querySelector( `.accordion__content.chartTraces` ).classList.remove("hidden")
 
 
-// Assemble table chart and panels layout
-  const tableChartInstance = new TableChart( iwpgvCharts.chart.tableChart.options, iwpgvObj, "tableChart", "Table Chart" )
-  iwpgvCharts.chart.tableChart.options = tableChartInstance.options()
-  iwpgvCharts.chart.tableChart.panel.sections = tableChartInstance.sections()
-  panel(iwpgvCharts.chart.tableChart.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
+  // Assemble table chart and panels layout if enableTableChart is true
+  if ( iwpgvCharts.chart.chartParams.options.enableTableChart ) {
+    const tableChartInstance = new TableChart( iwpgvCharts.chart.tableChart.options, iwpgvObj, "tableChart", "Table Chart" )
+    iwpgvCharts.chart.tableChart.options = tableChartInstance.options()
+    iwpgvCharts.chart.tableChart.panel.sections = tableChartInstance.sections()
+    panel(iwpgvCharts.chart.tableChart.panel, iwpgvObj)
+    document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
+    document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
+  }
 
 
-// Assemble Min/Max table chart options and panel
-  const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "" )
-  iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
-  iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
-  panel(iwpgvCharts.chart.minMaxAvgTableChart.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
+  // Assemble Min/Max table chart options and panel if enableMinMaxTableChart is true
+  if ( iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart ) {
+    const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "" )
+    iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
+    iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
+    panel(iwpgvCharts.chart.minMaxAvgTableChart.panel, iwpgvObj)
+    document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
+    document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
+  }
   
-
-
-
 
   // document.querySelectorAll(`.accordion__toggle`).forEach (element=> {
   //   element.classList.remove("hidden")

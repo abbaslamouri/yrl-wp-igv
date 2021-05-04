@@ -1,11 +1,11 @@
 import Accordion from "./Accordion"
+import selectFile from './select-file'
 import ChartParams from "./ChartParams"
 import panel from "./panel"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import { displayAdminMessage, setSheetIdOptions, showchartParamsInputFields } from "./utilities"
 import "../sass/admin.scss"
-import selectFile from './select-file'
 
 
 let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}
@@ -16,7 +16,11 @@ let spreadsheet = []
 console.log("iwpgvObj", {...iwpgvObj})
 console.log("iwpgvCharts", {...iwpgvCharts})
 
+
+
 try {
+
+  if ( ! Object.values( iwpgvObj ) || ! Object.values( iwpgvCharts ).length ) throw new Error( )
 
   // Check if server error
   if ( iwpgvCharts.status === "error" ) throw new Error( iwpgvCharts.message )
@@ -25,7 +29,7 @@ try {
   if (! iwpgvCharts.action && iwpgvCharts.action !== "listCharts" && iwpgvCharts.action !== "editChart" ) throw new Error( "Invalid action" )
 
   // List all charts
-  if (iwpgvCharts.action && iwpgvCharts.action === "listCharts") {
+  if (iwpgvCharts.action && ( iwpgvCharts.action === "listCharts" ||  iwpgvCharts.action === "deleteChart" ) ) {
 
     listCharts( iwpgvCharts.charts, iwpgvObj)
 
@@ -158,51 +162,10 @@ try {
 
       
 
-      // charParamsChangeHandler(jsonRes.spreadsheet, iwpgvCharts.chart, iwpgvObj)
-      
-      // Draw chart
-      // drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
-      
-
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
       
       drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
     } )
-
-
-
-   
-
-    
-
-
-    
-
-    // Show saveChart button
-    // showElementById (`${iwpgvObj.prefix}__saveChart` )
-      
-    // // Add click event listener to the chart params panel inoput fields
-    // document.getElementById(`${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`).addEventListener("click", async function (event) {
-     
-    //   event.preventDefault()
-      
-    //   // HIde chart and table charts
-    //   Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-    //   Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-    //   Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-
-    //   // Hide min and max input fields
-    //   hideElementById (`${iwpgvObj.prefix}__plotMinMax` )
-
-    //   mediaUploader( iwpgvCharts, iwpgvObj )
-    //     document.addEventListener( "change", chartParamsChangeHandler )
-
-      
-          
-    // })
 
 
 
@@ -212,7 +175,7 @@ try {
 } catch (error) {
 
   displayAdminMessage(error.message, "error",  iwpgvObj)
-  console.log("CAUGHT ERROR", error)
+  // console.log("CAUGHT ERROR", error)
 
 } 
 
