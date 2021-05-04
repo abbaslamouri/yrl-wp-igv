@@ -1,11 +1,9 @@
-import Plotly from 'plotly.js-basic-dist'
 import Accordion from "./Accordion"
 import panel from "./panel"
-import ChartParams from "./ChartParams"
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
-import { displayAdminMessage, showElementById, hideElementById, showInputField, setSheetIdOptions, charParamsChangeHandler, showchartParamsInputFields } from "./utilities"
+
 
 const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
 

@@ -31,29 +31,17 @@ const toggleElementById = function (elementId) {
 // Show input fields
 const showInputField = function (fieldId) {
 
-  // if (fieldId.classList.contains("hidden") ) {
-    fieldId.classList.remove("hidden");
-    fieldId.closest(".form-group").classList.remove("hidden")
-  // } else {
-  //   fieldId.classList.add("hidden");
-  //   fieldId.closest(".form-group").classList.add("hidden")
-  // }
+  fieldId.classList.remove("hidden");
+  fieldId.closest(".form-group").classList.remove("hidden")
 
 }
 
 
-
-
-// Show input fields
+// Hide input fields
 const hideInputField = function (fieldId) {
 
-  // if (fieldId.classList.contains("hidden") ) {
-  //   fieldId.classList.remove("hidden");
-  //   fieldId.closest(".form-group").classList.remove("hidden")
-  // } else {
-    fieldId.classList.add("hidden");
-    fieldId.closest(".form-group").classList.add("hidden")
-  // }
+  fieldId.classList.add("hidden");
+  fieldId.closest(".form-group").classList.add("hidden")
 
 }
 
@@ -76,64 +64,20 @@ const toggleInputField = function (fieldId) {
 
 
 
-const removePanel =  ( panelId ) => {
+// const removePanel =  ( panelId ) => {
 
-  if (panelId)  {
-    panelId.previousSibling.remove()
-    panelId.remove()
-  }
+//   if (panelId)  {
+//     panelId.previousSibling.remove()
+//     panelId.remove()
+//   }
 
-}
-
-
+// }
 
 
 
-const charParamsChangeHandler = ( spreadsheet, chart, iwpgvObj ) => {
 
 
-  
 
-  // remove layout panel toggle and panel
-  document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
-  document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
-  document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
-  document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
-
-  // Update chart params options
-  chart.chartParams.options.fileUpload = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value
-  chart.chartParams.options.sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
-  chart.chartParams.options.chartType = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value
-  chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
-  chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
-  chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
-
-  console.log("======", spreadsheet[chart.chartParams.options.sheetId], chart.chartTraces.options)
-
-  const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-  // if (chart.chartTraces.options.length && chart.chartParams.options.sheetId && iwpgvCharts.spreadsheet[chart.chartParams.options.sheetId] && jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.spreadsheet[chart.chartParams.options.sheetId].data.length) {
-    if (spreadsheet[sheetIdInput.value].data.length < chart.chartTraces.options.length) {
-    // console.log("HERE")
-    for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < chart.chartTraces.options.length; i++ ) {
-      delete chart.chartTraces.options[i]
-      delete chart.chartTraces.panel.sections[i]
-    }
-  }
-  
-  // Delete extra rows if the length of the existing data object is greater thatn the new datat object
-  // if (iwpgvCharts.chart.chartParams.options.sheetId && jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && (jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length > jsonRes.spreadsheet[sheetIdInput.value].data.length )) {
-  //   for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length; i++ ) {
-  //     delete iwpgvCharts.chart.chartTraces.options[i]
-  //     delete iwpgvCharts.chart.chartTraces.panel.sections[i]
-  //   }
-  // }
-
- 
-
-  // // Draw chart
-  // drawChart(jsonRes.spreadsheet, iwpgvCharts.chart, iwpgvObj)
-
-}
 
 
 
@@ -148,70 +92,11 @@ const showchartParamsInputFields = ( iwpgvObj ) => {
 }
 
 
-const fetchTableChartOptions = function ( chart, spreadsheet ) {
-
-  // // Set table header values
-  // const headerValues = []
-  // for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
-  //   headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
-  // }
-  // chart.tableChart.options.header.values = headerValues
-
-  //   // Set table header alignment
-  // chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
-
-
-  // // Round cells values if rounding is not 0
-  // if ( chart.tableChart.options.rounding) {
-  //   const cellValues = []
-  //   for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
-  //     cellValues[i] =[]
-  //     for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
-  //       cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
-  //     }  
-  //   }
-  //   chart.tableChart.options.cells.values = cellValues  
-  // } else {
-  //   chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
-  // }
-
-  //   // Set table cells alignment
-  //   chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
-
-  // // Set table even and odd row colors
-  // const rowFillColors = []
-  // for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-  //   rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
-  // }
-  // chart.tableChart.options.cells.fill.color = [rowFillColors]
-  
-  // return chart.tableChart.options
-
-}
 
 
 
-const fetchMinMaxAvgTableChartOptions = function ( chart, spreadsheet, xAxisMin = null, xAxisMax = null ) {
 
-  // // Set table header
-  // const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
-  // chart.minMaxAvgTableChart.options.header.values = headerValues
 
-  // chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
-
-  // // Set table cells alignment
-  // chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
-
-  // // Set table even and odd row colors
-  // const rowFillColors = []
-  // for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-  //   rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
-  // }
-  // chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
-
-  // return chart.minMaxAvgTableChart.options
-
-}
 
 
 
@@ -565,86 +450,14 @@ const appendFormSaveBtn = function (form, iwpgvObj) {
 
 
 
-const setChartWidth = function (widthInput, boundingBoxId) {
-  let width;
-  if ( document.getElementById(boundingBoxId)) {
-    const chartRect = document
-      .getElementById(boundingBoxId)
-      .getBoundingClientRect();
-  }
-  if (widthInput.value * 1 < 100) {
-    width = 0.01 * widthInput.value * chartRect.width;
-  } else {
-    width = "100%";
-    widthInput.value = 100;
-  }
 
-  return width;
-};
 
-const setChartArea = function (chartArea, chartType) {
-  let width;
-  let height;
-  if (chartType === "PieChart") {
-    const chartAreaBgColor = chartArea.backgroundColor;
-    for (const option in chartArea) {
-      const optionInput = document.getElementById(
-        `${prefix}__chartOptions[chartArea][${option}]`
-      );
-      if (optionInput) optionInput.disabled = true;
-    }
 
-    for (const option in chartAreaBgColor) {
-      const optionInput = document.getElementById(
-        `${prefix}__chartOptions[chartArea][backgroundColor][${option}]`
-      );
-      if (optionInput) optionInput.disabled = true;
-      if (optionInput.classList.contains("color-picker")) {
-        optionInput.classList.remove("color-picker");
-      }
-    }
-    chartArea = null;
-  } else {
-    // Set chart area heigth and width
-    width = chartArea.width ? `${chartArea.width}%` : null;
-    height = chartArea.height ? `${chartArea.height}%` : null;
-  }
 
-  return { width, height };
-};
 
-const resizeChartArea = function (fieldId) {
-  let fieldVal;
-  const widthInput = document.getElementById(fieldId);
-  if (widthInput.value < 100) {
-    fieldVal = `${widthInput.value}%`;
-  } else {
-    fieldVal = "100%";
-    widthInput.value = 100;
-  }
-  console.log(fieldVal);
 
-  return fieldVal;
-};
 
-const setDependentFields = function (el) {
-  const dependents = el.dataset.dependents.split(",");
-  const elVal = el.type === "checkbox" ? el.checked : el.value;
-  dependents.forEach((dependent) => {
-    elementDiv = document.getElementById(`${prefix}__${dependent}`);
-    if (!elVal) {
-      elementDiv.disabled = true;
-    } else {
-      elementDiv.disabled = false;
-    }
-  });
-};
 
-const formatArrayFields = function (el) {
-  if (!el.value) return null;
-  const arr = el.value.split(",");
-  return arr.map((element) => 1 * element);
-};
 
 // Get chart option key from feld Id
 function chartOptionKey(fieldId) {
@@ -700,11 +513,7 @@ module.exports = {
   hideInputField,
   toggleInputField,
   setSheetIdOptions,
-  removePanel,
-  charParamsChangeHandler,
   showchartParamsInputFields,
-  fetchTableChartOptions,
-  fetchMinMaxAvgTableChartOptions,
   
 
 
@@ -718,12 +527,8 @@ module.exports = {
   getConfig,
   getTraces,
   getTable,
-  setChartWidth,
-  setChartArea,
-  resizeChartArea,
-  setDependentFields,
+  
   chartOptionKey,
-  formatArrayFields,
   appendFormSaveBtn
   // setChartOption,
   // // toggleWarning,

@@ -1,12 +1,6 @@
-import {
-  toggleElementById,
-  hideElementById,
-  showElementById,
-  // setSheetId,
-  // setChartTypeId,
-  displayAdminMessage
-} from "./utilities";
-import fetchData from "./fetch-data";
+import fetchData from "./fetch-data"
+import { displayAdminMessage } from "./utilities"
+
 
 let jsonRes = {} // Server response
 
@@ -32,11 +26,11 @@ const saveChart = async function (chart, iwpgvObj) {
 
     // Create form object and append action and nonce
     const formData = new FormData( form )
-    formData.append("action", iwpgvObj.save_chart_action);
-    formData.append("nonce", iwpgvObj.save_chart_nonce);
+    formData.append("action", iwpgvObj.save_chart_action)
+    formData.append("nonce", iwpgvObj.save_chart_nonce)
 
     //send ajax resquest
-    jsonRes = await fetchData(formData);
+    jsonRes = await fetchData(formData)
 
     console.log("JSONRES-SAVE", jsonRes)
 

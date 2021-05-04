@@ -1,15 +1,9 @@
-import Plotly from 'plotly.js-basic-dist'
-import fetchData from "./fetch-data"
 import Accordion from "./Accordion"
 import ChartParams from "./ChartParams"
-import ChartLayout from "./ChartLayout"
-// import mediaUploader from "./media-uploader"
 import panel from "./panel"
-import renderPanels from "./render-panels"
-import renderChart from "./render-chart"
+import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import chartParamsChangeHandler from "./chartparams-change-handler"
-import { displayAdminMessage, showElementById, hideElementById, showInputField, setSheetIdOptions, charParamsChangeHandler, showchartParamsInputFields } from "./utilities"
+import { displayAdminMessage, setSheetIdOptions, showchartParamsInputFields } from "./utilities"
 import "../sass/admin.scss"
 import selectFile from './select-file'
 
@@ -17,17 +11,12 @@ import selectFile from './select-file'
 let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}
 let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
 let mediaUploader
-// let jsonRes = {}
 let spreadsheet = []
-
-
 
 console.log("iwpgvObj", {...iwpgvObj})
 console.log("iwpgvCharts", {...iwpgvCharts})
 
 try {
-
-  // throw new Error("Stop")
 
   // Check if server error
   if ( iwpgvCharts.status === "error" ) throw new Error( iwpgvCharts.message )
@@ -67,7 +56,7 @@ try {
       // Show the remaining input fields in the chart params panel
       showchartParamsInputFields(iwpgvObj)
 
-      renderChart( iwpgvCharts, iwpgvObj, spreadsheet )
+      drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
     
 
@@ -114,19 +103,6 @@ try {
 
       mediaUploader.open()
 
-      
-      // // HIde chart and table charts
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-      // Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
-
-      // // Hide min and max input fields
-      // hideElementById (`${iwpgvObj.prefix}__plotMinMax` )
-
-      // mediaUploader( iwpgvCharts, iwpgvObj )
-      //   document.addEventListener( "change", chartParamsChangeHandler )
-
-      
           
     })
 
@@ -158,8 +134,41 @@ try {
           delete iwpgvCharts.chart.chartTraces.panel.sections[i]
         }
       }
+
+
+
+      // document.addEventListener( "change", chartParamsHandler )
+
+
+
+
+
+
+      // console.log("======", jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId], iwpgvCharts.chart.chartTraces.options)
+
+      // const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+      // // if (iwpgvCharts.chart.chartTraces.options.length && iwpgvCharts.chart.chartParams.options.sheetId && iwpgvCharts.jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && jsonResjsonRes..spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length) {
+      //   if (jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
+      //   // console.log("HERE")
+      //   for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {
+      //     delete iwpgvCharts.chart.chartTraces.options[i]
+      //     delete iwpgvCharts.chart.chartTraces.panel.sections[i]
+      //   }
+      // }
+
       
-      renderChart( iwpgvCharts, iwpgvObj, spreadsheet )
+
+      // charParamsChangeHandler(jsonRes.spreadsheet, iwpgvCharts.chart, iwpgvObj)
+      
+      // Draw chart
+      // drawChart(jsonRes.spreadsheet, iwpgvCharts, iwpgvObj)
+      
+
+      // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+      // Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+      // Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
+      
+      drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
     } )
 
