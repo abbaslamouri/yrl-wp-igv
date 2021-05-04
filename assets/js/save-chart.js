@@ -6,10 +6,6 @@ let jsonRes = {} // Server response
 
 const saveChart = async function (chart, iwpgvObj) {
 
-  // toggleElementById(`${iwpgvObj.prefix}__spinner`)
-  // hideElementById(`${iwpgvObj.prefix}__warning`)
-  // hideElementById(`${iwpgvObj.prefix}__dashboard`)
-
   try {
 
 
@@ -33,6 +29,7 @@ const saveChart = async function (chart, iwpgvObj) {
     jsonRes = await fetchData(formData)
 
     console.log("JSONRES-SAVE", jsonRes)
+    console.log(jsonRes.status)
 
     // Bail is server response status = error
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )

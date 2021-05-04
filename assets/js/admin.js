@@ -1,10 +1,12 @@
+import Plotly from 'plotly.js-dist'
+
 import Accordion from "./Accordion"
 import selectFile from './select-file'
 import ChartParams from "./ChartParams"
 import panel from "./panel"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, setSheetIdOptions, showchartParamsInputFields } from "./utilities"
+import { displayAdminMessage, hideElementById, toggleElementById, setSheetIdOptions, showchartParamsInputFields } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -80,6 +82,19 @@ try {
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
 
+      toggleElementById( `${iwpgvObj.prefix}__spinner` )
+      toggleElementById( `${iwpgvObj.prefix}__warning` )
+
+      // Hide chart and table charts
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+      Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
+
+      // Hide min/max inputs if visible
+      hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
+
+      document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = true
+
       // Get attachment
       const attachment = mediaUploader.state().get("selection").first().toJSON()
 
@@ -94,6 +109,10 @@ try {
       
       // Show all chart params panel input fields
       showchartParamsInputFields(iwpgvObj)
+
+      toggleElementById( `${iwpgvObj.prefix}__spinner` )
+      toggleElementById( `${iwpgvObj.prefix}__warning` )
+
 
     })
 

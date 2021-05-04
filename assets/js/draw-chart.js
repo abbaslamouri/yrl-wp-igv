@@ -1,4 +1,4 @@
-import Plotly from 'plotly.js-basic-dist'
+import Plotly from 'plotly.js-dist'
 import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
 import saveChart from "./save-chart"
@@ -6,7 +6,7 @@ import { showElementById, toggleElementById, hideElementById, getMinMaxAvgData, 
 
 const drawChart = ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
-  toggleElementById( `${iwpgvObj.prefix}__spinner` )
+  // toggleElementById( `${iwpgvObj.prefix}__spinner` )
 
   // Hide chart and table charts
   Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)

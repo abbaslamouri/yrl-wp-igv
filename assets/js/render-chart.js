@@ -27,10 +27,12 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   }
 
   // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
+  // toggleElementById( `${iwpgvObj.prefix}__spinner` )
+
   Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config).
   then (function() {
 
-    toggleElementById( `${iwpgvObj.prefix}__spinner` )
+    // toggleElementById( `${iwpgvObj.prefix}__spinner` )
 
     // console.log("Done plotting Chart")
 
