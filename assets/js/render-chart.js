@@ -26,15 +26,8 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     chart.chartLayout.options.xaxis.rangeslider =false
   }
 
-  // document.getElementById(`${iwpgvObj.prefix}__plotlyChart`).style.width = `${chart.chartLayout.width}%`
-  // toggleElementById( `${iwpgvObj.prefix}__spinner` )
-
   Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config).
   then (function() {
-
-    // toggleElementById( `${iwpgvObj.prefix}__spinner` )
-
-    // console.log("Done plotting Chart")
 
     // Add range slider event handler
     eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){  
@@ -152,10 +145,30 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
         if ( key.includes( "config" ) ) {
           chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
           Plotly.newPlot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
+        } else if (key === "hovermode" || key === "legend.itemclick" ) {
+          value = ( event.target.value !== "disabled" ) ? event.target.value : false
+          Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.chartLayout.options.config )
         } else {
-        if (key === "hovermode" || key === "legend.itemclick" ) value = ( event.target.value !== "disabled" ) ? event.target.value : false
-        Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.chartLayout.options.config )
+          switch(keyParts.length){
+            case 1:
+              chart[control].options[keyParts[0]] = event.target.type === 'checkbox' ? event.target.checked : value
+              break
+            case 2:
+              chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : value
+              break
+            case 3:
+              chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = event.target.type === 'checkbox' ? event.target.checked : value
+              break
+            case 4:
+                chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
+              break
+            case 5:
+                chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]][keyParts[4]] = event.target.type === 'checkbox' ? event.target.checked : value
+              break
+          }
+          Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.chartLayout.options.config )
         }
+        
       }
 
       
@@ -227,14 +240,7 @@ const renderChart =  ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
     })
 
-
-
-
-
-
   })
-
-
 
 
 }

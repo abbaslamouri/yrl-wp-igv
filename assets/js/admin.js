@@ -1,12 +1,12 @@
 import Plotly from 'plotly.js-dist'
-
 import Accordion from "./Accordion"
 import selectFile from './select-file'
+import saveChart from './save-chart'
 import ChartParams from "./ChartParams"
 import panel from "./panel"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, hideElementById, toggleElementById, setSheetIdOptions, showchartParamsInputFields } from "./utilities"
+import { displayAdminMessage, hideElementById, toggleElementById, setSheetIdOptions, showchartParamsInputFields, hidePanels } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -19,10 +19,11 @@ console.log("iwpgvObj", {...iwpgvObj})
 console.log("iwpgvCharts", {...iwpgvCharts})
 
 
-
 try {
 
-  if ( ! Object.values( iwpgvObj ) || ! Object.values( iwpgvCharts ).length ) throw new Error( )
+  // throw new Error( "iwpgvObj && iwpgvCharts missing")
+
+  if ( ! Object.values( iwpgvObj ) || ! Object.values( iwpgvCharts ).length ) throw new Error( "iwpgvObj && iwpgvCharts missing")
 
   // Check if server error
   if ( iwpgvCharts.status === "error" ) throw new Error( iwpgvCharts.message )
@@ -85,6 +86,12 @@ try {
       toggleElementById( `${iwpgvObj.prefix}__spinner` )
       toggleElementById( `${iwpgvObj.prefix}__warning` )
 
+      // Hide all but chart params panels
+      hidePanels()
+
+      // Hide admin messages
+      document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = ""
+
       // Hide chart and table charts
       Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
       Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
@@ -117,17 +124,18 @@ try {
     })
 
 
-
-
      // Add click event listener to the chart params panel inoput fields
      document.getElementById(`${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`).addEventListener("click", async function (event) {
-    
       event.preventDefault()
-
-      mediaUploader.open()
-
-          
+      mediaUploader.open()      
     })
+
+
+    document.getElementById(`${iwpgvObj.prefix}__saveChart`).addEventListener("click", function (event) {  
+      event.preventDefault()
+      saveChart(iwpgvCharts.chart, iwpgvObj)
+    })
+
 
     document.addEventListener( "change", function () {
 

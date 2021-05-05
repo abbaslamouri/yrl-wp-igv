@@ -22,17 +22,18 @@ const drawChart = ( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
 
-  
-  renderPanels( iwpgvCharts, iwpgvObj, spreadsheet )
-
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
   showElementById( `${iwpgvObj.prefix}__saveChart` ) 
-  document.getElementById(`${iwpgvObj.prefix}__saveChart`).addEventListener("click", function (event) {  
-    event.preventDefault()
-    saveChart(iwpgvCharts.chart, iwpgvObj)
-  })
+  // document.getElementById(`${iwpgvObj.prefix}__saveChart`).addEventListener("click", function (event) {  
+  //   event.preventDefault()
+  //   saveChart(iwpgvCharts.chart, iwpgvObj)
+  // })
 
+  
+  renderPanels( iwpgvCharts, iwpgvObj, spreadsheet )
+
+  
   renderChart( iwpgvCharts, iwpgvObj, spreadsheet)
 
   

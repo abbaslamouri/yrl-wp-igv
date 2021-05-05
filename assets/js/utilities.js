@@ -93,6 +93,35 @@ const showchartParamsInputFields = ( iwpgvObj ) => {
 }
 
 
+const showPanels = ( ) => {
+
+  document.querySelector( `.accordion__toggle.chartLayout` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.chartLayout` ).classList.remove("hidden")
+  document.querySelector( `.accordion__toggle.chartTraces` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.chartTraces` ).classList.remove("hidden")
+  document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
+  document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
+
+}
+
+
+
+const hidePanels = ( ) => {
+
+  document.querySelector( `.accordion__toggle.chartLayout` ).classList.add("hidden")
+  document.querySelector( `.accordion__content.chartLayout` ).classList.add("hidden")
+  document.querySelector( `.accordion__toggle.chartTraces` ).classList.add("hidden")
+  document.querySelector( `.accordion__content.chartTraces` ).classList.add("hidden")
+  document.querySelector( `.accordion__toggle.tableChart` ).classList.add("hidden")
+  document.querySelector( `.accordion__content.tableChart` ).classList.add("hidden")
+  document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.add("hidden")
+  document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.add("hidden")
+
+}
+
+
 
 
 
@@ -515,6 +544,8 @@ module.exports = {
   toggleInputField,
   setSheetIdOptions,
   showchartParamsInputFields,
+  showPanels,
+  hidePanels,
   
 
 
