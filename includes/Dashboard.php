@@ -52,77 +52,79 @@ if (!class_exists('Dashboard')) {
 			});
 
 			// Plugin activation and deactivation registration
-			register_activation_hook($this->base, array($this, 'activate'));
-			register_deactivation_hook($this->base, array($this, 'deactivate'));
+			register_activation_hook($this->base, [$this, 'activate'] );
+			register_deactivation_hook($this->base, [$this, 'deactivate'] );
 
 
 			// Add admin Submenus, section and fields
-      add_action('admin_menu', array($this, 'admin_menu_register'));
+      add_action('admin_menu', [$this, 'admin_menu_register'] );
 
 			// // // Plugin options
       // $this->settings = get_option("{$this->prefix}_settings") ? get_option("{$this->prefix}_settings") : [];
       // $this->file_settings = isset($this->settings['files']) ? $this->settings['files'] : [];
 			// $this->chart_settings = isset($this->settings['chart']) ? $this->settings['chart'] : [];
 			
-			// $this->settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : array();
+			// $this->settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : [);
 
-			// $this->charts = (isset($this->settings["charts"]))? $this->settings["charts"] : array();
+			// $this->charts = (isset($this->settings["charts"]))? $this->settings["charts"] : [);
 
 			// get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 		
-			// $this->files = (isset($this->settings["files"]))? $this->settings["files"] : array();
+			// $this->files = (isset($this->settings["files"]))? $this->settings["files"] : [);
 		
 
 			// Register styles and scripts
-			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-      add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
+			add_action( 'wp_enqueue_scripts', [$this, 'enqueue_scripts'] );
+      add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
       
       
 			// Add ajax file upload capability
-			add_action( "wp_ajax_{$this->prefix}_file_upload_action", array($this, 'file_upload' ));
-      add_action( "wp_ajax_nopriv_{$this->prefix}_file_upload_action", array($this, 'file_upload' ));
+			add_action( "wp_ajax_{$this->prefix}_file_upload_action", [$this, 'file_upload'] );
+      add_action( "wp_ajax_nopriv_{$this->prefix}_file_upload_action", [$this, 'file_upload'] );
 
       // Add ajax chart file selection capability
-			add_action( "wp_ajax_{$this->prefix}_file_select_action", array($this, 'file_select' ));
-			add_action( "wp_ajax_nopriv_{$this->prefix}_file_select_action", array($this, 'file_select' ));
+			add_action( "wp_ajax_{$this->prefix}_file_select_action", [$this, 'file_select' ] );
+			add_action( "wp_ajax_nopriv_{$this->prefix}_file_select_action", [$this, 'file_select'] );
 
 			// Add ajax chart sheet selection capability
-			add_action( "wp_ajax_{$this->prefix}_fetch_chart_options_n_panels_action", array($this, 'fetch_chart_options_n_panels' ));
-      add_action( "wp_ajax_nopriv_{$this->prefix}_fetch_chart_options_n_panels_action", array($this, 'fetch_chart_options_n_panels' ));
+			add_action( "wp_ajax_{$this->prefix}_fetch_chart_options_n_panels_action", [$this, 'fetch_chart_options_n_panels'] );
+      add_action( "wp_ajax_nopriv_{$this->prefix}_fetch_chart_options_n_panels_action", [$this, 'fetch_chart_options_n_panels'] );
       
       // Add ajax chart sheet selection capability
-			add_action( "wp_ajax_{$this->prefix}_save_chart_action", array($this, 'save_chart' ));
-      add_action( "wp_ajax_nopriv_{$this->prefix}_save_chart_action", array($this, 'save_chart' ));
+			add_action( "wp_ajax_{$this->prefix}_save_chart_action", [$this, 'save_chart' ] );
+      add_action( "wp_ajax_nopriv_{$this->prefix}_save_chart_action", [$this, 'save_chart'] );
 
 			// Add ajax chart delete
-			add_action( "wp_ajax_{$this->prefix}_delete_chart_action", array($this, 'delete_chart' ));
-			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_chart_action", array($this, 'delete_chart' ));
+			add_action( "wp_ajax_{$this->prefix}_delete_chart_action", [$this, 'delete_chart'] );
+			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_chart_action", [$this, 'delete_chart'] );
       
       // Add new file
-			add_action( "wp_ajax_{$this->prefix}_add_new_file_action", array($this, 'add_new_file' ));
-      add_action( "wp_ajax_nopriv_{$this->prefix}_add_new_file_action", array($this, 'add_new_file' ));
+			add_action( "wp_ajax_{$this->prefix}_add_new_file_action", [$this, 'add_new_file'] );
+      add_action( "wp_ajax_nopriv_{$this->prefix}_add_new_file_action", [$this, 'add_new_file'] );
       
        // Delete file
-			add_action( "wp_ajax_{$this->prefix}_delete_file_action", array($this, 'delete_file' ));
-			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_file_action", array($this, 'delete_file' ));
+			add_action( "wp_ajax_{$this->prefix}_delete_file_action", [$this, 'delete_file'] );
+			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_file_action", [$this, 'delete_file'] );
 
 			// add admin init action
-			add_action('admin_init', array($this, 'admin_init'));
+			add_action('admin_init', [$this, 'admin_init'] );
 
 
 			// // Filters the “Thank you” text displayed in the Wordpress admin dashboard footer text
-			add_filter( 'admin_footer_text', array($this, "admin_footer_text"));
+			add_filter( 'admin_footer_text', [$this, "admin_footer_text"] );
 			
 			//  // Filter admin bar menu
-			add_action( 'wp_before_admin_bar_render', array($this, 'admin_bar'));
+			add_action( 'wp_before_admin_bar_render', [$this, 'admin_bar'] );
 
       // // An action function used to include the reCAPTCHA JavaScript fil at the end of the page.
-			// add_action('wp_print_footer_scripts', array($this, 'add_captcha_js_to_footer'));
+			// add_action('wp_print_footer_scripts', [$this, 'add_captcha_js_to_footer'));
 
 			// // Hide admin bar for non admins
 			add_filter('show_admin_bar', function() {
         return (!current_user_can('manage_options')) ? false : true;
-      });    
+      });
+
+			add_shortcode( "yrl_wp_igv_plotlyChart", [$this, 'render_shortcode'] );
       
 
     } // END __construct
@@ -147,56 +149,76 @@ if (!class_exists('Dashboard')) {
 		 * @return void
 		 */
 		public function render_shortcode($atts, $content, $tag) {
-			
 
 			$atts = shortcode_atts(
         $this->default_attributes(), // default array values
         $atts // array of values passed to the shortcode if any
       );
 
+			try {
+
+				// Bail if there is no id
+        if ( !  $atts["id"] ) {
+          throw new \Exception(  __(wp_kses_post( "A chart ID is required", $this->plugin ) ) );
+        }
+
 				// Get charts
 				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 
+				// Bail if there is no id
+        if ( empty( $charts)) {
+          throw new \Exception(  __(wp_kses_post( "We cannot find any charts", $this->plugin ) ) );
+        }
+
 				// Get chart from GET chart ID
-				$saved_chart = isset($charts[$atts['id']])? $charts[$atts['id']] : [];
+				$chart = isset($charts[$atts['id']])? $charts[$atts['id']] : [];
 
-				if (empty($saved_chart)) {
-					return;
+				if ( empty( $chart ) ) {
+					throw new \Exception(  __(wp_kses_post( "We cannot find a chart with this ID {$atts['id']}", $this->plugin ) ) );
 				}
-				
-				//  echo "<pre>"; print_r($saved_chart); die;
-        
-				// Get spreadsheet
-        $spreadsheet = $this->fetch_spreadsheet( $saved_chart['chartParams']['fileName'] );
 
-        // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-        if (  is_wp_error( $spreadsheet ) ) {
+				// Fetch spreadsheet
+				$spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
+
+				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+			 	if (  is_wp_error( $spreadsheet ) ) {
           $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
           throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
         } 
-        
-        // Get selected sheet
-				$sheet = $spreadsheet[$saved_chart['chartParams']['sheetId']];
 
-				// Fetch plugin settings
-				$settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : array();
+				
+				$payload = [
+					"chart"  => $chart,
+					"sheet"  => $spreadsheet[$chart['chartParams']['options']['sheetId']],
+					"pluginObj" => $this->prefix
+				];
+
+				// Prepare error output
+				$response = ["status"	=> "success", "message" => "", "payload" => $payload];
+
+
+			} catch (\Exception $e) {
+  
+				// Prepare error output
+				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => []];
+
+			}
+
+		
+
+				
 
 			
-				$chart = $this->chart_options_admin_fields ($saved_chart, $sheet, $saved_chart['chartParams']['chartType'], $settings)[0];
-				
-				
-				$chart['chartParams'] = $saved_chart['chartParams'];
 
-        $chart['chartParams']["sheet"] 	= $sheet;
-				
-				$payload = 	array(
-					"chart"  => $chart,
-          // 'settings' => $settings
-        );
-        wp_localize_script( "{$this->plugin}-public", "{$this->prefix}_front_end_chart", $payload );
+			
+        
+        wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__front_end_chart", $response);
+
 
         // Return login template
-			  return $this->get_template_html("shortcode", $atts);
+			  return $this->get_template_html("shortcode", $payload);
+
+
 				
 				// Send chart options to js
 			

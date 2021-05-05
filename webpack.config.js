@@ -10,7 +10,7 @@ module.exports = {
 
   entry: {
     admin: "./assets/js/admin.js",
-    // public: "./assets/src/public.js"
+    public: "./assets/js/public.js"
   }, 
 
   output: {
