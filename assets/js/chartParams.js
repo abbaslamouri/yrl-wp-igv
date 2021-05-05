@@ -93,13 +93,13 @@ class ChartParams {
             {
               id : "chartParams[fileId]",
               title : "",	
-              type : "",
+              type : "hidden",
               value : this.options()['fileId'],
             },
             {
               id : "chartParams[chartId]",
               title : "",	
-              type : "",
+              type : "hidden",
               value : this.options()['chartId'],
             },
           ],

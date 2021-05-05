@@ -51,6 +51,7 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
     document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
     document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
   }
+
   
 
   // document.querySelectorAll(`.accordion__toggle`).forEach (element=> {

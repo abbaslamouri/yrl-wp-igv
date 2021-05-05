@@ -2,16 +2,11 @@ import fetchData from "./fetch-data"
 import { displayAdminMessage } from "./utilities"
 
 
-let jsonRes = {} // Server response
+// let jsonRes = {} // Server response
 
 const saveChart = async function (chart, iwpgvObj) {
 
-  // toggleElementById(`${iwpgvObj.prefix}__spinner`)
-  // hideElementById(`${iwpgvObj.prefix}__warning`)
-  // hideElementById(`${iwpgvObj.prefix}__dashboard`)
-
   try {
-
 
     // Bail if there are no chart traces, a file or a sheet id
     if (! Object.values(chart.chartTraces.options).length || ! chart.chartParams.options.fileUpload || ! chart.chartParams.options.sheetId ) {
@@ -30,12 +25,15 @@ const saveChart = async function (chart, iwpgvObj) {
     formData.append("nonce", iwpgvObj.save_chart_nonce)
 
     //send ajax resquest
-    jsonRes = await fetchData(formData)
+    const jsonRes = await fetchData(formData)
 
     console.log("JSONRES-SAVE", jsonRes)
+    console.log(jsonRes.status)
 
     // Bail is server response status = error
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
+    console.log("lll",jsonRes.status)
+
 
     // Update chart Id field
     document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`).value = jsonRes.chartId

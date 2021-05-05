@@ -94,7 +94,7 @@ class TableChart extends ChartDefault{
                 id: `${this.panelId}[rounding]`, 
                 title : "Number Rounding", 
                 type : "number",
-                min : 1,
+                min : 0,
                 max : 10,
                 step : 1,
                 value : this.options().rounding,

@@ -47,7 +47,7 @@ class ChartLayout extends ChartDefault {
           color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#008080",
         }
       },
-      showlegend : ( this.layout.showlegend !== undefined ) ? this.layout.showlegend : false,
+      showlegend : ( this.layout.showlegend !== undefined ) ? this.layout.showlegend : true,
       legend : {
         bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#ffc246',
         bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#67daff',
@@ -64,14 +64,15 @@ class ChartLayout extends ChartDefault {
             size: ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.size !== undefined ) ? this.layout.legend.title.font.size : 20,
             color : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.color !== undefined ) ? this.layout.legend.title.font.color : "#ae52d4",
           },
-          side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top left',
+          side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top',
         },
         orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
-        itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'constant',
+        itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'trace',
         itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 100,
         itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
-        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.01,
-        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 0.5,
+        itemdoubleclick : ( this.layout.legend !== undefined && this.layout.legend.itemdoubleclick !== undefined ) ? this.layout.legend.itemdoubleclick : false,
+        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.05,
+        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 0.54,
         valign : ( this.layout.legend !== undefined && this.layout.legend.valign !== undefined ) ? this.layout.legend.valign : "middle",
       },
       xaxis : {
@@ -450,6 +451,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().legend.itemwidth,
               hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text)."
             },
+          ],
+          [
             {
               id : "chartLayout[legend][itemclick]",
               title : "Item Click Behaviour",	
@@ -461,6 +464,18 @@ class ChartLayout extends ChartDefault {
               },
               value : ( this.options().legend.itemclick ) ? this.options().legend.itemclick : "disabled",
               hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
+            },
+            {
+              id : "chartLayout[legend][itemdoubleclick]",
+              title : "Item Double Click Behaviour",	
+              type : "select",
+              options : {
+                toggle: "Toggle",
+                toggleothers: "Toggle Other",
+                disabled: "Disabled"
+              },
+              value : ( this.options().legend.itemdoubleclick ) ? this.options().legend.itemdoubleclick : "disabled",
+              hint: "Determines the behavior on legend item doubleclick. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
             },
           ],
           [

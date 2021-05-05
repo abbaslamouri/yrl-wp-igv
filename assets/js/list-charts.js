@@ -5,9 +5,7 @@ import deleteChart from "./delete-chart"
 
 const listCharts = async function ( charts, iwpgvObj) {
 
-  
   Object.values(charts).forEach(async (el) => {
-    console.log(el)
 
     for ( let i=0; i < el.chartTraces.options.length; i++) {
 
