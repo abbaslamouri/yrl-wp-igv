@@ -25,10 +25,11 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
-  showElementById( `${iwpgvObj.prefix}__saveChart` ) 
+  showElementById( `${iwpgvObj.prefix}__saveChart` )
 
-  
   renderPanels( iwpgvCharts, iwpgvObj, spreadsheet )
+
+  console.log("iwpgvCharts", iwpgvCharts)
 
   
   await renderChart( iwpgvCharts, iwpgvObj, spreadsheet)
@@ -73,6 +74,11 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             case "chartLayout":
               if ( key.includes( "config" ) ) {
                 chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+                if ( chart.chartLayout.options.config.displayModeBar ){
+                  document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
+                }else {
+                  document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
+                }
                 Plotly.newPlot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
               } else if (key === "hovermode" || key === "legend.itemclick" ) {
                 value = ( event.target.value !== "disabled" ) ? event.target.value : false

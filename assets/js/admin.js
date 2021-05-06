@@ -48,6 +48,7 @@ try {
     panel(iwpgvCharts.chart.chartParams.panel, iwpgvObj)
     document.querySelector( `.accordion__toggle.chartParams` ).classList.remove("hidden")
     document.querySelector( `.accordion__content.chartParams` ).classList.remove("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
    
     if ( ! iwpgvCharts.spreadsheet) { // New chart
       
@@ -137,7 +138,7 @@ try {
     })
 
 
-    document.addEventListener( "change", function () {
+    document.addEventListener( "change", function (event) {
 
       // Bail if the clicked item is not inside the `${iwpgvCharts.prefix}__chartOptionsForm` form 
       if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ||  ! event.target.classList.contains(`${iwpgvObj.prefix}__chartParams`)  ) return
@@ -149,6 +150,8 @@ try {
       iwpgvCharts.chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
       iwpgvCharts.chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
       iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
+
+      iwpgvCharts.chart.chartLayout.options.xaxis = {rangeslider: {visible: iwpgvCharts.chart.chartParams.options.enableRangeSlider}}
 
 
       // Bail if no file, sheet Id or chart type

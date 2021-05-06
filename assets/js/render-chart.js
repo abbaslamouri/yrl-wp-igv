@@ -10,20 +10,20 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
 
   // Set range slider min and max input fields if enableChartRangeSlider is true
-  if ( chart.chartParams.options.enableRangeSlider ) {
+  if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
     showElementById( `${iwpgvObj.prefix}__plotMinMax` )
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
-    chart.chartLayout.options.xaxis.rangeslider = true
+    // chart.chartLayout.options.xaxis.rangeslider = true
   } else {
     hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
-    chart.chartLayout.options.xaxis.rangeslider =false
+    // chart.chartLayout.options.xaxis.rangeslider =false
   }
   
 

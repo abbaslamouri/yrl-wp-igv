@@ -7,6 +7,8 @@ class ChartLayout extends ChartDefault {
 
   constructor(layout, iwpgvObj, fontFamily) {
 
+    console.log("L", layout)
+
     super(fontFamily);
 
     this.layout = layout
@@ -22,7 +24,7 @@ class ChartLayout extends ChartDefault {
 
       config:{
         responsive : ( this.layout.config  !== undefined && this.layout.config.responsive  !== undefined ) ? this.layout.config.responsive: true,
-        displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : true,
+        displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : false,
         displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : true
       },
 
@@ -31,7 +33,7 @@ class ChartLayout extends ChartDefault {
       // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
       height : ( this.layout.height !== undefined ) ? this.layout.height : 400,
       autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
-      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : false,
+      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : true,
       font : {
         family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
         size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
@@ -79,8 +81,8 @@ class ChartLayout extends ChartDefault {
         automargin : ( this.layout.xaxis !== undefined && this.layout.xaxis.automargin !== undefined ) ? this.layout.xaxis.automargin : true,
         rangeslider : {
           visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : false,
-          bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "teal",
-          thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.2,
+          bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
+          thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.4,
         }
       },
       yaxis: {
@@ -681,6 +683,42 @@ class ChartLayout extends ChartDefault {
           ],
         ]  
       },
+      rangeslider : {
+        intro : "Here you can modify the plot x-axis range slider",
+        id : `${this.prefix}__chartLayoutPanel__xaxis_rangeslider`,
+        cssClasses:["chartLayout", "subPanel"],
+        title : "Range Slider",
+        fields : [
+          [
+            {
+              id : "chartLayout[xaxis][rangeslider][visible]",
+              title : "Show Range Slider",
+              type : "checkbox", 
+              value : this.options().xaxis.rangeslider.visible,
+              hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
+            },
+            {
+              id: "chartLayout[xaxis][rangeslider][thickness]",
+              title:"Range Slider Height",
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.1,
+              value: this.options().xaxis.rangeslider.thickness,
+              hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][rangeslider][bgcolor]",
+              title : "Range Slider Background Color",
+              type : "color", 
+              value : this.options().xaxis.rangeslider.bgcolor,
+              hint: "Sets the background color of the range slider."
+            },
+          ]
+        ]  
+      },
       config : {
         intro : "Here you can modify the plot configuration",
         id : `${this.prefix}__chartLayoutPanel__config`,
@@ -707,6 +745,7 @@ class ChartLayout extends ChartDefault {
               title : "Display Plotly Logo ?",
               type : "checkbox", 
               value : this.options().config.displaylogo,
+              disabled: this.options().config.displayModeBar ? false : true,
               hint: ""
             },
           ],

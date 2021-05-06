@@ -91,6 +91,16 @@ class TableChart extends ChartDefault{
           fields : [
             [
               {
+                id: `${this.panelId}[type]`,
+                cssClasses: ["hidden"],
+                title : "hidden", 
+                type : "text",
+                value : this.options().type,
+                hint : "Chart type"
+              },
+            ],
+            [
+              {
                 id: `${this.panelId}[rounding]`, 
                 title : "Number Rounding", 
                 type : "number",
@@ -302,15 +312,16 @@ class TableChart extends ChartDefault{
                 hint: "Sets The color of the cell cells lines"
               },
             ],
-            // [
-            //   {
-            //     id: `${this.panelId}[cells][fill][color]`,
-            //     title: "Cell Fill Color",
-            //     type: "color",
-            //     value: this.options().cells.fill.color,
-            //     hint: "Sets The color of the cell cells fill color"
-            //   },
-            // ],
+            [
+              {
+                id: `${this.panelId}[cells][fill][color]`,
+                cssClasses: ["hidden"],
+                title: "Cell Fill Color",
+                type: "hidden",
+                value: this.options().cells.fill.color,
+                hint: "Sets The color of the cell cells fill color"
+              },
+            ],
             [
               {
                 id : `${this.panelId}[cells][font][family]`,
