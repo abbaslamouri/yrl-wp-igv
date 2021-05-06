@@ -1,5 +1,5 @@
 import Plotly from 'plotly.js-dist'
-import { toggleElementById, showElementById, hideElementById, getMinMaxAvgData, chartOptionKey } from "./utilities"
+import { toggleElementById, showElementById, hideElementById, getMinMaxAvgData, chartOptionKey, fetchminMaxAvgTableChartData } from "./utilities"
 
 
 const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
@@ -34,21 +34,24 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
   if ( chart.chartParams.options.enableMinMaxTableChart ) {
 
-    // Set table header
-    const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
-    chart.minMaxAvgTableChart.options.header.values = headerValues
+    chart.minMaxAvgTableChart.options = fetchminMaxAvgTableChartData(chart, spreadsheet)
 
-    chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet)
 
-    // Set table cells alignment
-    chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+    // // Set table header
+    // const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+    // chart.minMaxAvgTableChart.options.header.values = headerValues
 
-    // Set table even and odd row colors
-    const rowFillColors = []
-    for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
-      rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
-    }
-    chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
+    // chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet)
+
+    // // Set table cells alignment
+    // chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+
+    // // Set table even and odd row colors
+    // const rowFillColors = []
+    // for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    //   rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
+    // }
+    // chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
 
     await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
 

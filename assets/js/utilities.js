@@ -62,6 +62,31 @@ const toggleInputField = function (fieldId) {
 
 
 
+const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
+
+   // Set table header
+   const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+   chart.minMaxAvgTableChart.options.header.values = headerValues
+
+   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet)
+
+   // Set table cells alignment
+   chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+
+   // Set table even and odd row colors
+   const rowFillColors = []
+   for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+     rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTableChart.options.evenRowColor : chart.minMaxAvgTableChart.options.oddRowColor
+   }
+   chart.minMaxAvgTableChart.options.cells.fill.color = [rowFillColors]
+
+   return chart.minMaxAvgTableChart.options
+
+}
+
+
+
+
 
 
 
@@ -546,20 +571,15 @@ module.exports = {
   showchartParamsInputFields,
   showPanels,
   hidePanels,
-  
-
-
-  
+  fetchminMaxAvgTableChartData,
   getTableHeader,
   getMinMaxAvgTableHeader,
   getPlotData,
   getMinMaxAvgData,
-  // getXAxisMinMax,
   getLayout,
   getConfig,
   getTraces,
   getTable,
-  
   chartOptionKey,
   appendFormSaveBtn
   // setChartOption,

@@ -189,8 +189,8 @@ if (!class_exists('Dashboard')) {
 				
 				$payload = [
 					"chart"  => $chart,
-					"sheet"  => $spreadsheet[$chart['chartParams']['options']['sheetId']],
-					"pluginObj" => $this->prefix
+					"spreadsheet"  => $spreadsheet,
+					"prefix" => $this->prefix
 				];
 
 				// Prepare error output

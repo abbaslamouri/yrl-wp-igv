@@ -192,6 +192,8 @@ try {
       
       drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
+      console.log("CHART",iwpgvCharts.chart)
+
     } )
 
 
