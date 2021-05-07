@@ -81,7 +81,7 @@
       <div class="chart-options">
 
         <!-- Create the form that will be used to render our options -->
-        <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" method='post' novalidate>
+        <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
 
           <div class="accordion">
             <?php foreach ( $payload["chart"] as $element ) :?>
@@ -102,10 +102,10 @@
             <?php endforeach ?>
           </div>
 
-          <!-- Accordion will be injected here -->
-          <button class="button button-primary hidden" id="<?php echo "{$this->prefix}__saveChart"; ?>" name="<?php echo "{$this->prefix}__saveChart"; ?>" disabled>Save Chart</button>
-
         </form>
+
+         <!-- Accordion will be injected here -->
+         <button class="button button-primary hidden" id="<?php echo "{$this->prefix}__saveChart"; ?>" name="<?php echo "{$this->prefix}__saveChart"; ?>" disabled>Save Chart</button>
 
       </div>  <!-- .chart-options -->
 

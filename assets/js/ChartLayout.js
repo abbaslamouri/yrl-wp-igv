@@ -47,7 +47,7 @@ class ChartLayout extends ChartDefault {
           color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#008080",
         }
       },
-      showlegend : ( this.layout.showlegend !== undefined ) ? this.layout.showlegend : true,
+      showlegend : ( typeof this.layout.showlegend !== "undefined" ) ? true : false,
       legend : {
         bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#ffc246',
         bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#67daff',

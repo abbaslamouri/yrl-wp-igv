@@ -3,16 +3,13 @@ import ChartTrace from "./ChartTrace"
 import { showElementById, fetchminMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 import "../sass/public.scss"
 
-if ( typeof yrl_wp_igv__front_end_chart !== "undefined") {
 
-  let iwpgvPublic = typeof yrl_wp_igv__front_end_chart !== undefined ?  yrl_wp_igv__front_end_chart : {}
+if ( typeof yrl_wp_igv__plotlyChart !== "undefined") {
+
+  let iwpgvPublic = typeof yrl_wp_igv__plotlyChart !== "undefined" ?  yrl_wp_igv__plotlyChart : {}
 
 
   const payload = iwpgvPublic.payload
-
-
-  console.log("iwpgvPublic", iwpgvPublic)
-  console.log(`${payload.prefix}__plotlyChart__${payload.chart.chartParams.options.chartId}`)
 
   // Assemble chart traces chart and and render chart traces panel
   let index = 1;

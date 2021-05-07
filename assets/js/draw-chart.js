@@ -67,7 +67,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
           console.log("Control", control)
           console.log("key", key)
           console.log("keyParts", keyParts)
-          console.log("value", value)
+          console.log("value", event.target.type === 'checkbox' ? event.target.checked : value)
 
           switch ( control ) {
 
@@ -86,6 +86,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
               } else {
                 switch(keyParts.length){
                   case 1:
+                    console.log("AQAQAQA")
                     chart[control].options[keyParts[0]] = event.target.type === 'checkbox' ? event.target.checked : value
                     break
                   case 2:
@@ -184,6 +185,8 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
           break
 
       }
+
+      return false
 
     })
 

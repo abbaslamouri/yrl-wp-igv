@@ -124,7 +124,7 @@ if (!class_exists('Dashboard')) {
         return (!current_user_can('manage_options')) ? false : true;
       });
 
-			add_shortcode( "yrl_wp_igv_plotlyChart", [$this, 'render_shortcode'] );
+			add_shortcode( "yrl_wp_igv__plotlyChart", [$this, 'render_shortcode'] );
       
 
     } // END __construct
@@ -154,6 +154,7 @@ if (!class_exists('Dashboard')) {
         $this->default_attributes(), // default array values
         $atts // array of values passed to the shortcode if any
       );
+
 
 			try {
 
@@ -204,7 +205,7 @@ if (!class_exists('Dashboard')) {
 
 			}
         
-      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__front_end_chart", $response);
+      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__plotlyChart", $response);
 
       // Return login template
 			return $this->get_template_html("shortcode", $payload);			
@@ -563,6 +564,8 @@ if (!class_exists('Dashboard')) {
 
           }
 
+					$payload = array_reverse($payload);
+
           // Set payload and response
           $response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload ];
 
@@ -833,6 +836,7 @@ if (!class_exists('Dashboard')) {
         // There is a chart Id (edit)
         if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"]) {
 					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
+					      //  wp_send_json($_POST);
 
 				// New chart
         } else {

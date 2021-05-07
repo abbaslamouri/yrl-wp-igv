@@ -98,7 +98,7 @@ class ChartParams {
             {
               id : "chartParams[chartId]",
               title : "",	
-              type : "hidden",
+              type : "number",
               value : this.options()['chartId'],
             },
           ],
