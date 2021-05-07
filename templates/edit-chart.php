@@ -52,7 +52,7 @@
           <div class="minmaxavgtable">
 
              <!-- Min Max Data table goes here -->
-            <div id="<?php echo "{$this->prefix}__plotlyMinMaxTable" ?>" class=''></div>
+            <div id="<?php echo "{$this->prefix}__plotlyMinMaxTable" ?>" class='' style="background-color:red;"></div>
 
           </div>
 

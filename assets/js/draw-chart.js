@@ -41,7 +41,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(3)
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(xAxisMax).toFixed(3)
     chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
-    // Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet, xAxisMin, xAxisMax)] } )
+    Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet, xAxisMin, xAxisMax)] } )
   })
 
 
@@ -166,7 +166,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                       chart[control].options[keyParts[0]] = event.target.type === 'checkbox' ? event.target.checked : value
                       break
                     case 2:
-                      chart[control].options[keyParts[0]][keyParts[1]] = [chart[control].options.firstColAlign, value]
+                      chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : value
                       break
                     case 3:
                       chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = event.target.type === 'checkbox' ? event.target.checked : value
@@ -177,6 +177,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                   }
               }
               console.log("PLOT", plotlyTable)
+              console.log("LLKLKLK", chart[control].options)
               if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout, chart.chartConfig) 
 
           }

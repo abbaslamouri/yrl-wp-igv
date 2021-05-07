@@ -57,7 +57,8 @@ class TableChart extends ChartDefault{
         }
       },
       layout: {
-        // width: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.width !== undefined ) ? this.tableConfig.layout.width : 450,
+        height: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.height !== undefined ) ? this.tableConfig.layout.height : 200,
+        autosize: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.autosize !== undefined ) ? this.tableConfig.layout.autosize : true,
         title: {
           text: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.text!== undefined ) ? this.tableConfig.layout.title.text : this.panelTitle,
           font : {
@@ -65,6 +66,14 @@ class TableChart extends ChartDefault{
             size : ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.font !== undefined && this.tableConfig.layout.title.font.size !== undefined ) ? this.tableConfig.layout.title.font.size : 16,
             color : ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.font !== undefined && this.tableConfig.layout.title.font.color !== undefined ) ? this.tableConfig.layout.title.font.color : "#8D6E63",
           }
+        },
+        margin: {
+          l : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.l !== "undefined"  ) ? this.tableConfig.layout.margin.l : 0,
+          r : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.r !== "undefined"  ) ? this.tableConfig.layout.margin.r : 0,
+          t : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.t!== "undefined"  ) ? this.tableConfig.layout.margin.t : 80,
+          b : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.b !== "undefined"  ) ? this.tableConfig.layout.margin.b : 0,
+          pad: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.pad !== "undefined"  ) ? this.tableConfig.layout.margin.pad : 0,
+          autoexpand: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.autoexpand !== "undefined"  ) ? this.tableConfig.layout.margin.autoexpand : true,
         },
       },
      
@@ -124,6 +133,25 @@ class TableChart extends ChartDefault{
             ],
             [
               {
+                id: `${this.panelId}[layout][height]`, 
+                title : "Height", 
+                type : "number",
+                min : 100,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.height,
+                hint : ""
+              },
+              {
+                id: `${this.panelId}[layout][autosize]`,
+                title: "Auto Size",
+                type: "checkbox",
+                value: this.options().layout.autosize,
+                hint: "Determines whether or not a layout width or height that has been left undefined by the user is initialized on each relayout. Note that, regardless of this attribute, an undefined layout width or height is always initialized on the first call to plot."
+              },
+            ],
+            [
+              {
                 id: `${this.panelId}[evenRowColor]`,
                 title: "Even Row Color",
                 type: "color",
@@ -141,7 +169,6 @@ class TableChart extends ChartDefault{
               },
             ],
             [
-              
               {
                 id : `${this.panelId}[layout][title][text]`, 
                 title : "Table Title", 
@@ -175,8 +202,70 @@ class TableChart extends ChartDefault{
                 type : "color", 
                 value : this.options().layout.title.font.color,
               },
-              
-            ]
+            ],
+            [
+              {
+                id : `${this.panelId}[layout][margin][l]`, 
+                title : "Left Margin", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.margin.l,
+                hint : "Sets the left margin (in px)."
+              },
+              {
+                id : `${this.panelId}[layout][margin][r]`, 
+                title : "Right Margin", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.margin.r,
+                hint : "Sets the right margin (in px)."
+              },
+            ],
+            [
+              {
+                id : `${this.panelId}[layout][margin][t]`, 
+                title : "Top Margin", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.margin.t,
+                hint : "Sets the topmargin (in px)."
+              },
+              {
+                id : `${this.panelId}[layout][margin][b]`, 
+                title : "Bottom Margin", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.margin.b,
+                hint : "Sets the bottom margin (in px)."
+              },
+            ],
+            [
+              {
+                id : `${this.panelId}[layout][margin][pad]`, 
+                title : "Chart Padding", 
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.options().layout.margin.pad,
+                hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
+              },
+              {
+                id : `${this.panelId}[layout][margin][autoexpand]`, 
+                title : "Margin Auto Expand", 
+                type : "checkbox",
+                value : this.options().layout.margin.autoexpand,
+                hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults."
+              },
+            ],
           ]  
         },
         header : {
@@ -315,9 +404,9 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[cells][fill][color]`,
-                cssClasses: ["hidden"],
+                // cssClasses: ["hidden"],
                 title: "Cell Fill Color",
-                type: "hidden",
+                type: "color",
                 value: this.options().cells.fill.color,
                 hint: "Sets The color of the cell cells fill color"
               },

@@ -9,9 +9,12 @@ import listCharts from "./list-charts"
 import { displayAdminMessage, hideElementById, toggleElementById, setSheetIdOptions, showchartParamsInputFields, hidePanels } from "./utilities"
 import "../sass/admin.scss"
 
+// const plotlyChart = () => {
 
-let iwpgvCharts = typeof yrl_wp_igv_charts !== "undefined" ?  yrl_wp_igv_charts : {}
-let iwpgvObj = typeof yrl_wp_igv_obj !== "undefined" ? yrl_wp_igv_obj : {}
+if (  typeof yrl_wp_igv_charts !== "undefined" ) {
+
+let iwpgvCharts = typeof yrl_wp_igv_charts !== undefined ?  yrl_wp_igv_charts : {}
+let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
 let mediaUploader
 let spreadsheet = []
 
@@ -195,7 +198,6 @@ try {
       
       drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
-      console.log("CHART",iwpgvCharts.chart)
 
     } )
 
@@ -217,20 +219,10 @@ new Accordion( { collapsed: false } )
 
 
 
+ }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+// export default plotlyChart;
 
 

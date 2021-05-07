@@ -7,8 +7,6 @@ class ChartLayout extends ChartDefault {
 
   constructor(layout, iwpgvObj, fontFamily) {
 
-    console.log("L", layout)
-
     super(fontFamily);
 
     this.layout = layout
@@ -89,12 +87,12 @@ class ChartLayout extends ChartDefault {
         fixedrange : ( this.layout.yaxis !== undefined && this.layout.yaxis.fixedrange !== undefined ) ? this.layout.yaxis.fixedrange : true,
       },
       margin: {
-        l : ( this.layout.l !== undefined ) ? this.layout.l : 80,
-        r : ( this.layout.r !== undefined ) ? this.layout.r : 80,
-        t : ( this.layout.t !== undefined ) ? this.layout.t : 100,
-        b : ( this.layout.b !== undefined ) ? this.layout.b : 80,
-        pad: ( this.layout.pad !== undefined ) ? this.layout.pad : 20,
-        autoexpand: ( this.layout.autoexpand !== undefined ) ? this.layout.autoexpand : true,
+        l : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.l !== "undefined" ) ? this.layout.margin.l : 80,
+        r : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.r !== "undefined" ) ? this.layout.margin.r : 80,
+        t : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.t !== "undefined" ) ? this.layout.margin.t : 100,
+        b : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.b !== "undefined" ) ? this.layout.margin.b : 80,
+        pad: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.pad !== "undefined" ) ? this.layout.margin.pad : 20,
+        autoexpand: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.autoexpand !== "undefined" ) ? this.layout.margin.autoexpand : true,
       },
       modebar : {
         orientation : ( this.layout.modebar !== undefined && this.layout.modebar.orientation !== undefined ) ? this.layout.modebar.orientation : 'h',

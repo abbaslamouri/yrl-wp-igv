@@ -3,9 +3,9 @@ import swal from 'sweetalert';
 import deleteChart from "./delete-chart"
 
 
-const listCharts = async function ( charts, iwpgvObj) {
+const listCharts = function ( charts, iwpgvObj) {
 
-  Object.values(charts).forEach(async (el) => {
+  Object.values(charts).forEach((el) => {
 
     for ( let i=0; i < el.chartTraces.options.length; i++) {
 
@@ -25,6 +25,7 @@ const listCharts = async function ( charts, iwpgvObj) {
       el.chartLayout.options.title = {}
       el.chartLayout.options.config.displayModeBar = false
     }
+
     Plotly.newPlot(`${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout.options, el.chartLayout.options.config).then( function() {
 
       document.getElementById(`${iwpgvObj.prefix}__deleteChart[${el.chartParams.options.chartId}]`).addEventListener("click", function (event) {  

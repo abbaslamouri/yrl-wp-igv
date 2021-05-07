@@ -30,7 +30,7 @@ class ChartParams {
       chartId : (this.params.chartId !== undefined ) ? this.params.chartId : null,
       enableRangeSlider : ( this.params.enableChartRangeSlider ) ? true : true,
       enableMinMaxTableChart : ( this.params.enableMinMaxTableChart  ) ? true : true,
-      enableTableChart : ( this.params.enableTableChart ) ? true : false,
+      enableTableChart : ( this.params.enableTableChart ) ? true : true,
 
     }
 

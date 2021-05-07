@@ -5,6 +5,9 @@ class ChartTrace extends ChartDefault {
 
   constructor(trace, spreadsheet, index, sheetId, chartType, iwpgvObj, colors) {
 
+    // console.log(trace)
+    // return
+
     super(colors);
 
     this.trace = trace;

@@ -62,6 +62,53 @@ const toggleInputField = function (fieldId) {
 
 
 
+
+const fetchTableChartData = ( chart, spreadsheet ) => {
+
+  // Set table header values
+  const headerValues = []
+  for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].labels.length; i++ ) {
+    headerValues.push([`<b>${spreadsheet[chart.chartParams.options.sheetId].labels[i]}</b>`]);
+  }
+  chart.tableChart.options.header.values = headerValues
+
+    // Set table header alignment
+  chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
+
+
+  // Round cells values if rounding is not 0
+  if ( chart.tableChart.options.rounding) {
+    const cellValues = []
+    for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
+      cellValues[i] =[]
+      for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[i].length; j++ ) {
+        cellValues[i][j] = ( spreadsheet[chart.chartParams.options.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
+      }  
+    }
+    chart.tableChart.options.cells.values = cellValues  
+  } else {
+    chart.tableChart.options.cells.values = spreadsheet[chart.chartParams.options.sheetId].data
+  }
+
+    // Set table cells alignment
+    chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
+
+  // Set table even and odd row colors
+  const rowFillColors = []
+  for ( let  j = 0; j < spreadsheet[chart.chartParams.options.sheetId].data[0].length; j++ ) {
+    rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
+  }
+  chart.tableChart.options.cells.fill.color = [rowFillColors]
+
+  return chart.tableChart.options
+
+}
+
+
+
+
+
+
 const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
 
    // Set table header
@@ -83,6 +130,9 @@ const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
    return chart.minMaxAvgTableChart.options
 
 }
+
+
+
 
 
 
@@ -571,6 +621,7 @@ module.exports = {
   showchartParamsInputFields,
   showPanels,
   hidePanels,
+  fetchTableChartData,
   fetchminMaxAvgTableChartData,
   getTableHeader,
   getMinMaxAvgTableHeader,

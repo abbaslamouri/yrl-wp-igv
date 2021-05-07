@@ -203,25 +203,11 @@ if (!class_exists('Dashboard')) {
 				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => []];
 
 			}
-
-		
-
-				
-
-			
-
-			
         
-        wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__front_end_chart", $response);
+      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__front_end_chart", $response);
 
-
-        // Return login template
-			  return $this->get_template_html("shortcode", $payload);
-
-
-				
-				// Send chart options to js
-			
+      // Return login template
+			return $this->get_template_html("shortcode", $payload);			
 			
 
 		} // END render_shortcode
@@ -578,7 +564,7 @@ if (!class_exists('Dashboard')) {
           }
 
           // Set payload and response
-          $response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
+          $response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload ];
 
         } catch (\Exception $e) {
   

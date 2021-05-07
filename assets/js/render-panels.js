@@ -15,20 +15,23 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
   panel(iwpgvCharts.chart.chartLayout.panel, iwpgvObj)
   document.querySelector( `.accordion__toggle.chartLayout` ).classList.remove("hidden")
   document.querySelector( `.accordion__content.chartLayout` ).classList.remove("hidden")
-
+  
 
 // Assemble chart traces chart and and render chart traces panel
-  let index = 1;
+  let index = 1
   while ( index < spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].labels.length ) {
-    iwpgvCharts.chart.chartTraces.options[index-1] = ( iwpgvCharts.chart.chartTraces.options[index-1] !== undefined )? iwpgvCharts.chart.chartTraces.options[index-1] : {}
-    const chartTraceInstance =  new ChartTrace( iwpgvCharts.chart.chartTraces.options[index-1], spreadsheet, index, iwpgvCharts.chart.chartParams.options.sheetId, iwpgvCharts.chart.chartParams.options.chartType, iwpgvObj ) 
+    iwpgvCharts.chart.chartTraces.options[index-1] = ( typeof iwpgvCharts.chart.chartTraces.options[index-1] !== "undefined" )? iwpgvCharts.chart.chartTraces.options[index-1] : {}
+    const chartTraceInstance =  new ChartTrace( iwpgvCharts.chart.chartTraces.options[index-1], spreadsheet, index, iwpgvCharts.chart.chartParams.options.sheetId, iwpgvCharts.chart.chartParams.options.chartType, iwpgvObj )
     iwpgvCharts.chart.chartTraces.options[index-1] = chartTraceInstance.options()
     iwpgvCharts.chart.chartTraces.panel.sections[index-1] = chartTraceInstance.sections()
     index++
   }
+  console.log("HX")
   panel(iwpgvCharts.chart.chartTraces.panel, iwpgvObj)
   document.querySelector( `.accordion__toggle.chartTraces` ).classList.remove( "hidden" )
   document.querySelector( `.accordion__content.chartTraces` ).classList.remove( "hidden" )
+
+  
 
 
   // Assemble table chart and panels layout if enableTableChart is true
