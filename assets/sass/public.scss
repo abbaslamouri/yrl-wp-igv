@@ -1,10 +1,2 @@
 @import "_base";
-
-.public-plotly {
-  display:grid;
-  grid-template-columns: 1fr minmax(350px, 30%);
-
-  .form {
-    display:flex
-  }
-}
+@import "_min-max-avg";

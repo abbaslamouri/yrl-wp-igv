@@ -23,13 +23,13 @@ class ChartLayout extends ChartDefault {
       config:{
         responsive : ( this.layout.config  !== undefined && this.layout.config.responsive  !== undefined ) ? this.layout.config.responsive: true,
         displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : false,
-        displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : true
+        displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : false
       },
 
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
       plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#FFFFFF",
       // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
-      height : ( this.layout.height !== undefined ) ? this.layout.height : 400,
+      height : ( this.layout.height !== undefined ) ? this.layout.height : 450,
       autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
       hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : true,
       font : {
@@ -38,27 +38,27 @@ class ChartLayout extends ChartDefault {
         color : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.color !== undefined ) ? this.layout.font.color : "#4b636e",
       },
       title: {
-        text: ( this.layout.title !== undefined && this.layout.title.text!== undefined ) ? this.layout.title.text : 'Hi There',
-        x: ( this.layout.title !== undefined && this.layout.title.x!== undefined ) ? this.layout.title.x : 0.5,
-        y: ( this.layout.title !== undefined && this.layout.title.y!== undefined ) ? this.layout.title.y : 0.9,
+        text: ( this.layout.title !== undefined && this.layout.title.text!== undefined ) ? this.layout.title.text : 'Ge AR/AR 8.0 - 12.0 &#181;m',
+        x: ( this.layout.title !== undefined && this.layout.title.x!== undefined ) ? this.layout.title.x : 0.1,
+        y: ( this.layout.title !== undefined && this.layout.title.y!== undefined ) ? this.layout.title.y : 0.92,
         font : {
           family : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.family !== undefined ) ? this.layout.title.font.family : Object.keys(this.fontFamily)[13],
-          size : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.size !== undefined ) ? this.layout.title.font.size : 40,
+          size : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.size !== undefined ) ? this.layout.title.font.size : 20,
           color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#008080",
         }
       },
-      showlegend : ( typeof this.layout.showlegend !== "undefined" ) ? true : false,
+      showlegend : ( typeof this.layout.showlegend !== "undefined" ) ? this.layout.showlegend : true,
       legend : {
         bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#ffc246',
         bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#67daff',
         borderwidth : ( this.layout.legend !== undefined  && this.layout.legend.borderwidth !== undefined ) ? this.layout.legend.borderwidth : 2,
         font : {
           family: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.family !== undefined  ) ? this.layout.legend.font.family : Object.keys(this.fontFamily)[13],
-          size: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.size !== undefined ) ? this.layout.legend.font.size : 20,
+          size: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.size !== undefined ) ? this.layout.legend.font.size : 14,
           color : ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.color !== undefined ) ? this.layout.legend.font.color : "#39796b",
         },
         title: {
-          text : ( this.layout.legend !== undefined && this.layout.legend.text !== undefined ) ? this.layout.legend.text : 'My Legend',
+          text : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.text !== undefined ) ? this.layout.legend.title.text : '',
           font : {
             family: ( this.layout.legend !== undefined &&  this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.family !== undefined  ) ? this.layout.legend.title.font.family : Object.keys(this.fontFamily)[1],
             size: ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.size !== undefined ) ? this.layout.legend.title.font.size : 20,
@@ -66,13 +66,13 @@ class ChartLayout extends ChartDefault {
           },
           side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top',
         },
-        orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
+        orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'h',
         itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'trace',
         itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 100,
         itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
         itemdoubleclick : ( this.layout.legend !== undefined && this.layout.legend.itemdoubleclick !== undefined ) ? this.layout.legend.itemdoubleclick : false,
-        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.05,
-        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 0.54,
+        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : .35,
+        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 1.15,
         valign : ( this.layout.legend !== undefined && this.layout.legend.valign !== undefined ) ? this.layout.legend.valign : "middle",
       },
       xaxis : {
@@ -80,7 +80,7 @@ class ChartLayout extends ChartDefault {
         rangeslider : {
           visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : false,
           bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
-          thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.4,
+          thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.1,
         }
       },
       yaxis: {

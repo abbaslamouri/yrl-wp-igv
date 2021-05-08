@@ -26,7 +26,6 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
     iwpgvCharts.chart.chartTraces.panel.sections[index-1] = chartTraceInstance.sections()
     index++
   }
-  console.log("HX")
   panel(iwpgvCharts.chart.chartTraces.panel, iwpgvObj)
   document.querySelector( `.accordion__toggle.chartTraces` ).classList.remove( "hidden" )
   document.querySelector( `.accordion__content.chartTraces` ).classList.remove( "hidden" )

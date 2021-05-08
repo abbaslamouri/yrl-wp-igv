@@ -262,6 +262,8 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
 
   }
 
+  if ( field.readOnly ) inputField.readOnly = true
+
   // hide for group if input field has a hidden class
   if (field.cssClasses && field.cssClasses.includes("hidden")) {
     formGroup.classList.add("hidden")

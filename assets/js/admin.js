@@ -17,6 +17,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let spreadsheet = []
+  let oldIwpgvCharts = Object.assign({}, iwpgvCharts)
 
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
@@ -51,7 +52,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       panel(iwpgvCharts.chart.chartParams.panel, iwpgvObj)
       document.querySelector( `.accordion__toggle.chartParams` ).classList.remove("hidden")
       document.querySelector( `.accordion__content.chartParams` ).classList.remove("hidden")
-      document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
+      // document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
     
       if ( ! iwpgvCharts.spreadsheet) { // New chart
         
@@ -67,7 +68,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Show the remaining input fields in the chart params panel
         showchartParamsInputFields(iwpgvObj)
 
-        // drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
+        drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
 
       
 
@@ -99,7 +100,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Hide chart and table charts
         Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
         Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxTable`)
+        Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`)
 
         // Hide min/max inputs if visible
         hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
@@ -137,7 +138,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
       document.getElementById(`${iwpgvObj.prefix}__saveChart`).addEventListener("click", function (event) {  
         event.preventDefault()
-        saveChart(iwpgvCharts.chart, iwpgvObj)
+        if ( oldIwpgvCharts !== iwpgvCharts ) saveChart(iwpgvCharts.chart, iwpgvObj)
+        console.log( JSON.stringify(oldIwpgvCharts) !== JSON.stringify(iwpgvCharts))
         return false
       })
 

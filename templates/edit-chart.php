@@ -7,15 +7,6 @@
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix), admin_url('admin.php')); ?>" title="<?php esc_attr_e( 'Go Back' ); ?>"><?php esc_attr_e( 'Cancel' ); ?></a>
   </div>
 
-  <!-- <div class="container" style="width:100%; height:100%; border:1px red solid;">
-    <canvas id="color-picker" class="" style="border:3px solid rgba(15,15,15,0.2);"></canvas>
-    <div class="info">
-      <h3>Selected Color</h3>
-      <div class="selected" style="width:50px; height:50px; border-radius:100%; border:3px solid rgba(15,15,15,0.2);"></div>
-    </div>
-  </div> -->
-
-
   <!-- Admin messages -->
   <div class="admin-messages"></div>
 
@@ -32,49 +23,17 @@
         <!-- Warning heading -->
         <h3 id="<?php echo "{$this->prefix}__warning" ?>" class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</h3>
 
-        <div class="main">
-
+        <div class="plotly">
           <!-- PLot goes here -->
-          <div id="<?php echo "{$this->prefix}__plotlyChart" ?>"></div>
-
-          <!-- X-axis Min and Max inputs go here -->
-          <form id="<?php echo "{$this->prefix}__plotMinMax" ?>" class="form" action="#">
-            <div class="form__group hidden">
-              <input type="number" id = "<?php echo "{$this->prefix}__rangeMinInput" ?>" class="form__input" placeholder="Range Min" required>
-              <label class="form__label" for="<?php echo "{$this->prefix}__rangeMinInput" ?>">Range Min</label>
-            </div>
-            <div class="form__group hidden">
-              <input type="number" id = "<?php echo "{$this->prefix}__rangeMaxInput" ?>" class="form__input" placeholder="Range Max" required>
-              <label class="form__label" for="<?php echo "{$this->prefix}__rangeMaxInput" ?>">Range Max</label>
-            </div>
-          </form>
-
-          <div class="minmaxavgtable">
-
-             <!-- Min Max Data table goes here -->
-            <div id="<?php echo "{$this->prefix}__plotlyMinMaxTable" ?>" class='' style="background-color:red;"></div>
-
+          <div class="chart" id="<?php echo "{$this->prefix}__plotlyChart" ?>"></div>
+          <div class="<?php echo "{$this->prefix}__min-max-avg-table"; ?>">
+            <?php require "{$this->path}templates/min-max-inputs.php"; ?>
+            <div class="table" id="<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>" ></div>
           </div>
-
         </div>
 
         <!-- Data table goes here -->
         <div id="<?php echo "{$this->prefix}__plotlyTable" ?>" class=''></div>
-       
-
-        
-      
-
-    
-
-        <!--Dashboard divs-->
-        <!-- <div id="<?php // echo "{$this->prefix}__dashboard" ?>">
-          <div id="<?php // echo "{$this->prefix}__filter-min-max" ?>" class="<?php // echo "{$this->prefix}__filter-min-max" ?>">
-            <div id="<?php // echo "{$this->prefix}__num-range-filter" ?>" class="hidden"></div>
-            <div id="<?php // echo "{$this->prefix}__chart-range-filter" ?>" class='hidden'></div>
-            <div id="<?php // echo "{$this->prefix}__min-max-table-chart" ?>" class="hidden"></div>
-          </div>
-        </div> -->
 
       </div>
 

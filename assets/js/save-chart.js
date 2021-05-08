@@ -23,23 +23,24 @@ const saveChart = async function (chart, iwpgvObj) {
     const formData = new FormData( form )
     formData.append("action", iwpgvObj.save_chart_action)
     formData.append("nonce", iwpgvObj.save_chart_nonce)
+    formData.append("chart", chart)
 
     //send ajax resquest
     const jsonRes = await fetchData(formData)
 
     console.log("JSONRES-SAVE", jsonRes)
-    console.log(jsonRes.status)
 
     // Bail is server response status = error
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
-    console.log("lll",jsonRes.status)
-
 
     // Update chart Id field
     document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`).value = jsonRes.chartId
 
     // Success handler
-    if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
+    if (jsonRes.status && ( jsonRes.status === "success" || jsonRes.status === "unchanged" ) ) displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
+
+    console.log("PPPP",jsonRes.status)
+
 
 
   } catch (error) {

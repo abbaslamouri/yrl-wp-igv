@@ -64,9 +64,19 @@ class ChartParams {
             {
               id : "chartParams[fileUpload]",
               title : "Selected File", 
+              readOnly: true,
               type : "text",
               value : this.options()['fileUpload'],
             }
+          ],
+          [
+            {
+              id : "chartParams[chartId]",
+              title : "Chart ID", 
+              readOnly: true,
+              type : "number",
+              value : this.options()['chartId'],
+            },
           ],
           [
             {
@@ -94,12 +104,6 @@ class ChartParams {
               title : "",	
               type : "hidden",
               value : this.options()['fileId'],
-            },
-            {
-              id : "chartParams[chartId]",
-              title : "",	
-              type : "number",
-              value : this.options()['chartId'],
             },
           ],
           [

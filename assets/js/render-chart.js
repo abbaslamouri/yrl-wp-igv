@@ -12,16 +12,16 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   // Set range slider min and max input fields if enableChartRangeSlider is true
   if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
     showElementById( `${iwpgvObj.prefix}__plotMinMax` )
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.remove("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.remove("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
     // chart.chartLayout.options.xaxis.rangeslider = true
   } else {
     hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form__group").classList.add("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form__group").classList.add("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
     // chart.chartLayout.options.xaxis.rangeslider =false
   }
@@ -32,7 +32,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
   if ( chart.chartParams.options.enableMinMaxTableChart ) {
     chart.minMaxAvgTableChart.options = fetchminMaxAvgTableChartData( chart, spreadsheet )
-    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
   }
 
   // Render table chart if enableTableChart is true
@@ -53,7 +53,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     //   document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(3)
     //   document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(xAxisMax).toFixed(3)
     //   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
-    //   Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet, xAxisMin, xAxisMax)] } )
+    //   Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet, xAxisMin, xAxisMax)] } )
     // })
 
     // // Add range min and range max change event listener
@@ -135,7 +135,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   //      // table charts event handler
   //      if( control === "tableChart" || control ==="minMaxAvgTableChart" )  {
 
-  //       const plotlyTable = ( control === "tableChart" ) ? `${iwpgvObj.prefix}__plotlyTable` : ( control === "minMaxAvgTableChart" ) ? `${iwpgvObj.prefix}__plotlyMinMaxTable` : null
+  //       const plotlyTable = ( control === "tableChart" ) ? `${iwpgvObj.prefix}__plotlyTable` : ( control === "minMaxAvgTableChart" ) ? `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` : null
 
   //       const rowFillColors = []
 
@@ -153,7 +153,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   //             }  
   //           }
   //           chart[control].options.cells.values = cellValues
-  //           if ( plotlyTable === `${iwpgvObj.prefix}__plotlyMinMaxTable` ) {
+  //           if ( plotlyTable === `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` ) {
   //             console.log("HEHTRD")
   //             const xAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value
   //             const xAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value

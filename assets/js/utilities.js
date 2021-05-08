@@ -92,6 +92,7 @@ const fetchTableChartData = ( chart, spreadsheet ) => {
 
     // Set table cells alignment
     chart.tableChart.options.cells.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.cells.align]
+    chart.tableChart.options.header.align = [chart.tableChart.options.firstColAlign, chart.tableChart.options.header.align]
 
   // Set table even and odd row colors
   const rowFillColors = []
@@ -118,7 +119,8 @@ const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
    chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet)
 
    // Set table cells alignment
-   chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.otherColsAlign]
+   chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.cells.align]
+   chart.minMaxAvgTableChart.options.header.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.header.align]
 
    // Set table even and odd row colors
    const rowFillColors = []
