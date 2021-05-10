@@ -112,7 +112,7 @@ class ChartParams {
           [
             {
               id: "chartParams[enableRangeSlider]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title:"Enable Range Slider",
               type: "checkbox",
               value: this.options()['enableRangeSlider'],
@@ -120,7 +120,7 @@ class ChartParams {
             },
             {
               id: "chartParams[enableMinMaxTableChart]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title: "Enable Min/Max Table",
               type: "checkbox",
               value: this.options()['enableMinMaxTableChart'],
@@ -128,7 +128,7 @@ class ChartParams {
             },
             {
               id: "chartParams[enableTableChart]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title: "Enable Table Chart",
               type: "checkbox",
               value: this.options()['enableTableChart'],
