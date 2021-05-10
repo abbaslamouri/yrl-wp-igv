@@ -95,7 +95,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         hidePanels()
 
         // Hide admin messages
-        document.querySelector(`.${iwpgvObj.prefix} .admin-messages`).innerHTML = ""
+        document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`).innerHTML = ""
 
         // Hide chart and table charts
         Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)

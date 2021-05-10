@@ -58,37 +58,14 @@ if (!class_exists('Dashboard')) {
 
 			// Add admin Submenus, section and fields
       add_action('admin_menu', [$this, 'admin_menu_register'] );
-
-			// // // Plugin options
-      // $this->settings = get_option("{$this->prefix}_settings") ? get_option("{$this->prefix}_settings") : [];
-      // $this->file_settings = isset($this->settings['files']) ? $this->settings['files'] : [];
-			// $this->chart_settings = isset($this->settings['chart']) ? $this->settings['chart'] : [];
-			
-			// $this->settings =  (!empty(get_option("{$this->prefix}_settings")))? get_option("{$this->prefix}_settings") : [);
-
-			// $this->charts = (isset($this->settings["charts"]))? $this->settings["charts"] : [);
-
-			// get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 		
-			// $this->files = (isset($this->settings["files"]))? $this->settings["files"] : [);
-		
-
 			// Register styles and scripts
 			add_action( 'wp_enqueue_scripts', [$this, 'enqueue_scripts'] );
       add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
-      
-      
-			// Add ajax file upload capability
-			add_action( "wp_ajax_{$this->prefix}_file_upload_action", [$this, 'file_upload'] );
-      add_action( "wp_ajax_nopriv_{$this->prefix}_file_upload_action", [$this, 'file_upload'] );
 
       // Add ajax chart file selection capability
 			add_action( "wp_ajax_{$this->prefix}_file_select_action", [$this, 'file_select' ] );
 			add_action( "wp_ajax_nopriv_{$this->prefix}_file_select_action", [$this, 'file_select'] );
-
-			// Add ajax chart sheet selection capability
-			add_action( "wp_ajax_{$this->prefix}_fetch_chart_options_n_panels_action", [$this, 'fetch_chart_options_n_panels'] );
-      add_action( "wp_ajax_nopriv_{$this->prefix}_fetch_chart_options_n_panels_action", [$this, 'fetch_chart_options_n_panels'] );
       
       // Add ajax chart sheet selection capability
 			add_action( "wp_ajax_{$this->prefix}_save_chart_action", [$this, 'save_chart' ] );
@@ -97,14 +74,6 @@ if (!class_exists('Dashboard')) {
 			// Add ajax chart delete
 			add_action( "wp_ajax_{$this->prefix}_delete_chart_action", [$this, 'delete_chart'] );
 			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_chart_action", [$this, 'delete_chart'] );
-      
-      // Add new file
-			add_action( "wp_ajax_{$this->prefix}_add_new_file_action", [$this, 'add_new_file'] );
-      add_action( "wp_ajax_nopriv_{$this->prefix}_add_new_file_action", [$this, 'add_new_file'] );
-      
-       // Delete file
-			add_action( "wp_ajax_{$this->prefix}_delete_file_action", [$this, 'delete_file'] );
-			add_action( "wp_ajax_nopriv_{$this->prefix}_delete_file_action", [$this, 'delete_file'] );
 
 			// add admin init action
 			add_action('admin_init', [$this, 'admin_init'] );
@@ -376,10 +345,6 @@ if (!class_exists('Dashboard')) {
       
 
 		} // END enqueue_scripts
-
-
-
-
 
 
 		

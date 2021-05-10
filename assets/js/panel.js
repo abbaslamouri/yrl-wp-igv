@@ -145,27 +145,14 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   const formGroup = document.createElement("div")
   formGroup.classList.add("form-group");
 
-  // Create label
-  if (field.type !== "hidden") {
-    const labelElem = document.createElement("label")
-    labelElem.classList.add("form-group__label");
-    labelElem.htmlFor = `${iwpgvObj.prefix}__${field.id}`
-    const labelText = field.title
-      ? document.createTextNode(field.title)
-      : document.createTextNode("\u00A0");
-    labelElem.appendChild(labelText);
-    formGroup.appendChild(labelElem);
-  }
-
   // Create form group input box (contains input/select field and suffix)
-  const formGroupInputBox = document.createElement("div")
-  formGroupInputBox.classList.add("form-group__input-box")
+  // const formGroupInputBox = document.createElement("div")
+  // formGroupInputBox.classList.add("form-group__input-box")
 
   // Create input/select field
-  let inputField =
-    field.type === "select"
-      ? document.createElement("select")
-      : document.createElement("input")
+  let inputField = field.type === "select" ? document.createElement("select"): document.createElement("input")
+
+  inputField.classList.add("form-group__input")
 
   // Add field type or options depending on whether input field is select or otherwise
   if (field.type === "select") {
@@ -203,7 +190,7 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   for (const prop in panelCssClasses) {
     inputField.classList.add(`yrl_wp_igv__${panelCssClasses[prop]}`)
   }
-  inputField.classList.add("form-group__input")
+  
   // inputField.classList.add("yrl_wp_igv__chart");
 
   // add min, number input max, max and step if any
@@ -211,54 +198,76 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   if (field.max) inputField.max = field.max
   if (field.step) inputField.step = field.step
 
+  // Add filed title as placeholder
+  if (field.title) inputField.placeholder = field.title
+
+  
+
   // Add dataset to field if any
-  if (
-    field.cssClasses &&
-    field.cssClasses.includes("hasDependents") &&
-    field.dependents
-  ) {
-    inputField.dataset.dependents = field.dependents.join(",");
-  }
+  // if (
+  //   field.cssClasses &&
+  //   field.cssClasses.includes("hasDependents") &&
+  //   field.dependents
+  // ) {
+  //   inputField.dataset.dependents = field.dependents.join(",");
+  // }
 
   // Set disabled fields
   if (field.disabled) inputField.disabled = true
 
   // Add input field to form froup box
-  formGroupInputBox.appendChild(inputField)
+  // formGroupInputBox.appendChild(inputField)
 
   // Add suffix to form group box
-  if (field.suffix) {
-    const suffix = document.createElement("div")
-    suffix.classList.add("form-group__suffix");
-    const suffixText = document.createTextNode(field.suffix)
-    suffix.appendChild(suffixText)
-    formGroupInputBox.appendChild(suffix)
+  // if (field.suffix) {
+  //   const suffix = document.createElement("div")
+  //   suffix.classList.add("form-group__suffix");
+  //   const suffixText = document.createTextNode(field.suffix)
+  //   suffix.appendChild(suffixText)
+  //   formGroupInputBox.appendChild(suffix)
 
-    // Add hasSuffix class to form group if field hasSuffix class
-    formGroupInputBox.classList.add("hasSuffix")
-  }
+  //   // Add hasSuffix class to form group if field hasSuffix class
+  //   formGroupInputBox.classList.add("hasSuffix")
+  // }
 
   // Add form group box to form group
-  formGroup.appendChild(formGroupInputBox)
+  formGroup.appendChild(inputField)
 
-  
+  // Create label
+  if (field.type !== "hidden") {
+    const labelElem = document.createElement("label")
+    labelElem.classList.add("form-group__label");
+    labelElem.htmlFor = `${iwpgvObj.prefix}__${field.id}`
+    const labelText = field.title
+      ? document.createTextNode(field.title)
+      : document.createTextNode("\u00A0");
+    labelElem.appendChild(labelText);
+    formGroup.appendChild(labelElem);
+  }
 
   // Add hint to form group
   if (field.hint) {
+
+    // Create tooltip div
     const tooltip = document.createElement("div")
     tooltip.classList.add("form-group__tooltip")
-    const tooltipText = document.createTextNode("?")
-    tooltip.appendChild(tooltipText)
 
-    const tooltipTextDiv = document.createElement("span")
-   
-    tooltipTextDiv.classList.add("form-group__tooltipText")
+    // Create tooltip question mark span and add to tooltip div
+    const tooltipQuestionMarkDiv = document.createElement("div")
+    tooltipQuestionMarkDiv.classList.add("form-group__tooltip-question-mark")
+    const tooltipQuestionMark = document.createTextNode("?")
+    tooltipQuestionMarkDiv.appendChild(tooltipQuestionMark)
+    tooltip.appendChild(tooltipQuestionMarkDiv)
+
+    // Create tooltip hint and ad to tooltip
+    const tooltipHintDiv = document.createElement("div")
+    tooltipHintDiv.classList.add("form-group__tooltip-hint")
     const hintText = document.createTextNode(field.hint)
-    tooltipTextDiv.appendChild(hintText)
+    tooltipHintDiv.appendChild(hintText)
+    tooltip.appendChild(tooltipHintDiv)
 
-
-    tooltip.appendChild(tooltipTextDiv)
-    formGroupInputBox.appendChild(tooltip)
+    // Add tooltip to form group
+    formGroup.appendChild(tooltip)
 
   }
 

@@ -21,7 +21,7 @@ Note:  the div with .accordion__content must directly follow the div with .accod
 class Accordion {
   constructor(options) {
     this.options = options;
-    const accordions = document.querySelectorAll(`.${prefix} .accordion`);
+    const accordions = document.querySelectorAll(`.${prefix}__admin .accordion`);
     // console.log("ACCORDION", accordions)
 
     accordions.forEach((accordion) => {

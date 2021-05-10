@@ -55,7 +55,7 @@ class ChartParams {
             {
               id : "chartParams[mediaUploadBtn]",
               cssClasses : ['button', 'button-secondary'], 
-              title : "Upload File", 
+              // title : "Upload File", 
               type : "button",
               value : this.options()['mediaUploadBtn'],
             },
@@ -73,9 +73,10 @@ class ChartParams {
             {
               id : "chartParams[chartId]",
               title : "Chart ID", 
-              readOnly: true,
-              type : "number",
+              // readOnly: true,
+              type : "text",
               value : this.options()['chartId'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
           ],
           [
@@ -86,6 +87,7 @@ class ChartParams {
               type : "select",
               options : [],
               value : this.options()['sheetId'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
           ],
           [
@@ -96,6 +98,7 @@ class ChartParams {
               type : "select",
               options : this.chartTypes,
               value : this.options()['chartType'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
           ],
           [
@@ -113,6 +116,7 @@ class ChartParams {
               title:"Enable Range Slider",
               type: "checkbox",
               value: this.options()['enableRangeSlider'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
             {
               id: "chartParams[enableMinMaxTableChart]",
@@ -120,6 +124,7 @@ class ChartParams {
               title: "Enable Min/Max Table",
               type: "checkbox",
               value: this.options()['enableMinMaxTableChart'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
             {
               id: "chartParams[enableTableChart]",
@@ -127,6 +132,7 @@ class ChartParams {
               title: "Enable Table Chart",
               type: "checkbox",
               value: this.options()['enableTableChart'],
+              hint: "bhbbkdsfjbfsdkjnsfdjnnjkf"
             },
           ],
         ]  

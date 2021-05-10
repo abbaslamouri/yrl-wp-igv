@@ -1,10 +1,4 @@
-$color-grey-light: white;
-$color-grey-medium: #ddd;
-$color-grey-dark: #666;
-$color-black:#000;
-$color-green:green;
-
-.yrl_wp_igv, .yrl_wp_igv__shortcode  {
+.yrl_wp_igv__admin, .yrl_wp_igv__public  {
   font-size: 62.5%;  // 10px/16px = .625 makin 1rem = 10 px.
   box-sizing: border-box;
 
@@ -27,14 +21,5 @@ $color-green:green;
       outline: none;
       border: none;
     }
-  }
-
-  label {
-    font-weight: 600;
-  }
-  padding: 2rem;
-
-  .hidden {
-    display: none !important;
   }
 }
