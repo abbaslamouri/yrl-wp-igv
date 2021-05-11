@@ -145,6 +145,18 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   const formGroup = document.createElement("div")
   formGroup.classList.add("form-group");
 
+  // Create label
+  if (field.type !== "hidden") {
+    const labelElem = document.createElement("label")
+    labelElem.classList.add("form-group__label");
+    labelElem.htmlFor = `${iwpgvObj.prefix}__${field.id}`
+    const labelText = field.title
+      ? document.createTextNode(field.title)
+      : document.createTextNode("\u00A0");
+    labelElem.appendChild(labelText);
+    formGroup.appendChild(labelElem);
+  }
+
   // Create form group input box (contains input/select field and suffix)
   // const formGroupInputBox = document.createElement("div")
   // formGroupInputBox.classList.add("form-group__input-box")
@@ -233,18 +245,6 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   // Add form group box to form group
   formGroup.appendChild(inputField)
 
-  // Create label
-  if (field.type !== "hidden") {
-    const labelElem = document.createElement("label")
-    labelElem.classList.add("form-group__label");
-    labelElem.htmlFor = `${iwpgvObj.prefix}__${field.id}`
-    const labelText = field.title
-      ? document.createTextNode(field.title)
-      : document.createTextNode("\u00A0");
-    labelElem.appendChild(labelText);
-    formGroup.appendChild(labelElem);
-  }
-
   // Add hint to form group
   if (field.hint) {
 
@@ -272,6 +272,7 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   }
 
   if ( field.readOnly ) inputField.readOnly = true
+  if ( field.required ) inputField.required = true
 
   // hide for group if input field has a hidden class
   if (field.cssClasses && field.cssClasses.includes("hidden")) {

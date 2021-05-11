@@ -159,15 +159,15 @@ class ChartLayout extends ChartDefault {
               id : "chartLayout[paper_bgcolor]",
               title : "Paper Color",
               type : "color", 
-              cssClasses : ["color-picker"],
               value : this.options().paper_bgcolor,
+              hint : "Sets the plot's height (in px)."
             },
             {
               id : "chartLayout[plot_bgcolor]",
               title : "Background Color",
               type : "color", 
-              // "cssClasses" : ["color-picker"],
               value : this.options().plot_bgcolor,
+              hint : "Sets the plot's height (in px)."
             },
           ],
           [

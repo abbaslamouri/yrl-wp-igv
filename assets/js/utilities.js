@@ -164,7 +164,7 @@ const showchartParamsInputFields = ( iwpgvObj ) => {
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
+  // showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
 
 }
@@ -176,8 +176,8 @@ const showPanels = ( ) => {
   document.querySelector( `.accordion__content.chartLayout` ).classList.remove("hidden")
   document.querySelector( `.accordion__toggle.chartTraces` ).classList.remove("hidden")
   document.querySelector( `.accordion__content.chartTraces` ).classList.remove("hidden")
-  document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
   document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
   document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
 
@@ -191,8 +191,8 @@ const hidePanels = ( ) => {
   document.querySelector( `.accordion__content.chartLayout` ).classList.add("hidden")
   document.querySelector( `.accordion__toggle.chartTraces` ).classList.add("hidden")
   document.querySelector( `.accordion__content.chartTraces` ).classList.add("hidden")
-  document.querySelector( `.accordion__toggle.tableChart` ).classList.add("hidden")
-  document.querySelector( `.accordion__content.tableChart` ).classList.add("hidden")
+  // document.querySelector( `.accordion__toggle.tableChart` ).classList.add("hidden")
+  // document.querySelector( `.accordion__content.tableChart` ).classList.add("hidden")
   document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.add("hidden")
   document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.add("hidden")
 
