@@ -10,6 +10,8 @@ if ( typeof yrl_wp_igv__plotlyChart !== "undefined") {
   const payload = iwpgvPublic.payload
   const paramsOptions = payload.chart.chartParams.options
 
+  console.log(iwpgvPublic)
+
   // Assemble chart traces chart and and render chart traces panel
   let index = 1;
   while (index < payload.spreadsheet[paramsOptions.sheetId].labels.length) {
@@ -75,7 +77,7 @@ if ( typeof yrl_wp_igv__plotlyChart !== "undefined") {
       document.getElementById(`${payload.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(3)
       document.getElementById(`${payload.prefix}__rangeMaxInput`).value = parseFloat(xAxisMax).toFixed(3)
       payload.chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(payload.chart, payload.spreadsheet, xAxisMin, xAxisMax)
-      console.log(payload.chart.minMaxAvgTableChart.options.cells.values)
+      console.log(payload.chart.minMaxAvgTableChart.options)
       Plotly.restyle( `${payload.prefix}__plotlyMinMaxAvgTable__${paramsOptions.chartId}`, { "cells.values": [getMinMaxAvgData( payload.chart, payload.spreadsheet, xAxisMin, xAxisMax)] } )
     })
 

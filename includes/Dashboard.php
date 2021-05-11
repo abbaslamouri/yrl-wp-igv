@@ -816,13 +816,15 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
 				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
 				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTableChart"]["options"]["layout"]["autosize"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"]["layout"]["autosize"] ) ) ? true : false;
 
         // add undefined checkbox values
         $layout = $_POST["{$this->prefix}__chartLayout"];
         $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
         $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
         $charts[$chart_id]["chartLayout"]["options"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
-        $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;			
+        $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;		
+       
 	
         if (! update_option("{$this->prefix}_charts", $charts)) {
 					// throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));

@@ -13,15 +13,19 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
     showElementById( `${iwpgvObj.prefix}__plotMinMax` )
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.remove("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.remove("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).classList.remove("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
     // chart.chartLayout.options.xaxis.rangeslider = true
   } else {
     hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.add("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.add("hidden")
+    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).classList.add("hidden")
     document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
     // chart.chartLayout.options.xaxis.rangeslider =false
   }

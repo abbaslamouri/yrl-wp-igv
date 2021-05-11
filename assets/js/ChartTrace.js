@@ -23,7 +23,7 @@ class ChartTrace extends ChartDefault {
       case "LineChart":
       case "ScatterChart":
         this.type = "scatter";
-        this.mode = "lines+markers";
+        this.mode = "lines";
         break;
       default:
         this.type = null;
@@ -50,10 +50,10 @@ class ChartTrace extends ChartDefault {
       // connectgaps : ( this.trace !== undefined &&  this.trace.connectgaps !== undefined ) ?  this.trace.connectgaps : false,
       line : {
         color : ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.color !== undefined ) ? this.trace.line.color : this.colors[this.index],
-        width: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.width !== undefined ) ? this.trace.line.width : 2,
+        width: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.width !== undefined ) ? this.trace.line.width : 3,
         shape: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.shape !== undefined ) ? this.trace.line.shape : "spline",
         smoothing: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.smoothing !== undefined ) ? this.trace.line.smoothing : 1,
-        dash: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.dash !== undefined ) ? this.trace.line.dash : "dash",
+        dash: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.dash !== undefined ) ? this.trace.line.dash : "solid",
         simplify: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.simplify !== undefined ) ? this.trace.line.simplify : true,
       },
       marker : {
@@ -87,13 +87,6 @@ class ChartTrace extends ChartDefault {
         fields : [
           [
             {
-              id : `chartTraces[${this.index-1}][name]`,  
-              title : "Label in Legend",  
-              type : "text",
-              value : this.options()['name'],
-              hint : "The trace name appear as the legend item and on hover."
-            },
-            {
               id : `chartTraces[${this.index-1}][mode]`, 
               title : "Mode", 	
               type : "select", 
@@ -106,25 +99,16 @@ class ChartTrace extends ChartDefault {
               value :  this.options()['mode'],
               hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
             },
+            {
+              id : `chartTraces[${this.index-1}][name]`,  
+              title : "Label in Legend",  
+              type : "text",
+              value : this.options()['name'],
+              hint : "The trace name appear as the legend item and on hover."
+            },
+            
           ],
           [
-            {
-              id : `chartTraces[${this.index-1}][line][color]`,  
-              title : "Trace Line Color",  
-              type : "color",
-              value : this.options().line.color,
-              hint : ""
-            },
-            {
-              id : `chartTraces[${this.index-1}][line][width]`, 
-              title : "Trace Line Width", 	
-              type : "number",
-              min : 1,
-              max : 2000,
-              step : 1,
-              value :  this.options().line.width,
-              hint : ""
-            },
             {
               id : `chartTraces[${this.index-1}][line][shape]`,  
               title : "Trace Line Shape",  
@@ -140,8 +124,25 @@ class ChartTrace extends ChartDefault {
               value : this.options().line.shape,
               hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
             },
+            {
+              id : `chartTraces[${this.index-1}][line][width]`, 
+              title : "Trace Line Width", 	
+              type : "number",
+              min : 1,
+              max : 2000,
+              step : 1,
+              value :  this.options().line.width,
+              hint : ""
+            },
           ],
           [
+            {
+              id : `chartTraces[${this.index-1}][line][color]`,  
+              title : "Trace Line Color",  
+              type : "color",
+              value : this.options().line.color,
+              hint : ""
+            },
             {
               id : `chartTraces[${this.index-1}][marker][color]`,  
               title : "Marker Color",  
@@ -162,16 +163,6 @@ class ChartTrace extends ChartDefault {
               hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
             },
             {
-              id : `chartTraces[${this.index-1}][marker][maxdisplayed]`, 
-              title : "Marker Max Displayed", 	
-              type : "number",
-              min : 1,
-              max : 20000,
-              step : 1,
-              value :  this.options().marker.maxdisplayed,
-              hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
-            },
-            {
               id : `chartTraces[${this.index-1}][marker][size]`, 
               title : "Marker Size", 	
               type : "number",
@@ -180,6 +171,28 @@ class ChartTrace extends ChartDefault {
               step : 1,
               value :  this.options().marker.size,
               hint : "Sets the marker size (in px)."
+            },
+          ],
+          [
+            {
+              id : `chartTraces[${this.index-1}][marker][line][width]`, 
+              title : "Marker Line Width", 	
+              type : "number",
+              min : 0,
+              max : 100,
+              step : 1,
+              value :  this.options().marker.line.width,
+              hint : "Sets the width (in px) of the lines bounding the marker points."
+            },
+            {
+              id : `chartTraces[${this.index-1}][marker][maxdisplayed]`, 
+              title : "Marker Max Displayed", 	
+              type : "number",
+              min : 1,
+              max : 20000,
+              step : 1,
+              value :  this.options().marker.maxdisplayed,
+              hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
             },
           ],
           [
@@ -205,32 +218,8 @@ class ChartTrace extends ChartDefault {
               value :  this.options().opacity,
               hint : "Sets the opacity of the trace."
             },
-            {
-              id : `chartTraces[${this.index-1}][showlegend]`, 
-              title : "Show Legend", 	
-              type : "checkbox",
-              value :  this.options().showlegend,
-              hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
-            },
           ],
           [
-            {
-              id : `chartTraces[${this.index-1}][marker][line][width]`, 
-              title : "Marker Line Width", 	
-              type : "number",
-              min : 0,
-              max : 100,
-              step : 1,
-              value :  this.options().marker.line.width,
-              hint : "Sets the width (in px) of the lines bounding the marker points."
-            },
-            {
-              id : `chartTraces[${this.index-1}][marker][line][color]`, 
-              title : "Marker Line Color", 	
-              type : "color",
-              value :  this.options().marker.line.color,
-              hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
-            },
             {
               id : `chartTraces[${this.index-1}][marker][gradient][type]`, 
               title : "Marker Gradient Type", 	
@@ -243,6 +232,15 @@ class ChartTrace extends ChartDefault {
               },
               value :  this.options().marker.gradient.type,
               hint : "Sets the type of gradient used to fill the markers"
+            },
+          ],
+          [
+            {
+              id : `chartTraces[${this.index-1}][marker][line][color]`, 
+              title : "Marker Line Color", 	
+              type : "color",
+              value :  this.options().marker.line.color,
+              hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
             },
             {
               id : `chartTraces[${this.index-1}][marker][gradient][color]`, 
@@ -278,13 +276,22 @@ class ChartTrace extends ChartDefault {
               value :  this.options().line.dash,
               hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
             },
+          ],
+          [
             {
               id : `chartTraces[${this.index-1}][line][simplify]`, 
               title : "line Simplify", 	
               type : "checkbox",
               value :  this.options().line.simplify,
               hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
-            }, 
+            },
+            {
+              id : `chartTraces[${this.index-1}][showlegend]`, 
+              title : "Show Legend", 	
+              type : "checkbox",
+              value :  this.options().showlegend,
+              hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
+            },
           ]
         ]
       // }

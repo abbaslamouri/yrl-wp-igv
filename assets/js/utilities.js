@@ -1,5 +1,5 @@
 const displayAdminMessage = function (message, status, iwpgvObj) {
-  const messageDiv = document.querySelector(`.${iwpgvObj.prefix} .admin-messages`)
+  const messageDiv = document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`)
   if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
 }
 
@@ -24,6 +24,30 @@ const toggleElementById = function (elementId) {
     showElementById(elementId)
   } else {
     hideElementById(elementId)
+  }
+}
+
+
+// Show Element
+const showElementByClass = function (elementClass) {
+  const element = document.querySelector(elementClass)
+  if (element) element.classList.remove("hidden")
+}
+
+// Hide Element
+const hideElementByClass = function (elementClass) {
+  const element = document.querySelector(elementClass)
+  if (element) element.classList.add("hidden")
+}
+
+
+// Toggle spinner
+const toggleElementByClass = function (elementClass) {
+  const element = document.querySelector(elementClass)
+  if (element && element.classList.contains("hidden")) {
+    showElementByClass(elementClass)
+  } else {
+    hideElementByClass(elementClass)
   }
 }
 
@@ -161,6 +185,8 @@ const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
 
 const showchartParamsInputFields = ( iwpgvObj ) => {
 
+  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`) )
+  // showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
   showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
@@ -616,6 +642,9 @@ module.exports = {
   showElementById,
   hideElementById,
   toggleElementById,
+  showElementByClass,
+  hideElementByClass,
+  toggleElementByClass,
   showInputField,
   hideInputField,
   toggleInputField,

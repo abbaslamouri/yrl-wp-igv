@@ -1,5 +1,5 @@
 import fetchData from "./fetch-data"
-import { displayAdminMessage } from "./utilities"
+import { displayAdminMessage, showElementById } from "./utilities"
 
 
 // let jsonRes = {} // Server response
@@ -35,6 +35,7 @@ const saveChart = async function (chart, iwpgvObj) {
 
     // Update chart Id field
     document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`).value = jsonRes.chartId
+    showElementById(`${iwpgvObj.prefix}__chartParams[chartId]`)
 
     // Success handler
     if (jsonRes.status && ( jsonRes.status === "success" || jsonRes.status === "unchanged" ) ) displayAdminMessage(jsonRes.message, "success",  iwpgvObj)

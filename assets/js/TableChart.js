@@ -57,8 +57,9 @@ class TableChart extends ChartDefault{
         }
       },
       layout: {
-        height: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.height !== undefined ) ? this.tableConfig.layout.height : 200,
-        autosize: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.autosize !== undefined ) ? this.tableConfig.layout.autosize : true,
+        height: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.height !== undefined ) ? this.tableConfig.layout.height : 151,
+        autosize: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.autosize !== undefined ) ? this.tableConfig.layout.autosize : false,
+        plot_bgcolor: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.plot_bgcolor !== undefined ) ? this.tableConfig.layout.plot_bgcolor : "#D4A1A1",
         title: {
           text: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.text!== undefined ) ? this.tableConfig.layout.title.text : this.panelTitle,
           font : {
@@ -70,7 +71,7 @@ class TableChart extends ChartDefault{
         margin: {
           l : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.l !== "undefined"  ) ? this.tableConfig.layout.margin.l : 0,
           r : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.r !== "undefined"  ) ? this.tableConfig.layout.margin.r : 0,
-          t : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.t!== "undefined"  ) ? this.tableConfig.layout.margin.t : 80,
+          t : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.t!== "undefined"  ) ? this.tableConfig.layout.margin.t : 0,
           b : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.b !== "undefined"  ) ? this.tableConfig.layout.margin.b : 0,
           pad: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.pad !== "undefined"  ) ? this.tableConfig.layout.margin.pad : 0,
           autoexpand: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.autoexpand !== "undefined"  ) ? this.tableConfig.layout.margin.autoexpand : true,
@@ -110,29 +111,6 @@ class TableChart extends ChartDefault{
             ],
             [
               {
-                id: `${this.panelId}[rounding]`, 
-                title : "Number Rounding", 
-                type : "number",
-                min : 0,
-                max : 10,
-                step : 1,
-                value : this.options().rounding,
-                hint : "Sets the number of decimal places for the table data"
-              },
-              {
-                id: `${this.panelId}[firstColAlign]`,
-                title: "First Column Alignment",
-                type: "select",
-                options: {
-                  left: "Left",
-                  center: "Center",
-                  right: "Right"
-                },
-                value: this.options().firstColAlign
-              },
-            ],
-            [
-              {
                 id: `${this.panelId}[layout][height]`, 
                 title : "Height", 
                 type : "number",
@@ -152,14 +130,35 @@ class TableChart extends ChartDefault{
             ],
             [
               {
+                id: `${this.panelId}[firstColAlign]`,
+                title: "First Column Alignment",
+                type: "select",
+                options: {
+                  left: "Left",
+                  center: "Center",
+                  right: "Right"
+                },
+                value: this.options().firstColAlign
+              },
+              {
+                id: `${this.panelId}[rounding]`, 
+                title : "Number Rounding", 
+                type : "number",
+                min : 0,
+                max : 10,
+                step : 1,
+                value : this.options().rounding,
+                hint : "Sets the number of decimal places for the table data"
+              },
+            ],
+            [
+              {
                 id: `${this.panelId}[evenRowColor]`,
                 title: "Even Row Color",
                 type: "color",
                 value: this.options().evenRowColor,
                 hint:"Odd rows color"
               },
-            ],
-            [
               {
                 id: `${this.panelId}[oddRowColor]`,
                 title: "Odd Row Color",
@@ -276,7 +275,7 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[header][height]`, 
-                title : "Header Row Height", 
+                title : "Row Height", 
                 type : "number",
                 min : 0,
                 max : 2000,
@@ -286,7 +285,7 @@ class TableChart extends ChartDefault{
               },
               {
                 id: `${this.panelId}[header][align]`,
-                title: "Header Alignment",
+                title: "Alignment",
                 type: "select",
                 options: {
                   left: "Left",
@@ -300,7 +299,7 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[header][line][width]`, 
-                title : "Header Border Line Width", 
+                title : "Border Line Width", 
                 type : "number",
                 min : 0,
                 max : 2000,
@@ -310,7 +309,7 @@ class TableChart extends ChartDefault{
               },
               {
                 id: `${this.panelId}[header][line][color]`,
-                title: "Header Border Line Color",
+                title: "Border Line Color",
                 type: "color",
                 value: this.options().header.line.color,
                 hint: "Sets The color of the header cells lines"
@@ -319,13 +318,11 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[header][fill][color]`,
-                title: "Header Fill Color",
+                title: "Fill Color",
                 type: "color",
                 value: this.options().header.fill.color,
                 hint: "Sets The color of the header cells fill color"
               },
-            ],
-            [
               {
                 id : `${this.panelId}[header][font][family]`,
                 title : "Font Family",	
@@ -334,6 +331,8 @@ class TableChart extends ChartDefault{
                 value : this.options().header.font.family,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
+            ],
+            [
               {
                 id : `${this.panelId}[header][font][size]`, 
                 title : "Font Size", 
@@ -361,7 +360,7 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[cells][height]`, 
-                title : "Cell Row Height", 
+                title : "Row Height", 
                 type : "number",
                 min : 0,
                 max : 2000,
@@ -371,7 +370,7 @@ class TableChart extends ChartDefault{
               },
               {
                 id: `${this.panelId}[cells][align]`,
-                title: "Cell Alignment",
+                title: "Alignment",
                 type: "select",
                 options: {
                   left: "Left",
@@ -385,7 +384,7 @@ class TableChart extends ChartDefault{
             [
               {
                 id: `${this.panelId}[cells][line][width]`, 
-                title : "Cell Border Line Width", 
+                title : "Border Line Width", 
                 type : "number",
                 min : 0,
                 max : 2000,
@@ -395,7 +394,7 @@ class TableChart extends ChartDefault{
               },
               {
                 id: `${this.panelId}[cells][line][color]`,
-                title: "Cell Border Line Color",
+                title: "Border Line Color",
                 type: "color",
                 value: this.options().cells.line.color,
                 hint: "Sets The color of the cell cells lines"
@@ -405,13 +404,11 @@ class TableChart extends ChartDefault{
               {
                 id: `${this.panelId}[cells][fill][color]`,
                 // cssClasses: ["hidden"],
-                title: "Cell Fill Color",
+                title: "Fill Color",
                 type: "color",
                 value: this.options().cells.fill.color,
                 hint: "Sets The color of the cell cells fill color"
               },
-            ],
-            [
               {
                 id : `${this.panelId}[cells][font][family]`,
                 title : "Font Family",	
@@ -420,6 +417,8 @@ class TableChart extends ChartDefault{
                 value : this.options().cells.font.family,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
+            ],
+            [
               {
                 id : `${this.panelId}[cells][font][size]`, 
                 title : "Font Size", 

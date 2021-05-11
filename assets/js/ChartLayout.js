@@ -27,11 +27,11 @@ class ChartLayout extends ChartDefault {
       },
 
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
-      plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#FFFFFF",
+      plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#EEEEEE",
       // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
       height : ( this.layout.height !== undefined ) ? this.layout.height : 450,
       autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
-      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : true,
+      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : false,
       font : {
         family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
         size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
@@ -66,13 +66,13 @@ class ChartLayout extends ChartDefault {
           },
           side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top',
         },
-        orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'h',
+        orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
         itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'trace',
         itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 100,
         itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
         itemdoubleclick : ( this.layout.legend !== undefined && this.layout.legend.itemdoubleclick !== undefined ) ? this.layout.legend.itemdoubleclick : false,
-        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : .35,
-        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 1.15,
+        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.04,
+        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 1.00,
         valign : ( this.layout.legend !== undefined && this.layout.legend.valign !== undefined ) ? this.layout.legend.valign : "middle",
       },
       xaxis : {
@@ -90,7 +90,7 @@ class ChartLayout extends ChartDefault {
         l : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.l !== "undefined" ) ? this.layout.margin.l : 80,
         r : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.r !== "undefined" ) ? this.layout.margin.r : 80,
         t : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.t !== "undefined" ) ? this.layout.margin.t : 100,
-        b : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.b !== "undefined" ) ? this.layout.margin.b : 80,
+        b : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.b !== "undefined" ) ? this.layout.margin.b : 20,
         pad: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.pad !== "undefined" ) ? this.layout.margin.pad : 20,
         autoexpand: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.autoexpand !== "undefined" ) ? this.layout.margin.autoexpand : true,
       },
@@ -225,6 +225,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().margin.pad,
               hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
             },
+          ],
+          [
             {
               id : "chartLayout[margin][autoexpand]", 
               title : "Margin Auto Expand", 
@@ -232,8 +234,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().margin.autoexpand,
               hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults."
             },
-          ],
-          [
             {
               id : "chartLayout[autosize]", 
               title : "Auto Size on Relayout", 
@@ -251,6 +251,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+          ],
+          [
             {
               id : "chartLayout[font][size]", 
               title : "Font Size", 
@@ -263,6 +265,7 @@ class ChartLayout extends ChartDefault {
             },
             {
               id : "chartLayout[font][color]",
+              // cssClasses: ["no-hint"],
               title : "Font Color",
               type : "color", 
               value : this.options().font.color,
@@ -296,6 +299,7 @@ class ChartLayout extends ChartDefault {
           [
             {
               id : "chartLayout[title][text]",
+              cssClasses: ["no-hint"],
               title : "Chart Title",
               type : "text", 
               value : this.options().title.text,
@@ -310,6 +314,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().title.font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+          ],
+          [
             {
               id : "chartLayout[title][font][size]", 
               title : "Font Size", 
@@ -322,6 +328,7 @@ class ChartLayout extends ChartDefault {
             },
             {
               id : "chartLayout[title][font][color]",
+              // cssClasses: ["no-hint"],
               title : "Font Color",
               type : "color", 
               value : this.options().title.font.color,
@@ -366,6 +373,20 @@ class ChartLayout extends ChartDefault {
               hint: "Determines whether or not a legend is drawn. Default is `true` if there is a trace to show and any of these: a) Two or more traces would by default be shown in the legend. b) One pie trace is shown in the legend. c) One trace is explicitly given with `showlegend: true`"
             },
             {
+              id : "chartLayout[legend][valign]",
+              title : "Text symbol Alignment",	
+              type : "select",
+              options : {
+                top: "Top",
+                middle: "Middle",
+                bottom: "Bottom"
+              },
+              value : this.options().legend.valign,
+              hint: "Sets the vertical alignment of the symbols with respect to their associated text."
+            },
+          ],
+          [
+            {
               id : "chartLayout[legend][bgcolor]",
               title : "Background Color",
               type : "color", 
@@ -389,6 +410,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().legend.font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+          ],
+          [
             {
               id : "chartLayout[legend][font][size]", 
               title : "Font Size", 
@@ -502,20 +525,6 @@ class ChartLayout extends ChartDefault {
           ],
           [
             {
-              id : "chartLayout[legend][valign]",
-              title : "Text symbol Alignment",	
-              type : "select",
-              options : {
-                top: "Top",
-                middle: "Middle",
-                bottom: "Bottom"
-              },
-              value : this.options().legend.valign,
-              hint: "Sets the vertical alignment of the symbols with respect to their associated text."
-            },
-          ],
-          [
-            {
               id : "chartLayout[legend][title][text]",
               title : "Legend Title",
               type : "text", 
@@ -544,6 +553,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().legend.title.font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+          ],
+          [
             {
               id : "chartLayout[legend][title][font][size]", 
               title : "Legend Title Font Size", 
@@ -594,6 +605,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().hoverlabel.font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+          ],
+          [
             {
               id : "chartLayout[hoverlabel][font][size]", 
               title : "Hover Label Font Size", 
@@ -652,15 +665,6 @@ class ChartLayout extends ChartDefault {
               hint: "Sets the background color of the modebar."
             },
             {
-              id : "chartLayout[modebar][color]",
-              title : "Icon Color",
-              type : "color", 
-              value : this.options().modebar.color,
-              hint: "Sets the color of the icons in the modebar."
-            },
-          ],
-          [
-            {
               id: "chartLayout[modebar][orientation]",
               title:"Modebar Orientation",
               type : "select",
@@ -670,6 +674,15 @@ class ChartLayout extends ChartDefault {
               },
               value: this.options().modebar.orientation,
               hint: "Sets the orientation of the modebar"
+            },
+          ],
+          [
+            {
+              id : "chartLayout[modebar][color]",
+              title : "Icon Color",
+              type : "color", 
+              value : this.options().modebar.color,
+              hint: "Sets the color of the icons in the modebar."
             },
             {
               id : "chartLayout[modebar][activecolor]",
@@ -696,6 +709,15 @@ class ChartLayout extends ChartDefault {
               hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
             },
             {
+              id : "chartLayout[xaxis][rangeslider][bgcolor]",
+              title : "Range Slider Background Color",
+              type : "color", 
+              value : this.options().xaxis.rangeslider.bgcolor,
+              hint: "Sets the background color of the range slider."
+            }
+          ],
+          [
+            {
               id: "chartLayout[xaxis][rangeslider][thickness]",
               title:"Range Slider Height",
               type : "number",
@@ -704,15 +726,6 @@ class ChartLayout extends ChartDefault {
               step : 0.1,
               value: this.options().xaxis.rangeslider.thickness,
               hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][rangeslider][bgcolor]",
-              title : "Range Slider Background Color",
-              type : "color", 
-              value : this.options().xaxis.rangeslider.bgcolor,
-              hint: "Sets the background color of the range slider."
             },
           ]
         ]  
@@ -738,6 +751,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().config.displayModeBar,
               hint: ""
             },
+          ],
+          [
             {
               id : "chartLayout[config][displaylogo]",
               title : "Display Plotly Logo ?",

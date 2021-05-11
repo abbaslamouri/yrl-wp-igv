@@ -55,7 +55,7 @@ class ChartParams {
             {
               id : "chartParams[mediaUploadBtn]",
               cssClasses : ['button', 'button-secondary'], 
-              // title : "Upload File", 
+              title : "Upload File", 
               type : "button",
               value : this.options()['mediaUploadBtn'],
             },
@@ -63,28 +63,28 @@ class ChartParams {
           [
             {
               id : "chartParams[fileUpload]",
-              // cssClasses : ['no-hint'],
+              cssClasses : ['hidden', "no-hint"],
               title : "Selected File", 
-              // readOnly: true,
+              readOnly: true,
               type : "text",
               value : this.options()['fileUpload'],
-              hint: "Check this box to enable Plotly Range Slider"
+              // hint: "Check this box to enable Plotly Range Slider"
             }
           ],
           [
             {
               id : "chartParams[chartId]",
-              // cssClasses : ['no-hint'],
+              cssClasses : ['hidden', "no-hint"],
               title : "Chart ID", 
-              // readOnly: true,
-              type : "color",
-              value : "white", //this.options()['chartId'],
-              hint: "Check this box to enable Plotly Range Slider"            },
+              readOnly: true,
+              type : "text",
+              value : this.options()['chartId'],
+          },
           ],
           [
             {
               id : "chartParams[sheetId]",
-              // cssClasses : ['hidden'],
+              cssClasses : ['hidden'],
               title : "Sheet",	
               type : "select",
               options : [],
@@ -95,7 +95,7 @@ class ChartParams {
           [
             {
               id : "chartParams[chartType]",
-              // cssClasses : ['hidden'],
+              cssClasses : ['hidden'],
               title : "Chart Type",	
               type : "select",
               options : this.chartTypes,
@@ -114,7 +114,7 @@ class ChartParams {
           [
             {
               id: "chartParams[enableRangeSlider]",
-              // cssClasses : ['hidden'],
+              cssClasses : ['hidden'],
               title:"Enable Range Slider",
               type: "checkbox",
               value: this.options()['enableRangeSlider'],
@@ -122,11 +122,11 @@ class ChartParams {
             },
             {
               id: "chartParams[enableMinMaxTableChart]",
-              // cssClasses : ['hidden'],
+              cssClasses : ['hidden'],
               title: "Enable Min/Max Table",
               type: "checkbox",
               value: this.options()['enableMinMaxTableChart'],
-              hint: "Check this box to enable Min/Max/Average tableI haven't been able to find any answers to my question elsewhere, nor previous posts here.I am working on a website for internal purposes for work, and just playing trying to get things working at home. I am not sure if I am doing something wrong or if there is a bug, or maybe I should be using another JS UI. What I need for a UI, is tabs, a grid system and form input. Bootstrap seems to be the best option I have found so far. I had settled on 4.0.0.beta2 since it is the most recent. Everything works except the Input elements, text, number and so on. When I put these in a grid system with bootstrap the input elements do not respect the grid sizing. All other form elements do.  Here is my current testing page without all the extra clutter. The input type flows outside of the grid to the right. I have tried form-groups, moving stuff around, different sizes, input types, pretty much anything I can think of. (Edit - changed detail-row to just row as it should have been, still did not fix the issue)"
+              hint: "Check this box to enable MIn/Max/Average Table"
             },
             // {
             //   id: "chartParams[enableTableChart]",

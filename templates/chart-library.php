@@ -1,5 +1,5 @@
 <!-- Create a plugin wraper in the default WordPress 'wrap' container -->
-<div class='<?php echo $this->prefix; ?>'>
+<div class="<?php echo"{$this->prefix}__admin"; ?>"">
 
   <!-- Show plugin title -->
   <h1>
@@ -18,7 +18,7 @@
     </a>
 
     <div class="chart-library">
-      <form id="<?php echo "{$this->prefix}__listChartsForm" ?>" class="form" action="#">
+      <!-- <form id="<?php // echo "{$this->prefix}__listChartsForm" ?>" class="form" action="#"> -->
         <?php
         if (!empty($payload)) :
           foreach($payload as $chart_id => $chart):
@@ -53,7 +53,7 @@
         ?>
           <div> Ther no charts to display</div>
         <?php endif; ?>
-      </form>
+      <!-- </form> -->
     </div>
   </div>
 
