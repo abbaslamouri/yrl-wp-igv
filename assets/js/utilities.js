@@ -54,31 +54,34 @@ const toggleElementByClass = function (elementClass) {
 
 
 // Show input fields
-const showInputField = function (fieldId) {
+const showInputField = function ( fieldId ) {
 
-  fieldId.classList.remove("hidden");
-  fieldId.closest(".form-group").classList.remove("hidden")
+  const element = document.getElementById( fieldId )
+  element.classList.remove( "hidden" );
+  element.closest(".form-group").classList.remove( "hidden" )
 
 }
 
 
 // Hide input fields
-const hideInputField = function (fieldId) {
+const hideInputField = function ( fieldId ) {
 
-  fieldId.classList.add("hidden");
-  fieldId.closest(".form-group").classList.add("hidden")
+  const element = document.getElementById( fieldId )
+  element.classList.add( "hidden" );
+  element.closest( ".form-group" ).classList.add( "hidden" )
 
 }
 
 
 
 // Show input fields
-const toggleInputField = function (fieldId) {
+const toggleInputField = function ( fieldId ) {
 
-  if (fieldId.classList.contains("hidden") ) {
-    showInputField
+  const element = document.getElementById(fieldId)
+  if (element.classList.contains( "hidden" ) ) {
+    showInputField( fieldId )
   } else {
-    hideInputField
+    hideInputField( fieldId )
   }
 
 }
@@ -185,13 +188,13 @@ const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
 
 const showchartParamsInputFields = ( iwpgvObj ) => {
 
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`) )
-  // showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`) )
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`) )
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`) )
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`) )
-  // showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`) )
-  showInputField( document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`) )
+  showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
+  // showInputField( `${iwpgvObj.prefix}__chartParams[chartId]` )
+  showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+  showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
+  // showInputField( `${iwpgvObj.prefix}__chartParams[enableRangeSlider]` )
+  // showInputField( `${iwpgvObj.prefix}__chartParams[enableTableChart]` )
+  showInputField( `${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]` )
 
 }
 

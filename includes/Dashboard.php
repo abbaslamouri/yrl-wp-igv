@@ -519,13 +519,16 @@ if (!class_exists('Dashboard')) {
             $spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
 
             // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-            if (  is_wp_error( $spreadsheet ) ) {
-              $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-              throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-            }  	
+            if (  ! is_wp_error( $spreadsheet ) ) {
+              // Fetch sheet
+              $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+              // $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+              // throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+            } else {
+              $payload[$chart_id]['sheet'] = null;
+            }
 
-            // Fetch sheet
-            $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+            
 
           }
 
@@ -637,7 +640,7 @@ if (!class_exists('Dashboard')) {
 									"id" => "{$this->prefix}__chartLayoutPanel",
 									"cssClasses" => ["chartLayout", "panel"],
 									"title" => __("Chart Layout", $this->plugin),
-									"intro" => "uiyoyuoiyuioyuioyuyuyuoyuoyuo",
+									"intro" => "",
 									"sections" => []
 								]
 							],
@@ -647,7 +650,7 @@ if (!class_exists('Dashboard')) {
 									"id" => "{$this->prefix}__chartTracesPanel",
 									"cssClasses" => ["chartTraces", "panel"],
 									"title" => __("Chart Traces", $this->plugin),
-									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"intro" => "",
 									"sections" => []
 								]
 							],
@@ -657,7 +660,7 @@ if (!class_exists('Dashboard')) {
 									"id" => "{$this->prefix}__tableChartPanel",
 									"cssClasses" => ["tableChart", "panel"],
 									"title" => __("Table Chart", $this->plugin),
-									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"intro" => "",
 									"sections" => []
 								]
 							],
@@ -667,7 +670,7 @@ if (!class_exists('Dashboard')) {
 									"id" => "{$this->prefix}__minMaxAvgTableChartPanel",
 									"cssClasses" => ["minMaxAvgTableChart", "panel"],
 									"title" => __("Min/Max/Avg Table Chart", $this->plugin),
-									"intro" => "jkhahjjkhaf ljljkafsd lafdlkjaf lask;as ",
+									"intro" => "",
 									"sections" => []
 								]
 							]

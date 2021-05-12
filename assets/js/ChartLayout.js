@@ -26,8 +26,8 @@ class ChartLayout extends ChartDefault {
         displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : false
       },
 
-      paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#CCCCCC",
-      plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#EEEEEE",
+      paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#b0bec5",
+      plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#eeeeee",
       // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
       height : ( this.layout.height !== undefined ) ? this.layout.height : 450,
       autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
@@ -35,7 +35,7 @@ class ChartLayout extends ChartDefault {
       font : {
         family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
         size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
-        color : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.color !== undefined ) ? this.layout.font.color : "#4b636e",
+        color : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.color !== undefined ) ? this.layout.font.color : "#000a12",
       },
       title: {
         text: ( this.layout.title !== undefined && this.layout.title.text!== undefined ) ? this.layout.title.text : 'Ge AR/AR 8.0 - 12.0 &#181;m',
@@ -44,31 +44,31 @@ class ChartLayout extends ChartDefault {
         font : {
           family : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.family !== undefined ) ? this.layout.title.font.family : Object.keys(this.fontFamily)[13],
           size : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.size !== undefined ) ? this.layout.title.font.size : 20,
-          color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#008080",
+          color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#000a12",
         }
       },
       showlegend : ( typeof this.layout.showlegend !== "undefined" ) ? this.layout.showlegend : true,
       legend : {
-        bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#ffc246',
-        bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#67daff',
-        borderwidth : ( this.layout.legend !== undefined  && this.layout.legend.borderwidth !== undefined ) ? this.layout.legend.borderwidth : 2,
+        bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#e2f1f8',
+        bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#000a12',
+        borderwidth : ( this.layout.legend !== undefined  && this.layout.legend.borderwidth !== undefined ) ? this.layout.legend.borderwidth : 1,
         font : {
           family: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.family !== undefined  ) ? this.layout.legend.font.family : Object.keys(this.fontFamily)[13],
           size: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.size !== undefined ) ? this.layout.legend.font.size : 14,
-          color : ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.color !== undefined ) ? this.layout.legend.font.color : "#39796b",
+          color : ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.color !== undefined ) ? this.layout.legend.font.color : "#000a12",
         },
         title: {
           text : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.text !== undefined ) ? this.layout.legend.title.text : '',
           font : {
             family: ( this.layout.legend !== undefined &&  this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.family !== undefined  ) ? this.layout.legend.title.font.family : Object.keys(this.fontFamily)[1],
             size: ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.size !== undefined ) ? this.layout.legend.title.font.size : 20,
-            color : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.color !== undefined ) ? this.layout.legend.title.font.color : "#ae52d4",
+            color : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.color !== undefined ) ? this.layout.legend.title.font.color : "#000a12",
           },
           side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top',
         },
         orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
         itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'trace',
-        itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 100,
+        itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 50,
         itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
         itemdoubleclick : ( this.layout.legend !== undefined && this.layout.legend.itemdoubleclick !== undefined ) ? this.layout.legend.itemdoubleclick : false,
         x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.04,
@@ -96,9 +96,9 @@ class ChartLayout extends ChartDefault {
       },
       modebar : {
         orientation : ( this.layout.modebar !== undefined && this.layout.modebar.orientation !== undefined ) ? this.layout.modebar.orientation : 'h',
-        bgcolor : ( this.layout.modebar !== undefined && this.layout.modebar.bgcolor !== undefined ) ? this.layout.modebar.bgcolor : "#519657",
-        color : ( this.layout.modebar !== undefined && this.layout.modebar.color !== undefined ) ? this.layout.modebar.color : "#7f0000",
-        activecolor : ( this.layout.modebar !== undefined && this.layout.modebar.activecolor !== undefined ) ? this.layout.modebar.activecolor : "#f05545",
+        bgcolor : ( this.layout.modebar !== undefined && this.layout.modebar.bgcolor !== undefined ) ? this.layout.modebar.bgcolor : "",
+        color : ( this.layout.modebar !== undefined && this.layout.modebar.color !== undefined ) ? this.layout.modebar.color : "",
+        activecolor : ( this.layout.modebar !== undefined && this.layout.modebar.activecolor !== undefined ) ? this.layout.modebar.activecolor : "",
       },
       hoverlabel: {
         bgcolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bgcolor!== undefined ) ? this.layout.hoverlabel.bgcolor : null,
@@ -709,23 +709,23 @@ class ChartLayout extends ChartDefault {
               hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
             },
             {
-              id : "chartLayout[xaxis][rangeslider][bgcolor]",
-              title : "Range Slider Background Color",
-              type : "color", 
-              value : this.options().xaxis.rangeslider.bgcolor,
-              hint: "Sets the background color of the range slider."
-            }
-          ],
-          [
-            {
               id: "chartLayout[xaxis][rangeslider][thickness]",
               title:"Range Slider Height",
               type : "number",
               min : 0,
               max : 1,
-              step : 0.1,
+              step : 0.01,
               value: this.options().xaxis.rangeslider.thickness,
               hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][rangeslider][bgcolor]",
+              title : "Range Slider Background Color",
+              type : "color", 
+              value : this.options().xaxis.rangeslider.bgcolor,
+              hint: "Sets the background color of the range slider."
             },
           ]
         ]  

@@ -9,8 +9,10 @@ const listCharts = function ( charts, iwpgvObj) {
 
     for ( let i=0; i < el.chartTraces.options.length; i++) {
 
-      el.chartTraces.options[i].x = el.sheet.data[0]
-      el.chartTraces.options[i].y = el.sheet.data[i+1]
+      if (el.sheet) {
+        el.chartTraces.options[i].x = el.sheet.data[0]
+        el.chartTraces.options[i].y = el.sheet.data[i+1]
+      }
       el.chartTraces.options[i].showlegend = false
       el.chartLayout.options.hovermode = false
       el.chartLayout.options.height = 200
@@ -43,7 +45,7 @@ const listCharts = function ( charts, iwpgvObj) {
             const jsonRes = deleteChart(el.chartParams.options.chartId, iwpgvObj)
             // if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
             const card = document.getElementById(`${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}__card`)
-            document.getElementById(`${iwpgvObj.prefix}__listChartsForm`).removeChild(card)
+            document.querySelector(`.${iwpgvObj.prefix}__admin .chart-library`).removeChild(card)
             swal(`Chart (ID=${el.chartParams.options.chartId}) has been deleted!`, {
               icon: "success",
             });

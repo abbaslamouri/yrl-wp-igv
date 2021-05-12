@@ -1,12 +1,15 @@
 .yrl_wp_igv__admin {
 
   margin:1rem 2rem 1rem 0;
+  padding:2rem;
 
   .chart-library {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     grid-column: 1 / span 2;
+    padding:2rem;
+    border: 1px solid grey;
     margin-top: 2rem;
   }
 

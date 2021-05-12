@@ -18,13 +18,13 @@ const deleteChart = async function (chartId, iwpgvObj) {
     
 
     // Get from node
-    const form = document.getElementById( `${iwpgvObj.prefix}__listChartsForm` )
+    // const form = document.getElementById( `${iwpgvObj.prefix}__listChartsForm` )
 
     // Bail if no form is found
-    if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
+    // if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
 
     // Create form object and append action and nonce
-    const formData = new FormData( form )
+    const formData = new FormData( )
     formData.append("action", iwpgvObj.delete_chart_action)
     formData.append("nonce", iwpgvObj.delete_chart_nonce)
     formData.append("chartId", chartId)

@@ -8,10 +8,10 @@
       justify-content: space-between;
       cursor: pointer;
       padding: 0.3rem 0.5rem;
-      background-color: $color-grey-medium;
+      background-color: rgba( $color-primary,1 );
       font-size: 0.8rem;
       font-weight: 500;
-      border: 1px solid $color-grey-dark;
+      border: 1px solid rgba( $color-p-dark,1 );
       border-radius: 2px;
       margin: 0.1rem 0;
     }
@@ -24,13 +24,13 @@
 
     &__content {
       transition: all 0.2s ease-in-out;
-      background-color:$color-grey-light;
+      background-color: rgba( $color-p-light,1) ;
       padding: 0.5rem;
-      border: 1px solid $color-black;
+      border: 1px solid rgba( $color-p-dark,1 );
       border-radius: 2px;
 
       .panel, .subpanel {
-        background-color:$color-grey-medium;
+        background-color:rgba( $color-primary, .6);
       }
     
     }

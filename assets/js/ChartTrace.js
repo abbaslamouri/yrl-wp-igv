@@ -43,7 +43,7 @@ class ChartTrace extends ChartDefault {
       name : this.labels[ this.index],
       visible : ( this.trace !== undefined && this.trace.visible !== undefined ) ? this.trace.visible : true,
       showlegend : ( this.trace !== undefined && this.trace.showlegend !== undefined ) ? this.trace.showlegend : true,
-      opacity : ( this.trace !== undefined && this.trace.opacity !== undefined ) ? this.trace.opacity : 0.5,
+      opacity : ( this.trace !== undefined && this.trace.opacity !== undefined ) ? this.trace.opacity : 1,
       x : this.spreadsheet[this.sheetId].data[0],
       y : this.spreadsheet[this.sheetId].data[this.index],
       

@@ -28,7 +28,7 @@ class ChartParams {
       sheetId : (this.params.sheetId !== undefined ) ? this.params.sheetId : null,
       chartType : (this.params.chartType !== undefined ) ? this.params.chartType : null,
       chartId : (this.params.chartId !== undefined ) ? this.params.chartId : null,
-      enableRangeSlider : ( this.params.enableChartRangeSlider ) ? true : true,
+      // enableRangeSlider : ( this.params.enableChartRangeSlider ) ? true : true,
       enableMinMaxTableChart : ( this.params.enableMinMaxTableChart  ) ? true : true,
       // enableTableChart : ( this.params.enableTableChart ) ? true : true,
 
@@ -54,7 +54,7 @@ class ChartParams {
           [
             {
               id : "chartParams[mediaUploadBtn]",
-              cssClasses : ['button', 'button-secondary'], 
+              cssClasses : ['button', 'button-secondary', "btn"], 
               title : "Upload File", 
               type : "button",
               value : this.options()['mediaUploadBtn'],
@@ -112,14 +112,14 @@ class ChartParams {
             },
           ],
           [
-            {
-              id: "chartParams[enableRangeSlider]",
-              cssClasses : ['hidden'],
-              title:"Enable Range Slider",
-              type: "checkbox",
-              value: this.options()['enableRangeSlider'],
-              hint: "Check this box to enable Plotly Range Slider"
-            },
+            // {
+            //   id: "chartParams[enableRangeSlider]",
+            //   cssClasses : ['hidden'],
+            //   title:"Enable Range Slider",
+            //   type: "checkbox",
+            //   value: this.options()['enableRangeSlider'],
+            //   hint: "Check this box to enable Plotly Range Slider"
+            // },
             {
               id: "chartParams[enableMinMaxTableChart]",
               cssClasses : ['hidden'],

@@ -35,7 +35,8 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
 
   // Add range slider event handler
-  eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){  
+  eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+    console.log("PPPPPPPPPPA", eventData)
     const xAxisMin = ( eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
     const xAxisMax = ( eventData  && eventData['xaxis.range'] ) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
     document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(3)
