@@ -18,6 +18,7 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
   
 
 // Assemble chart traces chart and and render chart traces panel
+if (spreadsheet) {
   let index = 1
   while ( index < spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].labels.length ) {
     iwpgvCharts.chart.chartTraces.options[index-1] = ( typeof iwpgvCharts.chart.chartTraces.options[index-1] !== "undefined" )? iwpgvCharts.chart.chartTraces.options[index-1] : {}
@@ -29,6 +30,9 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
   panel(iwpgvCharts.chart.chartTraces.panel, iwpgvObj)
   document.querySelector( `.accordion__toggle.chartTraces.panel` ).classList.remove( "hidden" )
   document.querySelector( `.accordion__content.chartTraces.panel` ).classList.remove( "hidden" )
+} else {
+  document.querySelector(`.${iwpgvObj.prefix}__admin .warning`).innerHTML = `${iwpgvCharts.chart.chartParams.options.fileUpload} is missing.  Please upload a new file`
+}
 
   
 
@@ -45,7 +49,7 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
 
 
   // Assemble Min/Max table chart options and panel if enableMinMaxTableChart is true
-  if ( iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart ) {
+  if ( iwpgvCharts.chart.chartLayout.options.showMinMaxAvgTable ) {
     const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "" )
     iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
     iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()

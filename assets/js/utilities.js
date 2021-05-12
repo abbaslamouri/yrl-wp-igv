@@ -260,17 +260,17 @@ const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax
 
 
 
-const showchartParamsInputFields = ( iwpgvObj ) => {
+// const showchartParamsInputFields = ( iwpgvObj ) => {
 
-  showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
-  // showInputField( `${iwpgvObj.prefix}__chartParams[chartId]` )
-  showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
-  showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
-  // showInputField( `${iwpgvObj.prefix}__chartParams[enableRangeSlider]` )
-  // showInputField( `${iwpgvObj.prefix}__chartParams[enableTableChart]` )
-  showInputField( `${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]` )
+//   showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
+//   // showInputField( `${iwpgvObj.prefix}__chartParams[chartId]` )
+//   showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+//   showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
+//   // showInputField( `${iwpgvObj.prefix}__chartParams[enableRangeSlider]` )
+//   // showInputField( `${iwpgvObj.prefix}__chartParams[enableTableChart]` )
+//   showInputField( `${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]` )
 
-}
+// }
 
 
 const showPanels = ( ) => {
@@ -655,18 +655,10 @@ module.exports = {
   hideInputField,
   toggleInputField,
   setSheetIdOptions,
-  showchartParamsInputFields,
   showPanels,
   hidePanels,
   fetchTableChartData,
   fetchMinMaxAvgTableChartData,
-  // getTableHeader,
-  // getMinMaxAvgTableHeader,
-  // getPlotData,
   getMinMaxAvgData,
-  // getLayout,
-  // getConfig,
-  // getTraces,
-  // getTable,
   chartOptionKey,
 };

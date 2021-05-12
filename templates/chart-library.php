@@ -39,8 +39,8 @@
                       <use xlink:href="<?php echo "{$this->url}assets/img/icons.svg#icon-pencil"; ?>"></use>
                     </svg>
                   </a>
-                  <a  href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "delete-chart", 'chartId' => $chart["chartParams"]["options"]["chartId"]), admin_url('admin.php')); ?>" title="Delete">
-                    <svg class="delete" id='<?php echo "{$this->prefix}__deleteChart[{$chart["chartParams"]["options"]["chartId"]}]" ?>'>
+                  <a  class="delete-chart" href="#" title="Delete" data-chart-id="<?php echo $chart["chartParams"]["options"]["chartId"]; ?>">
+                    <svg class="delete" id='<?php echo "{$this->prefix}__deleteChart[{$chart["chartParams"]["options"]["chartId"]}]" ?>' >
                     <use xlink:href="<?php echo "{$this->url}assets/img/icons.svg#icon-bin"; ?>"></use>
                     </svg>
                   </a>

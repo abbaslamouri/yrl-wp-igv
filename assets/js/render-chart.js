@@ -8,6 +8,8 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   const rangeMaxInput = document.getElementById( `${iwpgvObj.prefix}__rangeMaxInput` )
 
   const chart = iwpgvCharts.chart
+
+  console.log(chart)
   
   // Update chartLayout options
   chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
@@ -16,7 +18,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
 
   // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
-  if ( chart.chartParams.options.enableMinMaxTableChart ) {
+  if ( chart.chartLayout.options.showMinMaxTable ) {
 
     // Set range slider min and max input fields if enableChartRangeSlider is true
     if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {

@@ -1,7 +1,7 @@
 import Plotly from 'plotly.js-dist'
 import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
-import { showElementById, hideElementById, getMinMaxAvgData, fetchMinMaxAvgTableChartData, chartOptionKey } from "./utilities"
+import { setSheetIdOptions, showInputField, showElementById, hideElementById, getMinMaxAvgData, fetchMinMaxAvgTableChartData, chartOptionKey } from "./utilities"
 
 const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
@@ -22,23 +22,21 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
-  console.log(":::::::::")
 
-  if ( ! chart.chartParams.options.enableMinMaxTableChart ) {
-    document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
-    document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
-  } else {
-    // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.remove("hidden")
-    // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.remove("hidden")
-  }
+  // Hide Min/Max/Avg accordion toggle and content
+  document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
+  document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
+
+  // Render panels
+  renderPanels( iwpgvCharts, iwpgvObj, spreadsheet )
 
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
   showElementById( `${iwpgvObj.prefix}__saveChart` )
-
-  renderPanels( iwpgvCharts, iwpgvObj, spreadsheet )
   
+  // Render chart
   await renderChart( iwpgvCharts, iwpgvObj, spreadsheet)
+  return
 
   // Add range slider event handler
   eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){

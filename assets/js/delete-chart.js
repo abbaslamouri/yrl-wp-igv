@@ -6,22 +6,10 @@ let jsonRes = {} // Server response
 
 const deleteChart = async function (chartId, iwpgvObj) {
 
-  // toggleElementById(`${iwpgvObj.prefix}__spinner`)
-  // hideElementById(`${iwpgvObj.prefix}__warning`)
-  // hideElementById(`${iwpgvObj.prefix}__dashboard`)
-
   try {
-
-
+    
     // Bail if there are no chart traces, a file or a sheet id
     if ( ! chartId ) throw new Error(  `Chart ID is required` )
-    
-
-    // Get from node
-    // const form = document.getElementById( `${iwpgvObj.prefix}__listChartsForm` )
-
-    // Bail if no form is found
-    // if (typeof (form) === "undefined") throw new Error(  `Can't find form with ID = ${iwpgvObj.prefix}__chartOptionsForm` )
 
     // Create form object and append action and nonce
     const formData = new FormData( )

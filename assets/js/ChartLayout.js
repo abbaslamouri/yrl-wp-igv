@@ -20,6 +20,7 @@ class ChartLayout extends ChartDefault {
 
     return {
 
+      showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable !== undefined ) ? this.layout.showMinMaxAvgTable: false,
       config:{
         responsive : ( this.layout.config  !== undefined && this.layout.config.responsive  !== undefined ) ? this.layout.config.responsive: true,
         displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : false,
@@ -78,7 +79,7 @@ class ChartLayout extends ChartDefault {
       xaxis : {
         automargin : ( this.layout.xaxis !== undefined && this.layout.xaxis.automargin !== undefined ) ? this.layout.xaxis.automargin : true,
         rangeslider : {
-          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : true,
+          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : false,
           bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
           thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.1,
         }
@@ -709,6 +710,15 @@ class ChartLayout extends ChartDefault {
               hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
             },
             {
+              id : "chartLayout[showMinMaxAvgTable]",
+              title : "Show Min/Max/Avg Table",
+              type : "checkbox", 
+              value : this.options().showMinMaxAvgTable,
+              hint: "Determines whether or not the Min/Max?Avg table will be visible"
+            },
+          ],
+          [
+            {
               id: "chartLayout[xaxis][rangeslider][thickness]",
               title:"Range Slider Height",
               type : "number",
@@ -718,8 +728,6 @@ class ChartLayout extends ChartDefault {
               value: this.options().xaxis.rangeslider.thickness,
               hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][rangeslider][bgcolor]",
               title : "Range Slider Background Color",

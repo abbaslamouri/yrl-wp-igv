@@ -516,17 +516,17 @@ if (!class_exists('Dashboard')) {
             $payload[$chart_id] = $chart;
 
             // Fetch spreadsheet
-            $spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
+            $spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) : null;
 
             // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-            if (  ! is_wp_error( $spreadsheet ) ) {
+            // if (  ! is_wp_error( $spreadsheet ) ) {
               // Fetch sheet
-              $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+            $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
               // $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
               // throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-            } else {
-              $payload[$chart_id]['sheet'] = null;
-            }
+            // } else {
+              // $payload[$chart_id]['sheet'] = null;
+            // }
 
             
 
@@ -552,52 +552,6 @@ if (!class_exists('Dashboard')) {
 
         try {
 
-          // Bail if action is not equal "edit-chart"
-				  // if ($_GET['action'] === 'delete-chart') {
-
-					// 	try {
-
-					// 		$chart_to_delete_id = ( isset( $_GET['chartId'] ) ) ? $_GET['chartId'] : null;
-					// 		unset($charts[$chart_to_delete_id]);
-
-					// 		if (! update_option("{$this->prefix}_charts", $charts)) {
-					// 			throw new \Exception ( __("Option <strong>{$this->prefix}_charts update failed", $this->plugin));
-					// 		}
-
-					// 		// Assemble payload
-					// 		foreach ($charts as $chart_id => $chart) {
-				
-					// 			// Set payload by chart Id
-					// 			$payload[$chart_id] = $chart;
-		
-					// 			// Fetch spreadsheet
-					// 			$spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
-		
-					// 			// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-					// 			if (  is_wp_error( $spreadsheet ) ) {
-					// 				$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-					// 				throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-					// 			}  	
-		
-					// 			// Fetch sheet
-					// 			$payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
-		
-					// 		}
-		
-					// 		// Set payload and response
-					// 		$response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload, ];
-		
-					// 	} catch (\Exception $e) {
-			
-					// 		// Prepare error output
-					// 		$response = ["status"	 => "error", "message" => $e->getMessage()];
-		
-					// 	}
-          //   // throw new \Exception(  __( wp_kses_post("Invalid request. Something went badly wrong!"), $this->plugin ) );
-					// 	$template = "chart-library";
-					// 	$action = "deleteChart";
-          // } else {
-
 						$template = "edit-chart";
 						$action = "editChart";
 
@@ -609,13 +563,13 @@ if (!class_exists('Dashboard')) {
 								$chart = $charts[$chart_id];
 
 								// Fetch spreadsheet
-								$spreadsheet = $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']);
+								$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) ) ?  $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']) : null;
 								
 								// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-								if (  is_wp_error( $spreadsheet ) ) {
-									$message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-									throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-								} 
+								// if (  is_wp_error( $spreadsheet ) ) {
+									// $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+									// throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+								// } 
 							
 							} else {
 								throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );

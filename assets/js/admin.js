@@ -6,7 +6,7 @@ import ChartParams from "./ChartParams"
 import panel from "./panel"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, hideElementById, toggleElementByClass, setSheetIdOptions, showchartParamsInputFields, hidePanels } from "./utilities"
+import { displayAdminMessage, toggleElementByClass, setSheetIdOptions, showInputField, hidePanels } from "./utilities"
 import "../sass/admin.scss"
 
 // const plotlyChart = () => {
@@ -54,24 +54,22 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       document.querySelector( `.accordion__content.chartParams` ).classList.remove("hidden")
       // document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
     
-      if ( ! iwpgvCharts.spreadsheet) { // New chart
+      if ( iwpgvCharts.chart.chartParams.options.chartId) {
         
-        //    jkjkjjjjkjkjk
+        // Set sheetId select field value and options 
+        if ( iwpgvCharts.spreadsheet) {
+          setSheetIdOptions(iwpgvCharts.spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
+          document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = iwpgvCharts.chart.chartParams.options.sheetId
+          showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+        }
 
-      } else { // Edit an existing chart
-    
-        setSheetIdOptions(iwpgvCharts.spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
-        document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = iwpgvCharts.chart.chartParams.options.sheetId
-
-        spreadsheet = iwpgvCharts.spreadsheet
-
-        // Show the remaining input fields in the chart params panel
-        showchartParamsInputFields(iwpgvObj)
-
-        drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
-
-      
-
+        // Show remaining chart params fields
+        if ( iwpgvCharts.chart.chartParams.options.chartId ) showInputField( `${iwpgvObj.prefix}__chartParams[chartId]` )
+        showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
+        showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
+        
+        // Draw chart
+        drawChart( iwpgvCharts, iwpgvObj, iwpgvCharts.spreadsheet )
       }
 
       // Initialize the media uploader
@@ -118,10 +116,16 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename
         document.getElementById(`${iwpgvObj.prefix}__chartParams[fileId]`).value = attachment.id
 
+        // Fetch spreadsheet
         spreadsheet = await selectFile( attachment, iwpgvObj )
-        
-        // Show all chart params panel input fields
-        showchartParamsInputFields(iwpgvObj)
+
+        // Set sheetId select field options and show it
+        setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
+        showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+
+        // Show remaining chart params fields
+        showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
+        showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
 
         toggleElementByClass( `.${iwpgvObj.prefix}__admin .spinner` )
         toggleElementByClass( `.${iwpgvObj.prefix}__admin .warning` )
@@ -156,7 +160,17 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         iwpgvCharts.chart.chartParams.options.chartType = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value
         // iwpgvCharts.chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
         // iwpgvCharts.chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
-        iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
+        // iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
+
+
+
+
+        // if ( ! iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart ) {
+        //   document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
+        //   document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
+        // }
+
+
 
         // iwpgvCharts.chart.chartLayout.options.xaxis = {rangeslider: {visible: iwpgvCharts.chart.chartParams.options.enableRangeSlider}}
 
@@ -164,13 +178,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Bail if no file, sheet Id or chart type
         if( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value ||  ! document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value || ! document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value   ) return
 
-        // console.log("======", spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId], iwpgvCharts.chart.chartTraces.options)
-
-        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .loading` )
-
-
+        // Remove extra traces if new spreasheet contains less columns than old spreasheet
         const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-        // if (iwpgvCharts.chart.chartTraces.options.length && iwpgvCharts.chart.chartParams.options.sheetId && iwpgvCharts.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && jsonResjsonRes..spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length) {
           if (spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
           // console.log("HERE")
           for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {
@@ -216,7 +225,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   } catch (error) {
 
     displayAdminMessage(error.message, "error",  iwpgvObj)
-    // console.log("CAUGHT ERROR", error)
+    console.log("CAUGHT ERROR", error)
 
   } 
 

@@ -29,7 +29,7 @@ class ChartParams {
       chartType : (this.params.chartType !== undefined ) ? this.params.chartType : null,
       chartId : (this.params.chartId !== undefined ) ? this.params.chartId : null,
       // enableRangeSlider : ( this.params.enableChartRangeSlider ) ? true : true,
-      enableMinMaxTableChart : ( this.params.enableMinMaxTableChart  ) ? true : false,
+      // enableMinMaxTableChart : ( this.params.enableMinMaxTableChart  ) ? true : false,
       // enableTableChart : ( this.params.enableTableChart ) ? true : true,
 
     }
@@ -120,14 +120,14 @@ class ChartParams {
             //   value: this.options()['enableRangeSlider'],
             //   hint: "Check this box to enable Plotly Range Slider"
             // },
-            {
-              id: "chartParams[enableMinMaxTableChart]",
-              cssClasses : ['hidden'],
-              title: "Enable Min/Max Table",
-              type: "checkbox",
-              value: this.options()['enableMinMaxTableChart'],
-              hint: "Check this box to enable MIn/Max/Average Table.  THis option has no effect if the rangeslider visibility (found under Layout/Range Slider panel) is turned off."
-            },
+            // {
+            //   id: "chartParams[enableMinMaxTableChart]",
+            //   cssClasses : ['hidden'],
+            //   title: "Enable Min/Max Table",
+            //   type: "checkbox",
+            //   value: this.options()['enableMinMaxTableChart'],
+            //   hint: "Check this box to enable MIn/Max/Average Table.  THis option has no effect if the rangeslider visibility (found under Layout/Range Slider panel) is turned off."
+            // },
             // {
             //   id: "chartParams[enableTableChart]",
             //   // cssClasses : ['hidden'],
