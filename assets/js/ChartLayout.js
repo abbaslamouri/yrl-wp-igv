@@ -78,7 +78,7 @@ class ChartLayout extends ChartDefault {
       xaxis : {
         automargin : ( this.layout.xaxis !== undefined && this.layout.xaxis.automargin !== undefined ) ? this.layout.xaxis.automargin : true,
         rangeslider : {
-          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : false,
+          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : true,
           bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
           thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.1,
         }

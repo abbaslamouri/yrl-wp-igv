@@ -6,7 +6,7 @@ import ChartParams from "./ChartParams"
 import panel from "./panel"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, hideElementById, toggleElementById, toggleElementByClass, setSheetIdOptions, showchartParamsInputFields, hidePanels } from "./utilities"
+import { displayAdminMessage, hideElementById, toggleElementByClass, setSheetIdOptions, showchartParamsInputFields, hidePanels } from "./utilities"
 import "../sass/admin.scss"
 
 // const plotlyChart = () => {
@@ -100,11 +100,11 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
         // Hide chart and table charts
         Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-        Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
+        // Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
         Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`)
 
         // Hide min/max inputs if visible
-        hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
+        // hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
 
         document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = true
 

@@ -826,7 +826,8 @@ if (!class_exists('Dashboard')) {
         $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
         $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
         $charts[$chart_id]["chartLayout"]["options"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
-        $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;		
+        $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;	
+        $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;	
        
 	
         if (! update_option("{$this->prefix}_charts", $charts)) {

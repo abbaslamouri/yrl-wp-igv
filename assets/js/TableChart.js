@@ -21,7 +21,7 @@ class TableChart extends ChartDefault{
     return {
 
       type: "table",
-      rounding: ( this.tableConfig.rounding  !== undefined ) ? this.tableConfig.rounding : 2,
+      rounding: ( this.tableConfig.rounding  !== undefined ) ? this.tableConfig.rounding : 3,
       firstColAlign: ( this.tableConfig.firstColAlign  !== undefined ) ? this.tableConfig.firstColAlign : "center",
       evenRowColor: ( this.tableConfig.evenRowColor  !== undefined ) ? this.tableConfig.evenRowColor : "#b0bec5",
       oddRowColor: ( this.tableConfig.oddRowColor  !== undefined ) ? this.tableConfig.oddRowColor : "#e2f1f8",

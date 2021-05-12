@@ -137,13 +137,13 @@ const fetchTableChartData = ( chart, spreadsheet ) => {
 
 
 
-const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
+const fetchMinMaxAvgTableChartData = (chart, spreadsheet, xAxisMin, xAxisMax) => {
 
    // Set table header
    const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
    chart.minMaxAvgTableChart.options.header.values = headerValues
 
-   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet)
+   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
 
    // Set table cells alignment
    chart.minMaxAvgTableChart.options.cells.align = [chart.minMaxAvgTableChart.options.firstColAlign , chart.minMaxAvgTableChart.options.cells.align]
@@ -159,6 +159,80 @@ const fetchminMaxAvgTableChartData = (chart, spreadsheet) => {
    return chart.minMaxAvgTableChart.options
 
 }
+
+
+
+
+
+
+const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax = null ) {
+
+  const min = ( xAxisMin ) ? xAxisMin : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+  const max = ( xAxisMax ) ? xAxisMax : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+
+  // Remove first row from data (xaxis data)
+  const data = [...spreadsheet[chart.chartParams.options.sheetId].data]
+  
+  const indeces = []
+  let i=0
+  data[0].forEach(element => {
+    if (element > min && element < max ) {
+      indeces.push(i) 
+    }
+    i++
+  })
+
+  const newData = []
+  data.forEach(element => {
+    newData.push(element.slice(indeces[0],[...indeces].pop()+1 ))
+  })  
+  
+
+  newData.shift()
+
+  // Set cell values
+  const minMaxAvgTableData = [[],[],[],[]];
+
+  // Fetch header row and format as fist column for min-max-avg first column
+  for ( const property in Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)) {
+    minMaxAvgTableData[0].push(Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)[property])
+  }
+
+  // Remove first column header
+  minMaxAvgTableData[0].shift()
+
+
+  // Loop through plot data and remove all non-numeric rows (min, max and average require numbic data) and calculate min, max and avg
+  newData.forEach(element => {
+    const newElement = []
+    let k = 0
+    for ( let j = 0; j <= element.length; j++) {
+      if ( typeof element[j] === "number" ) {
+        newElement[k] = element[j]
+        k++
+      }
+    }
+
+    
+
+    const average = newElement.reduce((a, c) => a + c,) / newElement.length
+
+    // Round if rounding is set
+    if ( chart.minMaxAvgTableChart.options.rounding) {
+      minMaxAvgTableData[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+      minMaxAvgTableData[2].push( parseFloat( average.toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+      minMaxAvgTableData[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
+    } else {
+      minMaxAvgTableData[1].push( Math.min(...newElement ) )
+      minMaxAvgTableData[2].push( average )
+      minMaxAvgTableData[3].push( Math.max( ...newElement ) )
+    }
+  });
+  
+  return minMaxAvgTableData
+
+}
+
 
 
 
@@ -258,92 +332,20 @@ const hidePanels = ( ) => {
 
 
 
-const getTableHeader = function (sheet) {
-  const tableHeader  = []
-  for ( const property in Object.values(sheet.labels)) {
-    tableHeader.push([`<b>${Object.values(sheet.labels)[property]}</b>`])
-  }
-  return tableHeader
-}
+// const getTableHeader = function (sheet) {
+//   const tableHeader  = []
+//   for ( const property in Object.values(sheet.labels)) {
+//     tableHeader.push([`<b>${Object.values(sheet.labels)[property]}</b>`])
+//   }
+//   return tableHeader
+// }
 
 
-const getMinMaxAvgTableHeader = function () {
+// const getMinMaxAvgTableHeader = function () {
  
-  return  [["<b>Trace</b>"], ["<b>Min</b>"], ["<b>Average</b>"], ["<b>Max</b>"]]
+//   return  [["<b>Trace</b>"], ["<b>Min</b>"], ["<b>Average</b>"], ["<b>Max</b>"]]
 
-}
-
-
-
-
-const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax = null ) {
-
-  const min = ( xAxisMin ) ? xAxisMin : Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-  const max = ( xAxisMax ) ? xAxisMax : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-
-  // Remove first row from data (xaxis data)
-  const data = [...spreadsheet[chart.chartParams.options.sheetId].data]
-  
-  const indeces = []
-  let i=0
-  data[0].forEach(element => {
-    // console.log(element)
-    if (element > min && element < max ) {
-      indeces.push(i) 
-    }
-    i++
-  })
-
-  const newData = []
-  data.forEach(element => {
-    newData.push(element.slice(indeces[0],[...indeces].pop()+1 ))
-  })  
-  
-
-  newData.shift()
-
-  // Set cell values
-  const minMaxAvgTableData = [[],[],[],[]];
-
-  // Fetch header row and format as fist column for min-max-avg first column
-  for ( const property in Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)) {
-    minMaxAvgTableData[0].push(Object.values(spreadsheet[chart.chartParams.options.sheetId].labels)[property])
-  }
-
-  // Remove first column header
-  minMaxAvgTableData[0].shift()
-
-
-  // Loop through plot data and remove all non-numeric rows (min, max and average require numbic data) and calculate min, max and avg
-  newData.forEach(element => {
-    const newElement = []
-    let k = 0
-    for ( let j = 0; j <= element.length; j++) {
-      if ( typeof element[j] === "number" ) {
-        newElement[k] = element[j]
-        k++
-      }
-    }
-
-    
-
-    const average = newElement.reduce((a, c) => a + c,) / newElement.length
-
-    // Round if rounding is set
-    if ( chart.minMaxAvgTableChart.options.rounding) {
-      minMaxAvgTableData[1].push( parseFloat( Math.min( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-      minMaxAvgTableData[2].push( parseFloat( average.toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-      minMaxAvgTableData[3].push( parseFloat( Math.max( ...newElement ).toFixed( chart.minMaxAvgTableChart.options.rounding ) ) )
-    } else {
-      minMaxAvgTableData[1].push( Math.min(...newElement ) )
-      minMaxAvgTableData[2].push( average )
-      minMaxAvgTableData[3].push( Math.max( ...newElement ) )
-    }
-  });
-  
-  return minMaxAvgTableData
-
-}
+// }
 
 
 
@@ -352,39 +354,41 @@ const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax
 
 
 
-const getPlotData = function (sheet) {
 
-  // Format data for plotly plot
-  const plotData = []
-  for (var j = 0; j < Object.keys(sheet.labels).length; j++) {
-    plotData[j] = []
-    for (var i=0; i < sheet.data.length; i++) {
-      var row = sheet.data[i];
-      plotData[j].push(Object.values(row)[j]) 
-    }
-  }
 
-  // rest data to 3 decimal places if numeric
-  newPlotData = []
-  plotData.forEach(element => {
-    const newElement = []
-    let k = 0
-    for ( let j = 0; j < element.length; j++) {
-      if ( typeof element[j] === "number") {
-        newElement[k] = parseFloat(element[j].toFixed(3))
-      } else {
-        newElement[k] = element[j]
-      }
-      k++
-    }
+
+
+// const getPlotData = function (sheet) {
+
+//   // Format data for plotly plot
+//   const plotData = []
+//   for (var j = 0; j < Object.keys(sheet.labels).length; j++) {
+//     plotData[j] = []
+//     for (var i=0; i < sheet.data.length; i++) {
+//       var row = sheet.data[i];
+//       plotData[j].push(Object.values(row)[j]) 
+//     }
+//   }
+
+//   // rest data to 3 decimal places if numeric
+//   newPlotData = []
+//   plotData.forEach(element => {
+//     const newElement = []
+//     let k = 0
+//     for ( let j = 0; j < element.length; j++) {
+//       if ( typeof element[j] === "number") {
+//         newElement[k] = parseFloat(element[j].toFixed(3))
+//       } else {
+//         newElement[k] = element[j]
+//       }
+//       k++
+//     }
    
-    newPlotData.push(newElement)
-  })
+//     newPlotData.push(newElement)
+//   })
 
-  console.log("PLOT DATSA",newPlotData)
-
-  return newPlotData
-}
+//   return newPlotData
+// }
 
 
 
@@ -395,136 +399,135 @@ const getPlotData = function (sheet) {
 // }
 
 
-const getLayout = function (chart, xAxisMin = null, xAxisMax = null) {
+// const getLayout = function (chart, xAxisMin = null, xAxisMax = null) {
   
-  return {
-    paper_bgcolor:chart.chartLayout.paper_bgcolor,
-    plot_bgcolor:chart.chartLayout.plot_bgcolor,
-    height:chart.chartLayout.height,
-    title: {
-      text: chart.chartLayout.title.text,
-      x: chart.chartLayout.title.x,
-      y: chart.chartLayout.title.y,
-      font: {
-        family: chart.chartLayout.title.font.family,
-        size: chart.chartLayout.title.font.size,
-        color: chart.chartLayout.title.font.color,
-      },
-      xaxis: {
-        automargin: true,
-        rangeslider: {
-          visible:(chart.chartParams.enableChartRangeSlider)? true : false,
-          bgcolor:"teal",
-          thickness: 0.2,
-          // range: [xAxisMin, xAxisMax]
-        },
+//   return {
+//     paper_bgcolor:chart.chartLayout.paper_bgcolor,
+//     plot_bgcolor:chart.chartLayout.plot_bgcolor,
+//     height:chart.chartLayout.height,
+//     title: {
+//       text: chart.chartLayout.title.text,
+//       x: chart.chartLayout.title.x,
+//       y: chart.chartLayout.title.y,
+//       font: {
+//         family: chart.chartLayout.title.font.family,
+//         size: chart.chartLayout.title.font.size,
+//         color: chart.chartLayout.title.font.color,
+//       },
+//       xaxis: {
+//         automargin: true,
+//         rangeslider: {
+//           visible:(chart.chartParams.enableChartRangeSlider)? true : false,
+//           bgcolor:"teal",
+//           thickness: 0.2,
+//           // range: [xAxisMin, xAxisMax]
+//         },
         
-        // autorange: 'reversed'
-        // rangeselector: selectorOptions,
-      },
-      yaxis: {
-        fixedrange: true,
-        // autorange: 'reversed'
-      },
-      autosize: true, // set autosize to rescale,
-      // xref: "paper",
+//         // autorange: 'reversed'
+//         // rangeselector: selectorOptions,
+//       },
+//       yaxis: {
+//         fixedrange: true,
+//         // autorange: 'reversed'
+//       },
+//       autosize: true, // set autosize to rescale,
+//       // xref: "paper",
      
-      // xanchor:"auto",
+//       // xanchor:"auto",
 
-      // yref: "paper",
+//       // yref: "paper",
      
-      // yanchor:"auto"
-    },
+//       // yanchor:"auto"
+//     },
    
-    //  width:800,
+//     //  width:800,
     
-  }
+//   }
 
-}
-
-
-
-const getConfig = function () {
-  const config = {
-    responsive: true,
-    displayModeBar: false
-  }
-  return config
-}
+// }
 
 
-const getTraces = function(jsonRes, plotData) {
 
-  const  chartType = jsonRes.chart.chartParams.chartType
+// const getConfig = function () {
+//   const config = {
+//     responsive: true,
+//     displayModeBar: false
+//   }
+//   return config
+// }
+
+
+// const getTraces = function(jsonRes, plotData) {
+
+//   const  chartType = jsonRes.chart.chartParams.chartType
   
-  let traces = []
+//   let traces = []
 
-  switch(chartType) {
+//   switch(chartType) {
 
-    case 'LineChart': 
-    case 'ScatterChart':
-      for (var j=1; j < Object.keys(jsonRes.sheet.labels).length; j++) {
-        traces.push({ 
-          x : plotData[0],
-          y : plotData[j],
-          type: "scatter",
-          mode: 'lines+markers',
-          line: {
-            color:jsonRes.colors[j],
-            width: jsonRes.lineWidth
-          },
-          marker: {
-            color: jsonRes.colors[j],
-            size: jsonRes.markerSize
-          },
-          name: Object.values(jsonRes.sheet.labels)[j],
-          connectgaps: jsonRes.chart.chartLayout.connectgaps
-        })
-      }
+//     case 'LineChart': 
+//     case 'ScatterChart':
+//       for (var j=1; j < Object.keys(jsonRes.sheet.labels).length; j++) {
+//         traces.push({ 
+//           x : plotData[0],
+//           y : plotData[j],
+//           type: "scatter",
+//           mode: 'lines+markers',
+//           line: {
+//             color:jsonRes.colors[j],
+//             width: jsonRes.lineWidth
+//           },
+//           marker: {
+//             color: jsonRes.colors[j],
+//             size: jsonRes.markerSize
+//           },
+//           name: Object.values(jsonRes.sheet.labels)[j],
+//           connectgaps: jsonRes.chart.chartLayout.connectgaps
+//         })
+//       }
 
-      break
+//       break
   
-    case 'PieChart':  // if (x === 'value2')
-        traces.push({ 
-          labels : plotData[0],
-          values : plotData[1],
-          type: "pie"
-        })
+//     case 'PieChart':  // if (x === 'value2')
+//         traces.push({ 
+//           labels : plotData[0],
+//           values : plotData[1],
+//           type: "pie"
+//         })
       
     
-      break
+//       break
   
-    default:
-      traces = `${chartType} is not a valid chart type`
+//     default:
+//       traces = `${chartType} is not a valid chart type`
       
-      break
-  }
+//       break
+//   }
 
- console.log(traces)
-  return traces
-}
+//   return traces
+// }
 
 
-const getTable = function (tableHeader, plotData) {
+// const getTable = function (tableHeader, plotData) {
 
-  return [{
-    type: 'table',
-    header: {
-      values: tableHeader,
-      align: "center",
-      line: {width: 1, color: 'black'},
-      fill: {color: "grey"},
-      font: {family: "Arial", size: 12, color: "white"}
-    },
-    cells: {
-      values: plotData,
-      align: "center",
-      line: {color: "black", width: 1},
-      font: {family: "Arial", size: 11, color: ["black"]}
-    }
-  }]
+//   return [{
+//     type: 'table',
+//     header: {
+//       values: tableHeader,
+//       align: "center",
+//       line: {width: 1, color: 'black'},
+//       fill: {color: "grey"},
+//       font: {family: "Arial", size: 12, color: "white"}
+//     },
+//     cells: {
+//       values: plotData,
+//       align: "center",
+//       line: {color: "black", width: 1},
+//       font: {family: "Arial", size: 11, color: ["black"]}
+//     }
+//   }]
 
-}
+// }
 
 
 
@@ -569,19 +572,19 @@ const setSheetIdOptions = function (spreadsheet, sheetIdInput) {
   // sheetIdInput.closest(".field-group").classList.remove("hidden");
 }
 
-const appendFormSaveBtn = function (form, iwpgvObj) {
+// const appendFormSaveBtn = function (form, iwpgvObj) {
 
-  const saveChartBtn = document.createElement("button")
-  saveChartBtn.classList.add("button")
-  saveChartBtn.classList.add("button-primary")
-  saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
-  saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
-  saveChartBtn.disabled = true;
-  const saveChartBtnText = document.createTextNode("Save Chart")
-  saveChartBtn.appendChild(saveChartBtnText)
-  form.appendChild(saveChartBtn)
+//   const saveChartBtn = document.createElement("button")
+//   saveChartBtn.classList.add("button")
+//   saveChartBtn.classList.add("button-primary")
+//   saveChartBtn.id = `${iwpgvObj.prefix}__saveChart`
+//   saveChartBtn.name = `${iwpgvObj.prefix}__saveChart`
+//   saveChartBtn.disabled = true;
+//   const saveChartBtnText = document.createTextNode("Save Chart")
+//   saveChartBtn.appendChild(saveChartBtnText)
+//   form.appendChild(saveChartBtn)
 
-}
+// }
 
 
 
@@ -656,23 +659,14 @@ module.exports = {
   showPanels,
   hidePanels,
   fetchTableChartData,
-  fetchminMaxAvgTableChartData,
-  getTableHeader,
-  getMinMaxAvgTableHeader,
-  getPlotData,
+  fetchMinMaxAvgTableChartData,
+  // getTableHeader,
+  // getMinMaxAvgTableHeader,
+  // getPlotData,
   getMinMaxAvgData,
-  getLayout,
-  getConfig,
-  getTraces,
-  getTable,
+  // getLayout,
+  // getConfig,
+  // getTraces,
+  // getTable,
   chartOptionKey,
-  appendFormSaveBtn
-  // setChartOption,
-  // // toggleWarning,
-  // // setChartFieldsOptions,
-  // // setChartWidthHeight,
-  // // setFieldSuffix,
-  // // toggleDashboard,
-  // fetchMinMaxDataTable,
-  // togglePanel,
 };

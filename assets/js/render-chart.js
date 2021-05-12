@@ -1,50 +1,60 @@
 import Plotly from 'plotly.js-dist'
-import { toggleElementById, showElementById, hideElementById, getMinMaxAvgData, chartOptionKey, fetchTableChartData, fetchminMaxAvgTableChartData } from "./utilities"
+import { showElementById, hideElementById, fetchMinMaxAvgTableChartData } from "./utilities"
 
 
 const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
+
+  const rangeMinInput = document.getElementById( `${iwpgvObj.prefix}__rangeMinInput` )
+  const rangeMaxInput = document.getElementById( `${iwpgvObj.prefix}__rangeMaxInput` )
 
   const chart = iwpgvCharts.chart
   
   // Update chartLayout options
   chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
-
-  // Set range slider min and max input fields if enableChartRangeSlider is true
-  if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
-    showElementById( `${iwpgvObj.prefix}__plotMinMax` )
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.remove("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).classList.remove("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  Math.min(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.remove("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).classList.remove("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0]).toFixed(3)
-    // chart.chartLayout.options.xaxis.rangeslider = true
-  } else {
-    hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).closest(".form-group").classList.add("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput` ).classList.add("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value =  null
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).closest(".form-group").classList.add("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput` ).classList.add("hidden")
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = null
-    // chart.chartLayout.options.xaxis.rangeslider =false
-  }
   
   // Render chart
   await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
 
   // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
   if ( chart.chartParams.options.enableMinMaxTableChart ) {
-    chart.minMaxAvgTableChart.options = fetchminMaxAvgTableChartData( chart, spreadsheet )
-    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+
+    // Set range slider min and max input fields if enableChartRangeSlider is true
+    if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
+
+      const xAxisMin = chart.chartLayout.options.xaxis.range[0]
+      const xAxisMax = chart.chartLayout.options.xaxis.range[1]
+
+      showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+      // rangeMinInput.closest(".form-group").classList.remove("hidden")
+      // rangeMinInput.classList.remove("hidden")
+      rangeMinInput.value =  chart.minMaxAvgTableChart.options.rounding ? xAxisMin.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMin
+      // rangeMaxInput.closest(".form-group").classList.remove("hidden")
+      // rangeMaxInput.classList.remove("hidden")
+      rangeMaxInput.value = chart.minMaxAvgTableChart.options.rounding ? xAxisMax.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMax
+    
+
+      chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+      await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+
+    } else {
+      hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+      // rangeMinInput.closest(".form-group").classList.add("hidden")
+      // rangeMinInput.classList.add("hidden")
+      rangeMinInput.value =  null
+      // rangeMaxInput.closest(".form-group").classList.add("hidden")
+      // rangeMaxInput.classList.add("hidden")
+      rangeMaxInput.value = null
+    }
+
+
   }
 
   // Render table chart if enableTableChart is true
-  if ( chart.chartParams.options.enableTableChart ) {
-    chart.tableChart.options = fetchTableChartData( chart, spreadsheet )
-    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartLayout.options.config )
+  // if ( chart.chartParams.options.enableTableChart ) {
+  //   chart.tableChart.options = fetchTableChartData( chart, spreadsheet )
+  //   await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyTable`, [chart.tableChart.options], chart.tableChart.options.layout, chart.chartLayout.options.config )
 
-  }
+  // }
 
 
 
@@ -63,7 +73,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     // // Add range min and range max change event listener
     // document.addEventListener( "change", function ( event ) {
     //   event.preventDefault()
-    //   if ( ! event.target.closest("form")  || event.target.closest("form").id !== `${iwpgvObj.prefix}__plotMinMax` || ( event.target.id !== `${iwpgvObj.prefix}__rangeMinInput` && event.target.id !== `${iwpgvObj.prefix}__rangeMaxInput`) ) return
+    //   if ( ! event.target.closest("form")  || event.target.closest("form").id !== `${iwpgvObj.prefix}__plotMinMaxAvg` || ( event.target.id !== `${iwpgvObj.prefix}__rangeMinInput` && event.target.id !== `${iwpgvObj.prefix}__rangeMaxInput`) ) return
     //     const newXAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value ?  document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value : xAxisMin
     //     const newXAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value ? document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value : xAxisMax
     //     Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { 'xaxis.range': [newXAxisMin, newXAxisMax] })      

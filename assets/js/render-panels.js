@@ -13,8 +13,8 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
   iwpgvCharts.chart.chartLayout.options = chartLayoutInstance.options()
   iwpgvCharts.chart.chartLayout.panel.sections = chartLayoutInstance.sections()
   panel(iwpgvCharts.chart.chartLayout.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.chartLayout` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.chartLayout` ).classList.remove("hidden")
+  document.querySelector( `.accordion__toggle.chartLayout.panel` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.chartLayout.panel` ).classList.remove("hidden")
   
 
 // Assemble chart traces chart and and render chart traces panel
@@ -27,21 +27,21 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
     index++
   }
   panel(iwpgvCharts.chart.chartTraces.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.chartTraces` ).classList.remove( "hidden" )
-  document.querySelector( `.accordion__content.chartTraces` ).classList.remove( "hidden" )
+  document.querySelector( `.accordion__toggle.chartTraces.panel` ).classList.remove( "hidden" )
+  document.querySelector( `.accordion__content.chartTraces.panel` ).classList.remove( "hidden" )
 
   
 
 
   // Assemble table chart and panels layout if enableTableChart is true
-  if ( iwpgvCharts.chart.chartParams.options.enableTableChart ) {
-    const tableChartInstance = new TableChart( iwpgvCharts.chart.tableChart.options, iwpgvObj, "tableChart", "Table Chart" )
-    iwpgvCharts.chart.tableChart.options = tableChartInstance.options()
-    iwpgvCharts.chart.tableChart.panel.sections = tableChartInstance.sections()
-    panel(iwpgvCharts.chart.tableChart.panel, iwpgvObj)
-    document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
-    document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
-  }
+  // if ( iwpgvCharts.chart.chartParams.options.enableTableChart ) {
+  //   const tableChartInstance = new TableChart( iwpgvCharts.chart.tableChart.options, iwpgvObj, "tableChart", "Table Chart" )
+  //   iwpgvCharts.chart.tableChart.options = tableChartInstance.options()
+  //   iwpgvCharts.chart.tableChart.panel.sections = tableChartInstance.sections()
+  //   panel(iwpgvCharts.chart.tableChart.panel, iwpgvObj)
+  //   document.querySelector( `.accordion__toggle.tableChart` ).classList.remove("hidden")
+  //   document.querySelector( `.accordion__content.tableChart` ).classList.remove("hidden")
+  // }
 
 
   // Assemble Min/Max table chart options and panel if enableMinMaxTableChart is true
@@ -50,8 +50,8 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
     iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
     iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
     panel(iwpgvCharts.chart.minMaxAvgTableChart.panel, iwpgvObj)
-    document.querySelector( `.accordion__toggle.minMaxAvgTableChart` ).classList.remove("hidden")
-    document.querySelector( `.accordion__content.minMaxAvgTableChart` ).classList.remove("hidden")
+    document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.remove("hidden")
+    document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.remove("hidden")
   }
 
   

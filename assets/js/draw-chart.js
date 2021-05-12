@@ -1,7 +1,7 @@
 import Plotly from 'plotly.js-dist'
 import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
-import { showElementById, toggleElementById, hideElementById, getMinMaxAvgData, fetchMinMaxAvgTableChartOptions, chartOptionKey } from "./utilities"
+import { showElementById, hideElementById, getMinMaxAvgData, fetchMinMaxAvgTableChartData, chartOptionKey } from "./utilities"
 
 const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
@@ -15,13 +15,22 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`)
 
   // Hide min/max inputs if visible
-  hideElementById( `${iwpgvObj.prefix}__plotMinMax` )
+  hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
 
   // remove layout panel toggle and panel
   document.querySelector(`#${iwpgvObj.prefix}__chartLayoutPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__chartTracesPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__tableChartPanel .accordion`).innerHTML = ""
   document.querySelector(`#${iwpgvObj.prefix}__minMaxAvgTableChartPanel .accordion`).innerHTML = ""
+  console.log(":::::::::")
+
+  if ( ! chart.chartParams.options.enableMinMaxTableChart ) {
+    document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
+    document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
+  } else {
+    // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.remove("hidden")
+    // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.remove("hidden")
+  }
 
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById(`${iwpgvObj.prefix}__saveChart`).disabled = false
@@ -31,22 +40,22 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   
   await renderChart( iwpgvCharts, iwpgvObj, spreadsheet)
 
-  console.log("iwpgvCharts", iwpgvCharts)
-
-
   // Add range slider event handler
   eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
-    console.log("PPPPPPPPPPA", eventData)
+
+    if ( ! eventData['xaxis.range'] || ! chart.chartParams.options.enableMinMaxTableChart ) return
+    console.log("PPPPPP",eventData)
     const xAxisMin = ( eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
     const xAxisMax = ( eventData  && eventData['xaxis.range'] ) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(3)
-    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(xAxisMax).toFixed(3)
+    document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat(xAxisMin).toFixed(chart.minMaxAvgTableChart.options.rounding)
+    document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat(xAxisMax).toFixed(chart.minMaxAvgTableChart.options.rounding)
     chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
+
     Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet, xAxisMin, xAxisMax)] } )
   })
 
 
-  document.addEventListener("change", function (event) {
+  document.addEventListener("change", async function (event) {
   
     event.preventDefault()
 
@@ -57,7 +66,6 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
         const xAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value
         const xAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value
         if (parseFloat(xAxisMin) < parseFloat(xAxisMax) ) {
-          console.log( parseFloat(xAxisMin) < parseFloat(xAxisMax) )
           Plotly.relayout(`${iwpgvObj.prefix}__plotlyChart`, { 'xaxis.range': [xAxisMin, xAxisMax] })
         }
         break
@@ -66,18 +74,18 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
         const control = chartOptionKey(event.target.id).control
         const key = chartOptionKey(event.target.id).key
         const keyParts = key.split(".")
-        let value = event.target.value
+        let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
 
         console.log("Control", control)
         console.log("key", key)
         console.log("keyParts", keyParts)
-        console.log("value", event.target.type === 'checkbox' ? event.target.checked : value)
+        console.log("value", value)
 
         switch ( control ) {
 
           case "chartLayout":
             if ( key.includes( "config" ) ) {
-              chart.chartLayout.options.config[key.split(".")[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+              chart.chartLayout.options.config[key.split(".")[1]] = value
               if ( chart.chartLayout.options.config.displayModeBar ){
                 document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
               }else {
@@ -90,14 +98,31 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             } else {
               switch(keyParts.length){
                 case 1:
-                  console.log("AQAQAQA")
                   chart[control].options[keyParts[0]] = event.target.type === 'checkbox' ? event.target.checked : value
                   break
                 case 2:
                   chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : value
                   break
                 case 3:
-                  chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = event.target.type === 'checkbox' ? event.target.checked : value
+                  chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value
+                  if (key === "xaxis.rangeslider.visible" ) {
+                    if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
+                    if (value) {
+                      showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+                      showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+                      document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
+                      document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
+                      const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
+                      const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+                      chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+                      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
+                    } else {
+                      hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+                      hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+                      document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
+                      document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
+                    }
+                  }
                   break
                 case 4:
                     chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
@@ -130,6 +155,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                 chart[control].options.header.align = [value, chart[control].options.header.align[1]]
                 break
               case "rounding":
+                chart[control].options.rounding = value
                 const cellValues = []
                 for ( let  i = 0; i < spreadsheet[chart.chartParams.options.sheetId].data.length; i++ ) {
                   cellValues[i] =[]
@@ -139,11 +165,9 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                 }
                 chart[control].options.cells.values = cellValues
                 if ( plotlyTable === `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` ) {
-                  console.log("HEHTRD")
                   const xAxisMin = document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value
                   const xAxisMax = document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value
                   chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, xAxisMin, xAxisMax)
-                  console.log(chart)
                 }
                 break
               case "evenRowColor":
@@ -182,9 +206,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                     break
                 }
             }
-            console.log("PLOT", plotlyTable)
-            console.log("LLKLKLK", chart[control].options)
-            if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout, chart.chartConfig) 
+            if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout, chart.chartLayout.options.config) 
 
         }
         break
