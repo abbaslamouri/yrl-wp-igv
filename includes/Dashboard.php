@@ -783,15 +783,30 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
 				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
 				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
-				$charts[$chart_id]["minMaxAvgTableChart"]["options"]["layout"]["autosize"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"]["layout"]["autosize"] ) ) ? true : false;
+
 
         // add undefined checkbox values
-        $layout = $_POST["{$this->prefix}__chartLayout"];
-        $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
-        $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
-        $charts[$chart_id]["chartLayout"]["options"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
-        $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;	
-        $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;	
+				// $layout = $_POST["{$this->prefix}__chartLayout"];
+				// $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["autosize"] = ( isset( $layout["autosize"] ) ) ?  $layout["autosize"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["hovermode"] = ( isset( $layout["hovermode"] ) ) ?  $layout["hovermode"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["legend"]["itemclick"] = ( isset( $layout["legend"]["itemclick"] ) ) ?  $layout["legend"]["itemclick"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["legend"]["itemdoubleclick"] = ( isset( $layout["legend"]["itemdoubleclick"] ) ) ?  $layout["legend"]["itemdoubleclick"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["automargin"] = ( isset( $layout["xaxis"]["automargin"] ) ) ?  $layout["xaxis"]["automargin"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["yaxis"]["fixedrange"] = ( isset( $layout["yaxis"]["fixedrange"] ) ) ?  $layout["yaxis"]["fixedrange"] : false;
+        // $charts[$chart_id]["chartLayout"]["options"]["margin"]["autoexpand"] = ( isset( $layout["margin"]["autoexpand"] ) ) ?  $layout["margin"]["autoexpand"] : false;
+        
+        // $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
+        
+        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;	
+
+					// $charts[$chart_id]["minMaxAvgTableChart"]["options"]["layout"]["autosize"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"]["layout"]["autosize"] ) ) ? true : false;
        
 	
         if (! update_option("{$this->prefix}_charts", $charts)) {

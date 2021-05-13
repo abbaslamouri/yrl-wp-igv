@@ -22,96 +22,95 @@ class ChartLayout extends ChartDefault {
 
     return {
 
-      showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable === undefined ) ? false : this.layout.showMinMaxAvgTable,
       config:{
-        responsive : ( this.layout.config  === undefined || this.layout.config.responsive  === undefined ) ? false : this.layout.config.responsive,
+        responsive : ( this.layout.config  === undefined || this.layout.config.responsive  === undefined ) ? true : this.layout.config.responsive,
         displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? false :this.layout.config.displayModeBar,
         displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? false : this.layout.config.displaylogo,
       },
-
-      paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#b0bec5",
-      plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#eeeeee",
-      // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
-      height : ( this.layout.height !== undefined ) ? this.layout.height : 450,
+      showlegend : ( this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
+      showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable === undefined ) ? false : this.layout.showMinMaxAvgTable,
+      paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#b0bec5" :  this.layout.paper_bgcolor,
+      plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#eeeeee" : this.layout.plot_bgcolor,
+      width : ( this.layout.width === undefined ) ? null : this.layout.width,
+      height : ( this.layout.height === undefined ) ? 450 : this.layout.height,
       autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
       hovermode : ( this.layout.hovermode === undefined ) ? false : this.layout.hovermode,
       font : {
-        family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
-        size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
-        color : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.color !== undefined ) ? this.layout.font.color : "#000a12",
+        family : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.layout.font.family,
+        size : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.size === undefined ) ? 20 : this.layout.font.size,
+        color : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
       },
       title: {
-        text: ( this.layout.title !== undefined && this.layout.title.text!== undefined ) ? this.layout.title.text : 'Ge AR/AR 8.0 - 12.0 &#181;m',
-        x: ( this.layout.title !== undefined && this.layout.title.x!== undefined ) ? this.layout.title.x : 0.1,
-        y: ( this.layout.title !== undefined && this.layout.title.y!== undefined ) ? this.layout.title.y : 0.92,
+        text: ( this.layout.title === undefined || this.layout.title.text=== undefined ) ? 'Ge AR/AR 8.0 - 12.0 &#181;m' : this.layout.title.text ,
+        x: ( this.layout.title === undefined || this.layout.title.x=== undefined ) ? 0.1 : this.layout.title.x,
+        y: ( this.layout.title === undefined || this.layout.title.y=== undefined ) ? 0.92 : this.layout.title.y,
         font : {
-          family : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.family !== undefined ) ? this.layout.title.font.family : Object.keys(this.fontFamily)[13],
-          size : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.size !== undefined ) ? this.layout.title.font.size : 20,
-          color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#000a12",
+          family : ( this.layout.title === undefined || this.layout.title.font === undefined || this.layout.title.font.family === undefined ) ?  Object.keys(this.fontFamily)[13] : this.layout.title.font.family,
+          size : ( this.layout.title === undefined || this.layout.title.font === undefined || this.layout.title.font.size === undefined ) ? 20 : this.layout.title.font.size,
+          color : ( this.layout.title === undefined || this.layout.title.font === undefined || this.layout.title.font.color === undefined ) ? "#000a12" : this.layout.title.font.color,
         }
       },
-      showlegend : ( typeof this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
       legend : {
-        bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#e2f1f8',
-        bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#000a12',
-        borderwidth : ( this.layout.legend !== undefined  && this.layout.legend.borderwidth !== undefined ) ? this.layout.legend.borderwidth : 1,
+        bgcolor : ( this.layout.legend === undefined || this.layout.legend.bgcolor === undefined ) ? '#e2f1f8' : this.layout.legend.bgcolor,
+        bordercolor : ( this.layout.legend=== undefined || this.layout.legend.bordercolor === undefined ) ? '#000a12' : this.layout.legend.bordercolor,
+        borderwidth : ( this.layout.legend === undefined  || this.layout.legend.borderwidth === undefined ) ? 1 : this.layout.legend.borderwidth,
         font : {
-          family: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.family !== undefined  ) ? this.layout.legend.font.family : Object.keys(this.fontFamily)[13],
-          size: ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.size !== undefined ) ? this.layout.legend.font.size : 14,
-          color : ( this.layout.legend !== undefined && this.layout.legend.font !== undefined && this.layout.legend.font.color !== undefined ) ? this.layout.legend.font.color : "#000a12",
+          family: ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.family === undefined  ) ? Object.keys(this.fontFamily)[13] : this.layout.legend.font.family,
+          size: ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.size === undefined ) ? 14 : this.layout.legend.font.size,
+          color : ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.color === undefined ) ? "000a12" : this.layout.legend.font.color,
         },
         title: {
-          text : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.text !== undefined ) ? this.layout.legend.title.text : '',
+          text : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.text === undefined ) ? "" : this.layout.legend.title.text,
           font : {
-            family: ( this.layout.legend !== undefined &&  this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.family !== undefined  ) ? this.layout.legend.title.font.family : Object.keys(this.fontFamily)[1],
-            size: ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.size !== undefined ) ? this.layout.legend.title.font.size : 20,
-            color : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.font !== undefined && this.layout.legend.title.font.color !== undefined ) ? this.layout.legend.title.font.color : "#000a12",
+            family: ( this.layout.legend === undefined ||  this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.legend.title.font.family,
+            size: ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.size === undefined ) ? 20 : this.layout.legend.title.font.size,
+            color : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.color === undefined ) ? "#000a12" : this.layout.legend.title.font.color,
           },
-          side : ( this.layout.legend !== undefined && this.layout.legend.title !== undefined && this.layout.legend.title.side !== undefined ) ? this.layout.legend.title.side : 'top',
+          side : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.side === undefined ) ? "top" : this.layout.legend.title.side ,
         },
-        orientation : ( this.layout.legend !== undefined && this.layout.legend.orientation !== undefined ) ? this.layout.legend.orientation : 'v',
-        itemsizing : ( this.layout.legend !== undefined && this.layout.legend.itemsizing !== undefined ) ? this.layout.legend.itemsizing : 'trace',
-        itemwidth : ( this.layout.legend !== undefined && this.layout.legend.itemwidth !== undefined ) ? this.layout.legend.itemwidth : 50,
-        itemclick : ( this.layout.legend !== undefined && this.layout.legend.itemclick !== undefined ) ? this.layout.legend.itemclick : false,
-        itemdoubleclick : ( this.layout.legend !== undefined && this.layout.legend.itemdoubleclick !== undefined ) ? this.layout.legend.itemdoubleclick : false,
-        x : ( this.layout.legend !== undefined && this.layout.legend.x !== undefined ) ? this.layout.legend.x : 1.04,
-        y : ( this.layout.legend !== undefined && this.layout.legend.y !== undefined ) ? this.layout.legend.y : 1.00,
-        valign : ( this.layout.legend !== undefined && this.layout.legend.valign !== undefined ) ? this.layout.legend.valign : "middle",
+        orientation : ( this.layout.legend === undefined || this.layout.legend.orientation === undefined ) ? "v" : this.layout.legend.orientation,
+        itemsizing : ( this.layout.legend === undefined || this.layout.legend.itemsizing === undefined ) ? "trace" : this.layout.legend.itemsizing,
+        itemwidth : ( this.layout.legend === undefined || this.layout.legend.itemwidth === undefined ) ? 50 : this.layout.legend.itemwidth,
+        itemclick : ( this.layout.legend === undefined || this.layout.legend.itemclick === undefined ) ? false : this.layout.legend.itemclick === "disabled" ? false : this.layout.legend.itemclick,
+        itemdoubleclick : ( this.layout.legend === undefined || this.layout.legend.itemdoubleclick === undefined ) ? false : this.layout.legend.itemdoubleclick === "disabled" ? false : this.layout.legend.itemdoubleclick,
+        x : ( this.layout.legend === undefined || this.layout.legend.x === undefined ) ?1.04 :  this.layout.legend.x,
+        y : ( this.layout.legend === undefined || this.layout.legend.y === undefined ) ? 1.00 : this.layout.legend.y,
+        valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
       },
       xaxis : {
-        automargin : ( this.layout.xaxis !== undefined && this.layout.xaxis.automargin !== undefined ) ? this.layout.xaxis.automargin : true,
+        automargin : ( this.layout.xaxis === undefined|| this.layout.xaxis.automargin === undefined ) ? true : this.layout.xaxis.automargin,
         rangeslider : {
-          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : true,
-          bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
-          thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.1,
+          visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.visible,
+          bgcolor : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangeslider === undefined|| this.layout.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.layout.xaxis.rangeslider.bgcolor,
+          thickness : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangeslider === undefined|| this.layout.xaxis.rangeslider.thickness === undefined ) ?  0.1 : this.layout.xaxis.rangeslider.thickness,
         }
       },
       yaxis: {
-        fixedrange : ( this.layout.yaxis !== undefined && this.layout.yaxis.fixedrange !== undefined ) ? this.layout.yaxis.fixedrange : true,
+        fixedrange : ( this.layout.yaxis === undefined || this.layout.yaxis.fixedrange === undefined ) ? true : this.layout.yaxis.fixedrange,
       },
       margin: {
-        l : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.l !== "undefined" ) ? this.layout.margin.l : 80,
-        r : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.r !== "undefined" ) ? this.layout.margin.r : 80,
-        t : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.t !== "undefined" ) ? this.layout.margin.t : 100,
-        b : ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.b !== "undefined" ) ? this.layout.margin.b : 20,
-        pad: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.pad !== "undefined" ) ? this.layout.margin.pad : 20,
-        autoexpand: ( typeof this.layout.margin !== "undefined" && typeof this.layout.margin.autoexpand !== "undefined" ) ? this.layout.margin.autoexpand : true,
+        l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
+        r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 80 : this.layout.margin.r,
+        t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 100 : this.layout.margin.t,
+        b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 20 : this.layout.margin.b,
+        pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 20 : this.layout.margin.pad,
+        autoexpand: ( this.layout.margin === undefined || this.layout.margin.autoexpand === undefined ) ? true : this.layout.margin.autoexpand,
       },
       modebar : {
-        orientation : ( this.layout.modebar !== undefined && this.layout.modebar.orientation !== undefined ) ? this.layout.modebar.orientation : 'h',
-        bgcolor : ( this.layout.modebar !== undefined && this.layout.modebar.bgcolor !== undefined ) ? this.layout.modebar.bgcolor : "",
-        color : ( this.layout.modebar !== undefined && this.layout.modebar.color !== undefined ) ? this.layout.modebar.color : "",
-        activecolor : ( this.layout.modebar !== undefined && this.layout.modebar.activecolor !== undefined ) ? this.layout.modebar.activecolor : "",
+        orientation : ( this.layout.modebar === undefined || this.layout.modebar.orientation === undefined ) ? "h" : this.layout.modebar.orientation,
+        bgcolor : ( this.layout.modebar === undefined || this.layout.modebar.bgcolor === undefined ) ? "" : this.layout.modebar.bgcolor,
+        color : ( this.layout.modebar === undefined || this.layout.modebar.color === undefined ) ? "" : this.layout.modebar.color,
+        activecolor : ( this.layout.modebar === undefined || this.layout.modebar.activecolor === undefined ) ? "" : this.layout.modebar.activecolor,
       },
       hoverlabel: {
-        bgcolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bgcolor!== undefined ) ? this.layout.hoverlabel.bgcolor : "#e2f1f8",
-        bordercolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bordercolor!== undefined ) ? this.layout.hoverlabel.bordercolor : "#000a12",
-        align: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.align!== undefined ) ? this.layout.hoverlabel.align : 'right',
-        namelength: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.namelength!== undefined ) ? this.layout.hoverlabel.namelength : -1,
+        bgcolor: ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.bgcolor=== undefined ) ? "#e2f1f8" : this.layout.hoverlabel.bgcolor,
+        bordercolor: ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.bordercolor=== undefined ) ? "#000a12" : this.layout.hoverlabel.bordercolor,
+        align: ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.align=== undefined ) ? "right" : this.layout.hoverlabel.align,
+        namelength: ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.namelength=== undefined ) ? -1 : this.layout.hoverlabel.namelength,
         font : {
-          family : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.family !== undefined ) ? this.layout.hoverlabel.font.family : Object.keys(this.fontFamily)[13],
-          size : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.size !== undefined ) ? this.layout.hoverlabel.font.size : 20,
-          color : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.color !== undefined ) ? this.layout.hoverlabel.font.color : "#000a12",
+          family : ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.font === undefined || this.layout.hoverlabel.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.layout.hoverlabel.font.family,
+          size : ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.font === undefined || this.layout.hoverlabel.font.size === undefined ) ? 20 : this.layout.hoverlabel.font.size,
+          color : ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.font === undefined || this.layout.hoverlabel.font.color === undefined ) ? "#000a12" : this.layout.hoverlabel.font.color,
         }
       },
 
@@ -227,6 +226,13 @@ class ChartLayout extends ChartDefault {
               step : 10,
               value : this.options().margin.pad,
               hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
+            },
+            {
+              id : "chartLayout[config][responsive]",
+              title : "Responsive ?",
+              type : "checkbox", 
+              value : this.options().config.responsive,
+              hint: ""
             },
           ],
           [
@@ -747,13 +753,7 @@ class ChartLayout extends ChartDefault {
         title : "Configuration",
         fields : [
           [
-            {
-              id : "chartLayout[config][responsive]",
-              title : "Responsive ?",
-              type : "checkbox", 
-              value : this.options().config.responsive,
-              hint: ""
-            },
+            
             {
               id : "chartLayout[config][displayModeBar]",
               title : "Display ModeBar ?",

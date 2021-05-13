@@ -38,36 +38,35 @@ class ChartTrace extends ChartDefault {
 
     return {
 
-      // type : ( this.trace !== undefined &&  this.trace.type !== undefined ) ? this.trace.type :  this.type ,
-      mode : ( this.trace !== undefined && this.trace.mode !== undefined ) ? this.trace.mode : this.mode,
-      name : this.labels[ this.index],
-      visible : ( this.trace !== undefined && this.trace.visible !== undefined ) ? this.trace.visible : true,
-      showlegend : ( this.trace !== undefined && this.trace.showlegend !== undefined ) ? this.trace.showlegend : true,
-      opacity : ( this.trace !== undefined && this.trace.opacity !== undefined ) ? this.trace.opacity : 1,
+      // type : ( this.trace === undefined||  this.trace.type === undefined ) ? this.trace.type :  this.type,
+      // connectgaps : ( this.trace === undefined||  this.trace.connectgaps === undefined ) ?  this.trace.connectgaps : false,
+      mode : ( this.trace === undefined|| this.trace.mode === undefined ) ? this.mode : this.trace.mode,
+      name : this.labels[this.index],
+      visible : ( this.trace === undefined|| this.trace.visible === undefined ) ? true : this.trace.visible,
+      showlegend : ( this.trace === undefined|| this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
+      opacity : ( this.trace === undefined|| this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
       x : this.spreadsheet[this.sheetId].data[0],
       y : this.spreadsheet[this.sheetId].data[this.index],
-      
-      // connectgaps : ( this.trace !== undefined &&  this.trace.connectgaps !== undefined ) ?  this.trace.connectgaps : false,
       line : {
-        color : ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.color !== undefined ) ? this.trace.line.color : this.colors[this.index],
-        width: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.width !== undefined ) ? this.trace.line.width : 3,
-        shape: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.shape !== undefined ) ? this.trace.line.shape : "spline",
-        smoothing: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.smoothing !== undefined ) ? this.trace.line.smoothing : 1,
-        dash: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.dash !== undefined ) ? this.trace.line.dash : "solid",
-        simplify: ( this.trace !== undefined && this.trace.line !== undefined && this.trace.line.simplify !== undefined ) ? this.trace.line.simplify : true,
+        color : ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.color === undefined ) ? this.colors[this.index] : this.trace.line.color,
+        width: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.width === undefined ) ? 3 : this.trace.line.width,
+        shape: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.shape === undefined ) ? "spline" : this.trace.line.shape,
+        smoothing: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.smoothing === undefined ) ? 1 : this.trace.line.smoothing,
+        dash: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.dash === undefined ) ? "solid" : this.trace.line.dash,
+        simplify: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
       },
       marker : {
-        symbol : ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.symbol !== undefined ) ? this.trace.marker.symbol : 1,
-        maxdisplayed : ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.maxdisplayed !== undefined ) ? this.trace.marker.maxdisplayed : 10,
-        color : ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.color !== undefined ) ? this.trace.marker.color : this.colors[this.index],
-        size: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.size !== undefined ) ? this.trace.marker.size : 5,
+        symbol : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.symbol === undefined ) ? 1 : this.trace.marker.symbol,
+        maxdisplayed : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.maxdisplayed === undefined ) ? 10 : this.trace.marker.maxdisplayed,
+        color : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.color === undefined ) ? this.colors[this.index] : this.trace.marker.color,
+        size: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.size === undefined ) ? 5 : this.trace.marker.size,
         line: {
-          width: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.line !== undefined && this.trace.marker.line.width !== undefined ) ? this.trace.marker.line.width : 1,
-          color: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.line !== undefined && this.trace.marker.line.color !== undefined ) ? this.trace.marker.line.color : "#4A148C",
+          width: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.line === undefined|| this.trace.marker.line.width === undefined ) ? 1 : this.trace.marker.line.width,
+          color: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.line === undefined|| this.trace.marker.line.color === undefined ) ?  "#4A148C" : this.trace.marker.line.color,
         },
         gradient: {
-          type: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.gradient !== undefined && this.trace.marker.gradient.type !== undefined ) ? this.trace.marker.gradient.type : "radial",
-          color: ( this.trace !== undefined &&  this.trace.marker !== undefined && this.trace.marker.gradient !== undefined && this.trace.marker.gradient.color !== undefined ) ? this.trace.marker.gradient.color : "#E65100",
+          type: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.gradient === undefined|| this.trace.marker.gradient.type === undefined ) ? "radial" : this.trace.marker.gradient.type,
+          color: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.gradient === undefined|| this.trace.marker.gradient.color === undefined ) ? "#E65100" : this.trace.marker.gradient.color,
         }
       },
 

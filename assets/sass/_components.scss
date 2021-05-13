@@ -147,9 +147,9 @@
   }
 
   .card {
-    background-color: #ccc;
-    padding: 1rem;
-    border: 1px solid red;
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    border: 1px solid rgba( $color-s-dark, .8 );
     margin:1rem;
     .chart-container {
       position: relative;

@@ -23,11 +23,11 @@ class ChartParams {
     return {
 
       mediaUploadBtn : 'Upload New File',
-      fileUpload : (this.params.fileUpload !== undefined) ? this.params.fileUpload : null,
-      fileId : (this.params.fileId !== undefined) ? this.params.fileId : null,
-      sheetId : (this.params.sheetId !== undefined ) ? this.params.sheetId : null,
-      chartType : (this.params.chartType !== undefined ) ? this.params.chartType : null,
-      chartId : (this.params.chartId !== undefined ) ? this.params.chartId : null,
+      fileUpload : (this.params.fileUpload === undefined) ? null : this.params.fileUpload,
+      fileId : (this.params.fileId === undefined) ? null :this.params.fileId,
+      sheetId : (this.params.sheetId === undefined ) ? null : this.params.sheetId,
+      chartType : (this.params.chartType === undefined ) ? null : this.params.chartType,
+      chartId : (this.params.chartId === undefined ) ? null : this.params.chartId,
       // enableRangeSlider : ( this.params.enableChartRangeSlider ) ? true : true,
       // enableMinMaxTableChart : ( this.params.enableMinMaxTableChart  ) ? true : false,
       // enableTableChart : ( this.params.enableTableChart ) ? true : true,

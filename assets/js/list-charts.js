@@ -11,44 +11,34 @@ const listCharts = async function ( charts, iwpgvObj) {
 
       for ( let i=0; i < el.chartTraces.options.length; i++) {
 
-        
-          el.chartTraces.options[i].x = el.sheet.data[0]
-          el.chartTraces.options[i].y = el.sheet.data[i+1]
+        el.chartTraces.options[i].x = el.sheet.data[0]
+        el.chartTraces.options[i].y = el.sheet.data[i+1]
         
         el.chartTraces.options[i].showlegend = false
         el.chartLayout.options.hovermode = false
         el.chartLayout.options.height = 200
-        el.chartLayout.options.margin ={
-          autoexpand: true,
-          t:10,
-          b:30,
-          l:60,
-          r:60,
-          pad:0
-        }
-        el.chartLayout.options.title = {}
-        el.chartLayout.options.config.displayModeBar = false
+        el.chartLayout.options.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
+        el.chartLayout.options.title.font.size = 12
+        el.chartLayout.options.title.x = .15
+        el.chartLayout.options.title.y = .95
+        el.chartLayout.options.font.size = 12
+        el.chartLayout.options.xaxis = { rangeslider: { visible: false} }
+        el.chartLayout.options.config = { displayModeBar: false }
       }
 
       await Plotly.newPlot(`${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout.options, el.chartLayout.options.config)
 
     } else {
       document.getElementById( `${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}` ).innerHTML = `<div class='file-missing'>${el.chartParams.options.fileUpload} cannot be found</div>`
-      console.log(el)
     }
   
   })
 
-  console.log( document.querySelectorAll( `.${iwpgvObj.prefix}__admin .delete-chart` ) )
 
   document.querySelectorAll( `.${iwpgvObj.prefix}__admin .delete-chart`).forEach( ( element ) => {
 
     element.addEventListener("click", function (event) {  
       event.preventDefault()
-
-      console.log(element)
-
-      
 
       swal({
         title: "Are you sure?",

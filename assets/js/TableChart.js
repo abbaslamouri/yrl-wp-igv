@@ -21,60 +21,60 @@ class TableChart extends ChartDefault{
     return {
 
       type: "table",
-      rounding: ( this.tableConfig.rounding  !== undefined ) ? this.tableConfig.rounding : 3,
-      firstColAlign: ( this.tableConfig.firstColAlign  !== undefined ) ? this.tableConfig.firstColAlign : "center",
-      evenRowColor: ( this.tableConfig.evenRowColor  !== undefined ) ? this.tableConfig.evenRowColor : "#b0bec5",
-      oddRowColor: ( this.tableConfig.oddRowColor  !== undefined ) ? this.tableConfig.oddRowColor : "#e2f1f8",
+      rounding: ( this.tableConfig.rounding  === undefined ) ? 3 : this.tableConfig.rounding,
+      firstColAlign: ( this.tableConfig.firstColAlign  === undefined ) ? "center" : this.tableConfig.firstColAlign,
+      evenRowColor: ( this.tableConfig.evenRowColor  === undefined ) ? "#b0bec5" : this.tableConfig.evenRowColor,
+      oddRowColor: ( this.tableConfig.oddRowColor  === undefined ) ? "#e2f1f8" : this.tableConfig.oddRowColor,
       header:{
-        height : ( this.tableConfig.header  !== undefined && this.tableConfig.header.height  !== undefined ) ? this.tableConfig.header.height : 30,
-        align : ( this.tableConfig.header  !== undefined && this.tableConfig.header.align  !== undefined ) ? this.tableConfig.header.align : "center",
+        height : ( this.tableConfig.header  === undefined || this.tableConfig.header.height  === undefined ) ? 30 : this.tableConfig.header.height,
+        align : ( this.tableConfig.header  === undefined || this.tableConfig.header.align  === undefined ) ? "center" : this.tableConfig.header.align,
         line: {
-          width: ( this.tableConfig.header  !== undefined && this.tableConfig.header.line  !== undefined && this.tableConfig.header.line.width  !== undefined ) ? this.tableConfig.header.line.width : 1,
-          color: ( this.tableConfig.header  !== undefined && this.tableConfig.header.line  !== undefined && this.tableConfig.header.line.color  !== undefined ) ? this.tableConfig.header.line.color : "#263238",
+          width: ( this.tableConfig.header  === undefined || this.tableConfig.header.line  === undefined || this.tableConfig.header.line.width  === undefined ) ? 1 : this.tableConfig.header.line.width,
+          color: ( this.tableConfig.header  === undefined || this.tableConfig.header.line  === undefined || this.tableConfig.header.line.color  === undefined ) ? "#263238" : this.tableConfig.header.line.color,
         },
         fill: {
-          color: ( this.tableConfig.header  !== undefined && this.tableConfig.header.fill  !== undefined && this.tableConfig.header.fill.color  !== undefined ) ? this.tableConfig.header.fill.color : "#000a12",
+          color: ( this.tableConfig.header  === undefined || this.tableConfig.header.fill  === undefined || this.tableConfig.header.fill.color  === undefined ) ?  "#000a12" : this.tableConfig.header.fill.color,
         },
         font : {
-          family : ( this.tableConfig.header !== undefined && this.tableConfig.header.font !== undefined && this.tableConfig.header.font.family !== undefined ) ? this.tableConfig.header.font.family : Object.keys(this.fontFamily)[13],
-          size : ( this.tableConfig.header !== undefined && this.tableConfig.header.font !== undefined && this.tableConfig.header.font.size !== undefined ) ? this.tableConfig.header.font.size : 14,
-          color : ( this.tableConfig.header !== undefined && this.tableConfig.header.font !== undefined && this.tableConfig.header.font.color !== undefined ) ? this.tableConfig.header.font.color : "#eeeeee",
+          family : ( this.tableConfig.header === undefined || this.tableConfig.header.font === undefined || this.tableConfig.header.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.tableConfig.header.font.family,
+          size : ( this.tableConfig.header === undefined || this.tableConfig.header.font === undefined || this.tableConfig.header.font.size === undefined ) ? 14 : this.tableConfig.header.font.size,
+          color : ( this.tableConfig.header === undefined || this.tableConfig.header.font === undefined || this.tableConfig.header.font.color === undefined ) ? "#eeeeee" : this.tableConfig.header.font.color,
         }
       },
       cells:{
-        height : ( this.tableConfig.cells  !== undefined && this.tableConfig.cells.height  !== undefined ) ? this.tableConfig.cells.height : 30,align : ( this.tableConfig.cells  !== undefined && this.tableConfig.cells.align  !== undefined ) ? this.tableConfig.cells.align : "center",
+        height : ( this.tableConfig.cells  === undefined || this.tableConfig.cells.height  === undefined ) ? 30 : this.tableConfig.cells.height,align : ( this.tableConfig.cells  === undefined || this.tableConfig.cells.align  === undefined ) ? "center" : this.tableConfig.cells.align,
         line: {
-          width: ( this.tableConfig.cells  !== undefined && this.tableConfig.cells.line  !== undefined && this.tableConfig.cells.line.width  !== undefined ) ? this.tableConfig.cells.line.width : 1,
-          color: ( this.tableConfig.cells  !== undefined && this.tableConfig.cells.line  !== undefined && this.tableConfig.cells.line.color  !== undefined ) ? this.tableConfig.cells.line.color : "#263238",
+          width: ( this.tableConfig.cells  === undefined || this.tableConfig.cells.line  === undefined || this.tableConfig.cells.line.width  === undefined ) ? 1 : this.tableConfig.cells.line.width,
+          color: ( this.tableConfig.cells  === undefined || this.tableConfig.cells.line  === undefined || this.tableConfig.cells.line.color  === undefined ) ?  "#263238" : this.tableConfig.cells.line.color,
         },
         fill: {
-          color: ( this.tableConfig.cells  !== undefined && this.tableConfig.cells.fill  !== undefined && this.tableConfig.cells.fill.color  !== undefined ) ? this.tableConfig.cells.fill.color : null,
+          color: ( this.tableConfig.cells  === undefined || this.tableConfig.cells.fill  === undefined || this.tableConfig.cells.fill.color  === undefined ) ? null : this.tableConfig.cells.fill.color,
         },
         font : {
-          family : ( this.tableConfig.cells !== undefined && this.tableConfig.cells.font !== undefined && this.tableConfig.cells.font.family !== undefined ) ? this.tableConfig.cells.font.family : Object.keys(this.fontFamily)[13],
-          size : ( this.tableConfig.cells !== undefined && this.tableConfig.cells.font !== undefined && this.tableConfig.cells.font.size !== undefined ) ? this.tableConfig.cells.font.size : 12,
-          color : ( this.tableConfig.cells !== undefined && this.tableConfig.cells.font !== undefined && this.tableConfig.cells.font.color !== undefined ) ? this.tableConfig.cells.font.color : "#000a12",
+          family : ( this.tableConfig.cells === undefined || this.tableConfig.cells.font === undefined || this.tableConfig.cells.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.tableConfig.cells.font.family,
+          size : ( this.tableConfig.cells === undefined || this.tableConfig.cells.font === undefined || this.tableConfig.cells.font.size === undefined ) ? 12 : this.tableConfig.cells.font.size,
+          color : ( this.tableConfig.cells === undefined || this.tableConfig.cells.font === undefined || this.tableConfig.cells.font.color === undefined ) ?  "#000a12" : this.tableConfig.cells.font.color,
         }
       },
       layout: {
-        height: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.height !== undefined ) ? this.tableConfig.layout.height : 151,
-        autosize: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.autosize !== undefined ) ? this.tableConfig.layout.autosize : false,
-        plot_bgcolor: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.plot_bgcolor !== undefined ) ? this.tableConfig.layout.plot_bgcolor : "#D4A1A1",
+        height: ( this.tableConfig.layout === undefined || this.tableConfig.layout.height === undefined ) ? 151 : this.tableConfig.layout.height,
+        autosize: ( this.tableConfig.layout === undefined || this.tableConfig.layout.autosize === undefined ) ? false : this.tableConfig.layout.autosize,
+        plot_bgcolor: ( this.tableConfig.layout === undefined || this.tableConfig.layout.plot_bgcolor === undefined ) ? "#D4A1A1" : this.tableConfig.layout.plot_bgcolor,
         title: {
-          text: ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.text!== undefined ) ? this.tableConfig.layout.title.text : this.panelTitle,
+          text: ( this.tableConfig.layout === undefined || this.tableConfig.layout.title === undefined || this.tableConfig.layout.title.text=== undefined ) ? this.panelTitle : this.tableConfig.layout.title.text,
           font : {
-            family : ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.font !== undefined && this.tableConfig.layout.title.font.family !== undefined ) ? this.tableConfig.layout.title.font.family : Object.keys(this.fontFamily)[13],
-            size : ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.font !== undefined && this.tableConfig.layout.title.font.size !== undefined ) ? this.tableConfig.layout.title.font.size : 16,
-            color : ( this.tableConfig.layout !== undefined && this.tableConfig.layout.title !== undefined && this.tableConfig.layout.title.font !== undefined && this.tableConfig.layout.title.font.color !== undefined ) ? this.tableConfig.layout.title.font.color : "#8D6E63",
+            family : ( this.tableConfig.layout === undefined || this.tableConfig.layout.title === undefined || this.tableConfig.layout.title.font === undefined || this.tableConfig.layout.title.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.tableConfig.layout.title.font.family,
+            size : ( this.tableConfig.layout === undefined || this.tableConfig.layout.title === undefined || this.tableConfig.layout.title.font === undefined || this.tableConfig.layout.title.font.size === undefined ) ? 16 : this.tableConfig.layout.title.font.size,
+            color : ( this.tableConfig.layout === undefined || this.tableConfig.layout.title === undefined || this.tableConfig.layout.title.font === undefined || this.tableConfig.layout.title.font.color === undefined ) ? "#8D6E63" : this.tableConfig.layout.title.font.color,
           }
         },
         margin: {
-          l : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.l !== "undefined"  ) ? this.tableConfig.layout.margin.l : 0,
-          r : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.r !== "undefined"  ) ? this.tableConfig.layout.margin.r : 0,
-          t : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.t!== "undefined"  ) ? this.tableConfig.layout.margin.t : 0,
-          b : ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.b !== "undefined"  ) ? this.tableConfig.layout.margin.b : 0,
-          pad: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.pad !== "undefined"  ) ? this.tableConfig.layout.margin.pad : 0,
-          autoexpand: ( typeof this.tableConfig.layout !== "undefined" && typeof this.tableConfig.layout.margin !== "undefined" && typeof this.tableConfig.layout.margin.autoexpand !== "undefined"  ) ? this.tableConfig.layout.margin.autoexpand : true,
+          l : ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.l === undefined  ) ? 0 : this.tableConfig.layout.margin.l,
+          r : ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.r === undefined  ) ? 0 : this.tableConfig.layout.margin.r,
+          t : ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.t=== undefined  ) ? 0 : this.tableConfig.layout.margin.t,
+          b : ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.b === undefined  ) ? 0 : this.tableConfig.layout.margin.b,
+          pad: ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.pad === undefined  ) ? 0 : this.tableConfig.layout.margin.pad,
+          autoexpand: ( this.tableConfig.layout === undefined || this.tableConfig.layout.margin === undefined || this.tableConfig.layout.margin.autoexpand === undefined  ) ? true : this.tableConfig.layout.margin.autoexpand,
         },
       },
      
