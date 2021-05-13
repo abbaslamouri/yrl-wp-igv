@@ -21,14 +21,14 @@
       <div class="loading hidden">Loading...</div> 
 
       <!-- Warning heading -->
-      <h3 class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</h3>
+      <div class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</div>
 
       <div class="plotly">
         <!-- PLot goes here -->
         <div class="chart" id="<?php echo "{$this->prefix}__plotlyChart" ?>"></div>
         <div class="min-max-avg-table">
           <?php require "{$this->path}templates/min-max-inputs.php"; ?>
-          <div class="table" id="<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>" ></div>
+          <div class="table hidden" id="<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>" ></div>
         </div>
       </div>
 

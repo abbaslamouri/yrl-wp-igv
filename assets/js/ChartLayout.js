@@ -12,6 +12,8 @@ class ChartLayout extends ChartDefault {
     this.layout = layout
     this.prefix = iwpgvObj.prefix
 
+    console.log("this.layout.showMinMaxAvgTable", this.layout.showMinMaxAvgTable)
+
     // this.fontFamily = fontFamily
    
   }
@@ -20,19 +22,19 @@ class ChartLayout extends ChartDefault {
 
     return {
 
-      showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable !== undefined ) ? this.layout.showMinMaxAvgTable: false,
+      showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable === undefined ) ? false : this.layout.showMinMaxAvgTable,
       config:{
-        responsive : ( this.layout.config  !== undefined && this.layout.config.responsive  !== undefined ) ? this.layout.config.responsive: true,
-        displayModeBar : ( this.layout.config  !== undefined && this.layout.config.displayModeBar  !== undefined ) ? this.layout.config.displayModeBar : false,
-        displaylogo : ( this.layout.config  !== undefined && this.layout.config.displaylogo  !== undefined ) ? this.layout.config.displaylogo : false
+        responsive : ( this.layout.config  === undefined || this.layout.config.responsive  === undefined ) ? false : this.layout.config.responsive,
+        displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? false :this.layout.config.displayModeBar,
+        displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? false : this.layout.config.displaylogo,
       },
 
       paper_bgcolor : ( this.layout.paper_bgcolor !== undefined ) ? this.layout.paper_bgcolor: "#b0bec5",
       plot_bgcolor : ( this.layout.plot_bgcolor !== undefined ) ? this.layout.plot_bgcolor : "#eeeeee",
       // width : ( this.layout.width !== undefined ) ? this.layout.width : 600,
       height : ( this.layout.height !== undefined ) ? this.layout.height : 450,
-      autosize : ( this.layout.autosize!== undefined ) ? this.layout.autosize : true,
-      hovermode : ( this.layout.hovermode!== undefined ) ? this.layout.hovermode : false,
+      autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
+      hovermode : ( this.layout.hovermode === undefined ) ? false : this.layout.hovermode,
       font : {
         family : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.family !== undefined ) ? this.layout.font.family : Object.keys(this.fontFamily)[13],
         size : ( this.layout !== undefined && this.layout.font !== undefined && this.layout.font.size !== undefined ) ? this.layout.font.size : 20,
@@ -48,7 +50,7 @@ class ChartLayout extends ChartDefault {
           color : ( this.layout.title !== undefined && this.layout.title.font !== undefined && this.layout.title.font.color !== undefined ) ? this.layout.title.font.color : "#000a12",
         }
       },
-      showlegend : ( typeof this.layout.showlegend !== "undefined" ) ? this.layout.showlegend : true,
+      showlegend : ( typeof this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
       legend : {
         bgcolor : ( this.layout.legend !== undefined && this.layout.legend.bgcolor !== undefined ) ? this.layout.legend.bgcolor : '#e2f1f8',
         bordercolor : ( this.layout.legend!== undefined && this.layout.legend.bordercolor !== undefined ) ? this.layout.legend.bordercolor : '#000a12',
@@ -79,7 +81,7 @@ class ChartLayout extends ChartDefault {
       xaxis : {
         automargin : ( this.layout.xaxis !== undefined && this.layout.xaxis.automargin !== undefined ) ? this.layout.xaxis.automargin : true,
         rangeslider : {
-          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : false,
+          visible : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.visible !== undefined ) ? this.layout.xaxis.rangeslider.visible : true,
           bgcolor : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.bgcolor !== undefined ) ? this.layout.xaxis.rangeslider.bgcolor : "#e6ffff",
           thickness : ( this.layout.xaxis !== undefined && this.layout.xaxis.rangeslider !== undefined && this.layout.xaxis.rangeslider.thickness !== undefined ) ? this.layout.xaxis.rangeslider.thickness : 0.1,
         }
@@ -102,14 +104,14 @@ class ChartLayout extends ChartDefault {
         activecolor : ( this.layout.modebar !== undefined && this.layout.modebar.activecolor !== undefined ) ? this.layout.modebar.activecolor : "",
       },
       hoverlabel: {
-        bgcolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bgcolor!== undefined ) ? this.layout.hoverlabel.bgcolor : null,
-        bordercolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bordercolor!== undefined ) ? this.layout.hoverlabel.bordercolor : null,
+        bgcolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bgcolor!== undefined ) ? this.layout.hoverlabel.bgcolor : "#e2f1f8",
+        bordercolor: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.bordercolor!== undefined ) ? this.layout.hoverlabel.bordercolor : "#000a12",
         align: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.align!== undefined ) ? this.layout.hoverlabel.align : 'right',
         namelength: ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.namelength!== undefined ) ? this.layout.hoverlabel.namelength : -1,
         font : {
           family : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.family !== undefined ) ? this.layout.hoverlabel.font.family : Object.keys(this.fontFamily)[13],
           size : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.size !== undefined ) ? this.layout.hoverlabel.font.size : 20,
-          color : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.color !== undefined ) ? this.layout.hoverlabel.font.color : null,
+          color : ( this.layout.hoverlabel !== undefined && this.layout.hoverlabel.font !== undefined && this.layout.hoverlabel.font.color !== undefined ) ? this.layout.hoverlabel.font.color : "#000a12",
         }
       },
 
@@ -272,23 +274,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().font.color,
             },
           ],
-          [
-            {
-              id : "chartLayout[hovermode]",
-              title : "Hover Mode",	
-              type : "select",
-              options : {
-                x: "X",
-                y: "Y",
-                closest: "Closest",
-                disabled: "Disabled",
-                "x unified": "X Unified",
-                "y unified": "Y Unified"
-              },
-              value : (this.options().hovermode)? this.options().hovermode : "disabled",
-              hint: "Determines the mode of hover interactions. If 'closest', a single hoverlabel will appear for the 'closest' point within the `hoverdistance`. If 'x' (or 'y'), multiple hoverlabels will appear for multiple points at the 'closest' x- (or y-) coordinate within the `hoverdistance`, with the caveat that no more than one hoverlabel will appear per trace. If 'x unified' (or 'y unified'), a single hoverlabel will appear multiple points at the closest x- (or y-) coordinate within the `hoverdistance` with the caveat that no more than one hoverlabel will appear per trace. In this mode, spikelines are enabled by default perpendicular to the specified axis. If false, hover interactions are disabled. If `clickmode` includes the 'select' flag, `hovermode` defaults to 'closest'. If `clickmode` lacks the 'select' flag, it defaults to 'x' or 'y' (depending on the trace's `orientation` value) for plots based on cartesian coordinates. For anything else the default value is 'closest'."
-            },
-          ]
         ]  
       },
       title : {
@@ -581,6 +566,23 @@ class ChartLayout extends ChartDefault {
         cssClasses:["chartLayout", "subPanel"],
         title : "Hover Label",
         fields : [
+          [
+            {
+              id : "chartLayout[hovermode]",
+              title : "Hover Mode",	
+              type : "select",
+              options : {
+                x: "X",
+                y: "Y",
+                closest: "Closest",
+                disabled: "Disabled",
+                "x unified": "X Unified",
+                "y unified": "Y Unified"
+              },
+              value : (this.options().hovermode)? this.options().hovermode : "disabled",
+              hint: "Determines the mode of hover interactions. If 'closest', a single hoverlabel will appear for the 'closest' point within the `hoverdistance`. If 'x' (or 'y'), multiple hoverlabels will appear for multiple points at the 'closest' x- (or y-) coordinate within the `hoverdistance`, with the caveat that no more than one hoverlabel will appear per trace. If 'x unified' (or 'y unified'), a single hoverlabel will appear multiple points at the closest x- (or y-) coordinate within the `hoverdistance` with the caveat that no more than one hoverlabel will appear per trace. In this mode, spikelines are enabled by default perpendicular to the specified axis. If false, hover interactions are disabled. If `clickmode` includes the 'select' flag, `hovermode` defaults to 'closest'. If `clickmode` lacks the 'select' flag, it defaults to 'x' or 'y' (depending on the trace's `orientation` value) for plots based on cartesian coordinates. For anything else the default value is 'closest'."
+            },
+          ],
           [
             {
               id : "chartLayout[hoverlabel][bgcolor]",

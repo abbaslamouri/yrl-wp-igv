@@ -17,7 +17,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let spreadsheet = []
-  let oldIwpgvCharts = Object.assign({}, iwpgvCharts)
+  // let oldIwpgvCharts = Object.assign({}, iwpgvCharts)
 
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
@@ -55,10 +55,12 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       // document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
     
       if ( iwpgvCharts.chart.chartParams.options.chartId) {
+
+        spreadsheet = iwpgvCharts.spreadsheet
         
         // Set sheetId select field value and options 
-        if ( iwpgvCharts.spreadsheet) {
-          setSheetIdOptions(iwpgvCharts.spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
+        if ( spreadsheet) {
+          setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
           document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value = iwpgvCharts.chart.chartParams.options.sheetId
           showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
         }
@@ -69,7 +71,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
         
         // Draw chart
-        drawChart( iwpgvCharts, iwpgvObj, iwpgvCharts.spreadsheet )
+        drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
       }
 
       // Initialize the media uploader
@@ -180,6 +182,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
         const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+        console.log("SHEET", sheetIdInput.value)
+        console.log("SHEET", spreadsheet)
           if (spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
           // console.log("HERE")
           for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {

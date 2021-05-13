@@ -3,6 +3,8 @@ import panel from "./panel"
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
+import { displayAdminMessage } from "./utilities"
+
 
 
 const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
@@ -31,7 +33,14 @@ if (spreadsheet) {
   document.querySelector( `.accordion__toggle.chartTraces.panel` ).classList.remove( "hidden" )
   document.querySelector( `.accordion__content.chartTraces.panel` ).classList.remove( "hidden" )
 } else {
-  document.querySelector(`.${iwpgvObj.prefix}__admin .warning`).innerHTML = `${iwpgvCharts.chart.chartParams.options.fileUpload} is missing.  Please upload a new file`
+  // console.log("PPPPPP", document.querySelector(`.${iwpgvObj.prefix}__admin .warning`))
+  // const node = document.createElement("div")
+  // node.classList.add("file-missing")
+  // var textNode = document.createTextNode(`${iwpgvCharts.chart.chartParams.options.fileUpload} is missing. Please upload a new file`); 
+  // node.appendChild(textNode);  
+  displayAdminMessage( `${iwpgvCharts.chart.chartParams.options.fileUpload} is missing. Please upload a new file`, "error", iwpgvObj)
+  
+  // document.querySelector(`.${iwpgvObj.prefix}__admin .warning`).appendChild( node )
 }
 
   
@@ -49,14 +58,15 @@ if (spreadsheet) {
 
 
   // Assemble Min/Max table chart options and panel if enableMinMaxTableChart is true
-  if ( iwpgvCharts.chart.chartLayout.options.showMinMaxAvgTable ) {
     const minMaxAvgTableChartInstance = new TableChart( iwpgvCharts.chart.minMaxAvgTableChart.options, iwpgvObj, "minMaxAvgTableChart", "" )
     iwpgvCharts.chart.minMaxAvgTableChart.options = minMaxAvgTableChartInstance.options()
     iwpgvCharts.chart.minMaxAvgTableChart.panel.sections = minMaxAvgTableChartInstance.sections()
     panel(iwpgvCharts.chart.minMaxAvgTableChart.panel, iwpgvObj)
-    document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.remove("hidden")
-    document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.remove("hidden")
-  }
+
+    // if ( iwpgvCharts.chart.chartLayout.options.showMinMaxAvgTable ) {
+      document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.remove("hidden")
+      document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.remove("hidden")
+    // }
 
   
 

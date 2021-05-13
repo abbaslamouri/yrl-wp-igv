@@ -170,7 +170,8 @@ if (!class_exists('Dashboard')) {
 			} catch (\Exception $e) {
   
 				// Prepare error output
-				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => []];
+        $payload =[];
+				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => $payload];
 
 			}
         
@@ -358,16 +359,25 @@ if (!class_exists('Dashboard')) {
 		*/
 		public function fetch_spreadsheet( $file_id ) {
 
+      // Check if a file Id is submitted
+			if ( ! $file_id ) {
+				return new \WP_Error ( 'error', __( wp_kses_post ( "A file ID is required." ), $this->plugin));
+			}
+
       // Get file path from file Id
       $file_path = get_attached_file( $file_id );
+
+      // Check if a file with the supplie Id exsts
+			if ( ! $file_path ) {
+				return new \WP_Error ( 'error', __( wp_kses_post ( "We cannot find a file with this ID <strong>{$file_id}</strong>." ), $this->plugin));
+			}
 
 			// Initialize spreadsheet
       $spreadsheet = [];
 
 			// Check if the file is already in the upload directory
 			if ( ! file_exists ($file_path)) {
-				$message = "File <strong>$file_path</strong> does not exist.";
-				return new \WP_Error ( 'error', __( wp_kses_post ( $message ), $this->plugin));
+				return new \WP_Error ( 'error', __( wp_kses_post ( "File <.>$file_path</.> does not exist." ), $this->plugin));
 			}
 
       // Check file type

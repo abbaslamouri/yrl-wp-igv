@@ -1,16 +1,22 @@
 import Plotly from 'plotly.js-dist'
 import ChartTrace from "./ChartTrace"
-import { showElementById, fetchminMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
+import { hideElementById, showElementById, fetchminMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 import "../sass/public.scss"
 
-if ( typeof yrl_wp_igv__plotlyChart !== "undefined") {
+console.log(yrl_wp_igv__plotlyChart)
+
+
+if ( typeof yrl_wp_igv__plotlyChart === "undefined" ||  yrl_wp_igv__plotlyChart.status === "error") {
+
+} else {
 
   let iwpgvPublic = typeof yrl_wp_igv__plotlyChart !== "undefined" ?  yrl_wp_igv__plotlyChart : {}
+
+
 
   const payload = iwpgvPublic.payload
   const paramsOptions = payload.chart.chartParams.options
 
-  console.log(iwpgvPublic)
 
   // Assemble chart traces chart and and render chart traces panel
   let index = 1;

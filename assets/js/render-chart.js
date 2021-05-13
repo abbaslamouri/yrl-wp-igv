@@ -1,5 +1,5 @@
 import Plotly from 'plotly.js-dist'
-import { showElementById, hideElementById, fetchMinMaxAvgTableChartData } from "./utilities"
+import { showElementById, fetchMinMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 
 
 const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
@@ -15,41 +15,60 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
   
   // Render chart
-  await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
-
-  // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
-  if ( chart.chartLayout.options.showMinMaxTable ) {
-
-    // Set range slider min and max input fields if enableChartRangeSlider is true
-    if ( chart.chartLayout.options.xaxis.rangeslider.visible ) {
-
-      const xAxisMin = chart.chartLayout.options.xaxis.range[0]
-      const xAxisMax = chart.chartLayout.options.xaxis.range[1]
-
-      showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-      // rangeMinInput.closest(".form-group").classList.remove("hidden")
-      // rangeMinInput.classList.remove("hidden")
-      rangeMinInput.value =  chart.minMaxAvgTableChart.options.rounding ? xAxisMin.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMin
-      // rangeMaxInput.closest(".form-group").classList.remove("hidden")
-      // rangeMaxInput.classList.remove("hidden")
-      rangeMaxInput.value = chart.minMaxAvgTableChart.options.rounding ? xAxisMax.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMax
+  if ( spreadsheet ) {
     
+    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
 
-      chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
-      await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+    // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
+    // if ( chart.chartLayout.options.xaxis.rangeslider.visible && chart.chartLayout.options.showMinMaxAvgTable ) {
 
-    } else {
-      hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-      // rangeMinInput.closest(".form-group").classList.add("hidden")
-      // rangeMinInput.classList.add("hidden")
-      rangeMinInput.value =  null
-      // rangeMaxInput.closest(".form-group").classList.add("hidden")
-      // rangeMaxInput.classList.add("hidden")
-      rangeMaxInput.value = null
-    }
+    const xAxisMin = chart.chartLayout.options.xaxis.range[0]
+    const xAxisMax = chart.chartLayout.options.xaxis.range[1]
+    
+    // Set range min and max input values
+    rangeMinInput.value =  chart.minMaxAvgTableChart.options.rounding ? xAxisMin.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMin
+    rangeMaxInput.value = chart.minMaxAvgTableChart.options.rounding ? xAxisMax.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMax
 
+
+
+    // Fetch Min?Max/Avg table data
+    chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+
+    // Plot table
+    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+
+    // Show range min and max input fields
+    showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+
+    // Show Min/Max/Avg table
+    showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+
+    // Add range slider event handler
+    eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+
+      // Bail if the event is other that range slider
+      if ( ! eventData['xaxis.range'] ) return
+
+      console.log("KKKKKK", eventData )
+
+      //
+      // const xAxisMin = ( eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
+      // const xAxisMax = ( eventData  && eventData['xaxis.range'] ) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+      document.getElementById(`${iwpgvObj.prefix}__rangeMinInput`).value = parseFloat( eventData['xaxis.range'][0] ).toFixed(chart.minMaxAvgTableChart.options.rounding)
+      document.getElementById(`${iwpgvObj.prefix}__rangeMaxInput`).value = parseFloat( eventData['xaxis.range'][1] ).toFixed(chart.minMaxAvgTableChart.options.rounding)
+      
+      // Update Min/Max/Avg table data
+      // chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, eventData['xaxis.range'][0], eventData['xaxis.range'][1])
+
+      Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData(chart, spreadsheet, eventData['xaxis.range'][0], eventData['xaxis.range'][1])] } )
+
+  })
 
   }
+
+
+
+  // }
 
   // Render table chart if enableTableChart is true
   // if ( chart.chartParams.options.enableTableChart ) {
