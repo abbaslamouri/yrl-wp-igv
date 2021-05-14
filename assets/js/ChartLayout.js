@@ -31,7 +31,7 @@ class ChartLayout extends ChartDefault {
       width : ( this.layout.width === undefined ) ? null : this.layout.width,
       height : ( this.layout.height === undefined ) ? 450 : this.layout.height,
       autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
-      hovermode : ( this.layout.hovermode === undefined ) ? false : this.layout.hovermode === "disabled" ? false : this.layout.hovermode,
+      hovermode : ( this.layout.hovermode === undefined ) ? "closest" : this.layout.hovermode === "disabled" ? false : this.layout.hovermode,
       font : {
         family : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.layout.font.family,
         size : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.size === undefined ) ? 20 : this.layout.font.size,
@@ -75,25 +75,59 @@ class ChartLayout extends ChartDefault {
         valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
       },
       xaxis : {
-        type : ( this.layout.xaxis === undefined|| this.layout.xaxis.type === undefined ) ? "-" : this.layout.xaxis.type,
-        side : ( this.layout.xaxis === undefined|| this.layout.xaxis.side === undefined ) ? "bottom" : this.layout.xaxis.side,
-        visible : ( this.layout.xaxis === undefined|| this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
-        color : ( this.layout.xaxis === undefined|| this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
-        autotypenumbers : ( this.layout.xaxis === undefined|| this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
-        autorange : ( this.layout.xaxis === undefined|| this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
-        rangemode : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
-        range : ( this.layout.xaxis === undefined|| this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
-        fixedrange : ( this.layout.xaxis === undefined|| this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
-        scaleanchor : ( this.layout.xaxis === undefined|| this.layout.xaxis.scaleanchor === undefined ) ? null : this.layout.xaxis.scaleanchor,
-        ticks : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticks === undefined ) ? "inside" : this.layout.xaxis.ticks,
-        tickmode : ( this.layout.xaxis === undefined|| this.layout.xaxis.tickmode === undefined ) ? "auto" : this.layout.xaxis.tickmode,
-        nticks : ( this.layout.xaxis === undefined|| this.layout.xaxis.nticks === undefined ) ? 0 : this.layout.xaxis.nticks,
-        tick0 : ( this.layout.xaxis === undefined|| this.layout.xaxis.tick0 === undefined ) ? null : this.layout.xaxis.tick0,
-        dtick : ( this.layout.xaxis === undefined|| this.layout.xaxis.dtick === undefined ) ? null : this.layout.xaxis.dtick,
-        tickvals : ( this.layout.xaxis === undefined|| this.layout.xaxis.tickvals === undefined ) ? [] : this.layout.xaxis.tickvals,
-        ticktext : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticktext === undefined ) ? [] : this.layout.xaxis.ticktext,
-        ticklabelposition : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis.ticklabelposition,
-        mirror : ( this.layout.xaxis === undefined|| this.layout.xaxis.mirror === undefined ) ? "all" : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
+        type : ( this.layout.xaxis === undefined || this.layout.xaxis.type === undefined ) ? "-" : this.layout.xaxis.type,
+        side : ( this.layout.xaxis === undefined || this.layout.xaxis.side === undefined ) ? "bottom" : this.layout.xaxis.side,
+        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
+        color : ( this.layout.xaxis === undefined || this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
+        autotypenumbers : ( this.layout.xaxis === undefined || this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
+        autorange : ( this.layout.xaxis === undefined || this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
+        rangemode : ( this.layout.xaxis === undefined || this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
+        range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
+        fixedrange : ( this.layout.xaxis === undefined || this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
+        scaleanchor : ( this.layout.xaxis === undefined || this.layout.xaxis.scaleanchor === undefined ) ? null : this.layout.xaxis.scaleanchor,
+        ticks : ( this.layout.xaxis === undefined || this.layout.xaxis.ticks === undefined ) ? "inside" : this.layout.xaxis.ticks,
+        tickmode : ( this.layout.xaxis === undefined || this.layout.xaxis.tickmode === undefined ) ? "auto" : this.layout.xaxis.tickmode,
+        nticks : ( this.layout.xaxis === undefined || this.layout.xaxis.nticks === undefined ) ? 0 : this.layout.xaxis.nticks,
+        tick0 : ( this.layout.xaxis === undefined || this.layout.xaxis.tick0 === undefined ) ? null : this.layout.xaxis.tick0,
+        dtick : ( this.layout.xaxis === undefined || this.layout.xaxis.dtick === undefined ) ? null : this.layout.xaxis.dtick,
+        tickvals : ( this.layout.xaxis === undefined || this.layout.xaxis.tickvals === undefined ) ? [] : this.layout.xaxis.tickvals,
+        ticktext : ( this.layout.xaxis === undefined || this.layout.xaxis.ticktext === undefined ) ? [] : this.layout.xaxis.ticktext,
+        ticklabelposition : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis.ticklabelposition,
+        mirror : ( this.layout.xaxis === undefined || this.layout.xaxis.mirror === undefined ) ? "all" : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
+        ticklen : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklen === undefined ) ? 10 : this.layout.xaxis.ticklen,
+        tickwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.tickwidth === undefined ) ? 2 : this.layout.xaxis.tickwidth,
+        tickcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.tickcolor === undefined ) ? "#263238" : this.layout.xaxis.tickcolor,
+        showticklabels : ( this.layout.xaxis === undefined || this.layout.xaxis.showticklabels === undefined ) ? true : this.layout.xaxis.showticklabels,
+        automargin : ( this.layout.xaxis === undefined || this.layout.xaxis.automargin === undefined ) ? true : this.layout.xaxis.automargin,
+        showspikes : ( this.layout.xaxis === undefined || this.layout.xaxis.showspikes === undefined ) ? true : this.layout.xaxis.showspikes,
+        spikecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.spikecolor === undefined ) ? "#000a12" : this.layout.xaxis.spikecolor,
+        spikethickness : ( this.layout.xaxis === undefined || this.layout.xaxis.spikethickness === undefined ) ? 2 : this.layout.xaxis.spikethickness,
+        spikedash : ( this.layout.xaxis === undefined || this.layout.xaxis.spikedash === undefined ) ? "dash" : this.layout.xaxis.spikedash,
+        spikemode : ( this.layout.xaxis === undefined || this.layout.xaxis.spikemode === undefined ) ? "toaxis" : this.layout.xaxis.spikemode,
+        tickangle : ( this.layout.xaxis === undefined || this.layout.xaxis.tickangle === undefined ) ? 45 : this.layout.xaxis.tickangle,
+        tickprefix : ( this.layout.xaxis === undefined || this.layout.xaxis.tickprefix === undefined ) ? "" : this.layout.xaxis.tickprefix,
+        showtickprefix : ( this.layout.xaxis === undefined || this.layout.xaxis.showtickprefix === undefined ) ? "none" : this.layout.xaxis.showtickprefix,
+        ticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.ticksuffix === undefined ) ? "" : this.layout.xaxis.ticksuffix,
+        showticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.showticksuffix === undefined ) ? "none" : this.layout.xaxis.showticksuffix,
+        showexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.showexponent === undefined ) ? "all" : this.layout.xaxis.showexponent,
+        exponentformat : ( this.layout.xaxis === undefined || this.layout.xaxis.exponentformat === undefined ) ? "e" : this.layout.xaxis.exponentformat,
+        minexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.minexponent === undefined ) ? 3 : this.layout.xaxis.minexponent,
+        separatethousands : ( this.layout.xaxis === undefined || this.layout.xaxis.separatethousands === undefined ) ? true : this.layout.xaxis.separatethousands,
+        showline : ( this.layout.xaxis === undefined || this.layout.xaxis.showline === undefined ) ? true : this.layout.xaxis.showline,
+        linecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.linecolor === undefined ) ? "red" : this.layout.xaxis.linecolor,
+        linewidth : ( this.layout.xaxis === undefined || this.layout.xaxis.linewidth === undefined ) ? 1 : this.layout.xaxis.linewidth,
+        showgrid : ( this.layout.xaxis === undefined || this.layout.xaxis.showgrid === undefined ) ? true : this.layout.xaxis.showgrid,
+        gridcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.gridcolor === undefined ) ? "green" : this.layout.xaxis.gridcolor,
+        gridwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.gridwidth === undefined ) ? 2 : this.layout.xaxis.gridwidth,
+        
+        
+        tickfont: {
+          family: ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.xaxis.tickfont.family,
+          size: ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.size === undefined ) ? 20 : this.layout.xaxis.tickfont.size,
+          color : ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.color === undefined ) ? "#000a12" : this.layout.xaxis.tickfont.color,
+        },
+
+
        
         title: {
           text : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.layout.xaxis.title.text,
@@ -104,11 +138,10 @@ class ChartLayout extends ChartDefault {
           },
           standoff : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.standoff === undefined ) ? 10 : this.layout.xaxis.title.standoff ,
         },
-        automargin : ( this.layout.xaxis === undefined|| this.layout.xaxis.automargin === undefined ) ? true : this.layout.xaxis.automargin,
         rangeslider : {
           visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.visible,
-          bgcolor : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangeslider === undefined|| this.layout.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.layout.xaxis.rangeslider.bgcolor,
-          thickness : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangeslider === undefined|| this.layout.xaxis.rangeslider.thickness === undefined ) ?  0.1 : this.layout.xaxis.rangeslider.thickness,
+          bgcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.layout.xaxis.rangeslider.bgcolor,
+          thickness : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.thickness === undefined ) ?  0.1 : this.layout.xaxis.rangeslider.thickness,
         }
       },
       yaxis: {
@@ -580,6 +613,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.ticklabelposition,
               hint: "Determines where tick labels are drawn with respect to the axis Please note that top or bottom has no effect on x axes or when `ticklabelmode` is set to 'period'. Similarly left or right has no effect on y axes or when `ticklabelmode` is set to 'period'. Has no effect on 'multicategory' axes or when `tickson` is set to 'boundaries'. When used on axes linked by `matches` or `scaleanchor`, no extra padding for inside labels would be added by autorange, so that the scales could match."
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][mirror]",
               title : "Mirror",	
@@ -593,6 +628,288 @@ class ChartLayout extends ChartDefault {
               },
               value : true === this.options().xaxis.mirror  ? "true" : false === this.options().xaxis.mirror ? "false" : this.options().xaxis.mirror,
               hint: "Determines if the axis lines or/and ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][ticklen]",
+              title : "Tick Length",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.ticklen,
+              hint: "Sets the tick length (in px)."
+            },
+            {
+              id : "chartLayout[xaxis][tickwidth]",
+              title : "Tick width",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.tickwidth,
+              hint: "Sets the tick width (in px)."
+            },
+            {
+              id : "chartLayout[xaxis][tickcolor]",
+              title : "Tick color",	
+              type : "color",
+              value : this.options().xaxis.tickcolor,
+              hint: "Sets the tick color."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][showticklabels]",
+              title : "Show Tick Labels",	
+              type : "checkbox",
+              value : this.options().xaxis.showticklabels,
+              hint: "Determines whether or not the tick labels are drawn."
+            },
+            {
+              id : "chartLayout[xaxis][automargin]",
+              title : "Auto Margin",	
+              type : "checkbox",
+              value : this.options().xaxis.automargin,
+              hint: "Determines whether long tick labels automatically grow the figure margins."
+            },
+            {
+              id : "chartLayout[xaxis][showspikes]",
+              title : "Show Spikes",	
+              type : "checkbox",
+              value : this.options().xaxis.showspikes,
+              hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][spikedash]",
+              title : "Spike Type",	
+              type : "select",
+              options : {
+                solid: "Solid",
+                dot: "Dot",
+                dash: "Dash",
+                longdash: "Long Dash",
+                dashdot: "Dash Dot",
+                longdashdot: "Long Dash Dot"
+              },
+              value : this.options().xaxis.spikedash,
+              hint: "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
+            },
+            {
+              id : "chartLayout[xaxis][spikethickness]",
+              title : "Spike Thiclness",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.spikethickness,
+              hint: "Sets the width (in px) of the zero line."
+            },
+            {
+              id : "chartLayout[xaxis][spikecolor]",
+              title : "Spike Color",	
+              type : "color",
+              value : this.options().xaxis.spikecolor,
+              hint: "Sets the spike color. If undefined, will use the series colorSets the tick color."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][spikemode]",
+              title : "Spike Mode",	
+              type : "select",
+              options : {
+                toaxis: "To Axis",
+                across: "Across",
+                marker: "Marker",
+                "toaxis+across": "To Axis & Across",
+                "toaxis+marker": "To Axis & Marker",
+                "across+marker": "Across & Marker",
+                "toaxis+across+marker": "To Axis & Across & Marker",
+              },
+              value : this.options().xaxis.spikemode,
+              hint: "Determines the drawing mode for the spike line If 'toaxis', the line is drawn from the data point to the axis the series is plotted on. If 'across', the line is drawn across the entire plot area, and supercedes 'toaxis'. If 'marker', then a marker dot is drawn on the axis the series is plotted on"
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][tickfont][family]",
+              title : "Tick Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().xaxis.tickfont.family,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+            },
+            {
+              id : "chartLayout[xaxis][tickfont][size]", 
+              title : "Tick Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().xaxis.tickfont.size,
+              hint : "number greater than or equal to 1"
+            },
+            {
+              id : "chartLayout[xaxis][tickfont][color]",
+              title : "Tick Font Color",
+              type : "color", 
+              value : this.options().xaxis.tickfont.color,
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][tickangle]", 
+              title : "Tick Abgle", 
+              type : "number",
+              min : -180,
+              max : 180,
+              step : 1,
+              value : this.options().xaxis.tickangle,
+              hint : "Sets the angle of the tick labels with respect to the horizontal. For example, a `tickangle` of -90 draws the tick labels vertically."
+            },
+            {
+              id : "chartLayout[xaxis][tickprefix]", 
+              title : "Tick Prefix", 
+              type : "Text",
+              value : this.options().xaxis.tickprefix,
+              hint : "Sets a tick label prefix."
+            },
+            {
+              id : "chartLayout[xaxis][showtickprefix]", 
+              title : "Show Tick Prefix", 
+              type : "select",
+              options : {
+                all: "All",
+                first: "First",
+                last: "Last",
+                none: "None",
+              },
+              value : this.options().xaxis.showtickprefix,
+              hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][ticksuffix]", 
+              title : "Tick Suffix", 
+              type : "Text",
+              value : this.options().xaxis.ticksuffix,
+              hint : "Sets a tick label suffix."
+            },
+            {
+              id : "chartLayout[xaxis][showticksuffix]", 
+              title : "Show Tick Suffix", 
+              type : "select",
+              options : {
+                all: "All",
+                first: "First",
+                last: "Last",
+                none: "None",
+              },
+              value : this.options().xaxis.showticksuffix,
+              hint : "If 'all', all tick labels are displayed with a suffix. If 'first', only the first tick is displayed with a suffix. If 'last', only the last tick is displayed with a suffix. If 'none', tick suffixes are hidden.Sets a tick label suffix."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][showexponent]", 
+              title : "Show Exponent", 
+              type : "select",
+              options : {
+                all: "All",
+                first: "First",
+                last: "Last",
+                none: "None",
+              },
+              value : this.options().xaxis.showexponent,
+              hint : "If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
+            },
+            {
+              id : "chartLayout[xaxis][exponentformat]", 
+              title : "Exponent Format", 
+              type : "select",
+              options : {
+                e: "e",
+                E: "E",
+                power: "Power",
+                SI: "SI",
+                B: "B",
+                none: "None",
+              },
+              value : this.options().xaxis.exponentformat,
+              hint : "Determines a formatting rule for the tick exponents. For example, consider the number 1,000,000,000. If 'none', it appears as 1,000,000,000. If 'e', 1e+9. If 'E', 1E+9. If 'power', 1x10^9 (with 9 in a super script). If 'SI', 1G. If 'B', 1B.If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
+            },
+            {
+              id : "chartLayout[xaxis][minexponent]", 
+              title : "Minimum Exponent", 
+              type : "number",
+              value : this.options().xaxis.minexponent,
+              hint : "Hide SI prefix for 10^n if |n| is below this number. This only has an effect when `tickformat` is 'SI' or 'B'."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][separatethousands]", 
+              title : "Seperate Thousands", 
+              type : "checkbox",
+              value : this.options().xaxis.separatethousands,
+              hint : "If 'true', even 4-digit integers are separated"
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][showline]", 
+              title : "Show Bounding Line", 
+              type : "checkbox",
+              value : this.options().xaxis.showline,
+              hint : "Determines whether or not a line bounding this axis is drawn."
+            },
+            {
+              id : "chartLayout[xaxis][linewidth]", 
+              title : "Line Width", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 1,
+              value : this.options().xaxis.linewidth,
+              hint : "Sets the width (in px) of the axis line."
+            },
+            {
+              id : "chartLayout[xaxis][linecolor]", 
+              title : "Line Color", 
+              type : "color",
+              value : this.options().xaxis.linecolor,
+              hint : "Sets the axis line color."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][showgrid]", 
+              title : "Show Grid", 
+              type : "checkbox",
+              value : this.options().xaxis.showgrid,
+              hint : "Determines whether or not grid lines are drawn. If 'true', the grid lines are drawn at every tick mark.Determines whether or not a line bounding this axis is drawn."
+            },
+            {
+              id : "chartLayout[xaxis][gridwidth]", 
+              title : "Grid Width", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 1,
+              value : this.options().xaxis.gridwidth,
+              hint : "Sets the width (in px) of the grid lines."
+            },
+            {
+              id : "chartLayout[xaxis][gridcolor]", 
+              title : "GridColor", 
+              type : "color",
+              value : this.options().xaxis.gridcolor,
+              hint : "Sets the color of the grid lines."
             },
           ],
         ]  
