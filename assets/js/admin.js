@@ -21,6 +21,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
+  console.log("false" == false)
 
 
   try {

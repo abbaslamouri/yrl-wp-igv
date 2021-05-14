@@ -11,7 +11,7 @@ const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
 
 
 // Assemble chart layout chart and and render chart layout panel
-  const chartLayoutInstance = new ChartLayout( iwpgvCharts.chart.chartLayout.options, iwpgvObj )
+  const chartLayoutInstance = new ChartLayout( iwpgvCharts.chart.chartLayout.options, spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data[0], iwpgvObj )
   iwpgvCharts.chart.chartLayout.options = chartLayoutInstance.options()
   iwpgvCharts.chart.chartLayout.panel.sections = chartLayoutInstance.sections()
   panel(iwpgvCharts.chart.chartLayout.panel, iwpgvObj)

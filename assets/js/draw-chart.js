@@ -95,16 +95,35 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                 document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
               }
               Plotly.newPlot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
+            } else if ( key === "xaxis.range" ) {
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.toString().split(",").map( ( item ) => { return parseFloat( item ) } ) }, chart.chartLayout.options.config )
+            } else if ( key === "xaxis.autorange" ) {
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
+            } else if ( key === "xaxis.mirror" ) {
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
+            }
+            else if ( key === "xaxis.tickmode" ) {
+              if ( value === "array" ) {
+                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
+                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
+              } else {
+                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
+                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
+              }
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value }, chart.chartLayout.options.config )
+            }else if ( key === "xaxis.tickvals" || key === "xaxis.ticktext" ) {
+              console.log(value.split(",").map( ( item ) => { return  item } ))
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.split(",").map( ( item ) => { return  item } ) }, chart.chartLayout.options.config )
             } else if (key === "hovermode" || key === "legend.itemclick" ) {
-              value = ( event.target.value !== "disabled" ) ? event.target.value : false
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.chartLayout.options.config )
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  ( event.target.value !== "disabled" ) ? event.target.value : false }, chart.chartLayout.options.config )
             } else {
               switch(keyParts.length){
                 case 1:
-                  chart[control].options[keyParts[0]] = event.target.type === 'checkbox' ? event.target.checked : value
+                  chart.chartLayout.options[keyParts[0]] = value
                   break
                 case 2:
-                  chart[control].options[keyParts[0]][keyParts[1]] = event.target.type === 'checkbox' ? event.target.checked : value
+                  chart.chartLayout.options[keyParts[0]][keyParts[1]] = value
+                  console.log(chart.chartLayout.options[keyParts[0]][keyParts[1]])
                   break
                 case 3:
                   chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value

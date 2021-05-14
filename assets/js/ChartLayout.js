@@ -5,12 +5,13 @@ import ChartDefault from "./ChartDefault";
 
 class ChartLayout extends ChartDefault {
 
-  constructor(layout, iwpgvObj, fontFamily) {
+  constructor(layout, xAxisData, iwpgvObj, fontFamily) {
 
     super(fontFamily);
 
     this.layout = layout
     this.prefix = iwpgvObj.prefix
+    this.xAxisData = xAxisData
    
   }
 
@@ -79,10 +80,21 @@ class ChartLayout extends ChartDefault {
         visible : ( this.layout.xaxis === undefined|| this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
         color : ( this.layout.xaxis === undefined|| this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
         autotypenumbers : ( this.layout.xaxis === undefined|| this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
-        autorange : ( this.layout.xaxis === undefined|| this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "enabled" ? true : this.layout.xaxis.autorange === "disabled" ? false : this.layout.xaxis.autorange,
+        autorange : ( this.layout.xaxis === undefined|| this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
         rangemode : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
-        range : ( this.layout.xaxis === undefined|| this.layout.xaxis.range === undefined ) ? null : this.layout.xaxis.range,
+        range : ( this.layout.xaxis === undefined|| this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
         fixedrange : ( this.layout.xaxis === undefined|| this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
+        scaleanchor : ( this.layout.xaxis === undefined|| this.layout.xaxis.scaleanchor === undefined ) ? null : this.layout.xaxis.scaleanchor,
+        ticks : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticks === undefined ) ? "inside" : this.layout.xaxis.ticks,
+        tickmode : ( this.layout.xaxis === undefined|| this.layout.xaxis.tickmode === undefined ) ? "auto" : this.layout.xaxis.tickmode,
+        nticks : ( this.layout.xaxis === undefined|| this.layout.xaxis.nticks === undefined ) ? 0 : this.layout.xaxis.nticks,
+        tick0 : ( this.layout.xaxis === undefined|| this.layout.xaxis.tick0 === undefined ) ? null : this.layout.xaxis.tick0,
+        dtick : ( this.layout.xaxis === undefined|| this.layout.xaxis.dtick === undefined ) ? null : this.layout.xaxis.dtick,
+        tickvals : ( this.layout.xaxis === undefined|| this.layout.xaxis.tickvals === undefined ) ? [] : this.layout.xaxis.tickvals,
+        ticktext : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticktext === undefined ) ? [] : this.layout.xaxis.ticktext,
+        ticklabelposition : ( this.layout.xaxis === undefined|| this.layout.xaxis.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis.ticklabelposition,
+        mirror : ( this.layout.xaxis === undefined|| this.layout.xaxis.mirror === undefined ) ? "all" : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
+       
         title: {
           text : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.layout.xaxis.title.text,
           font : {
@@ -189,16 +201,28 @@ class ChartLayout extends ChartDefault {
               value : this.options().width,
               hint : "Sets the plot's width (in px)."
             },
+            
+          ],
+          [
             {
-              id : "chartLayout[height]", 
-              title : "Plot Height", 
-              type : "number",
-              min : 10,
-              max : 2000,
-              step : 10,
-              value : this.options().height,
-              hint : "Sets the plot's height (in px)."
+              id : "chartLayout[font][family]",
+              title : "Font Family",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().font.family,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
+            {
+              id : "chartLayout[font][size]", 
+              title : "Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().font.size,
+              hint : "number greater than or equal to 1"
+            },
+           
           ],
           [
             {
@@ -214,6 +238,34 @@ class ChartLayout extends ChartDefault {
               type : "color", 
               value : this.options().plot_bgcolor,
               hint : "Sets the plot's height (in px)."
+            },
+            {
+              id : "chartLayout[font][color]",
+              title : "Font Color",
+              type : "color", 
+              value : this.options().font.color,
+            },
+          ],
+          [
+            {
+              id : "chartLayout[height]", 
+              title : "Plot Height", 
+              type : "number",
+              min : 10,
+              max : 2000,
+              step : 10,
+              value : this.options().height,
+              hint : "Sets the plot's height (in px)."
+            },
+            {
+              id : "chartLayout[margin][pad]", 
+              title : "Chart Padding", 
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 10,
+              value : this.options().margin.pad,
+              hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
             },
           ],
           [
@@ -262,24 +314,12 @@ class ChartLayout extends ChartDefault {
           ],
           [
             {
-              id : "chartLayout[margin][pad]", 
-              title : "Chart Padding", 
-              type : "number",
-              min : 0,
-              max : 2000,
-              step : 10,
-              value : this.options().margin.pad,
-              hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
-            },
-            {
               id : "chartLayout[config][responsive]",
               title : "Responsive ?",
               type : "checkbox", 
               value : this.options().config.responsive,
               hint: ""
             },
-          ],
-          [
             {
               id : "chartLayout[margin][autoexpand]", 
               title : "Margin Auto Expand", 
@@ -295,35 +335,7 @@ class ChartLayout extends ChartDefault {
               hint : "Determines whether or not a layout width or height that has been left undefined by the user is initialized on each relayout. Note that, regardless of this attribute, an undefined layout width or height is always initialized on the first call to plot."
             },
           ],
-          [
-            {
-              id : "chartLayout[font][family]",
-              title : "Font Family",	
-              type : "select",
-              options : this.fontFamily,
-              value : this.options().font.family,
-              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-            },
-          ],
-          [
-            {
-              id : "chartLayout[font][size]", 
-              title : "Font Size", 
-              type : "number",
-              min : 1,
-              max : 100,
-              step : 0.5,
-              value : this.options().font.size,
-              hint : "number greater than or equal to 1"
-            },
-            {
-              id : "chartLayout[font][color]",
-              // cssClasses: ["no-hint"],
-              title : "Font Color",
-              type : "color", 
-              value : this.options().font.color,
-            },
-          ],
+         
         ]  
       },
       xaxis : {
@@ -359,8 +371,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.side,
               hint: "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][visible]",
               title : "Show",	
@@ -368,6 +378,8 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.visible,
               hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][color]",
               title : "Colr",	
@@ -375,8 +387,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.color,
               hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][title][text]",
               title : "Title",
@@ -404,8 +414,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.title.font.family,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][title][font][size]", 
               title : "Title Font Size", 
@@ -435,20 +443,20 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.autotypenumbers,
               hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][autorange]",
               title : "Auto Range",	
               type : "select",
               options : {
-                enabled: "Enabled",
-                disabled: "Disabled",
+                true: "Enabled",
+                false: "Disabled",
                 reversed: "Reversed"
               },
-              value : this.options().xaxis.autorange ? "enabled" : ! this.options().xaxis.autorange ? "disabled" : this.options().xaxis.autorange,
+              value : true === this.options().xaxis.autorange ? "true" : false === this.options().xaxis.autorange ? "false" : this.options().xaxis.autorange,
               hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][rangemode]",
               title : "Range Mode",	
@@ -461,13 +469,11 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.rangemode,
               hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][range]",
               title : "Range",	
               type : "text",
-              value : this.options().xaxis.range,
+              value : this.options().xaxis.range.join(),
               hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
             },
             {
@@ -476,6 +482,117 @@ class ChartLayout extends ChartDefault {
               type : "checkbox",
               value : this.options().xaxis.fixedrange,
               hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][scaleanchor]",
+              title : "Scale Anchor",	
+              type : "text",
+              value : this.options().xaxis.scaleanchor,
+              hint: "If set to another axis id (e.g. `x2`, `y`), the range of this axis changes together with the range of the corresponding axis such that the scale of pixels per unit is in a constant ratio. Both axes are still zoomable, but when you zoom one, the other will zoom the same amount, keeping a fixed midpoint. `constrain` and `constraintoward` determine how we enforce the constraint. You can chain these, ie `yaxis: {scaleanchor: 'x'}, xaxis2: {scaleanchor: 'y'}` but you can only link axes of the same `type`. The linked axis can have the opposite letter (to constrain the aspect ratio) or the same letter (to match scales across subplots). Loops (`yaxis: {scaleanchor: 'x'}, xaxis: {scaleanchor: 'y'}` or longer) are redundant and the last constraint encountered will be ignored to avoid possible inconsistent constraints via `scaleratio`. Note that setting axes simultaneously in both a `scaleanchor` and a `matches` constraint is currently forbidden."
+            },
+
+            {
+              id : "chartLayout[xaxis][ticks]",
+              title : "Ticks",	
+              type : "select",
+              options : {
+                "": "Hide",
+                inside: "Inside",
+                outside: "Outside"
+              },
+              value : this.options().xaxis.ticks,
+              hint: "Determines whether ticks are drawn or not. If '', this axis' ticks are not drawn. If 'outside' ('inside'), this axis' are drawn outside (inside) the axis lines."
+            },
+            {
+              id : "chartLayout[xaxis][tickmode]",
+              title : "Tick Mode",	
+              type : "select",
+              options : {
+                auto: "Auto",
+                linear: "Linear",
+                array: "Array"
+              },
+              value : this.options().xaxis.tickmode,
+              hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][nticks]",
+              title : "Number of Ticks",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.nticks,
+              hint: "Specifies the maximum number of ticks for the particular axis. The actual number of ticks will be chosen automatically to be less than or equal to `nticks`. Has an effect only if `tickmode` is set to 'auto'."
+            },
+            {
+              id : "chartLayout[xaxis][tick0]",
+              title : "First Tick Position",	
+              type : "number",
+              value : this.options().xaxis.tick0,
+              hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
+            },
+            {
+              id : "chartLayout[xaxis][dtick]",
+              title : "Number of Ticks",	
+              type : "number",
+              value : this.options().xaxis.dtick,
+              hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][tickvals]",
+              title : "Ticks Positions",	
+              type : "text",
+              value : this.options().xaxis.tickvals.join(),
+              readOnly: this.options().xaxis.tickmode !== "array" ? true : false,
+              hint: "Sets the values at which ticks on this axis appear. Only has an effect if `tickmode` is set to 'array'. Used with `ticktext`."
+            },
+            {
+              id : "chartLayout[xaxis][ticktext]",
+              title : "Ticks Texts",	
+              type : "text",
+              value : this.options().xaxis.ticktext.join(),
+              readOnly: this.options().xaxis.tickmode !== "array" ? true : false,
+              hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
+            },
+            {
+              id : "chartLayout[xaxis][ticklabelposition]",
+              title : "Tick Label Position",	
+              type : "select",
+              options : {
+                outside: "Outside",
+                inside: "Inside",
+                "outside top": "Outside Top",
+                "inside top": "Inside Top",
+                "outside left": "Outside Left",
+                "inside left": "Inside Left",
+                "outside right": "Outside Right",
+                "inside right": "Inside Right",
+                "outside bottom": "Outside Bottom",
+                "inside bottom": "Inside Bottom"
+              },
+              value : this.options().xaxis.ticklabelposition,
+              hint: "Determines where tick labels are drawn with respect to the axis Please note that top or bottom has no effect on x axes or when `ticklabelmode` is set to 'period'. Similarly left or right has no effect on y axes or when `ticklabelmode` is set to 'period'. Has no effect on 'multicategory' axes or when `tickson` is set to 'boundaries'. When used on axes linked by `matches` or `scaleanchor`, no extra padding for inside labels would be added by autorange, so that the scales could match."
+            },
+            {
+              id : "chartLayout[xaxis][mirror]",
+              title : "Mirror",	
+              type : "select",
+              options : {
+                true: "Yes",
+                ticks: "Ticks",
+                false: "No",
+                all: "All",
+                allticks: "All Ticks",
+              },
+              value : true === this.options().xaxis.mirror  ? "true" : false === this.options().xaxis.mirror ? "false" : this.options().xaxis.mirror,
+              hint: "Determines if the axis lines or/and ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
             },
           ],
         ]  
