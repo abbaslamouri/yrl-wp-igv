@@ -9,10 +9,10 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
   const chart = iwpgvCharts.chart
 
-  console.log(chart)
+  // console.log(chart)
   
   // Update chartLayout options
-  chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
+  // chart.chartLayout.options.hovermode = ( chart.chartLayout.hovermode ) ? chart.chartLayout.hovermode : false
   
   // Render chart
   if ( spreadsheet ) {
@@ -35,7 +35,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
 
     // Plot table
-    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config)
+    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, {displayModeBar: false})
 
     // Show range min and max input fields
     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )

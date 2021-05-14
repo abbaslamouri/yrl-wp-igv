@@ -24,8 +24,8 @@ class ChartLayout extends ChartDefault {
 
       config:{
         responsive : ( this.layout.config  === undefined || this.layout.config.responsive  === undefined ) ? true : this.layout.config.responsive,
-        displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? false :this.layout.config.displayModeBar,
-        displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? false : this.layout.config.displaylogo,
+        displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? true :this.layout.config.displayModeBar,
+        displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? true : this.layout.config.displaylogo,
       },
       showlegend : ( this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
       showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable === undefined ) ? false : this.layout.showMinMaxAvgTable,
@@ -34,7 +34,7 @@ class ChartLayout extends ChartDefault {
       width : ( this.layout.width === undefined ) ? null : this.layout.width,
       height : ( this.layout.height === undefined ) ? 450 : this.layout.height,
       autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
-      hovermode : ( this.layout.hovermode === undefined ) ? false : this.layout.hovermode,
+      hovermode : ( this.layout.hovermode === undefined ) ? false : this.layout.hovermode === "disabled" ? false : this.layout.hovermode,
       font : {
         family : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.layout.font.family,
         size : ( this.layout === undefined || this.layout.font === undefined || this.layout.font.size === undefined ) ? 20 : this.layout.font.size,
@@ -86,7 +86,36 @@ class ChartLayout extends ChartDefault {
         }
       },
       yaxis: {
+        type : ( this.layout.yaxis === undefined || this.layout.yaxis.type === undefined ) ? "-" : this.layout.yaxis.type,
+        visible : ( this.layout.yaxis === undefined || this.layout.yaxis.visible === undefined ) ? true : this.layout.yaxis.visible,
+        color : ( this.layout.yaxis === undefined || this.layout.yaxis.color === undefined ) ? "#DD2C00" : this.layout.yaxis.color,
         fixedrange : ( this.layout.yaxis === undefined || this.layout.yaxis.fixedrange === undefined ) ? true : this.layout.yaxis.fixedrange,
+        title: {
+          text : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.text === undefined ) ? "Title Text" : this.layout.yaxis.title.text,
+          font : {
+            family: ( this.layout.yaxis === undefined ||  this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.yaxis.title.font.family,
+            size: ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.size === undefined ) ? 20 : this.layout.yaxis.title.font.size,
+            color : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.color === undefined ) ? "#1B5E20" : this.layout.yaxis.title.font.color,
+          },
+          standoff : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.standoff === undefined ) ? 10 : this.layout.yaxis.title.standoff ,
+        },
+      },
+      yaxis2: {
+        type : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.type === undefined ) ? "-" : this.layout.yaxis2.type,
+        overlaying : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.overlaying === undefined ) ? "y" : this.layout.yaxis2.overlaying,
+        side : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.side === undefined ) ? "right" : this.layout.yaxis2.side,
+        visible : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.visible === undefined ) ? true : this.layout.yaxis2.visible,
+        color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.color === undefined ) ? "#FF6D00" : this.layout.yaxis2.color,
+        fixedrange : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.fixedrange === undefined ) ? true : this.layout.yaxis2.fixedrange,
+        title: {
+          text : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.text === undefined ) ? "Title Text" : this.layout.yaxis2.title.text,
+          font : {
+            family: ( this.layout.yaxis2 === undefined ||  this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.yaxis2.title.font.family,
+            size: ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.size === undefined ) ? 20 : this.layout.yaxis2.title.font.size,
+            color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.color === undefined ) ? "#808e95" : this.layout.yaxis2.title.font.color,
+          },
+          standoff : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.standoff === undefined ) ? 10 : this.layout.yaxis2.title.standoff ,
+        },
       },
       margin: {
         l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
@@ -98,9 +127,9 @@ class ChartLayout extends ChartDefault {
       },
       modebar : {
         orientation : ( this.layout.modebar === undefined || this.layout.modebar.orientation === undefined ) ? "h" : this.layout.modebar.orientation,
-        bgcolor : ( this.layout.modebar === undefined || this.layout.modebar.bgcolor === undefined ) ? "" : this.layout.modebar.bgcolor,
-        color : ( this.layout.modebar === undefined || this.layout.modebar.color === undefined ) ? "" : this.layout.modebar.color,
-        activecolor : ( this.layout.modebar === undefined || this.layout.modebar.activecolor === undefined ) ? "" : this.layout.modebar.activecolor,
+        bgcolor : ( this.layout.modebar === undefined || this.layout.modebar.bgcolor === undefined ) ? "#eeeeee" : this.layout.modebar.bgcolor,
+        color : ( this.layout.modebar === undefined || this.layout.modebar.color === undefined ) ? "#000a12" : this.layout.modebar.color,
+        activecolor : ( this.layout.modebar === undefined || this.layout.modebar.activecolor === undefined ) ? "#b0bec5" : this.layout.modebar.activecolor,
       },
       hoverlabel: {
         bgcolor: ( this.layout.hoverlabel === undefined || this.layout.hoverlabel.bgcolor=== undefined ) ? "#e2f1f8" : this.layout.hoverlabel.bgcolor,
@@ -566,6 +595,213 @@ class ChartLayout extends ChartDefault {
           ],
         ]  
       },
+      yaxis : {
+        intro : "Here you can modify the left y-axis",
+        id : `${this.prefix}__chartLayoutPanel__yaxis`,
+        cssClasses:["chartLayout", "subPanel"],
+        title : "Left Axis",
+        fields : [
+          [
+            {
+              id : "chartLayout[yaxis][type]",
+              title : "Type",	
+              type : "select",
+              options : {
+                "-": "Default",
+                linear: "Linear",
+                log: "Log",
+                date: "Date",
+                category: "Category",
+                multicategory:"Multi category"
+              },
+              value : this.options().yaxis.type,
+              hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis][visible]",
+              title : "Show Axis",
+              type : "checkbox", 
+              value : this.options().yaxis.visible,
+              hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
+            },
+            {
+              id : "chartLayout[yaxis][color]",
+              title : "Color",
+              type : "color", 
+              value : this.options().yaxis.color,
+              hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis][fixedrange]",
+              title : "Zoomable",
+              type : "checkbox", 
+              value : this.options().yaxis.fixedrange,
+              hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis][title][text]",
+              title : "Title",
+              type : "text", 
+              value : this.options().yaxis.title.text,
+              hint: "Sets the title of the y-axis."
+            },
+            {
+              id : "chartLayout[yaxis][title][standoff]",
+              title : "Standoff ",
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 0.5,
+              value : this.options().yaxis.title.standoff,
+              hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
+            }
+          ],
+          [
+            {
+              id : "chartLayout[yaxis][title][font][family]",
+              title : "Title Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().yaxis.title.font.family,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis][title][font][size]", 
+              title : "Title Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().yaxis.title.font.size,
+              hint : "number greater than or equal to 1"
+            },
+            {
+              id : "chartLayout[yaxis][title][font][color]",
+              title : "Title Font Color",
+              type : "color", 
+              value : this.options().yaxis.title.font.color,
+            },
+          ],
+        ]  
+      },
+      yaxis2 : {
+        intro : "Here you can modify the right y-axis",
+        id : `${this.prefix}__chartLayoutPanel__yaxis2`,
+        cssClasses:["chartLayout", "subPanel"],
+        title : "Right Axis",
+        fields : [
+          [
+            {
+              id : "chartLayout[yaxis2][type]",
+              title : "Type",	
+              type : "select",
+              options : {
+                "-": "Default",
+                linear: "Linear",
+                log: "Log",
+                date: "Date",
+                category: "Category",
+                multicategory:"Multi category"
+              },
+              value : this.options().yaxis2.type,
+              hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question."
+            },
+            {
+              id : "chartLayout[yaxis2][side]",
+              title : "Side",	
+              type : "select",
+              options : {
+                left: "Left",
+                right: "Right",
+                top: "Top",
+                bottom: "Bottom"
+              },
+              value : this.options().yaxis2.type,
+              hint: "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis2][visible]",
+              title : "Show Axis",
+              type : "checkbox", 
+              value : this.options().yaxis2.visible,
+              hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
+            },
+            {
+              id : "chartLayout[yaxis2][color]",
+              title : "Color",
+              type : "color", 
+              value : this.options().yaxis2.color,
+              hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis2][fixedrange]",
+              title : "Zoomable",
+              type : "checkbox", 
+              value : this.options().yaxis2.fixedrange,
+              hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis2][title][text]",
+              title : "Title",
+              type : "text", 
+              value : this.options().yaxis2.title.text,
+              hint: "Sets the title of the y-axis."
+            },
+            {
+              id : "chartLayout[yaxis2][title][standoff]",
+              title : "Standoff ",
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 0.5,
+              value : this.options().yaxis2.title.standoff,
+              hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
+            }
+          ],
+          [
+            {
+              id : "chartLayout[yaxis2][title][font][family]",
+              title : "Title Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().yaxis2.title.font.family,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[yaxis2][title][font][size]", 
+              title : "Title Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().yaxis2.title.font.size,
+              hint : "number greater than or equal to 1"
+            },
+            {
+              id : "chartLayout[yaxis2][title][font][color]",
+              title : "Title Font Color",
+              type : "color", 
+              value : this.options().yaxis2.title.font.color,
+            },
+          ],
+        ]  
+      },
       hoverLabel : {
         intro : "Here you can modify the plot Hover Label",
         id : `${this.prefix}__chartLayoutPanel__hoverlabel`,
@@ -666,6 +902,24 @@ class ChartLayout extends ChartDefault {
         title : "Modebar",
         fields : [
           [
+            
+            {
+              id : "chartLayout[config][displayModeBar]",
+              title : "Display ModeBar ?",
+              type : "checkbox", 
+              value : this.options().config.displayModeBar,
+              hint: ""
+            },
+            {
+              id : "chartLayout[config][displaylogo]",
+              title : "Display Plotly Logo ?",
+              type : "checkbox", 
+              value : this.options().config.displaylogo,
+              disabled: this.options().config.displayModeBar ? false : true,
+              hint: ""
+            },
+          ],
+          [
             {
               id : "chartLayout[modebar][bgcolor]",
               title : "Background Color",
@@ -746,34 +1000,15 @@ class ChartLayout extends ChartDefault {
           ]
         ]  
       },
-      config : {
-        intro : "Here you can modify the plot configuration",
-        id : `${this.prefix}__chartLayoutPanel__config`,
-        cssClasses:["chartLayout", "subPanel"],
-        title : "Configuration",
-        fields : [
-          [
-            
-            {
-              id : "chartLayout[config][displayModeBar]",
-              title : "Display ModeBar ?",
-              type : "checkbox", 
-              value : this.options().config.displayModeBar,
-              hint: ""
-            },
-          ],
-          [
-            {
-              id : "chartLayout[config][displaylogo]",
-              title : "Display Plotly Logo ?",
-              type : "checkbox", 
-              value : this.options().config.displaylogo,
-              disabled: this.options().config.displayModeBar ? false : true,
-              hint: ""
-            },
-          ],
-        ]  
-      }
+      // config : {
+      //   intro : "Here you can modify the plot configuration",
+      //   id : `${this.prefix}__chartLayoutPanel__config`,
+      //   cssClasses:["chartLayout", "subPanel"],
+      //   title : "Configuration",
+      //   fields : [
+          
+      //   ]  
+      // }
     }
     
   }

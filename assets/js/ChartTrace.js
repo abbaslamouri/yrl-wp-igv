@@ -38,35 +38,36 @@ class ChartTrace extends ChartDefault {
 
     return {
 
-      // type : ( this.trace === undefined||  this.trace.type === undefined ) ? this.trace.type :  this.type,
-      // connectgaps : ( this.trace === undefined||  this.trace.connectgaps === undefined ) ?  this.trace.connectgaps : false,
-      mode : ( this.trace === undefined|| this.trace.mode === undefined ) ? this.mode : this.trace.mode,
+      // type : ( this.trace === undefined ||  this.trace.type === undefined ) ? this.trace.type :  this.type,
+      // connectgaps : ( this.trace === undefined ||  this.trace.connectgaps === undefined ) ?  this.trace.connectgaps : false,
+      mode : ( this.trace === undefined || this.trace.mode === undefined ) ? this.mode : this.trace.mode,
       name : this.labels[this.index],
-      visible : ( this.trace === undefined|| this.trace.visible === undefined ) ? true : this.trace.visible,
-      showlegend : ( this.trace === undefined|| this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
-      opacity : ( this.trace === undefined|| this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
+      visible : ( this.trace === undefined || this.trace.visible === undefined ) ? true : this.trace.visible,
+      showlegend : ( this.trace === undefined || this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
+      opacity : ( this.trace === undefined || this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
       x : this.spreadsheet[this.sheetId].data[0],
       y : this.spreadsheet[this.sheetId].data[this.index],
+      yaxis : ( this.trace.yaxis === undefined ) ? "y" : this.trace.yaxis,
       line : {
-        color : ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.color === undefined ) ? this.colors[this.index] : this.trace.line.color,
-        width: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.width === undefined ) ? 3 : this.trace.line.width,
-        shape: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.shape === undefined ) ? "spline" : this.trace.line.shape,
-        smoothing: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.smoothing === undefined ) ? 1 : this.trace.line.smoothing,
-        dash: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.dash === undefined ) ? "solid" : this.trace.line.dash,
-        simplify: ( this.trace === undefined|| this.trace.line === undefined|| this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
+        color : ( this.trace === undefined || this.trace.line === undefined || this.trace.line.color === undefined ) ? this.colors[this.index] : this.trace.line.color,
+        width: ( this.trace === undefined || this.trace.line === undefined || this.trace.line.width === undefined ) ? 3 : this.trace.line.width,
+        shape: ( this.trace === undefined || this.trace.line === undefined || this.trace.line.shape === undefined ) ? "spline" : this.trace.line.shape,
+        smoothing: ( this.trace === undefined || this.trace.line === undefined || this.trace.line.smoothing === undefined ) ? 1 : this.trace.line.smoothing,
+        dash: ( this.trace === undefined || this.trace.line === undefined || this.trace.line.dash === undefined ) ? "solid" : this.trace.line.dash,
+        simplify: ( this.trace === undefined || this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
       },
       marker : {
-        symbol : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.symbol === undefined ) ? 1 : this.trace.marker.symbol,
-        maxdisplayed : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.maxdisplayed === undefined ) ? 10 : this.trace.marker.maxdisplayed,
-        color : ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.color === undefined ) ? this.colors[this.index] : this.trace.marker.color,
-        size: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.size === undefined ) ? 5 : this.trace.marker.size,
+        symbol : ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.symbol === undefined ) ? 1 : this.trace.marker.symbol,
+        maxdisplayed : ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.maxdisplayed === undefined ) ? 10 : this.trace.marker.maxdisplayed,
+        color : ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.color === undefined ) ? this.colors[this.index] : this.trace.marker.color,
+        size: ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.size === undefined ) ? 5 : this.trace.marker.size,
         line: {
-          width: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.line === undefined|| this.trace.marker.line.width === undefined ) ? 1 : this.trace.marker.line.width,
-          color: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.line === undefined|| this.trace.marker.line.color === undefined ) ?  "#4A148C" : this.trace.marker.line.color,
+          width: ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.width === undefined ) ? 1 : this.trace.marker.line.width,
+          color: ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.color === undefined ) ?  "#4A148C" : this.trace.marker.line.color,
         },
         gradient: {
-          type: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.gradient === undefined|| this.trace.marker.gradient.type === undefined ) ? "radial" : this.trace.marker.gradient.type,
-          color: ( this.trace === undefined||  this.trace.marker === undefined|| this.trace.marker.gradient === undefined|| this.trace.marker.gradient.color === undefined ) ? "#E65100" : this.trace.marker.gradient.color,
+          type: ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.gradient === undefined || this.trace.marker.gradient.type === undefined ) ? "radial" : this.trace.marker.gradient.type,
+          color: ( this.trace === undefined ||  this.trace.marker === undefined || this.trace.marker.gradient === undefined || this.trace.marker.gradient.color === undefined ) ? "#E65100" : this.trace.marker.gradient.color,
         }
       },
 
@@ -95,17 +96,29 @@ class ChartTrace extends ChartDefault {
                 lines : "LInes",
                 "lines+markers" : "LInes & Markers"
               },
-              value :  this.options()['mode'],
+              value :  this.options().mode,
               hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
             },
             {
               id : `chartTraces[${this.index-1}][name]`,  
               title : "Label in Legend",  
               type : "text",
-              value : this.options()['name'],
+              value : this.options().name,
               hint : "The trace name appear as the legend item and on hover."
             },
-            
+          ],
+          [
+            {
+              id : `chartTraces[${this.index-1}][yaxis]`, 
+              title : "Y-Axis", 	
+              type : "select", 
+              options : {
+                y : "Left",
+                y2 : "Right",
+              },
+              value :  this.options().yaxis,
+              hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
+            },
           ],
           [
             {
