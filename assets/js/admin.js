@@ -182,8 +182,6 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
         const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-        console.log("SHEET", sheetIdInput.value)
-        console.log("SHEET", spreadsheet)
           if (spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
           // console.log("HERE")
           for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {

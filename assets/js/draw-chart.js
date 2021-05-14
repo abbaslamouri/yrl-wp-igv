@@ -88,7 +88,6 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
           case "chartLayout":
             if ( key.includes( "config" ) ) {
-              console.log("PPPPPPPP")
               chart.chartLayout.options.config[key.split(".")[1]] = value
               if ( chart.chartLayout.options.config.displayModeBar ){
                 document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
@@ -140,7 +139,6 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             break
 
           case "chartTraces":
-            console.log(chart[control].options)
             const keyArr = key.split(".")
             const traceNumber = keyArr.shift()
             const optionKey = keyArr.join(".")
@@ -211,7 +209,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                     break
                 }
             }
-            if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout, chart.chartLayout.options.config) 
+            if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout) 
 
         }
         break

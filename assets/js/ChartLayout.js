@@ -11,10 +11,6 @@ class ChartLayout extends ChartDefault {
 
     this.layout = layout
     this.prefix = iwpgvObj.prefix
-
-    console.log("this.layout.showMinMaxAvgTable", this.layout.showMinMaxAvgTable)
-
-    // this.fontFamily = fontFamily
    
   }
 
@@ -78,6 +74,24 @@ class ChartLayout extends ChartDefault {
         valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
       },
       xaxis : {
+        type : ( this.layout.xaxis === undefined|| this.layout.xaxis.type === undefined ) ? "-" : this.layout.xaxis.type,
+        side : ( this.layout.xaxis === undefined|| this.layout.xaxis.side === undefined ) ? "bottom" : this.layout.xaxis.side,
+        visible : ( this.layout.xaxis === undefined|| this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
+        color : ( this.layout.xaxis === undefined|| this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
+        autotypenumbers : ( this.layout.xaxis === undefined|| this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
+        autorange : ( this.layout.xaxis === undefined|| this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "enabled" ? true : this.layout.xaxis.autorange === "disabled" ? false : this.layout.xaxis.autorange,
+        rangemode : ( this.layout.xaxis === undefined|| this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
+        range : ( this.layout.xaxis === undefined|| this.layout.xaxis.range === undefined ) ? null : this.layout.xaxis.range,
+        fixedrange : ( this.layout.xaxis === undefined|| this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
+        title: {
+          text : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.layout.xaxis.title.text,
+          font : {
+            family: ( this.layout.xaxis === undefined ||  this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.xaxis.title.font.family,
+            size: ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.size === undefined ) ? 20 : this.layout.xaxis.title.font.size,
+            color : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.color === undefined ) ? "#000a12" : this.layout.xaxis.title.font.color,
+          },
+          standoff : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.standoff === undefined ) ? 10 : this.layout.xaxis.title.standoff ,
+        },
         automargin : ( this.layout.xaxis === undefined|| this.layout.xaxis.automargin === undefined ) ? true : this.layout.xaxis.automargin,
         rangeslider : {
           visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.visible,
@@ -87,15 +101,16 @@ class ChartLayout extends ChartDefault {
       },
       yaxis: {
         type : ( this.layout.yaxis === undefined || this.layout.yaxis.type === undefined ) ? "-" : this.layout.yaxis.type,
+        side : ( this.layout.yaxis === undefined || this.layout.yaxis.side === undefined ) ? "left" : this.layout.yaxis.side,
         visible : ( this.layout.yaxis === undefined || this.layout.yaxis.visible === undefined ) ? true : this.layout.yaxis.visible,
-        color : ( this.layout.yaxis === undefined || this.layout.yaxis.color === undefined ) ? "#DD2C00" : this.layout.yaxis.color,
+        color : ( this.layout.yaxis === undefined || this.layout.yaxis.color === undefined ) ? "#000a12" : this.layout.yaxis.color,
         fixedrange : ( this.layout.yaxis === undefined || this.layout.yaxis.fixedrange === undefined ) ? true : this.layout.yaxis.fixedrange,
         title: {
           text : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.text === undefined ) ? "Title Text" : this.layout.yaxis.title.text,
           font : {
             family: ( this.layout.yaxis === undefined ||  this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.yaxis.title.font.family,
             size: ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.size === undefined ) ? 20 : this.layout.yaxis.title.font.size,
-            color : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.color === undefined ) ? "#1B5E20" : this.layout.yaxis.title.font.color,
+            color : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.font === undefined || this.layout.yaxis.title.font.color === undefined ) ? "#000a12" : this.layout.yaxis.title.font.color,
           },
           standoff : ( this.layout.yaxis === undefined || this.layout.yaxis.title === undefined || this.layout.yaxis.title.standoff === undefined ) ? 10 : this.layout.yaxis.title.standoff ,
         },
@@ -105,14 +120,14 @@ class ChartLayout extends ChartDefault {
         overlaying : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.overlaying === undefined ) ? "y" : this.layout.yaxis2.overlaying,
         side : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.side === undefined ) ? "right" : this.layout.yaxis2.side,
         visible : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.visible === undefined ) ? true : this.layout.yaxis2.visible,
-        color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.color === undefined ) ? "#FF6D00" : this.layout.yaxis2.color,
+        color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.color === undefined ) ? "#000a12" : this.layout.yaxis2.color,
         fixedrange : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.fixedrange === undefined ) ? true : this.layout.yaxis2.fixedrange,
         title: {
           text : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.text === undefined ) ? "Title Text" : this.layout.yaxis2.title.text,
           font : {
             family: ( this.layout.yaxis2 === undefined ||  this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.family === undefined  ) ?  Object.keys(this.fontFamily)[1] : this.layout.yaxis2.title.font.family,
             size: ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.size === undefined ) ? 20 : this.layout.yaxis2.title.font.size,
-            color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.color === undefined ) ? "#808e95" : this.layout.yaxis2.title.font.color,
+            color : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.font === undefined || this.layout.yaxis2.title.font.color === undefined ) ? "#000a12" : this.layout.yaxis2.title.font.color,
           },
           standoff : ( this.layout.yaxis2 === undefined || this.layout.yaxis2.title === undefined || this.layout.yaxis2.title.standoff === undefined ) ? 10 : this.layout.yaxis2.title.standoff ,
         },
@@ -307,6 +322,160 @@ class ChartLayout extends ChartDefault {
               title : "Font Color",
               type : "color", 
               value : this.options().font.color,
+            },
+          ],
+        ]  
+      },
+      xaxis : {
+        intro : "Here you can modify the bottom x-axis",
+        id : `${this.prefix}__chartLayoutPanel__xaxis`,
+        cssClasses:["chartLayout", "subPanel"],
+        title : "Bottom Axis",
+        fields : [
+          [
+            {
+              id : "chartLayout[xaxis][type]",
+              title : "Type",	
+              type : "select",
+              options : {
+                "-": "Default",
+                linear: "Linear",
+                log: "Log",
+                date: "Date",
+                category: "Category",
+                multicategory:"Multi category"
+              },
+              value : this.options().xaxis.type,
+              hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question."
+            },
+            {
+              id : "chartLayout[xaxis][side]",
+              title : "Side",	
+              type : "select",
+              options : {
+                bottom: "Bottom",
+                top: "Top",
+              },
+              value : this.options().xaxis.side,
+              hint: "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][visible]",
+              title : "Show",	
+              type : "checkbox",
+              value : this.options().xaxis.visible,
+              hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
+            },
+            {
+              id : "chartLayout[xaxis][color]",
+              title : "Colr",	
+              type : "color",
+              value : this.options().xaxis.color,
+              hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][title][text]",
+              title : "Title",
+              type : "text", 
+              value : this.options().xaxis.title.text,
+              hint: "Sets the title of the y-axis."
+            },
+            {
+              id : "chartLayout[xaxis][title][standoff]",
+              title : "Standoff ",
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 0.5,
+              value : this.options().xaxis.title.standoff,
+              hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
+            }
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][title][font][family]",
+              title : "Title Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().xaxis.title.font.family,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][title][font][size]", 
+              title : "Title Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().xaxis.title.font.size,
+              hint : "number greater than or equal to 1"
+            },
+            {
+              id : "chartLayout[xaxis][title][font][color]",
+              title : "Title Font Color",
+              type : "color", 
+              value : this.options().xaxis.title.font.color,
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][autotypenumbers]",
+              title : "Auto Type Numbers",	
+              type : "select",
+              options : {
+                "convert types": "Convert Types",
+                strict: "Strict",
+              },
+              value : this.options().xaxis.autotypenumbers,
+              hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][autorange]",
+              title : "Auto Range",	
+              type : "select",
+              options : {
+                enabled: "Enabled",
+                disabled: "Disabled",
+                reversed: "Reversed"
+              },
+              value : this.options().xaxis.autorange ? "enabled" : ! this.options().xaxis.autorange ? "disabled" : this.options().xaxis.autorange,
+              hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
+            },
+            {
+              id : "chartLayout[xaxis][rangemode]",
+              title : "Range Mode",	
+              type : "select",
+              options : {
+                normal: "Normal",
+                tozero: "To Zero",
+                nonnegative: "Non Negative"
+              },
+              value : this.options().xaxis.rangemode,
+              hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][range]",
+              title : "Range",	
+              type : "text",
+              value : this.options().xaxis.range,
+              hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
+            },
+            {
+              id : "chartLayout[xaxis][fixedrange]",
+              title : "Fixed Range",	
+              type : "checkbox",
+              value : this.options().xaxis.fixedrange,
+              hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
             },
           ],
         ]  
@@ -721,10 +890,8 @@ class ChartLayout extends ChartDefault {
               options : {
                 left: "Left",
                 right: "Right",
-                top: "Top",
-                bottom: "Bottom"
               },
-              value : this.options().yaxis2.type,
+              value : this.options().yaxis2.side,
               hint: "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
             },
           ],

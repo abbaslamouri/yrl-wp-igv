@@ -57,9 +57,8 @@ class TableChart extends ChartDefault{
         }
       },
       layout: {
-        height: ( this.tableConfig.layout === undefined || this.tableConfig.layout.height === undefined ) ? 151 : this.tableConfig.layout.height,
+        height: ( this.tableConfig.layout === undefined || this.tableConfig.layout.height === undefined ) ? 160 : this.tableConfig.layout.height,
         autosize: ( this.tableConfig.layout === undefined || this.tableConfig.layout.autosize === undefined ) ? false : this.tableConfig.layout.autosize,
-        plot_bgcolor: ( this.tableConfig.layout === undefined || this.tableConfig.layout.plot_bgcolor === undefined ) ? "#D4A1A1" : this.tableConfig.layout.plot_bgcolor,
         title: {
           text: ( this.tableConfig.layout === undefined || this.tableConfig.layout.title === undefined || this.tableConfig.layout.title.text=== undefined ) ? this.panelTitle : this.tableConfig.layout.title.text,
           font : {

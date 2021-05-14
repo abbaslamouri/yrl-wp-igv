@@ -16,11 +16,15 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
   
   // Render chart
   if ( spreadsheet ) {
+
     
     await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
 
+
     // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
     // if ( chart.chartLayout.options.xaxis.rangeslider.visible && chart.chartLayout.options.showMinMaxAvgTable ) {
+      console.log(chart.chartLayout.options.xaxis.range)
+      return
 
     const xAxisMin = chart.chartLayout.options.xaxis.range[0]
     const xAxisMax = chart.chartLayout.options.xaxis.range[1]
@@ -29,19 +33,18 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     rangeMinInput.value =  chart.minMaxAvgTableChart.options.rounding ? xAxisMin.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMin
     rangeMaxInput.value = chart.minMaxAvgTableChart.options.rounding ? xAxisMax.toFixed(chart.minMaxAvgTableChart.options.rounding) : xAxisMax
 
-
-
     // Fetch Min?Max/Avg table data
     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+    console.log(chart.minMaxAvgTableChart.options.cells.values)
+
+    // Show Min/Max/Avg table (must show the div before plaotting)
+    showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
 
     // Plot table
     await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, {displayModeBar: false})
 
     // Show range min and max input fields
     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-
-    // Show Min/Max/Avg table
-    showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
 
     // Add range slider event handler
     eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
@@ -62,7 +65,7 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
       Plotly.restyle( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData(chart, spreadsheet, eventData['xaxis.range'][0], eventData['xaxis.range'][1])] } )
 
-  })
+    })
 
   }
 
