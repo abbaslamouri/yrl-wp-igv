@@ -127,24 +127,24 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                   break
                 case 3:
                   chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value
-                  if (key === "xaxis.rangeslider.visible" ) {
-                    if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
-                    if (value) {
-                      showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-                      showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-                      document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
-                      document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
-                      const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
-                      const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-                      chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
-                      Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
-                    } else {
-                      hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-                      hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-                      document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
-                      document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
-                    }
-                  }
+                  // if (key === "xaxis.rangeslider.visible" ) {
+                  //   if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
+                  //   if (value) {
+                  //     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+                  //     showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+                  //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
+                  //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
+                  //     const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
+                  //     const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+                  //     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+                  //     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
+                  //   } else {
+                  //     hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+                  //     hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+                  //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
+                  //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
+                  //   }
+                  // }
                   break
                 case 4:
                     chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
@@ -161,10 +161,28 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             const keyArr = key.split(".")
             const traceNumber = keyArr.shift()
             const optionKey = keyArr.join(".")
-            if ( optionKey === "visible" && event.target.value === "disabled" ) value = false
-            if ( optionKey === "visible" && event.target.value === "enabled" ) value = true
-            Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: event.target.type === 'checkbox' ? event.target.checked : value }, traceNumber);
+            if ( optionKey === "visible"  ) {
+              if ( value === "true" ) value = true //Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: true }, traceNumber)
+              if ( value === "false" ) value = false //Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: false }, traceNumber)
+            } else if (optionKey === "error_y.symmetric") {
+              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = true
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value ? true : false
+            } else if (optionKey === "error_y.type") {
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).readOnly = value !== "data" ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).readOnly = value !== "data" ? true : false
+            } else if ( optionKey === "error_y.array" || optionKey === "error_y.arrayminus" ){
+             
+              value = value.split(",").map( ( item ) => { return  parseFloat( item ) } )
+              console.log(optionKey, traceNumber, value)
+            } else  {
+              // Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value }, traceNumber)
+            }
+            Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value }, traceNumber)
+            
             break
+            
+
+            
 
           case "tableChart":
           case "minMaxAvgTableChart":

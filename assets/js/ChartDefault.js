@@ -18,7 +18,6 @@ class ChartDefault {
       Overpass: "Overpass",
       "PT Sans Narrow": "PT Sans Narrow",
       Raleway: "Raleway"
-
     }
 
     this.colors = [		
