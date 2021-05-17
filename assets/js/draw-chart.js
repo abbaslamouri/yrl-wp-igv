@@ -162,23 +162,21 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             const traceNumber = keyArr.shift()
             const optionKey = keyArr.join(".")
             if ( optionKey === "visible"  ) {
-              if ( value === "true" ) value = true //Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: true }, traceNumber)
-              if ( value === "false" ) value = false //Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: false }, traceNumber)
+              value =  value === "true" ? true  : false
             } else if (optionKey === "error_y.symmetric") {
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = true
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value ? true : false
             } else if (optionKey === "error_y.type") {
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).readOnly = value !== "data" ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).readOnly = value !== "data" ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).readOnly = value === "data" ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value === "data" ? true : false
             } else if ( optionKey === "error_y.array" || optionKey === "error_y.arrayminus" ){
-             
-              value = value.split(",").map( ( item ) => { return  parseFloat( item ) } )
+              value = value.split(",").map( ( item ) => { return parseFloat( item )} )
               console.log(optionKey, traceNumber, value)
             } else  {
-              // Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value }, traceNumber)
+              //
             }
             Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value }, traceNumber)
-            
             break
             
 

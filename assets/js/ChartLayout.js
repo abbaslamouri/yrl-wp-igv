@@ -24,7 +24,7 @@ class ChartLayout extends ChartDefault {
         displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? true :this.layout.config.displayModeBar,
         displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? true : this.layout.config.displaylogo,
       },
-      showlegend : ( this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
+      showlegend : ( this.layout.showlegend === undefined ) ? true : this.layout.showlegend,
       showMinMaxAvgTable : ( this.layout.showMinMaxAvgTable === undefined ) ? false : this.layout.showMinMaxAvgTable,
       paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#b0bec5" :  this.layout.paper_bgcolor,
       plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#eeeeee" : this.layout.plot_bgcolor,
