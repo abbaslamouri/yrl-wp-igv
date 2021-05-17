@@ -272,6 +272,7 @@ function setFormGroup(field, panelCssClasses, iwpgvObj) {
   }
 
   if ( field.readOnly ) inputField.readOnly = true
+  if ( field.disabled ) inputField.disabled = true
   if ( field.required ) inputField.required = true
 
   // hide for group if input field has a hidden class

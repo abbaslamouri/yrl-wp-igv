@@ -79,10 +79,10 @@ class ChartTrace extends ChartDefault {
         simplify: ( this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
       },
       error_y : {
-        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? true : this.trace.error_y.visible,
+        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? false : this.trace.error_y.visible,
         type: ( this.trace.error_y === undefined || this.trace.error_y.type === undefined ) ? "data": this.trace.error_y.type,
         symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? false: this.trace.error_y.symmetric,
-        array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array, // 20,10,30,7,8,5,12,16,11,16,17,18,20,10,30,7,8,5,12,16,11,16,17,18,20,10,30,7,8,5,12,16,11,16,17,18
+        array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
         arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
         value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 0 : this.trace.error_y.value,
         valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 0 : this.trace.error_y.valueminus,
@@ -510,6 +510,7 @@ class ChartTrace extends ChartDefault {
               data: "Data",
             },
             value : this.options().error_y.type,
+            disabled: ! this.options().error_y.visible  ? true : false,
             hint : "Determines the rule used to generate the error bars. If 'constant`, the bar lengths are of a constant value. Set this constant in `value`. If 'percent', the bar lengths correspond to a percentage of underlying data. Set this percentage in `value`. If 'sqrt', the bar lengths correspond to the square of the underlying data. If 'data', the bar lengths are set with data set `array`."
           },
         ],
@@ -519,7 +520,7 @@ class ChartTrace extends ChartDefault {
             title : "Value",
             type : "number", 
             value : this.options().error_y.value,
-            readOnly: ( this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
             hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars."
           },
           {
@@ -527,7 +528,7 @@ class ChartTrace extends ChartDefault {
             title : "Value Minus",
             type : "number", 
             value : this.options().error_y.valueminus,
-            readOnly: ( this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
             hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars in the bottom (left) direction for vertical (horizontal) bars"
           },
         ],
@@ -537,7 +538,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Array",	
             type : "text",
             value : this.options().error_y.array.join(),
-            readOnly: this.options().error_y.type !== "data" ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" ) ? true : false,
             hint: "Sets the data corresponding the length of each error bar. Values are plotted relative to the underlying data. Determines whether or not this set of error bars is array."
           },
           {
@@ -545,7 +546,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Array Minus", 
             type : "text",
             value : this.options().error_y.arrayminus.join(),
-            readOnly: this.options().error_y.type !== "data" ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" || this.options().error_y.symmetric ) ? true : false,
             hint : "Sets the data corresponding the length of each error bar in the bottom (left) direction for vertical (horizontal) bars Values are plotted relative to the underlying data."
           },
         ],
@@ -555,6 +556,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Bar Color",
             type : "color", 
             value : this.options().error_y.color,
+            disabled: ! this.options().error_y.visible  ? true : false,
             hint: "Sets the stoke color of the error bars."
           },
           {
@@ -562,6 +564,7 @@ class ChartTrace extends ChartDefault {
             title : "Symmetric ?",
             type : "checkbox", 
             value : this.options().error_y.symmetric,
+            disabled: ! this.options().error_y.visible  ? true : false,
             hint: "Determines whether or not the error bars have the same length in both direction (top/bottom for vertical bars, left/right for horizontal bars."
           },
         ],
@@ -574,6 +577,7 @@ class ChartTrace extends ChartDefault {
             max : 1000,
             step : 1,
             value : this.options().error_y.width,
+            disabled: ! this.options().error_y.visible  ? true : false,
             hint : "Sets the width (in px) of the cross-bar at both ends of the error bars."
           },
           {
@@ -584,6 +588,7 @@ class ChartTrace extends ChartDefault {
             max : 1000,
             step : 1,
             value : this.options().error_y.thickness,
+            disabled:  ! this.options().error_y.visible  ? true : false,
             hint : "Sets the thickness (in px) of the error bars."
           },
         ],

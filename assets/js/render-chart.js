@@ -23,7 +23,6 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
     // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
     // if ( chart.chartLayout.options.xaxis.rangeslider.visible && chart.chartLayout.options.showMinMaxAvgTable ) {
-      console.log(chart.chartLayout.options.xaxis.range)
       return
 
     const xAxisMin = chart.chartLayout.options.xaxis.range[0]
