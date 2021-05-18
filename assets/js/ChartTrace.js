@@ -79,9 +79,9 @@ class ChartTrace extends ChartDefault {
         simplify: ( this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
       },
       error_y : {
-        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? false : this.trace.error_y.visible,
-        type: ( this.trace.error_y === undefined || this.trace.error_y.type === undefined ) ? "data": this.trace.error_y.type,
-        symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? false: this.trace.error_y.symmetric,
+        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? true : this.trace.error_y.visible,
+        type: ( this.trace.error_y === undefined || this.trace.error_y.type === undefined ) ? "percent": this.trace.error_y.type,
+        symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? true: this.trace.error_y.symmetric,
         array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
         arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
         value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 0 : this.trace.error_y.value,
@@ -104,6 +104,7 @@ class ChartTrace extends ChartDefault {
     }
 
   }
+  //Avada-Child-Theme
 
 
   sections() {
