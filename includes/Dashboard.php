@@ -785,6 +785,72 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
 
 
+				// Convert xaxis array type fields to array
+				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] ) {
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] = [];
+				} else {
+					$xaxis_range_arr = [];
+					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] ) as $value) {
+						array_push($xaxis_range_arr, floatval($value));
+					}
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] = $xaxis_range_arr;
+				}
+
+				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] ) {
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] = [];
+				} else {
+					$xaxis_tickvals_arr = [];
+					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] ) as $value) {
+						array_push($xaxis_tickvals_arr, floatval($value));
+					}
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
+				}
+
+				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] ) {
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] = [];
+				} else {
+					$xaxis_ticktext_arr = [];
+					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] ) as $value) {
+						array_push($xaxis_ticktext_arr, floatval($value));
+					}
+					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
+				}
+
+
+					// Convert xaxis2 array type fields to array
+					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] ) {
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] = [];
+					} else {
+						$xaxis2_range_arr = [];
+						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] ) as $value) {
+							array_push($xaxis2_range_arr, floatval($value));
+						}
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] = $xaxis2_range_arr;
+					}
+	
+					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] ) {
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] = [];
+					} else {
+						$xaxis2_tickvals_arr = [];
+						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] ) as $value) {
+							array_push($xaxis2_tickvals_arr, floatval($value));
+						}
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] = $xaxis2_tickvals_arr;
+					}
+	
+					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] ) {
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] = [];
+					} else {
+						$xaxis2_ticktext_arr = [];
+						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] ) as $value) {
+							array_push($xaxis2_ticktext_arr, floatval($value));
+						}
+						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] = $xaxis2_ticktext_arr;
+					}
+	
+
+
+
         // add undefined checkbox values
 				// $layout = $_POST["{$this->prefix}__chartLayout"];
 				// $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;

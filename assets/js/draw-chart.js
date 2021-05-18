@@ -205,19 +205,89 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
           // }
 
          
-            console.log("OPT", optionKey)
+            console.log("OPT", optionKey, traceNumber)
             if ( optionKey === "visible"  ) {
-              value =  value === "true" ? true  : false
+              value = value === "true" ? true : value === "false" ? false : value
+             
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][xaxis]`).disabled = (  true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][yaxis]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][mode]`).disabled = ( false == value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][name]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][opacity]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][showlegend]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][symbol]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][size]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][opacity]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][color]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][maxdisplayed]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][line][width]`).disabled = (false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][line][color]`).disabled = (false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][gradient][type]`).disabled = (false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][gradient][color]`).disabled = (false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][shape]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][width]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][color]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][dash]`).disabled = ( false === value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][smoothing]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][simplify]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][text]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textposition]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][family]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][color]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][size]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hovertext]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverinfo]`).disabled = ( true !== value ) ? true : false
+
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bgcolor]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bordercolor]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][align]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][namelength]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][family]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][size]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][color]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][connectgaps]`).disabled = ( true !== value ) ? true : false
+              chart.chartTraces.options[traceNumber].error_y.visible = false;
+
+
+
             } else if (optionKey === "error_y.visible") {
-              for (const prop in chart.chartTraces.options[0].error_y ) {
-                if ( prop !== "visible" ) {
-                  if  (prop === "value" ) {
-                    document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! value || chart.chartTraces.options[0].error_y.type === "data" ) ? true : false
-                  } else {
-                    document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][${prop}]`).disabled = ! value ? true : false
-                  }
-                }
-              }
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = ( ! value  ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = ( ! value  ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = ( ! value  ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = ( ! value  ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = ( ! value  ) ? true : false
+            } else if (optionKey === "error_y.type") {
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value === "data" ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value !== "data" ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible ||  value !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+            } else if (optionKey === "error_y.symmetric") {
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || chart.chartTraces.options[traceNumber].error_y.type === "data" || value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || chart.chartTraces.options[traceNumber].error_y.type !== "data" || value ) ? true : false
+           
+            
+            
+            
+              // for (const prop in chart.chartTraces.options[traceNumber].error_y ) {
+              //   if ( prop !== "visible" ) {
+              //     if  (prop === "value" ) {
+              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" ) ? true : false
+              //     } else if  (prop === "valueminus" ) {
+              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+              //     } if  (prop === "array" ) {
+              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" ) ? true : false
+              //     } else if  (prop === "arrayminus" ) {
+              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
+              //     } else {
+              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][${prop}]`).disabled = ! value ? true : false
+              //     }
+              //   }
+              // }
             } else if (optionKey === "error_y.symmetric") {
               // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value ? true : false
               // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).readOnly = value ? true : false
@@ -227,14 +297,14 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
               // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).readOnly = value === "data" ? true : false
               // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value === "data" ? true : false
             } else if ( optionKey === "error_y.array" || optionKey === "error_y.arrayminus" ){
-              value = value === "" ? value : [value.split(",").map( ( item ) => { return parseFloat( item )} )]
+              // value = value === "" ? value : [value.split(",").map( ( item ) => { return parseFloat( item )} )]
               // chart.chartTraces.options[traceNumber].error_y.array = value
-              console.log(optionKey, traceNumber, value)
+              // console.log(optionKey, traceNumber, value)
             } else  {
               //
             }
             Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
-            console.log("ERROR",chart.chartTraces.options[0].error_y)
+            console.log("TRACES",chart.chartTraces.options[traceNumber])
             // console.log("ERROR",chart.chartTraces.options[0].error_y.array)
             break
             

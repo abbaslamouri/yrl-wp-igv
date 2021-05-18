@@ -41,7 +41,7 @@ class ChartTrace extends ChartDefault {
       showlegend : ( this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
       opacity : ( this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
       mode : ( this.trace.mode === undefined ) ? this.mode : this.trace.mode,
-      text : ( this.trace.text === undefined ) ? "" : this.trace.text,
+      text : ( this.trace.text === undefined ) ? ["Hi", "there"] : this.trace.text,
       textposition : ( this.trace.textposition === undefined ) ? "bottom center" : this.trace.textposition,
       hovertext : ( this.trace.hovertext === undefined ) ? "" : this.trace.hovertext,
       hoverinfo : ( this.trace.hoverinfo === undefined ) ? "all" : this.trace.hoverinfo,
@@ -84,8 +84,8 @@ class ChartTrace extends ChartDefault {
         symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? true: this.trace.error_y.symmetric,
         array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
         arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
-        value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 0 : this.trace.error_y.value,
-        valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 0 : this.trace.error_y.valueminus,
+        value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 20 : this.trace.error_y.value,
+        valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 20 : this.trace.error_y.valueminus,
         color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? this.colors[this.index] : this.trace.error_y.color,
         thickness: ( this.trace.error_y === undefined || this.trace.error_y.thickness === undefined ) ? 2: this.trace.error_y.thickness,
         width: ( this.trace.error_y === undefined || this.trace.error_y.width === undefined ) ? 4: this.trace.error_y.width,
@@ -494,6 +494,15 @@ class ChartTrace extends ChartDefault {
         ],
         [
           {
+            id : `chartTraces[${this.index-1}][hoverlabel][bordercolor]`,
+            title : "Hover label Border Color",
+            type : "color", 
+            value : this.options().hoverlabel.bordercolor,
+            hint: "Sets the border color of the hover labels for this trace."
+          },
+        ],
+        [
+          {
             id : `chartTraces[${this.index-1}][error_y][visible]`,
             title : "Show Error",	
             type : "checkbox",
@@ -521,7 +530,7 @@ class ChartTrace extends ChartDefault {
             title : "Value",
             type : "number", 
             value : this.options().error_y.value,
-            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" ) ? true : false,
             hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars."
           },
           {
