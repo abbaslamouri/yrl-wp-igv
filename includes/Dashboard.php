@@ -735,8 +735,8 @@ if (!class_exists('Dashboard')) {
 		 * @return void
 		 */
 		public function save_chart() {
-
-        // wp_send_json($_POST);
+      
+      wp_send_json($_POST);
 
 			try {
 				

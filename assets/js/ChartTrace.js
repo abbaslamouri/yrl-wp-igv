@@ -37,7 +37,7 @@ class ChartTrace extends ChartDefault {
 
       // type : ( this.trace === undefined ||  this.trace.type === undefined ) ? this.trace.type :  this.type,
       name : this.labels[this.index],
-      visible : ( this.trace.visible === undefined ) ? true : this.trace.visible,
+      visible : ( this.trace.visible === undefined ) ? false : this.trace.visible,
       showlegend : ( this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
       opacity : ( this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
       mode : ( this.trace.mode === undefined ) ? this.mode : this.trace.mode,
@@ -82,10 +82,10 @@ class ChartTrace extends ChartDefault {
         visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? true : this.trace.error_y.visible,
         type: ( this.trace.error_y === undefined || this.trace.error_y.type === undefined ) ? "percent": this.trace.error_y.type,
         symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? true: this.trace.error_y.symmetric,
-        array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
-        arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
         value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 20 : this.trace.error_y.value,
         valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 20 : this.trace.error_y.valueminus,
+        array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
+        arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
         color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? this.colors[this.index] : this.trace.error_y.color,
         thickness: ( this.trace.error_y === undefined || this.trace.error_y.thickness === undefined ) ? 2: this.trace.error_y.thickness,
         width: ( this.trace.error_y === undefined || this.trace.error_y.width === undefined ) ? 4: this.trace.error_y.width,
@@ -143,6 +143,7 @@ class ChartTrace extends ChartDefault {
               "lines+markers+text" : "Lines, Markers & Text"
             },
             value :  this.options().mode,
+            disabled: false === this.options().visible  ? true : false,
             hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
           },
         ],
@@ -156,6 +157,7 @@ class ChartTrace extends ChartDefault {
               x2 : "Top",
             },
             value :  this.options().xaxis,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
           },
           {
@@ -167,6 +169,7 @@ class ChartTrace extends ChartDefault {
               y2 : "Right",
             },
             value :  this.options().yaxis,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
           },
         ],
@@ -304,6 +307,7 @@ class ChartTrace extends ChartDefault {
               vhv: "Vertical/Horizontal/Vertical"
             },
             value : this.options().line.shape,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
           },
           {
@@ -342,6 +346,7 @@ class ChartTrace extends ChartDefault {
             max : 1.3,
             step : 0.01,
             value :  this.options().line.smoothing,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
           }, 
           {
@@ -349,6 +354,7 @@ class ChartTrace extends ChartDefault {
             title : "line Simplify", 	
             type : "checkbox",
             value :  this.options().line.simplify,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
           },
         ],        
@@ -358,6 +364,7 @@ class ChartTrace extends ChartDefault {
             title : "Text", 	
             type : "text",
             value :  Array.isArray( this.options( ).text ) ? this.options().text.join() : this.options().text,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. If trace `hoverinfo` contains a 'text' flag and 'hovertext' is not set, these elements will be seen in the hover labels."
           },
         ],
@@ -378,6 +385,7 @@ class ChartTrace extends ChartDefault {
               "bottom right": "Bottom Right",
             },
             value :  this.options().textposition,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets the positions of the `text` elements with respects to the (x,y) coordinates."
           },
           {
@@ -386,6 +394,7 @@ class ChartTrace extends ChartDefault {
             type : "select",
             options : this.fontFamily,
             value : this.options().textfont.family,
+            disabled: true !== this.options().visible  ? true : false,
             hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
           },
         ],
@@ -395,6 +404,7 @@ class ChartTrace extends ChartDefault {
             title : "Text Font Color",
             type : "color", 
             value : this.options().textfont.color,
+            disabled: true !== this.options().visible  ? true : false,
           }, 
           {
             id : `chartTraces[${this.index-1}][textfont][size]`, 
@@ -404,6 +414,7 @@ class ChartTrace extends ChartDefault {
             max : 100,
             step : 0.5,
             value : this.options().textfont.size,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "number greater than or equal to 1"
           },
         ],
@@ -413,6 +424,7 @@ class ChartTrace extends ChartDefault {
             title : "Hover Text", 	
             type : "text",
             value :  Array.isArray( this.options().hovertext ) ? this.options().hovertext.join() : this.options().hovertext,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
           },
           {
@@ -430,6 +442,7 @@ class ChartTrace extends ChartDefault {
               skip: "Skip",
             },
             value :  this.options().hoverinfo,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Any combination of 'x', 'y', 'z', 'text', 'name' joined with a '+' OR 'all' or 'none' or 'skip'. Examples: 'x', 'y', 'x+y', 'x+y+z', 'all'.  Determines which trace information appear on hover. If `none` or `skip` are set, no information is displayed upon hovering. But, if `none` is set, click and hover events are still fired.  Default: 'all'"
           },
         ],
@@ -444,6 +457,7 @@ class ChartTrace extends ChartDefault {
               right : "Right",
             },
             value : this.options().hoverlabel.align,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Type: enumerated or array of enumerateds , one of ( 'left' | 'right' | 'auto' ).  Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines.  Default: 'auto'"
           },
           {
@@ -454,6 +468,7 @@ class ChartTrace extends ChartDefault {
             max : 1000,
             step : 1,
             value : this.options().hoverlabel.namelength,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Sets the default length (in number of characters) of the trace name in the hover labels for all traces. -1 shows the whole name regardless of length. 0-3 shows the first 0-3 characters, and an integer >3 will show the whole name if it is less than that many characters, but if it is longer, will truncate to `namelength - 3` characters and add an ellipsis."
           },
         ],
@@ -464,6 +479,7 @@ class ChartTrace extends ChartDefault {
             type : "select",
             options : this.fontFamily,
             value : this.options().hoverlabel.font.family,
+            disabled: true !== this.options().visible  ? true : false,
             hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
           },
           {
@@ -474,6 +490,7 @@ class ChartTrace extends ChartDefault {
             max : 100,
             step : 0.5,
             value : this.options().hoverlabel.font.size,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "number greater than or equal to 1"
           },
         ],
@@ -483,12 +500,14 @@ class ChartTrace extends ChartDefault {
             title : "Hover Label Font Color",
             type : "color", 
             value : this.options().hoverlabel.font.color,
+            disabled: true !== this.options().visible  ? true : false,
           },
           {
             id : `chartTraces[${this.index-1}][hoverlabel][bgcolor]`,
             title : "Hover label Bg. Color",
             type : "color", 
             value : this.options().hoverlabel.bgcolor,
+            disabled: true !== this.options().visible  ? true : false,
             hint: "Sets the background color of the hover labels for this trace"
           },
         ],
@@ -498,6 +517,7 @@ class ChartTrace extends ChartDefault {
             title : "Hover label Border Color",
             type : "color", 
             value : this.options().hoverlabel.bordercolor,
+            disabled: true !== this.options().visible  ? true : false,
             hint: "Sets the border color of the hover labels for this trace."
           },
         ],
@@ -507,6 +527,7 @@ class ChartTrace extends ChartDefault {
             title : "Show Error",	
             type : "checkbox",
             value : this.options().error_y.visible,
+            disabled: true !== this.options().visible  ? true : false,
             hint: "Determines whether or not this set of error bars is visible."
           },
           {
@@ -520,7 +541,7 @@ class ChartTrace extends ChartDefault {
               data: "Data",
             },
             value : this.options().error_y.type,
-            disabled: ! this.options().error_y.visible  ? true : false,
+            disabled: ( ! this.options().error_y.visible  || true !== this.options().visible ) ? true : false,
             hint : "Determines the rule used to generate the error bars. If 'constant`, the bar lengths are of a constant value. Set this constant in `value`. If 'percent', the bar lengths correspond to a percentage of underlying data. Set this percentage in `value`. If 'sqrt', the bar lengths correspond to the square of the underlying data. If 'data', the bar lengths are set with data set `array`."
           },
         ],
@@ -530,7 +551,7 @@ class ChartTrace extends ChartDefault {
             title : "Value",
             type : "number", 
             value : this.options().error_y.value,
-            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || true !== this.options().visible ) ? true : false,
             hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars."
           },
           {
@@ -538,7 +559,7 @@ class ChartTrace extends ChartDefault {
             title : "Value Minus",
             type : "number", 
             value : this.options().error_y.valueminus,
-            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || this.options().error_y.symmetric ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type === "data" || this.options().error_y.symmetric || true !== this.options().visible ) ? true : false,
             hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars in the bottom (left) direction for vertical (horizontal) bars"
           },
         ],
@@ -548,7 +569,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Array",	
             type : "text",
             value : this.options().error_y.array.join(),
-            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" || true !== this.options().visible ) ? true : false,
             hint: "Sets the data corresponding the length of each error bar. Values are plotted relative to the underlying data. Determines whether or not this set of error bars is array."
           },
           {
@@ -556,7 +577,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Array Minus", 
             type : "text",
             value : this.options().error_y.arrayminus.join(),
-            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" || this.options().error_y.symmetric ) ? true : false,
+            disabled: ( ! this.options().error_y.visible || this.options().error_y.type !== "data" || this.options().error_y.symmetric || true !== this.options().visible ) ? true : false,
             hint : "Sets the data corresponding the length of each error bar in the bottom (left) direction for vertical (horizontal) bars Values are plotted relative to the underlying data."
           },
         ],
@@ -566,7 +587,7 @@ class ChartTrace extends ChartDefault {
             title : "Error Bar Color",
             type : "color", 
             value : this.options().error_y.color,
-            disabled: ! this.options().error_y.visible  ? true : false,
+            disabled: ( ! this.options().error_y.visible || true !== this.options().visible )? true : false,
             hint: "Sets the stoke color of the error bars."
           },
           {
@@ -574,7 +595,7 @@ class ChartTrace extends ChartDefault {
             title : "Symmetric ?",
             type : "checkbox", 
             value : this.options().error_y.symmetric,
-            disabled: ! this.options().error_y.visible  ? true : false,
+            disabled: ( ! this.options().error_y.visible || true !== this.options().visible ) ? true : false,
             hint: "Determines whether or not the error bars have the same length in both direction (top/bottom for vertical bars, left/right for horizontal bars."
           },
         ],
@@ -587,7 +608,7 @@ class ChartTrace extends ChartDefault {
             max : 1000,
             step : 1,
             value : this.options().error_y.width,
-            disabled: ! this.options().error_y.visible  ? true : false,
+            disabled: ( ! this.options().error_y.visible || true !== this.options().visible )  ? true : false,
             hint : "Sets the width (in px) of the cross-bar at both ends of the error bars."
           },
           {
@@ -598,7 +619,7 @@ class ChartTrace extends ChartDefault {
             max : 1000,
             step : 1,
             value : this.options().error_y.thickness,
-            disabled:  ! this.options().error_y.visible  ? true : false,
+            disabled:  ( ! this.options().error_y.visible || true !== this.options().visible )  ? true : false,
             hint : "Sets the thickness (in px) of the error bars."
           },
         ],
@@ -608,6 +629,7 @@ class ChartTrace extends ChartDefault {
             title : "Connect Gaps", 
             type : "checkbox",
             value : this.options().connectgaps,
+            disabled: true !== this.options().visible  ? true : false,
             hint : "Determines whether or not gaps (i.e. {nan} or missing values) in the provided data arrays are connected."
           },
         ]

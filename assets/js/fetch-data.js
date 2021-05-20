@@ -3,7 +3,7 @@ const fetchData = async function (formData) {
 
   const response = await fetch(yrl_wp_igv_obj.ajax_url, {
     method: "POST",
-    body: formData,
+    body: formData
   });
 
   // Convert response to json

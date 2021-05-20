@@ -237,7 +237,6 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][size]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hovertext]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverinfo]`).disabled = ( true !== value ) ? true : false
-
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bgcolor]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bordercolor]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][align]`).disabled = ( true !== value ) ? true : false
@@ -246,8 +245,19 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][size]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][color]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = ( true !== value ) ? true : false
+              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = ( true !== value ) ? true : false
               document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][connectgaps]`).disabled = ( true !== value ) ? true : false
-              chart.chartTraces.options[traceNumber].error_y.visible = false;
+
+              // chart.chartTraces.options[traceNumber].error_y.visible = false;
 
 
 
