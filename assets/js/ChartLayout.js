@@ -75,8 +75,8 @@ class ChartLayout extends ChartDefault {
         valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
       },
       xaxis : {
+        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
         type : ( this.layout.xaxis === undefined || this.layout.xaxis.type === undefined ) ? "-" : this.layout.xaxis.type,
-        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.visible === undefined ) ? false :  this.layout.xaxis.visible,
         // color : ( this.layout.xaxis === undefined || this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
         autotypenumbers : ( this.layout.xaxis === undefined || this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
         autorange : ( this.layout.xaxis === undefined || this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
@@ -614,7 +614,7 @@ class ChartLayout extends ChartDefault {
           [
             {
               id : "chartLayout[xaxis][ticks]",
-              title : "Ticks",	
+              title : "Show Ticks",	
               type : "select",
               options : {
                 "": "Hide",
@@ -635,7 +635,7 @@ class ChartLayout extends ChartDefault {
                 array: "Array"
               },
               value : this.options().xaxis.tickmode,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
               hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
             },
           ],
@@ -648,8 +648,94 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 1,
               value : this.options().xaxis.nticks,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "auto" || this.options().xaxis.ticks === ""  )  ? true : false,
               hint: "Specifies the maximum number of ticks for the particular axis. The actual number of ticks will be chosen automatically to be less than or equal to `nticks`. Has an effect only if `tickmode` is set to 'auto'."
+            },
+            {
+              id : "chartLayout[xaxis][tick0]",
+              title : "First Tick Position",	
+              type : "number",
+              value : this.options().xaxis.tick0,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
+              hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][dtick]",
+              title : "Tick Spacing",	
+              type : "number",
+              value : this.options().xaxis.dtick,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" )  ? true : false,
+              hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
+            },
+            {
+              id : "chartLayout[xaxis][tickvals]",
+              title : "Tick Positions",	
+              type : "text",
+              value : this.options().xaxis.tickvals.join(),
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "array" || this.options().xaxis.ticks === "" ) ? true : false,
+              hint: "Sets the values at which ticks on this axis appear. Only has an effect if `tickmode` is set to 'array'. Used with `ticktext`."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][ticktext]",
+              title : "Ticks Texts",	
+              type : "text",
+              value : this.options().xaxis.ticktext.join(),
+              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "array" || this.options().xaxis.ticks === "" ) ? true : false,
+              hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
+            },
+            {
+              id : "chartLayout[xaxis][ticklen]",
+              title : "Tick Length",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.ticklen,
+              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
+              // disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              hint: "Sets the tick length (in px)."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][tickwidth]",
+              title : "Tick width",	
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 1,
+              value : this.options().xaxis.tickwidth,
+              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
+              // disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              hint: "Sets the tick width (in px)."
+            },
+            {
+              id : "chartLayout[xaxis][tickcolor]",
+              title : "Tick color",	
+              type : "color",
+              value : this.options().xaxis.tickcolor,
+              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
+              hint: "Sets the tick color."
+            },
+          ],
+
+
+
+
+
+
+          [
+            {
+              id : "chartLayout[xaxis][showticklabels]",
+              title : "Show Tick Labels",	
+              type : "checkbox",
+              value : this.options().xaxis.showticklabels,
+              disabled: ! this.options().xaxis.visible ? true : false,
+              hint: "Determines whether or not the tick labels are drawn."
             },
             {
               id : "chartLayout[xaxis][ticklabelposition]",
@@ -668,86 +754,98 @@ class ChartLayout extends ChartDefault {
                 "inside bottom": "Inside Bottom"
               },
               value : this.options().xaxis.ticklabelposition,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels ) ? true : false,
               hint: "Determines where tick labels are drawn with respect to the axis Please note that top or bottom has no effect on x axes or when `ticklabelmode` is set to 'period'. Similarly left or right has no effect on y axes or when `ticklabelmode` is set to 'period'. Has no effect on 'multicategory' axes or when `tickson` is set to 'boundaries'. When used on axes linked by `matches` or `scaleanchor`, no extra padding for inside labels would be added by autorange, so that the scales could match."
             },
           ],
           [
             {
-              id : "chartLayout[xaxis][tick0]",
-              title : "First Tick Position",	
-              type : "number",
-              value : this.options().xaxis.tick0,
-              disabled: ! this.options().xaxis.visible  ? true : false,
-              hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
+              id : "chartLayout[xaxis][tickfont][family]",
+              title : "Tick Label Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().xaxis.tickfont.family,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels )  ? true : false,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
             {
-              id : "chartLayout[xaxis][dtick]",
-              title : "Tick Spacing",	
+              id : "chartLayout[xaxis][tickfont][size]", 
+              title : "Tick  Label Font Size", 
               type : "number",
-              value : this.options().xaxis.dtick,
-              disabled: ! this.options().xaxis.visible  ? true : false,
-              hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().xaxis.tickfont.size,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels )  ? true : false,
+              hint : "number greater than or equal to 1"
             },
           ],
           [
             {
-              id : "chartLayout[xaxis][tickvals]",
-              title : "Ticks Positions",	
-              type : "text",
-              value : this.options().xaxis.tickvals.join(),
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Sets the values at which ticks on this axis appear. Only has an effect if `tickmode` is set to 'array'. Used with `ticktext`."
+              id : "chartLayout[xaxis][tickfont][color]",
+              title : "Tick Font Color",
+              type : "color", 
+              value : this.options().xaxis.tickfont.color,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels )  ? true : false,
             },
             {
-              id : "chartLayout[xaxis][ticktext]",
-              title : "Ticks Texts",	
-              type : "text",
-              value : this.options().xaxis.ticktext.join(),
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][ticklen]",
-              title : "Tick Length",	
+              id : "chartLayout[xaxis][tickangle]", 
+              title : "Tick Label Angle", 
               type : "number",
-              min : 0,
-              max : 2000,
+              min : -180,
+              max : 180,
               step : 1,
-              value : this.options().xaxis.ticklen,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Sets the tick length (in px)."
-            },
-            {
-              id : "chartLayout[xaxis][tickwidth]",
-              title : "Tick width",	
-              type : "number",
-              min : 0,
-              max : 2000,
-              step : 1,
-              value : this.options().xaxis.tickwidth,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Sets the tick width (in px)."
+              value : this.options().xaxis.tickangle,
+              disabled: ( ! this.options().xaxis.visible  || ! this.options().xaxis.showticklabels ) ? true : false,
+              hint : "Sets the angle of the tick labels with respect to the horizontal. For example, a `tickangle` of -90 draws the tick labels vertically."
             },
           ],
           [
             {
-              id : "chartLayout[xaxis][tickcolor]",
-              title : "Tick color",	
-              type : "color",
-              value : this.options().xaxis.tickcolor,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Sets the tick color."
+              id : "chartLayout[xaxis][showtickprefix]", 
+              title : "Show Tick Label Prefix", 
+              type : "select",
+              options : {
+                all: "All",
+                first: "First",
+                last: "Last",
+                none: "None",
+              },
+              value : this.options().xaxis.showtickprefix,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels  )  ? true : false,
+              hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
             },
             {
-              id : "chartLayout[xaxis][showticklabels]",
-              title : "Show Tick Labels",	
-              type : "checkbox",
-              value : this.options().xaxis.showticklabels,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
-              hint: "Determines whether or not the tick labels are drawn."
+              id : "chartLayout[xaxis][tickprefix]", 
+              title : "Tick  Label Prefix", 
+              type : "Text",
+              value : this.options().xaxis.tickprefix,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels || this.options().xaxis.showtickprefix === "none" )  ? true : false,
+              hint : "Sets a tick label prefix."
+            },
+          ],
+          [
+            {
+              id : "chartLayout[xaxis][showticksuffix]", 
+              title : "Show Tick Label Suffix", 
+              type : "select",
+              options : {
+                all: "All",
+                first: "First",
+                last: "Last",
+                none: "None",
+              },
+              value : this.options().xaxis.showticksuffix,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels )  ? true : false,
+              hint : "If 'all', all tick labels are displayed with a suffix. If 'first', only the first tick is displayed with a suffix. If 'last', only the last tick is displayed with a suffix. If 'none', tick suffixes are hidden.Sets a tick label suffix."
+            },
+            {
+              id : "chartLayout[xaxis][ticksuffix]", 
+              title : "Tick Label Suffix", 
+              type : "Text",
+              value : this.options().xaxis.ticksuffix,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels  || this.options().xaxis.showticksuffix === "none" )  ? true : false,
+              hint : "Sets a tick label suffix."
             },
           ],
           [
@@ -763,7 +861,7 @@ class ChartLayout extends ChartDefault {
                 allticks: "All Ticks",
               },
               value : this.options().xaxis.mirror,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
             },
             {
@@ -771,7 +869,7 @@ class ChartLayout extends ChartDefault {
               title : "Auto Margin",	
               type : "checkbox",
               value : this.options().xaxis.automargin,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Determines whether long tick labels automatically grow the figure margins."
             },
           ],
@@ -781,7 +879,7 @@ class ChartLayout extends ChartDefault {
               title : "Show Spikes",	
               type : "checkbox",
               value : this.options().xaxis.showspikes,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
             },
             {
@@ -798,7 +896,7 @@ class ChartLayout extends ChartDefault {
                 "toaxis+across+marker": "To Axis & Across & Marker",
               },
               value : this.options().xaxis.spikemode,
-              disabled: this.options().xaxis.tickmode !== "array" ? true : false,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Determines the drawing mode for the spike line If 'toaxis', the line is drawn from the data point to the axis the series is plotted on. If 'across', the line is drawn across the entire plot area, and supercedes 'toaxis'. If 'marker', then a marker dot is drawn on the axis the series is plotted on"
             },
           ],
@@ -816,6 +914,7 @@ class ChartLayout extends ChartDefault {
                 longdashdot: "Long Dash Dot"
               },
               value : this.options().xaxis.spikedash,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
             },
             {
@@ -826,8 +925,11 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 1,
               value : this.options().xaxis.spikethickness,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Sets the width (in px) of the zero line."
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][spikecolor]",
               title : "Spike Color",	
@@ -835,91 +937,6 @@ class ChartLayout extends ChartDefault {
               value : this.options().xaxis.spikecolor,
               hint: "Sets the spike color. If undefined, will use the series colorSets the tick color."
             },
-          ],
-          [
-           
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][tickfont][family]",
-              title : "Tick Font",	
-              type : "select",
-              options : this.fontFamily,
-              value : this.options().xaxis.tickfont.family,
-              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-            },
-            {
-              id : "chartLayout[xaxis][tickfont][size]", 
-              title : "Tick Font Size", 
-              type : "number",
-              min : 1,
-              max : 100,
-              step : 0.5,
-              value : this.options().xaxis.tickfont.size,
-              hint : "number greater than or equal to 1"
-            },
-            {
-              id : "chartLayout[xaxis][tickfont][color]",
-              title : "Tick Font Color",
-              type : "color", 
-              value : this.options().xaxis.tickfont.color,
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][tickangle]", 
-              title : "Tick Abgle", 
-              type : "number",
-              min : -180,
-              max : 180,
-              step : 1,
-              value : this.options().xaxis.tickangle,
-              hint : "Sets the angle of the tick labels with respect to the horizontal. For example, a `tickangle` of -90 draws the tick labels vertically."
-            },
-            {
-              id : "chartLayout[xaxis][tickprefix]", 
-              title : "Tick Prefix", 
-              type : "Text",
-              value : this.options().xaxis.tickprefix,
-              hint : "Sets a tick label prefix."
-            },
-            {
-              id : "chartLayout[xaxis][showtickprefix]", 
-              title : "Show Tick Prefix", 
-              type : "select",
-              options : {
-                all: "All",
-                first: "First",
-                last: "Last",
-                none: "None",
-              },
-              value : this.options().xaxis.showtickprefix,
-              hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][ticksuffix]", 
-              title : "Tick Suffix", 
-              type : "Text",
-              value : this.options().xaxis.ticksuffix,
-              hint : "Sets a tick label suffix."
-            },
-            {
-              id : "chartLayout[xaxis][showticksuffix]", 
-              title : "Show Tick Suffix", 
-              type : "select",
-              options : {
-                all: "All",
-                first: "First",
-                last: "Last",
-                none: "None",
-              },
-              value : this.options().xaxis.showticksuffix,
-              hint : "If 'all', all tick labels are displayed with a suffix. If 'first', only the first tick is displayed with a suffix. If 'last', only the last tick is displayed with a suffix. If 'none', tick suffixes are hidden.Sets a tick label suffix."
-            },
-          ],
-          [
             {
               id : "chartLayout[xaxis][showexponent]", 
               title : "Show Exponent", 
@@ -931,8 +948,11 @@ class ChartLayout extends ChartDefault {
                 none: "None",
               },
               value : this.options().xaxis.showexponent,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][exponentformat]", 
               title : "Exponent Format", 
@@ -946,6 +966,7 @@ class ChartLayout extends ChartDefault {
                 none: "None",
               },
               value : this.options().xaxis.exponentformat,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Determines a formatting rule for the tick exponents. For example, consider the number 1,000,000,000. If 'none', it appears as 1,000,000,000. If 'e', 1e+9. If 'E', 1E+9. If 'power', 1x10^9 (with 9 in a super script). If 'SI', 1G. If 'B', 1B.If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
             },
             {
@@ -953,6 +974,7 @@ class ChartLayout extends ChartDefault {
               title : "Minimum Exponent", 
               type : "number",
               value : this.options().xaxis.minexponent,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Hide SI prefix for 10^n if |n| is below this number. This only has an effect when `tickformat` is 'SI' or 'B'."
             },
           ],
@@ -962,17 +984,19 @@ class ChartLayout extends ChartDefault {
               title : "Seperate Thousands", 
               type : "checkbox",
               value : this.options().xaxis.separatethousands,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "If 'true', even 4-digit integers are separated"
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][showline]", 
               title : "Show Bounding Line", 
               type : "checkbox",
               value : this.options().xaxis.showline,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether or not a line bounding this axis is drawn."
             },
+          ],
+          [
             {
               id : "chartLayout[xaxis][linewidth]", 
               title : "Line Width", 
@@ -981,6 +1005,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value : this.options().xaxis.linewidth,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Sets the width (in px) of the axis line."
             },
             {
@@ -988,33 +1013,8 @@ class ChartLayout extends ChartDefault {
               title : "Line Color", 
               type : "color",
               value : this.options().xaxis.linecolor,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Sets the axis line color."
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][showgrid]", 
-              title : "Show Grid", 
-              type : "checkbox",
-              value : this.options().xaxis.showgrid,
-              hint : "Determines whether or not grid lines are drawn. If 'true', the grid lines are drawn at every tick mark.Determines whether or not a line bounding this axis is drawn."
-            },
-            {
-              id : "chartLayout[xaxis][gridwidth]", 
-              title : "Grid Width", 
-              type : "number",
-              min : 1,
-              max : 100,
-              step : 1,
-              value : this.options().xaxis.gridwidth,
-              hint : "Sets the width (in px) of the grid lines."
-            },
-            {
-              id : "chartLayout[xaxis][gridcolor]", 
-              title : "GridColor", 
-              type : "color",
-              value : this.options().xaxis.gridcolor,
-              hint : "Sets the color of the grid lines."
             },
           ],
           [
@@ -1023,8 +1023,19 @@ class ChartLayout extends ChartDefault {
               title : "Show Zero Line", 
               type : "checkbox",
               value : this.options().xaxis.zeroline,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether or not a line is drawn at along the 0 value of this axis. If 'true', the zero line is drawn on top of the grid lines."
             },
+            {
+              id : "chartLayout[xaxis][showgrid]", 
+              title : "Show Grid", 
+              type : "checkbox",
+              value : this.options().xaxis.showgrid,
+              disabled:! this.options().xaxis.visible  ? true : false,
+              hint : "Determines whether or not grid lines are drawn. If 'true', the grid lines are drawn at every tick mark.Determines whether or not a line bounding this axis is drawn."
+            },
+          ],
+          [
             {
               id : "chartLayout[xaxis][zerolinewidth]", 
               title : "Zero Line Width", 
@@ -1033,6 +1044,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value : this.options().xaxis.zerolinewidth,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Sets the width (in px) of the zero line."
             },
             {
@@ -1040,9 +1052,32 @@ class ChartLayout extends ChartDefault {
               title : "Zero Line Color", 
               type : "color",
               value : this.options().xaxis.zerolinecolor,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Sets the line color of the zero line."
             },
           ],
+          [
+            {
+              id : "chartLayout[xaxis][gridwidth]", 
+              title : "Grid Width", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 1,
+              value : this.options().xaxis.gridwidth,
+              disabled:! this.options().xaxis.visible  ? true : false,
+              hint : "Sets the width (in px) of the grid lines."
+            },
+            {
+              id : "chartLayout[xaxis][gridcolor]", 
+              title : "GridColor", 
+              type : "color",
+              value : this.options().xaxis.gridcolor,
+              disabled:! this.options().xaxis.visible  ? true : false,
+              hint : "Sets the color of the grid lines."
+            },
+          ],
+         
           [
             // {
             //   id : "chartLayout[xaxis][anchor]", 
@@ -1071,6 +1106,7 @@ class ChartLayout extends ChartDefault {
                 top: "Top"
               },
               value : this.options().xaxis.side,
+              disabled:! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
             },
             
