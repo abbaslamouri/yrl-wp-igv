@@ -90,9 +90,9 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             if ( key.includes( "config" ) ) {
               chart.chartLayout.options.config[key.split(".")[1]] = value
               if ( chart.chartLayout.options.config.displayModeBar ){
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
               }else {
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
               }
               Plotly.newPlot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
             } else if ( key === "xaxis.range" ) {
@@ -104,11 +104,11 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             }
             else if ( key === "xaxis.tickmode" ) {
               if ( value === "array" ) {
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
               } else {
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
-                document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
+                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
               }
               Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value }, chart.chartLayout.options.config )
             }else if ( key === "xaxis.tickvals" || key === "xaxis.ticktext" ) {
@@ -153,8 +153,17 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                     chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]][keyParts[4]] = event.target.type === 'checkbox' ? event.target.checked : value
                   break
               }
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: event.target.type === 'checkbox' ? event.target.checked : value}, chart.chartLayout.options.config )
+              console.log("X",chart.chartLayout)
+
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value }, chart.chartLayout.options.config )
             }
+            console.log("CRT",chart)
+
+
+
+
+
+
             break
 
           case "chartTraces":
@@ -162,160 +171,68 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             const keyArr = key.split(".")
             const traceNumber = keyArr.shift()
             const optionKey = keyArr.join(".")
-
-
-            // const erryPrefix = `${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y]`
-            // const errBarVisibleInput = document.getElementById(`${erryPrefix}[visible]`)
-            // document.getElementById(`${erryPrefix}[type]`).disabled = errBarVisibleInput.checked ? false : true
-           
-            // document.getElementById(`${erryPrefix}[valueminus]`).disabled = ( errBarVisibleInput.checked && document.getElementById(`${erryPrefix}[type]`) !== "data" && document.getElementById(`${erryPrefix}[symmetric]`) ) ? false : true
-
-          // if ( document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).checked ) {
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = false
-          
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = false
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = false
-
-          // } else {
-          //   if ( document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`) === "data") {
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = true
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = true
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = false
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = false
-          //   } else {
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = false
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = false
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = true
-          //     document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = true
-          //   }
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = true
-          //   // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = true
-          //   // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = true
-          //   // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = true
-          //   // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = true
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = true
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = true
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = true
-          //   document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = true
-          // }
-
-         
             console.log("OPT", optionKey, traceNumber)
+
             if ( optionKey === "visible"  ) {
               value = value === "true" ? true : value === "false" ? false : value
-             
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][xaxis]`).disabled = (  true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][yaxis]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][mode]`).disabled = ( false == value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][name]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][opacity]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][showlegend]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][symbol]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][size]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][opacity]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][color]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][maxdisplayed]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][line][width]`).disabled = (false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][line][color]`).disabled = (false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][gradient][type]`).disabled = (false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][marker][gradient][color]`).disabled = (false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][shape]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][width]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][color]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][dash]`).disabled = ( false === value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][smoothing]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][line][simplify]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][text]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textposition]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][family]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][color]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][textfont][size]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hovertext]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverinfo]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bgcolor]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][bordercolor]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][align]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][namelength]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][family]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][size]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][hoverlabel][font][color]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = ( true !== value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][connectgaps]`).disabled = ( true !== value ) ? true : false
-
-              // chart.chartTraces.options[traceNumber].error_y.visible = false;
-
-
-
-            } else if (optionKey === "error_y.visible") {
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = ( ! value  ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = ( ! value  ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = ( ! value  ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = ( ! value  ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = ( ! value  ) ? true : false
-            } else if (optionKey === "error_y.type") {
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value === "data" ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || value !== "data" ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible ||  value !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-            } else if (optionKey === "error_y.symmetric") {
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || chart.chartTraces.options[traceNumber].error_y.type === "data" || value ) ? true : false
-              document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! chart.chartTraces.options[traceNumber].error_y.visible || chart.chartTraces.options[traceNumber].error_y.type !== "data" || value ) ? true : false
-           
-            
-            
-            
-              // for (const prop in chart.chartTraces.options[traceNumber].error_y ) {
-              //   if ( prop !== "visible" ) {
-              //     if  (prop === "value" ) {
-              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" ) ? true : false
-              //     } else if  (prop === "valueminus" ) {
-              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type === "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-              //     } if  (prop === "array" ) {
-              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" ) ? true : false
-              //     } else if  (prop === "arrayminus" ) {
-              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( ! value || chart.chartTraces.options[traceNumber].error_y.type !== "data" || chart.chartTraces.options[traceNumber].error_y.symmetric) ? true : false
-              //     } else {
-              //       document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][${prop}]`).disabled = ! value ? true : false
-              //     }
-              //   }
-              // }
-            } else if (optionKey === "error_y.symmetric") {
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value ? true : false
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).readOnly = value ? true : false
-            } else if (optionKey === "error_y.type") {
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][array]`).readOnly = value !== "data" ? true : false
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).readOnly = value !== "data" ? true : false
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][value]`).readOnly = value === "data" ? true : false
-              // document.getElementById(`${iwpgvObj.prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).readOnly = value === "data" ? true : false
             } else if ( optionKey === "error_y.array" || optionKey === "error_y.arrayminus" ){
-              // value = value === "" ? value : [value.split(",").map( ( item ) => { return parseFloat( item )} )]
-              // chart.chartTraces.options[traceNumber].error_y.array = value
-              // console.log(optionKey, traceNumber, value)
-            } else  {
-              //
+              value = value === "" ? value : [value.split(",").map( ( item ) => { return parseFloat( item )} )]
+              chart.chartTraces.options[traceNumber][optionKey] = value
             }
+
             Plotly.restyle(`${iwpgvObj.prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
             console.log("TRACES",chart.chartTraces.options[traceNumber])
-            // console.log("ERROR",chart.chartTraces.options[0].error_y.array)
+
+            const trace = chart.chartTraces.options[traceNumber]
+            const inputIdPrefix = `${iwpgvObj.prefix}__chartTraces[${traceNumber}]`           
+
+            document.getElementById(`${inputIdPrefix}[xaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[yaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[mode]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[name]`).disabled = ( true !== trace.visible || trace.showlegend ) ? true : false
+            document.getElementById(`${inputIdPrefix}[opacity]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[showlegend]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][symbol]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][size]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][opacity]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][color]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][maxdisplayed]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][gradient][type]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${inputIdPrefix}[marker][gradient][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][dash]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${inputIdPrefix}[text]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[textposition]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[textfont][family]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[textfont][color]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[textfont][size]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hovertext]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverinfo]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][bgcolor]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][bordercolor]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][align]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][namelength]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][font][family]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][font][size]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[hoverlabel][font][color]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][visible]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][type]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][symmetric]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible  ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][value]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][valueminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][array]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][arrayminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][color]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][thickness]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[error_y][width]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${inputIdPrefix}[connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
+
             break
             
 

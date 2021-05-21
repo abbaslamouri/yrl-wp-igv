@@ -20,7 +20,7 @@ class ChartTrace extends ChartDefault {
       case "LineChart":
       case "ScatterChart":
         this.type = "scatter";
-        this.mode = "lines+markers+text";
+        this.mode = "lines+markers";
         break;
       default:
         this.type = null;
@@ -37,7 +37,7 @@ class ChartTrace extends ChartDefault {
 
       // type : ( this.trace === undefined ||  this.trace.type === undefined ) ? this.trace.type :  this.type,
       name : this.labels[this.index],
-      visible : ( this.trace.visible === undefined ) ? false : this.trace.visible,
+      visible : ( this.trace.visible === undefined ) ? true : "false" === this.trace.visible ? false : "true" === this.trace.visible ? true : this.trace.visible,
       showlegend : ( this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
       opacity : ( this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
       mode : ( this.trace.mode === undefined ) ? this.mode : this.trace.mode,
@@ -79,7 +79,7 @@ class ChartTrace extends ChartDefault {
         simplify: ( this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
       },
       error_y : {
-        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? true : this.trace.error_y.visible,
+        visible: ( this.trace.error_y === undefined || this.trace.error_y.visible === undefined ) ? false : this.trace.error_y.visible,
         type: ( this.trace.error_y === undefined || this.trace.error_y.type === undefined ) ? "percent": this.trace.error_y.type,
         symmetric: ( this.trace.error_y === undefined || this.trace.error_y.symmetric === undefined ) ? true: this.trace.error_y.symmetric,
         value: ( this.trace.error_y === undefined || this.trace.error_y.value === undefined ) ? 20 : this.trace.error_y.value,
@@ -95,7 +95,7 @@ class ChartTrace extends ChartDefault {
         bordercolor: ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.bordercolor === undefined ) ? "#000a12" : this.trace.hoverlabel.bordercolor,
         font : {
           family : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.trace.hoverlabel.font.family,
-          size : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.size === undefined ) ? 50 : this.trace.hoverlabel.font.size,
+          size : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.size === undefined ) ? 20 : this.trace.hoverlabel.font.size,
           color : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.color === undefined ) ? "#1B5E20" : this.trace.hoverlabel.font.color,
         },
         align: ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.align === undefined ) ? "auto" : this.trace.hoverlabel.align,
@@ -126,7 +126,7 @@ class ChartTrace extends ChartDefault {
               false : "Hidden",
               legendonly : "Legend Only",
             },
-            value : true === this.options().visible ? "true" : false === this.options().visible ? "false" : this.options().visible,
+            value : this.options().visible,
             hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible)."
           },
           {
@@ -179,6 +179,7 @@ class ChartTrace extends ChartDefault {
             title : "Show In Legend", 	
             type : "checkbox",
             value :  this.options().showlegend,
+            disabled: false == this.options().visible  ? true : false,
             hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
           },
           {
@@ -186,6 +187,7 @@ class ChartTrace extends ChartDefault {
             title : "Label in Legend",  
             type : "text",
             value : this.options().name,
+            disabled: false == this.options().visible  ? true : false,
             hint : "The trace name appear as the legend item and on hover."
           },
         ],
@@ -198,6 +200,7 @@ class ChartTrace extends ChartDefault {
             max : 300,
             step : 1,
             value :  this.options().marker.symbol,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
           },
           {
@@ -208,6 +211,7 @@ class ChartTrace extends ChartDefault {
             max : 2000,
             step : 1,
             value :  this.options().marker.size,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the marker size (in px)."
           },
         ],
@@ -220,6 +224,7 @@ class ChartTrace extends ChartDefault {
             max : 1,
             step : .01,
             value :  this.options().marker.opacity,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the marker's opacity."
           },
           {
@@ -227,6 +232,7 @@ class ChartTrace extends ChartDefault {
             title : "Marker Color",  
             type : "color",
             value : this.options().marker.color,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : ""
           },
         ],
@@ -236,6 +242,7 @@ class ChartTrace extends ChartDefault {
             title : "Marker Line Color", 	
             type : "color",
             value :  this.options().marker.line.color,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
           },
           {
@@ -246,6 +253,7 @@ class ChartTrace extends ChartDefault {
             max : 100,
             step : 1,
             value :  this.options().marker.line.width,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the width (in px) of the lines bounding the marker points."
           },
         ],
@@ -261,6 +269,7 @@ class ChartTrace extends ChartDefault {
               vertical: "Vertical"
             },
             value :  this.options().marker.gradient.type,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the type of gradient used to fill the markers"
           },
           {
@@ -268,6 +277,7 @@ class ChartTrace extends ChartDefault {
             title : "Marker gradient Color", 	
             type : "color",
             value :  this.options().marker.gradient.color,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets the final color of the gradient fill: the center color for radial, the right for horizontal, or the bottom for vertical."
           },
         ],
@@ -280,6 +290,7 @@ class ChartTrace extends ChartDefault {
             max : 20000,
             step : 1,
             value :  this.options().marker.maxdisplayed,
+            disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
             hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
           },
           {
@@ -290,6 +301,7 @@ class ChartTrace extends ChartDefault {
             max : 1,
             step : 0.02,
             value :  this.options().opacity,
+            disabled: false === this.options().visible  ? true : false,
             hint : "Sets the opacity of the trace."
           },
         ],
@@ -307,7 +319,7 @@ class ChartTrace extends ChartDefault {
               vhv: "Vertical/Horizontal/Vertical"
             },
             value : this.options().line.shape,
-            disabled: true !== this.options().visible  ? true : false,
+            disabled: ( true !== this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
           },
           {
@@ -318,6 +330,7 @@ class ChartTrace extends ChartDefault {
             max : 2000,
             step : 1,
             value :  this.options().line.width,
+            disabled: ( false === this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Sets the width of the trace line."
           },
         ],
@@ -327,6 +340,7 @@ class ChartTrace extends ChartDefault {
             title : "Line Type", 	
             type : "text",
             value :  this.options().line.dash,
+            disabled: ( false === this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
           },
           {
@@ -334,6 +348,7 @@ class ChartTrace extends ChartDefault {
             title : "Line Color",  
             type : "color",
             value : this.options().line.color,
+            disabled: ( false === this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Sets the color of the trace line"
           },
         ],
@@ -346,7 +361,7 @@ class ChartTrace extends ChartDefault {
             max : 1.3,
             step : 0.01,
             value :  this.options().line.smoothing,
-            disabled: true !== this.options().visible  ? true : false,
+            disabled: ( true !== this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
           }, 
           {
@@ -354,7 +369,7 @@ class ChartTrace extends ChartDefault {
             title : "line Simplify", 	
             type : "checkbox",
             value :  this.options().line.simplify,
-            disabled: true !== this.options().visible  ? true : false,
+            disabled: ( true !== this.options().visible || ! this.options().mode.includes( "lines" ) )  ? true : false,
             hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
           },
         ],        
