@@ -5,13 +5,24 @@ import ChartDefault from "./ChartDefault";
 
 class ChartLayout extends ChartDefault {
 
-  constructor(layout, xAxisData, iwpgvObj, fontFamily) {
+  constructor(layout, xAxisData, chartType, iwpgvObj, fontFamily) {
 
     super(fontFamily)
 
     this.layout = layout
     this.prefix = iwpgvObj.prefix
     this.xAxisData = xAxisData
+
+    switch (chartType) {
+      case "LineChart":
+      case "ScatterChart":
+        // this.type = "scatter";
+        this.type = "linear"
+        break
+      default:
+        this.type = "-"
+        break
+    }
    
   }
 
@@ -29,7 +40,7 @@ class ChartLayout extends ChartDefault {
       paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#b0bec5" :  this.layout.paper_bgcolor,
       plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#eeeeee" : this.layout.plot_bgcolor,
       width : ( this.layout.width === undefined ) ? null : this.layout.width,
-      height : ( this.layout.height === undefined ) ? 450 : this.layout.height,
+      height : ( this.layout.height === undefined ) ? 500 : this.layout.height,
       autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
       hovermode : ( this.layout.hovermode === undefined ) ? "closest" : this.layout.hovermode === "disabled" ? false : this.layout.hovermode,
       font : {
@@ -38,7 +49,7 @@ class ChartLayout extends ChartDefault {
         color : (  this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
       },
       title: {
-        text: ( this.layout.title === undefined || this.layout.title.text=== undefined ) ? 'Ge AR/AR 8.0 - 12.0 &#181;m' : this.layout.title.text ,
+        text: ( this.layout.title === undefined || this.layout.title.text=== undefined ) ? "Ge AR/AR 8.0 - 12.0 &#181;m" : this.layout.title.text ,
         x: ( this.layout.title === undefined || this.layout.title.x=== undefined ) ? 0.1 : this.layout.title.x,
         y: ( this.layout.title === undefined || this.layout.title.y=== undefined ) ? 0.92 : this.layout.title.y,
         font : {
@@ -76,23 +87,24 @@ class ChartLayout extends ChartDefault {
       },
       xaxis : {
         visible : ( this.layout.xaxis === undefined || this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
-        type : ( this.layout.xaxis === undefined || this.layout.xaxis.type === undefined ) ? "-" : this.layout.xaxis.type,
+        type : ( this.layout.xaxis === undefined || this.layout.xaxis.type === undefined ) ? this.type : this.layout.xaxis.type,
         // color : ( this.layout.xaxis === undefined || this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
         autotypenumbers : ( this.layout.xaxis === undefined || this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
-        autorange : ( this.layout.xaxis === undefined || this.layout.xaxis.autorange === undefined ) ? false : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
+        autorange : ( this.layout.xaxis === undefined || this.layout.xaxis.autorange === undefined ) ? true : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
         rangemode : ( this.layout.xaxis === undefined || this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
-        range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
+        range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [] : this.layout.xaxis.range,
+        // range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
         fixedrange : ( this.layout.xaxis === undefined || this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
         scaleanchor : ( this.layout.xaxis === undefined || this.layout.xaxis.scaleanchor === undefined ) ? null : this.layout.xaxis.scaleanchor,
-        ticks : ( this.layout.xaxis === undefined || this.layout.xaxis.ticks === undefined ) ? "" : this.layout.xaxis.ticks,
+        ticks : ( this.layout.xaxis === undefined || this.layout.xaxis.ticks === undefined ) ? "outside" : this.layout.xaxis.ticks,
         tickmode : ( this.layout.xaxis === undefined || this.layout.xaxis.tickmode === undefined ) ? "auto" : this.layout.xaxis.tickmode,
-        nticks : ( this.layout.xaxis === undefined || this.layout.xaxis.nticks === undefined ) ? 0 : this.layout.xaxis.nticks,
+        nticks : ( this.layout.xaxis === undefined || this.layout.xaxis.nticks === undefined ) ? null : this.layout.xaxis.nticks,
         tick0 : ( this.layout.xaxis === undefined || this.layout.xaxis.tick0 === undefined ) ? null : this.layout.xaxis.tick0,
         dtick : ( this.layout.xaxis === undefined || this.layout.xaxis.dtick === undefined ) ? null : this.layout.xaxis.dtick,
         tickvals : ( this.layout.xaxis === undefined || this.layout.xaxis.tickvals === undefined ) ? [] : this.layout.xaxis.tickvals,
         ticktext : ( this.layout.xaxis === undefined || this.layout.xaxis.ticktext === undefined ) ? [] : this.layout.xaxis.ticktext,
         ticklabelposition : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis.ticklabelposition,
-        mirror : ( this.layout.xaxis === undefined || this.layout.xaxis.mirror === undefined ) ? "all" : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
+        mirror : ( this.layout.xaxis === undefined || this.layout.xaxis.mirror === undefined ) ? false : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
         ticklen : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklen === undefined ) ? 10 : this.layout.xaxis.ticklen,
         tickwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.tickwidth === undefined ) ? 2 : this.layout.xaxis.tickwidth,
         tickcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.tickcolor === undefined ) ? "#263238" : this.layout.xaxis.tickcolor,
@@ -109,10 +121,10 @@ class ChartLayout extends ChartDefault {
         ticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.ticksuffix === undefined ) ? "" : this.layout.xaxis.ticksuffix,
         showticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.showticksuffix === undefined ) ? "none" : this.layout.xaxis.showticksuffix,
         showexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.showexponent === undefined ) ? "all" : this.layout.xaxis.showexponent,
-        exponentformat : ( this.layout.xaxis === undefined || this.layout.xaxis.exponentformat === undefined ) ? "e" : this.layout.xaxis.exponentformat,
+        exponentformat : ( this.layout.xaxis === undefined || this.layout.xaxis.exponentformat === undefined ) ? "power" : this.layout.xaxis.exponentformat,
         minexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.minexponent === undefined ) ? 3 : this.layout.xaxis.minexponent,
         separatethousands : ( this.layout.xaxis === undefined || this.layout.xaxis.separatethousands === undefined ) ? true : this.layout.xaxis.separatethousands,
-        showline : ( this.layout.xaxis === undefined || this.layout.xaxis.showline === undefined ) ? false : this.layout.xaxis.showline,
+        showline : ( this.layout.xaxis === undefined || this.layout.xaxis.showline === undefined ) ? true : this.layout.xaxis.showline,
         linecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.linecolor === undefined ) ? "#000a12" : this.layout.xaxis.linecolor,
         linewidth : ( this.layout.xaxis === undefined || this.layout.xaxis.linewidth === undefined ) ? 1 : this.layout.xaxis.linewidth,
         showgrid : ( this.layout.xaxis === undefined || this.layout.xaxis.showgrid === undefined ) ? true : this.layout.xaxis.showgrid,
@@ -165,7 +177,7 @@ class ChartLayout extends ChartDefault {
         tickvals : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.tickvals === undefined ) ? [] : this.layout.xaxis2.tickvals,
         ticktext : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.ticktext === undefined ) ? [] : this.layout.xaxis2.ticktext,
         ticklabelposition : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis2.ticklabelposition,
-        mirror : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.mirror === undefined ) ? "all" : this.layout.xaxis2.mirror === "false" ? false : this.layout.xaxis2.mirror === "true" ? true : this.layout.xaxis2.mirror,
+        mirror : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.mirror === undefined ) ? false : this.layout.xaxis2.mirror === "false" ? false : this.layout.xaxis2.mirror === "true" ? true : this.layout.xaxis2.mirror,
         ticklen : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.ticklen === undefined ) ? 10 : this.layout.xaxis2.ticklen,
         tickwidth : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.tickwidth === undefined ) ? 2 : this.layout.xaxis2.tickwidth,
         tickcolor : ( this.layout.xaxis2 === undefined || this.layout.xaxis2.tickcolor === undefined ) ? "#263238" : this.layout.xaxis2.tickcolor,
@@ -255,10 +267,10 @@ class ChartLayout extends ChartDefault {
         },
       },
       margin: {
-        l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
-        r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 80 : this.layout.margin.r,
-        t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 100 : this.layout.margin.t,
-        b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 100 : this.layout.margin.b,
+        l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 100 : this.layout.margin.l,
+        r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 100 : this.layout.margin.r,
+        t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 110 : this.layout.margin.t,
+        b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 150 : this.layout.margin.b,
         pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 20 : this.layout.margin.pad,
         autoexpand: ( this.layout.margin === undefined || this.layout.margin.autoexpand === undefined ) ? true : this.layout.margin.autoexpand,
       },
@@ -384,7 +396,7 @@ class ChartLayout extends ChartDefault {
               type : "number",
               min : 0,
               max : 2000,
-              step : 10,
+              step : 1,
               value : this.options().margin.pad,
               hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
             },
@@ -396,7 +408,7 @@ class ChartLayout extends ChartDefault {
               type : "number",
               min : 0,
               max : 2000,
-              step : 10,
+              step : 1,
               value : this.options().margin.l,
               hint : "Sets the left margin (in px)."
             },
@@ -406,7 +418,7 @@ class ChartLayout extends ChartDefault {
               type : "number",
               min : 0,
               max : 2000,
-              step : 10,
+              step : 1,
               value : this.options().margin.r,
               hint : "Sets the right margin (in px)."
             },
@@ -418,7 +430,7 @@ class ChartLayout extends ChartDefault {
               type : "number",
               min : 0,
               max : 2000,
-              step : 10,
+              step : 1,
               value : this.options().margin.t,
               hint : "Sets the topmargin (in px)."
             },
@@ -472,7 +484,7 @@ class ChartLayout extends ChartDefault {
               title : "Type",	
               type : "select",
               options : {
-                "-": "Default",
+                // "-": "Default",
                 linear: "Linear",
                 log: "Log",
                 date: "Date",
@@ -493,6 +505,18 @@ class ChartLayout extends ChartDefault {
             //   hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
             // },
             {
+              id : "chartLayout[xaxis][side]", 
+              title : "Side", 
+              type : "select",
+              options : {
+                bottom: "Bottom",
+                top: "Top"
+              },
+              value : this.options().xaxis.side,
+              disabled: ! this.options().xaxis.visible  ? true : false,
+              hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
+            },
+            {
               id : "chartLayout[xaxis][title][text]",
               title : "Title",
               type : "text", 
@@ -500,6 +524,8 @@ class ChartLayout extends ChartDefault {
               disabled: ! this.options().xaxis.visible  ? true : false,
               hint: "Sets the title of the y-axis."
             },
+            
+
           ],
           [
             {
@@ -508,7 +534,7 @@ class ChartLayout extends ChartDefault {
               type : "select",
               options : this.fontFamily,
               value : this.options().xaxis.title.font.family,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.title.text ) ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
             {
@@ -519,7 +545,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 0.5,
               value : this.options().xaxis.title.font.size,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.title.text )  ? true : false,
               hint : "number greater than or equal to 1"
             },
           ],
@@ -529,7 +555,7 @@ class ChartLayout extends ChartDefault {
               title : "Title Font Color",
               type : "color", 
               value : this.options().xaxis.title.font.color,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.title.text ) ? true : false,
             },
             {
               id : "chartLayout[xaxis][title][standoff]",
@@ -539,7 +565,7 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 0.5,
               value : this.options().xaxis.title.standoff,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.title.text ) ? true : false,
               hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
             }
           ],
@@ -561,12 +587,12 @@ class ChartLayout extends ChartDefault {
               title : "Auto Range",	
               type : "select",
               options : {
-                true: "Enabled",
+                true: "Normal",
                 false: "Disabled",
                 reversed: "Reversed"
               },
               value : this.options().xaxis.autorange,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.type !== "linear"  )  ? true : false,
               hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
             },
           ],
@@ -589,7 +615,7 @@ class ChartLayout extends ChartDefault {
                 nonnegative: "Non Negative"
               },
               value : this.options().xaxis.rangemode,
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.autorange )  ? true : false,
               hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
             },
           ],
@@ -599,7 +625,7 @@ class ChartLayout extends ChartDefault {
               title : "Range",	
               type : "text",
               value : this.options().xaxis.range.join(),
-              disabled: ! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible  || this.options().xaxis.autorange ) ? true : false,
               hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
             },
             {
@@ -648,7 +674,7 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 1,
               value : this.options().xaxis.nticks,
-              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "auto" || this.options().xaxis.ticks === ""  )  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" || this.options().xaxis.tickmode !== "auto" )  ? true : false,
               hint: "Specifies the maximum number of ticks for the particular axis. The actual number of ticks will be chosen automatically to be less than or equal to `nticks`. Has an effect only if `tickmode` is set to 'auto'."
             },
             {
@@ -656,8 +682,8 @@ class ChartLayout extends ChartDefault {
               title : "First Tick Position",	
               type : "number",
               value : this.options().xaxis.tick0,
-              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" ) ? true : false,
-              hint: "Sets the tick mode for this axis. If 'auto', the number of ticks is set via `nticks`. If 'linear', the placement of the ticks is determined by a starting position `tick0` and a tick step `dtick` ('linear' is the default value if `tick0` and `dtick` are provided). If 'array', the placement of the ticks is set via `tickvals` and the tick text is `ticktext`. ('array' is the default value if `tickvals` is provided)."
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" || this.options().xaxis.tickmode !== "linear"  ) ? true : false,
+              hint: "Sets the placement of the first tick on this axis. Use with `dtick`. If the axis `type` is 'log', then you must take the log of your starting tick (e.g. to set the starting tick to 100, set the `tick0` to 2) except when `dtick`='L<f>' (see `dtick` for more info). If the axis `type` is 'date', it should be a date string, like date data. If the axis `type` is 'category', it should be a number, using the scale where each category is assigned a serial number from zero in the order it appears."
             },
           ],
           [
@@ -666,7 +692,7 @@ class ChartLayout extends ChartDefault {
               title : "Tick Spacing",	
               type : "number",
               value : this.options().xaxis.dtick,
-              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" )  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" || this.options().xaxis.tickmode !== "linear"  )  ? true : false,
               hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
             },
             {
@@ -674,17 +700,17 @@ class ChartLayout extends ChartDefault {
               title : "Tick Positions",	
               type : "text",
               value : this.options().xaxis.tickvals.join(),
-              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "array" || this.options().xaxis.ticks === "" ) ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" || this.options().xaxis.tickmode !== "array" ) ? true : false,
               hint: "Sets the values at which ticks on this axis appear. Only has an effect if `tickmode` is set to 'array'. Used with `ticktext`."
             },
           ],
           [
             {
               id : "chartLayout[xaxis][ticktext]",
-              title : "Ticks Texts",	
+              title : "Tick Label",	
               type : "text",
               value : this.options().xaxis.ticktext.join(),
-              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.tickmode !== "array" || this.options().xaxis.ticks === "" ) ? true : false,
+              disabled:  ( ! this.options().xaxis.visible || this.options().xaxis.ticks === "" || this.options().xaxis.tickmode !== "array" ) ? true : false,
               hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
             },
             {
@@ -722,12 +748,6 @@ class ChartLayout extends ChartDefault {
               hint: "Sets the tick color."
             },
           ],
-
-
-
-
-
-
           [
             {
               id : "chartLayout[xaxis][showticklabels]",
@@ -744,14 +764,10 @@ class ChartLayout extends ChartDefault {
               options : {
                 outside: "Outside",
                 inside: "Inside",
-                "outside top": "Outside Top",
-                "inside top": "Inside Top",
                 "outside left": "Outside Left",
                 "inside left": "Inside Left",
                 "outside right": "Outside Right",
                 "inside right": "Inside Right",
-                "outside bottom": "Outside Bottom",
-                "inside bottom": "Inside Bottom"
               },
               value : this.options().xaxis.ticklabelposition,
               disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels ) ? true : false,
@@ -796,7 +812,7 @@ class ChartLayout extends ChartDefault {
               max : 180,
               step : 1,
               value : this.options().xaxis.tickangle,
-              disabled: ( ! this.options().xaxis.visible  || ! this.options().xaxis.showticklabels ) ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels ) ? true : false,
               hint : "Sets the angle of the tick labels with respect to the horizontal. For example, a `tickangle` of -90 draws the tick labels vertically."
             },
           ],
@@ -812,7 +828,7 @@ class ChartLayout extends ChartDefault {
                 none: "None",
               },
               value : this.options().xaxis.showtickprefix,
-              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels  )  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showticklabels )  ? true : false,
               hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
             },
             {
@@ -854,9 +870,9 @@ class ChartLayout extends ChartDefault {
               title : "Mirror",	
               type : "select",
               options : {
-                true: "Yes",
+                true: "Enabled",
                 ticks: "Ticks",
-                false: "No",
+                false: "Disabled",
                 all: "All",
                 allticks: "All Ticks",
               },
@@ -879,7 +895,7 @@ class ChartLayout extends ChartDefault {
               title : "Show Spikes",	
               type : "checkbox",
               value : this.options().xaxis.showspikes,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              // disabled:! this.options().xaxis.visible  ? true : false,
               hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
             },
             {
@@ -896,7 +912,7 @@ class ChartLayout extends ChartDefault {
                 "toaxis+across+marker": "To Axis & Across & Marker",
               },
               value : this.options().xaxis.spikemode,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.showspikes ? true : false,
               hint: "Determines the drawing mode for the spike line If 'toaxis', the line is drawn from the data point to the axis the series is plotted on. If 'across', the line is drawn across the entire plot area, and supercedes 'toaxis'. If 'marker', then a marker dot is drawn on the axis the series is plotted on"
             },
           ],
@@ -914,7 +930,7 @@ class ChartLayout extends ChartDefault {
                 longdashdot: "Long Dash Dot"
               },
               value : this.options().xaxis.spikedash,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.showspikes ? true : false,
               hint: "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
             },
             {
@@ -925,7 +941,7 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 1,
               value : this.options().xaxis.spikethickness,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.showspikes ? true : false,
               hint: "Sets the width (in px) of the zero line."
             },
           ],
@@ -935,6 +951,7 @@ class ChartLayout extends ChartDefault {
               title : "Spike Color",	
               type : "color",
               value : this.options().xaxis.spikecolor,
+              disabled: ! this.options().xaxis.showspikes ? true : false,
               hint: "Sets the spike color. If undefined, will use the series colorSets the tick color."
             },
             {
@@ -948,7 +965,7 @@ class ChartLayout extends ChartDefault {
                 none: "None",
               },
               value : this.options().xaxis.showexponent,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.visible  ? true : false,
               hint : "If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
             },
           ],
@@ -966,7 +983,7 @@ class ChartLayout extends ChartDefault {
                 none: "None",
               },
               value : this.options().xaxis.exponentformat,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.showexponent === "none" )  ? true : false,
               hint : "Determines a formatting rule for the tick exponents. For example, consider the number 1,000,000,000. If 'none', it appears as 1,000,000,000. If 'e', 1e+9. If 'E', 1E+9. If 'power', 1x10^9 (with 9 in a super script). If 'SI', 1G. If 'B', 1B.If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
             },
             {
@@ -974,7 +991,7 @@ class ChartLayout extends ChartDefault {
               title : "Minimum Exponent", 
               type : "number",
               value : this.options().xaxis.minexponent,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || this.options().xaxis.showexponent === "none" ) ? true : false,
               hint : "Hide SI prefix for 10^n if |n| is below this number. This only has an effect when `tickformat` is 'SI' or 'B'."
             },
           ],
@@ -984,36 +1001,36 @@ class ChartLayout extends ChartDefault {
               title : "Seperate Thousands", 
               type : "checkbox",
               value : this.options().xaxis.separatethousands,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.visible  ? true : false,
               hint : "If 'true', even 4-digit integers are separated"
             },
             {
               id : "chartLayout[xaxis][showline]", 
-              title : "Show Bounding Line", 
+              title : "Show Axis Bounding Line", 
               type : "checkbox",
               value : this.options().xaxis.showline,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether or not a line bounding this axis is drawn."
             },
           ],
           [
             {
               id : "chartLayout[xaxis][linewidth]", 
-              title : "Line Width", 
+              title : "Axis Bounding Line Width", 
               type : "number",
               min : 1,
               max : 100,
               step : 1,
               value : this.options().xaxis.linewidth,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: (! this.options().xaxis.visible || ! this.options().xaxis.showline ) ? true : false,
               hint : "Sets the width (in px) of the axis line."
             },
             {
               id : "chartLayout[xaxis][linecolor]", 
-              title : "Line Color", 
+              title : "Axis Bounding Line Color", 
               type : "color",
               value : this.options().xaxis.linecolor,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showline )  ? true : false,
               hint : "Sets the axis line color."
             },
           ],
@@ -1023,7 +1040,7 @@ class ChartLayout extends ChartDefault {
               title : "Show Zero Line", 
               type : "checkbox",
               value : this.options().xaxis.zeroline,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether or not a line is drawn at along the 0 value of this axis. If 'true', the zero line is drawn on top of the grid lines."
             },
             {
@@ -1031,11 +1048,19 @@ class ChartLayout extends ChartDefault {
               title : "Show Grid", 
               type : "checkbox",
               value : this.options().xaxis.showgrid,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ! this.options().xaxis.visible  ? true : false,
               hint : "Determines whether or not grid lines are drawn. If 'true', the grid lines are drawn at every tick mark.Determines whether or not a line bounding this axis is drawn."
             },
           ],
           [
+            {
+              id : "chartLayout[xaxis][zerolinecolor]", 
+              title : "Zero Line Color", 
+              type : "color",
+              value : this.options().xaxis.zerolinecolor,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.zeroline )  ? true : false,
+              hint : "Sets the line color of the zero line."
+            },
             {
               id : "chartLayout[xaxis][zerolinewidth]", 
               title : "Zero Line Width", 
@@ -1044,16 +1069,8 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value : this.options().xaxis.zerolinewidth,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.zeroline )  ? true : false,
               hint : "Sets the width (in px) of the zero line."
-            },
-            {
-              id : "chartLayout[xaxis][zerolinecolor]", 
-              title : "Zero Line Color", 
-              type : "color",
-              value : this.options().xaxis.zerolinecolor,
-              disabled:! this.options().xaxis.visible  ? true : false,
-              hint : "Sets the line color of the zero line."
             },
           ],
           [
@@ -1065,7 +1082,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value : this.options().xaxis.gridwidth,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showgrid ) ? true : false,
               hint : "Sets the width (in px) of the grid lines."
             },
             {
@@ -1073,7 +1090,7 @@ class ChartLayout extends ChartDefault {
               title : "GridColor", 
               type : "color",
               value : this.options().xaxis.gridcolor,
-              disabled:! this.options().xaxis.visible  ? true : false,
+              disabled: ( ! this.options().xaxis.visible || ! this.options().xaxis.showgrid )  ? true : false,
               hint : "Sets the color of the grid lines."
             },
           ],
@@ -1097,19 +1114,7 @@ class ChartLayout extends ChartDefault {
             //   disabled: this.options().xaxis.anchor !== "free" ? true : false,
             //   hint : "Sets the position of this axis in the plotting space (in normalized coordinates). Only has an effect if `anchor` is set to 'free'. Set anchoe and position to undefined to ignore both"
             // },
-            {
-              id : "chartLayout[xaxis][side]", 
-              title : "Side", 
-              type : "select",
-              options : {
-                bottom: "Bottom",
-                top: "Top"
-              },
-              value : this.options().xaxis.side,
-              disabled:! this.options().xaxis.visible  ? true : false,
-              hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
-            },
-            
+                        
           ],
           [
             // {
@@ -1743,6 +1748,7 @@ class ChartLayout extends ChartDefault {
               type : "select",
               options : this.fontFamily,
               value : this.options().title.font.family,
+              disabled: ! this.options().title.text  ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
           ],
@@ -1755,6 +1761,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 0.5,
               value : this.options().title.font.size,
+              disabled: ! this.options().title.text  ? true : false,
               hint : "number greater than or equal to 1"
             },
             {
@@ -1763,6 +1770,7 @@ class ChartLayout extends ChartDefault {
               title : "Font Color",
               type : "color", 
               value : this.options().title.font.color,
+              disabled: ! this.options().title.text  ? true : false,
             },
           ],
           [
@@ -1774,6 +1782,7 @@ class ChartLayout extends ChartDefault {
               max : 1,
               step : 0.01,
               value : this.options().title.x,
+              disabled: ! this.options().title.text  ? true : false,
               hint: "Sets the x position from '0' (left) to '1' (right)."
             },
             {
@@ -1784,6 +1793,7 @@ class ChartLayout extends ChartDefault {
               max : 1,
               step : 0.01,
               value : this.options().title.y,
+              disabled: ! this.options().title.text  ? true : false,
               hint: "Sets the y position from '0' (bottom) to '1' (top)."
             },
           ],

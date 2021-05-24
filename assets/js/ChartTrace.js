@@ -11,19 +11,19 @@ class ChartTrace extends ChartDefault {
     this.spreadsheet = spreadsheet
     // this.chart = chart
     this.sheetId= sheetId
-    this.chartType= chartType
+    // this.chartType= chartType
     this.labels = Object.values(this.spreadsheet[this.sheetId]["labels"]);
     this.index = index;
     // this.chartType = this.chart.chartParams.chartType;
 
-    switch (this.chartType) {
+    switch (chartType) {
       case "LineChart":
       case "ScatterChart":
-        this.type = "scatter";
+        // this.type = "scatter";
         this.mode = "lines+markers";
         break;
       default:
-        this.type = null;
+        // this.type = null;
         this.mode = null;   
     }
 
@@ -40,7 +40,7 @@ class ChartTrace extends ChartDefault {
       visible : ( this.trace.visible === undefined ) ? true : "false" === this.trace.visible ? false : "true" === this.trace.visible ? true : this.trace.visible,
       showlegend : ( this.trace.showlegend === undefined ) ? true : this.trace.showlegend,
       opacity : ( this.trace.opacity === undefined ) ? 1 : this.trace.opacity,
-      mode : ( this.trace.mode === undefined ) ? this.mode : this.trace.mode,
+      mode : ( this.trace.mode === undefined ) ? this.mode :this.trace.mode,
       text : ( this.trace.text === undefined ) ? ["Hi", "there"] : this.trace.text,
       textposition : ( this.trace.textposition === undefined ) ? "bottom center" : this.trace.textposition,
       hovertext : ( this.trace.hovertext === undefined ) ? "" : this.trace.hovertext,

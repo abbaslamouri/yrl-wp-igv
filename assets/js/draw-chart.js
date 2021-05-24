@@ -87,84 +87,185 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
         switch ( control ) {
 
           case "chartLayout":
+
+
+            // if ( key.includes( "config" ) ) {
+            //   // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+            //   // chart.chartLayout.options.config[key.split(".")[1]] = value
+            //   if ( chart.chartLayout.options.config.displayModeBar ){
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
+            //   }else {
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
+            //   }
+            //   // Plotly.plot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
+            // } else if ( key === "xaxis.range" ) {
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.toString().split(",").map( ( item ) => { return parseFloat( item ) } ) }, chart.chartLayout.options.config )
+            // } else if ( key === "xaxis.autorange" ) {
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
+            // } else if ( key === "xaxis.mirror" ) {
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
+            // }
+            // else if ( key === "xaxis.tickmode" ) {
+            //   if ( value === "array" ) {
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
+            //   } else {
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
+            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
+            //   }
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value }, chart.chartLayout.options.config )
+            // }else if ( key === "xaxis.tickvals" || key === "xaxis.ticktext" ) {
+            //   // console.log(value.split(",").map( ( item ) => { return  item } ))
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.split(",").map( ( item ) => { return  item } ) }, chart.chartLayout.options.config )
+            // } else if (key === "hovermode" || key === "legend.itemclick" ) {
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  ( event.target.value !== "disabled" ) ? event.target.value : false }, chart.chartLayout.options.config )
+            // } else {
+            //   switch(keyParts.length){
+            //     case 1:
+            //       // chart.chartLayout.options[keyParts[0]] = value
+            //       break
+            //     case 2:
+            //       // chart.chartLayout.options[keyParts[0]][keyParts[1]] = value
+            //       // console.log(chart.chartLayout.options[keyParts[0]][keyParts[1]])
+            //       break
+            //     case 3:
+            //       // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value
+            //       // if (key === "xaxis.rangeslider.visible" ) {
+            //       //   if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
+            //       //   if (value) {
+            //       //     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+            //       //     showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+            //       //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
+            //       //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
+            //       //     const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
+            //       //     const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
+            //       //     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
+            //       //     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
+            //       //   } else {
+            //       //     hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
+            //       //     hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
+            //       //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
+            //       //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
+            //       //   }
+            //       // }
+            //       break
+            //     case 4:
+            //         // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
+            //       break
+            //     case 5:
+            //         // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]][keyParts[4]] = event.target.type === 'checkbox' ? event.target.checked : value
+            //       break
+            //   }
+            //   // console.log("X",chart.chartLayout)
+
+            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value }, chart.chartLayout.options.config )
+            // }
+
             if ( key.includes( "config" ) ) {
-              chart.chartLayout.options.config[key.split(".")[1]] = value
-              if ( chart.chartLayout.options.config.displayModeBar ){
+              Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
+              // if ( chart.chartLayout.options.config.displayModeBar ){
                 // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
-              }else {
+              // }else {
                 // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
-              }
-              Plotly.newPlot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
-            } else if ( key === "xaxis.range" ) {
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.toString().split(",").map( ( item ) => { return parseFloat( item ) } ) }, chart.chartLayout.options.config )
-            } else if ( key === "xaxis.autorange" ) {
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
-            } else if ( key === "xaxis.mirror" ) {
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
-            }
-            else if ( key === "xaxis.tickmode" ) {
-              if ( value === "array" ) {
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
-              } else {
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
-              }
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value }, chart.chartLayout.options.config )
-            }else if ( key === "xaxis.tickvals" || key === "xaxis.ticktext" ) {
-              console.log(value.split(",").map( ( item ) => { return  item } ))
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.split(",").map( ( item ) => { return  item } ) }, chart.chartLayout.options.config )
-            } else if (key === "hovermode" || key === "legend.itemclick" ) {
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  ( event.target.value !== "disabled" ) ? event.target.value : false }, chart.chartLayout.options.config )
+              // }
+              chart.chartLayout.options.config[key.split(".")[1]] = value
+              Plotly.plot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
             } else {
-              switch(keyParts.length){
-                case 1:
-                  chart.chartLayout.options[keyParts[0]] = value
+              switch(key) {
+                case "xaxis.range":
+                  value = "" === value ? [] : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
                   break
-                case 2:
-                  chart.chartLayout.options[keyParts[0]][keyParts[1]] = value
-                  console.log(chart.chartLayout.options[keyParts[0]][keyParts[1]])
+                case "xaxis.autorange":
+                  value = "false" === value ? false : "true" === value ? true : value
+                  if ( true === value ){
+                    chart.chartLayout.options.xaxis.range = []
+                    document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][range]`).value = ""
+                  }
                   break
-                case 3:
-                  chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value
-                  // if (key === "xaxis.rangeslider.visible" ) {
-                  //   if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
-                  //   if (value) {
-                  //     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-                  //     showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-                  //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
-                  //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
-                  //     const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
-                  //     const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-                  //     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
-                  //     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
-                  //   } else {
-                  //     hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-                  //     hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-                  //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
-                  //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
-                  //   }
-                  // }
+                case "xaxis.tickvals":
+                  value = "" === value ? [] : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
                   break
-                case 4:
-                    chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
+                case "xaxis.ticktext":
+                  value = "" === value ? [] : value.split(",").map( ( item ) => { return item } )
+                  console.log(value)
                   break
-                case 5:
-                    chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]][keyParts[4]] = event.target.type === 'checkbox' ? event.target.checked : value
+                default:
                   break
               }
-              console.log("X",chart.chartLayout)
+              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value })
 
-              Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value }, chart.chartLayout.options.config )
             }
-            console.log("CRT",chart)
 
+            console.log("CRT", chart.chartLayout.options)
 
+            const layout = chart.chartLayout.options
+            const layoutInputIdPrefix = `${iwpgvObj.prefix}__chartLayout`
 
-
-
+            // Plot title
+            document.getElementById(`${layoutInputIdPrefix}[title][font][family]`).disabled = ! layout.title.text  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[title][font][size]`).disabled = ! layout.title.text  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[title][font][color]`).disabled = ! layout.title.text  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[title][x]`).disabled = ! layout.title.text  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[title][y]`).disabled = ! layout.title.text  ? true : false
+           
+            // X-Axis
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][type]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][autotypenumbers]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][autorange]`).disabled = ( ! layout.xaxis.visible )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][rangemode]`).disabled = ( ! layout.xaxis.visible || false === layout.xaxis.autorange || layout.xaxis.type !== "linear" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][range]`).disabled = ( ! layout.xaxis.visible || true === layout.xaxis.autorange ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][fixedrange]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][scaleanchor]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][ticks]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickmode]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][nticks]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" || layout.xaxis.tickmode !== "auto" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tick0]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === ""|| layout.xaxis.tickmode !== "linear"  )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][dtick]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === ""|| layout.xaxis.tickmode !== "linear"  )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickvals]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" || layout.xaxis.tickmode !== "array"  )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][ticktext]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" || layout.xaxis.tickmode !== "array"  )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][ticklabelposition]`).disabled = ( ! layout.xaxis.visible|| ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][mirror]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][ticklen]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickwidth]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickcolor]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.ticks === "" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showticklabels]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][automargin]`).disabled = ! layout.xaxis.visible  ? true : false
+            // document.getElementById(`${layoutInputIdPrefix}[xaxis][showspikes]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][spikecolor]`).disabled = ! layout.xaxis.showspikes  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][spikethickness]`).disabled = ! layout.xaxis.showspikes  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][spikedash]`).disabled = ! layout.xaxis.showspikes  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][spikemode]`).disabled = ! layout.xaxis.showspikes  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickangle]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickprefix]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels || layout.xaxis.showtickprefix === "none" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showtickprefix]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][ticksuffix]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels || layout.xaxis.showticksuffix === "none" )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showticksuffix]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showexponent]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][exponentformat]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.showexponent === "none" )   ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][minexponent]`).disabled = ( ! layout.xaxis.visible || layout.xaxis.showexponent === "none" )   ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][separatethousands]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showline]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][linecolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showline ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][linewidth]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showline ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][showgrid]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][gridcolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showgrid )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][gridwidth]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showgrid )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][zeroline]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][zerolinecolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.zeroline )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][zerolinewidth]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.zeroline )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][side]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickfont][family]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickfont][size]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][tickfont][color]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.showticklabels )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][title][text]`).disabled = ! layout.xaxis.visible  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][title][font][family]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][title][font][size]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][title][font][color]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][title][standoff]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
 
             break
+
+
 
           case "chartTraces":
 
@@ -184,54 +285,54 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             console.log("TRACES",chart.chartTraces.options[traceNumber])
 
             const trace = chart.chartTraces.options[traceNumber]
-            const inputIdPrefix = `${iwpgvObj.prefix}__chartTraces[${traceNumber}]`           
+            const traceInputIdPrefix = `${iwpgvObj.prefix}__chartTraces[${traceNumber}]`           
 
-            document.getElementById(`${inputIdPrefix}[xaxis]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[yaxis]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[mode]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[name]`).disabled = ( true !== trace.visible || trace.showlegend ) ? true : false
-            document.getElementById(`${inputIdPrefix}[opacity]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[showlegend]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][symbol]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][size]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][opacity]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][color]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][maxdisplayed]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][gradient][type]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            document.getElementById(`${inputIdPrefix}[marker][gradient][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][dash]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            document.getElementById(`${inputIdPrefix}[text]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[textposition]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[textfont][family]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[textfont][color]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[textfont][size]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hovertext]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverinfo]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][bgcolor]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][bordercolor]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][align]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][namelength]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][font][family]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][font][size]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[hoverlabel][font][color]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][visible]`).disabled = ( true !== trace.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][type]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][symmetric]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible  ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][value]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][valueminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][array]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][arrayminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][color]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][thickness]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[error_y][width]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            document.getElementById(`${inputIdPrefix}[connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[xaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[yaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[mode]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[name]`).disabled = ( true !== trace.visible || trace.showlegend ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[opacity]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[showlegend]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][symbol]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][size]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][opacity]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][color]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][maxdisplayed]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][gradient][type]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[marker][gradient][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][dash]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[text]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[textposition]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[textfont][family]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[textfont][color]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[textfont][size]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hovertext]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverinfo]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][bgcolor]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][bordercolor]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][align]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][namelength]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][family]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][size]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][color]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][visible]`).disabled = ( true !== trace.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][type]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][symmetric]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible  ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][value]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][valueminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][array]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][arrayminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][color]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][thickness]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[error_y][width]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            document.getElementById(`${traceInputIdPrefix}[connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
 
             break
             

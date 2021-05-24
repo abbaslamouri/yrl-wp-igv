@@ -20,6 +20,16 @@ const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
     
     await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
 
+    // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][range]`).value = chart.chartLayout.options.xaxis.range.join()
+    // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][autorange]`).value = "false"
+    // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][autorange]`).disabled = true
+    // chart.chartLayout.options.xaxis.autorange = false;
+
+
+
+
+    console.log(chart.chartLayout.options)
+
 
     // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
     // if ( chart.chartLayout.options.xaxis.rangeslider.visible && chart.chartLayout.options.showMinMaxAvgTable ) {
