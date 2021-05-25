@@ -232,7 +232,6 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
 
             // Range Slider
-            // Range Slider
             document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][thickness]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][bgcolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][borderwidth]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false

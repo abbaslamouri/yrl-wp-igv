@@ -2405,73 +2405,73 @@ class ChartLayout extends ChartDefault {
           ],
         ]  
       },
-      rangeslider : {
-        intro : "Here you can modify the plot x-axis range slider",
-        id : `${this.prefix}__chartLayoutPanel__xaxis_rangeslider`,
-        cssClasses:["chartLayout", "subPanel"],
-        title : "Range Slider",
-        fields : [
-          [
-            {
-              id : "chartLayout[xaxis][rangeslider][visible]",
-              title : "Show Range Slider",
-              type : "checkbox", 
-              value : this.options().xaxis.rangeslider.visible,
-              hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
-            },
-            {
-              id : "chartLayout[showMinMaxAvgTable]",
-              title : "Show Min/Max/Avg Table",
-              type : "checkbox", 
-              value : this.options().showMinMaxAvgTable,
-              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
-              hint: "Determines whether or not the Min/Max?Avg table will be visible"
-            },
-          ],
-          [
-            {
-              id: "chartLayout[xaxis][rangeslider][thickness]",
-              title:"Range Slider Height",
-              type : "number",
-              min : 0,
-              max : 1,
-              step : 0.01,
-              value: this.options().xaxis.rangeslider.thickness,
-              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
-              hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
-            },
-            {
-              id : "chartLayout[xaxis][rangeslider][bgcolor]",
-              title : "Background Color",
-              type : "color", 
-              value : this.options().xaxis.rangeslider.bgcolor,
-              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
-              hint: "Sets the background color of the range slider."
-            },
-          ],
-          [
-            {
-              id: "chartLayout[xaxis][rangeslider][borderwidth]",
-              title:"Border Width",
-              type : "number",
-              min : 0,
-              max : 100,
-              step : 1,
-              value: this.options().xaxis.rangeslider.borderwidth,
-              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
-              hint: "Sets the border width of the range slider."
-            },
-            {
-              id : "chartLayout[xaxis][rangeslider][bordercolor]",
-              title : "Border Color",
-              type : "color", 
-              value : this.options().xaxis.rangeslider.bordercolor,
-              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
-              hint: "Sets the border color of the range slider."
-            },
-          ]
-        ]  
-      },
+      // rangeslider : {
+      //   intro : "Here you can modify the plot x-axis range slider",
+      //   id : `${this.prefix}__chartLayoutPanel__xaxis_rangeslider`,
+      //   cssClasses:["chartLayout", "subPanel"],
+      //   title : "Range Slider",
+      //   fields : [
+      //     [
+      //       {
+      //         id : "chartLayout[xaxis][rangeslider][visible]",
+      //         title : "Show Range Slider",
+      //         type : "checkbox", 
+      //         value : this.options().xaxis.rangeslider.visible,
+      //         hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
+      //       },
+      //       {
+      //         id : "chartLayout[showMinMaxAvgTable]",
+      //         title : "Show Min/Max/Avg Table",
+      //         type : "checkbox", 
+      //         value : this.options().showMinMaxAvgTable,
+      //         disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
+      //         hint: "Determines whether or not the Min/Max?Avg table will be visible"
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         id: "chartLayout[xaxis][rangeslider][thickness]",
+      //         title:"Range Slider Height",
+      //         type : "number",
+      //         min : 0,
+      //         max : 1,
+      //         step : 0.01,
+      //         value: this.options().xaxis.rangeslider.thickness,
+      //         disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
+      //         hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
+      //       },
+      //       {
+      //         id : "chartLayout[xaxis][rangeslider][bgcolor]",
+      //         title : "Background Color",
+      //         type : "color", 
+      //         value : this.options().xaxis.rangeslider.bgcolor,
+      //         disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
+      //         hint: "Sets the background color of the range slider."
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         id: "chartLayout[xaxis][rangeslider][borderwidth]",
+      //         title:"Border Width",
+      //         type : "number",
+      //         min : 0,
+      //         max : 100,
+      //         step : 1,
+      //         value: this.options().xaxis.rangeslider.borderwidth,
+      //         disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
+      //         hint: "Sets the border width of the range slider."
+      //       },
+      //       {
+      //         id : "chartLayout[xaxis][rangeslider][bordercolor]",
+      //         title : "Border Color",
+      //         type : "color", 
+      //         value : this.options().xaxis.rangeslider.bordercolor,
+      //         disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
+      //         hint: "Sets the border color of the range slider."
+      //       },
+      //     ]
+      //   ]  
+      // },
       // config : {
       //   intro : "Here you can modify the plot configuration",
       //   id : `${this.prefix}__chartLayoutPanel__config`,

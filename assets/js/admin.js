@@ -1,5 +1,5 @@
 import Plotly from 'plotly.js-dist'
-import Accordion from "./Accordion"
+// import Accordion from "./Accordion"
 import selectFile from './select-file'
 import saveChart from './save-chart'
 import ChartParams from "./ChartParams"
@@ -8,6 +8,9 @@ import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import { displayAdminMessage, toggleElementByClass, setSheetIdOptions, showInputField, hidePanels } from "./utilities"
 import "../sass/admin.scss"
+
+import Accordion from 'accordion-js';
+import 'accordion-js/dist/accordion.min.css';
 
 // const plotlyChart = () => {
 
@@ -232,7 +235,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   } 
 
   // Load accordion
-  new Accordion( { collapsed: false } )
+  // new Accordion( { collapsed: false }, iwpgvObj )
+  new Accordion(['.accordion-container', '.accordion-container-1', '.accordion-container-2']);
 
 
 

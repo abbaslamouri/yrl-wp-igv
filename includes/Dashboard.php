@@ -598,12 +598,92 @@ if (!class_exists('Dashboard')) {
 									"sections" => []
 								]
 							],
+							"basicOptions" => [
+								"options" => isset( $chart["basicOptions"]["options"] ) ? $chart["basicOptions"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__basicOptionsPanel",
+									"cssClasses" => ["basicOptions", "panel"],
+									"title" => __("Basic Options", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"chartTitle" => [
+								"options" => isset( $chart["chartTitle"]["options"] ) ? $chart["chartTitle"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartTitlePanel",
+									"cssClasses" => ["chartTitle", "panel"],
+									"title" => __("Chart Title", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"chartLegend" => [
+								"options" => isset( $chart["chartLegend"]["options"] ) ? $chart["chartLegend"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__chartLegendPanel",
+									"cssClasses" => ["chartLegend", "panel"],
+									"title" => __("Chart Legend", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"hoverLabel" => [
+								"options" => isset( $chart["hoverLabel"]["options"] ) ? $chart["hoverLabel"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__hoverLabelPanel",
+									"cssClasses" => ["hoverLabel", "panel"],
+									"title" => __("Hover Label", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"modeBar" => [
+								"options" => isset( $chart["modeBar"]["options"] ) ? $chart["modeBar"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__modeBarPanel",
+									"cssClasses" => ["modeBar", "panel"],
+									"title" => __("Mode Bar", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
               "bottomAxis" => [
 								"options" => isset( $chart["bottomAxis"]["options"] ) ? $chart["bottomAxis"]["options"] : [],
 								"panel" => [
 									"id" => "{$this->prefix}__bottomAxis",
 									"cssClasses" => ["bottomAxis", "panel"],
 									"title" => __("Bottom Axis", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"topAxis" => [
+								"options" => isset( $chart["topAxis"]["options"] ) ? $chart["topAxis"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__topAxis",
+									"cssClasses" => ["topAxis", "panel"],
+									"title" => __("Top Axis", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"leftAxis" => [
+								"options" => isset( $chart["leftAxis"]["options"] ) ? $chart["leftAxis"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__leftAxis",
+									"cssClasses" => ["leftAxis", "panel"],
+									"title" => __("Left Axis", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
+							"rightAxis" => [
+								"options" => isset( $chart["rightAxis"]["options"] ) ? $chart["rightAxis"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__rightAxis",
+									"cssClasses" => ["rightAxis", "panel"],
+									"title" => __("Right Axis", $this->plugin),
 									"intro" => "",
 									"sections" => []
 								]
@@ -746,7 +826,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      // wp_send_json($_POST);
+      wp_send_json($_POST);
 
 			try {
 				

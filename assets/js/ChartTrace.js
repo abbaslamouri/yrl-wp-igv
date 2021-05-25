@@ -1,11 +1,10 @@
-import ChartDefault from "./ChartDefault"
+import { fontFamily, colors } from "./utilities"
 
 
-class ChartTrace extends ChartDefault {
+class ChartTrace {
 
-  constructor(trace, spreadsheet, index, sheetId, chartType, iwpgvObj, colors, fontFamily) {
+  constructor(trace, spreadsheet, index, sheetId, chartType, iwpgvObj ) {
 
-    super(colors, fontFamily);
 
     this.trace = trace;
     this.spreadsheet = spreadsheet
@@ -51,7 +50,7 @@ class ChartTrace extends ChartDefault {
       yaxis : ( this.trace.yaxis === undefined ) ? "y" : this.trace.yaxis,
       connectgaps : (  this.trace.connectgaps === undefined ) ?  false : this.trace.connectgaps,
       textfont : {
-        family : (  this.trace.textfont === undefined || this.trace.textfont.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.trace.textfont.family,
+        family : (  this.trace.textfont === undefined || this.trace.textfont.family === undefined ) ? Object.keys(fontFamily())[13] : this.trace.textfont.family,
         size : (  this.trace.textfont === undefined || this.trace.textfont.size === undefined ) ? 20 : this.trace.textfont.size,
         color : (  this.trace.textfont === undefined || this.trace.textfont.color === undefined ) ? "#1B5E20" : this.trace.textfont.color,
       },
@@ -60,7 +59,7 @@ class ChartTrace extends ChartDefault {
         opacity: (  this.trace.marker === undefined || this.trace.marker.opacity === undefined ) ? 1 : this.trace.marker.opacity,
         size: (  this.trace.marker === undefined || this.trace.marker.size === undefined ) ? 5 : this.trace.marker.size,
         maxdisplayed : (  this.trace.marker === undefined || this.trace.marker.maxdisplayed === undefined ) ? 10 : this.trace.marker.maxdisplayed,
-        color : (  this.trace.marker === undefined || this.trace.marker.color === undefined ) ? this.colors[this.index] : this.trace.marker.color,
+        color : (  this.trace.marker === undefined || this.trace.marker.color === undefined ) ? colors[this.index] : this.trace.marker.color,
         line: {
           width: (  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.width === undefined ) ? 1 : this.trace.marker.line.width,
           color: (  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.color === undefined ) ?  "#4A148C" : this.trace.marker.line.color,
@@ -73,7 +72,7 @@ class ChartTrace extends ChartDefault {
       line : {
         shape: ( this.trace.line === undefined || this.trace.line.shape === undefined ) ? "spline" : this.trace.line.shape,
         width: ( this.trace.line === undefined || this.trace.line.width === undefined ) ? 2 : this.trace.line.width,
-        color : ( this.trace.line === undefined || this.trace.line.color === undefined ) ? this.colors[this.index] : this.trace.line.color,
+        color : ( this.trace.line === undefined || this.trace.line.color === undefined ) ? colors[this.index] : this.trace.line.color,
         dash: ( this.trace.line === undefined || this.trace.line.dash === undefined ) ? "solid" : this.trace.line.dash,
         smoothing: ( this.trace.line === undefined || this.trace.line.smoothing === undefined ) ? 1 : this.trace.line.smoothing,
         simplify: ( this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
@@ -86,7 +85,7 @@ class ChartTrace extends ChartDefault {
         valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 20 : this.trace.error_y.valueminus,
         array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
         arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
-        color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? this.colors[this.index] : this.trace.error_y.color,
+        color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? colors[this.index] : this.trace.error_y.color,
         thickness: ( this.trace.error_y === undefined || this.trace.error_y.thickness === undefined ) ? 2: this.trace.error_y.thickness,
         width: ( this.trace.error_y === undefined || this.trace.error_y.width === undefined ) ? 4: this.trace.error_y.width,
       },
@@ -94,7 +93,7 @@ class ChartTrace extends ChartDefault {
         bgcolor: ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.bgcolor === undefined ) ? "#eeeeee" : this.trace.hoverlabel.bgcolor,
         bordercolor: ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.bordercolor === undefined ) ? "#000a12" : this.trace.hoverlabel.bordercolor,
         font : {
-          family : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.trace.hoverlabel.font.family,
+          family : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.trace.hoverlabel.font.family,
           size : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.size === undefined ) ? 20 : this.trace.hoverlabel.font.size,
           color : ( this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.color === undefined ) ? "#1B5E20" : this.trace.hoverlabel.font.color,
         },
@@ -407,7 +406,7 @@ class ChartTrace extends ChartDefault {
             id : `chartTraces[${this.index-1}][textfont][family]`,
             title : "Text Font",	
             type : "select",
-            options : this.fontFamily,
+            options : fontFamily(),
             value : this.options().textfont.family,
             disabled: true !== this.options().visible  ? true : false,
             hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
@@ -492,7 +491,7 @@ class ChartTrace extends ChartDefault {
             id : `chartTraces[${this.index-1}][hoverlabel][font][family]`,
             title : "Hover Label Font",	
             type : "select",
-            options : this.fontFamily,
+            options : fontFamily(),
             value : this.options().hoverlabel.font.family,
             disabled: true !== this.options().visible  ? true : false,
             hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."

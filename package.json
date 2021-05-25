@@ -30,6 +30,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "accordion-js": "^3.1.1",
     "plotly.js-basic-dist": "^1.58.4",
     "plotly.js-dist": "^1.58.4",
     "sweetalert": "^2.1.2"

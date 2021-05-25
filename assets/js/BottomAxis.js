@@ -3,10 +3,11 @@ import { fontFamily } from "./utilities"
 
 class BottomAxis  {
 
-  constructor( xaxis, chartType, iwpgvObj ) {
+  constructor( inputOPtions, chartType, iwpgvObj ) {
 
-    this.xaxis = xaxis
+    this.inputOPtions = inputOPtions
     this.prefix = iwpgvObj.prefix
+
     switch (chartType) {
       case "LineChart":
       case "ScatterChart":
@@ -23,77 +24,77 @@ class BottomAxis  {
 
     return {
 
-      visible : ( this.xaxis === undefined || this.xaxis.visible === undefined ) ? true :  this.xaxis.visible,
-      type : ( this.xaxis === undefined || this.xaxis.type === undefined ) ? this.type : this.xaxis.type,
-      // color : ( this.xaxis === undefined || this.xaxis.color === undefined ) ? "#000a12" : this.xaxis.color,
-      autotypenumbers : ( this.xaxis === undefined || this.xaxis.autotypenumbers === undefined ) ? "convert types" : this.xaxis.autotypenumbers,
-      autorange : ( this.xaxis === undefined || this.xaxis.autorange === undefined ) ? true : this.xaxis.autorange === "false" ? false : this.xaxis.autorange === "true" ? true : this.xaxis.autorange,
-      rangemode : ( this.xaxis === undefined || this.xaxis.rangemode === undefined ) ? "normal" : this.xaxis.rangemode,
-      range : ( this.xaxis === undefined || this.xaxis.range === undefined ) ? [] : this.xaxis.range,
-      // range : ( this.xaxis === undefined || this.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.xaxis.range,
-      fixedrange : ( this.xaxis === undefined || this.xaxis.fixedrange === undefined ) ? true : this.xaxis.fixedrange,
-      scaleanchor : ( this.xaxis === undefined || this.xaxis.scaleanchor === undefined ) ? null : this.xaxis.scaleanchor,
-      ticks : ( this.xaxis === undefined || this.xaxis.ticks === undefined ) ? "outside" : this.xaxis.ticks,
-      tickmode : ( this.xaxis === undefined || this.xaxis.tickmode === undefined ) ? "auto" : this.xaxis.tickmode,
-      nticks : ( this.xaxis === undefined || this.xaxis.nticks === undefined ) ? null : this.xaxis.nticks,
-      tick0 : ( this.xaxis === undefined || this.xaxis.tick0 === undefined ) ? null : this.xaxis.tick0,
-      dtick : ( this.xaxis === undefined || this.xaxis.dtick === undefined ) ? null : this.xaxis.dtick,
-      tickvals : ( this.xaxis === undefined || this.xaxis.tickvals === undefined ) ? [] : this.xaxis.tickvals,
-      ticktext : ( this.xaxis === undefined || this.xaxis.ticktext === undefined ) ? [] : this.xaxis.ticktext,
-      ticklabelposition : ( this.xaxis === undefined || this.xaxis.ticklabelposition === undefined ) ? "outside" : this.xaxis.ticklabelposition,
-      mirror : ( this.xaxis === undefined || this.xaxis.mirror === undefined ) ? false : this.xaxis.mirror === "false" ? false : this.xaxis.mirror === "true" ? true : this.xaxis.mirror,
-      ticklen : ( this.xaxis === undefined || this.xaxis.ticklen === undefined ) ? 10 : this.xaxis.ticklen,
-      tickwidth : ( this.xaxis === undefined || this.xaxis.tickwidth === undefined ) ? 2 : this.xaxis.tickwidth,
-      tickcolor : ( this.xaxis === undefined || this.xaxis.tickcolor === undefined ) ? "#263238" : this.xaxis.tickcolor,
-      showticklabels : ( this.xaxis === undefined || this.xaxis.showticklabels === undefined ) ? true : this.xaxis.showticklabels,
-      automargin : ( this.xaxis === undefined || this.xaxis.automargin === undefined ) ? true : this.xaxis.automargin,
-      showspikes : ( this.xaxis === undefined || this.xaxis.showspikes === undefined ) ? true : this.xaxis.showspikes,
-      spikecolor : ( this.xaxis === undefined || this.xaxis.spikecolor === undefined ) ? "#000a12" : this.xaxis.spikecolor,
-      spikethickness : ( this.xaxis === undefined || this.xaxis.spikethickness === undefined ) ? 2 : this.xaxis.spikethickness,
-      spikedash : ( this.xaxis === undefined || this.xaxis.spikedash === undefined ) ? "dash" : this.xaxis.spikedash,
-      spikemode : ( this.xaxis === undefined || this.xaxis.spikemode === undefined ) ? "toaxis" : this.xaxis.spikemode,
-      tickangle : ( this.xaxis === undefined || this.xaxis.tickangle === undefined ) ? 0 : this.xaxis.tickangle,
-      tickprefix : ( this.xaxis === undefined || this.xaxis.tickprefix === undefined ) ? "" : this.xaxis.tickprefix,
-      showtickprefix : ( this.xaxis === undefined || this.xaxis.showtickprefix === undefined ) ? "none" : this.xaxis.showtickprefix,
-      ticksuffix : ( this.xaxis === undefined || this.xaxis.ticksuffix === undefined ) ? "" : this.xaxis.ticksuffix,
-      showticksuffix : ( this.xaxis === undefined || this.xaxis.showticksuffix === undefined ) ? "none" : this.xaxis.showticksuffix,
-      showexponent : ( this.xaxis === undefined || this.xaxis.showexponent === undefined ) ? "all" : this.xaxis.showexponent,
-      exponentformat : ( this.xaxis === undefined || this.xaxis.exponentformat === undefined ) ? "power" : this.xaxis.exponentformat,
-      minexponent : ( this.xaxis === undefined || this.xaxis.minexponent === undefined ) ? 3 : this.xaxis.minexponent,
-      separatethousands : ( this.xaxis === undefined || this.xaxis.separatethousands === undefined ) ? true : this.xaxis.separatethousands,
-      showline : ( this.xaxis === undefined || this.xaxis.showline === undefined ) ? true : this.xaxis.showline,
-      linecolor : ( this.xaxis === undefined || this.xaxis.linecolor === undefined ) ? "#000a12" : this.xaxis.linecolor,
-      linewidth : ( this.xaxis === undefined || this.xaxis.linewidth === undefined ) ? 1 : this.xaxis.linewidth,
-      showgrid : ( this.xaxis === undefined || this.xaxis.showgrid === undefined ) ? true : this.xaxis.showgrid,
-      gridcolor : ( this.xaxis === undefined || this.xaxis.gridcolor === undefined ) ? "#4f5b62" : this.xaxis.gridcolor,
-      gridwidth : ( this.xaxis === undefined || this.xaxis.gridwidth === undefined ) ? 1 : this.xaxis.gridwidth,
-      zeroline : ( this.xaxis === undefined || this.xaxis.zeroline === undefined ) ? true : this.xaxis.zeroline,
-      zerolinecolor : ( this.xaxis === undefined || this.xaxis.zerolinecolor === undefined ) ? "#000a12" : this.xaxis.zerolinecolor,
-      zerolinewidth : ( this.xaxis === undefined || this.xaxis.zerolinewidth === undefined ) ? 1 : this.xaxis.zerolinewidth,
-      // anchor : ( this.xaxis === undefined || this.xaxis.anchor === undefined ) ? "free": this.xaxis.anchoe,
-      side : ( this.xaxis === undefined || this.xaxis.side === undefined ) ? "bottom" : this.xaxis.side,
-      // overlaying : ( this.xaxis === undefined || this.xaxis.overlaying === undefined ) ? false : this.xaxis.overlaying,
-      // position : ( this.xaxis === undefined || this.xaxis.position === undefined ) ? 0 : this.xaxis.position,
+      visible : ( this.inputOptions === undefined || this.inputOptions.visible === undefined ) ? true :  this.inputOptions.visible,
+      type : ( this.inputOptions === undefined || this.inputOptions.type === undefined ) ? this.type : this.inputOptions.type,
+      // color : ( this.inputOptions === undefined || this.inputOptions.color === undefined ) ? "#000a12" : this.inputOptions.color,
+      autotypenumbers : ( this.inputOptions === undefined || this.inputOptions.autotypenumbers === undefined ) ? "convert types" : this.inputOptions.autotypenumbers,
+      autorange : ( this.inputOptions === undefined || this.inputOptions.autorange === undefined ) ? true : this.inputOptions.autorange === "false" ? false : this.inputOptions.autorange === "true" ? true : this.inputOptions.autorange,
+      rangemode : ( this.inputOptions === undefined || this.inputOptions.rangemode === undefined ) ? "normal" : this.inputOptions.rangemode,
+      range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [] : this.inputOptions.range,
+      // range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.inputOptions.range,
+      fixedrange : ( this.inputOptions === undefined || this.inputOptions.fixedrange === undefined ) ? true : this.inputOptions.fixedrange,
+      scaleanchor : ( this.inputOptions === undefined || this.inputOptions.scaleanchor === undefined ) ? null : this.inputOptions.scaleanchor,
+      ticks : ( this.inputOptions === undefined || this.inputOptions.ticks === undefined ) ? "outside" : this.inputOptions.ticks,
+      tickmode : ( this.inputOptions === undefined || this.inputOptions.tickmode === undefined ) ? "auto" : this.inputOptions.tickmode,
+      nticks : ( this.inputOptions === undefined || this.inputOptions.nticks === undefined ) ? null : this.inputOptions.nticks,
+      tick0 : ( this.inputOptions === undefined || this.inputOptions.tick0 === undefined ) ? null : this.inputOptions.tick0,
+      dtick : ( this.inputOptions === undefined || this.inputOptions.dtick === undefined ) ? null : this.inputOptions.dtick,
+      tickvals : ( this.inputOptions === undefined || this.inputOptions.tickvals === undefined ) ? [] : this.inputOptions.tickvals,
+      ticktext : ( this.inputOptions === undefined || this.inputOptions.ticktext === undefined ) ? [] : this.inputOptions.ticktext,
+      ticklabelposition : ( this.inputOptions === undefined || this.inputOptions.ticklabelposition === undefined ) ? "outside" : this.inputOptions.ticklabelposition,
+      mirror : ( this.inputOptions === undefined || this.inputOptions.mirror === undefined ) ? false : this.inputOptions.mirror === "false" ? false : this.inputOptions.mirror === "true" ? true : this.inputOptions.mirror,
+      ticklen : ( this.inputOptions === undefined || this.inputOptions.ticklen === undefined ) ? 10 : this.inputOptions.ticklen,
+      tickwidth : ( this.inputOptions === undefined || this.inputOptions.tickwidth === undefined ) ? 2 : this.inputOptions.tickwidth,
+      tickcolor : ( this.inputOptions === undefined || this.inputOptions.tickcolor === undefined ) ? "#263238" : this.inputOptions.tickcolor,
+      showticklabels : ( this.inputOptions === undefined || this.inputOptions.showticklabels === undefined ) ? true : this.inputOptions.showticklabels,
+      automargin : ( this.inputOptions === undefined || this.inputOptions.automargin === undefined ) ? true : this.inputOptions.automargin,
+      showspikes : ( this.inputOptions === undefined || this.inputOptions.showspikes === undefined ) ? true : this.inputOptions.showspikes,
+      spikecolor : ( this.inputOptions === undefined || this.inputOptions.spikecolor === undefined ) ? "#000a12" : this.inputOptions.spikecolor,
+      spikethickness : ( this.inputOptions === undefined || this.inputOptions.spikethickness === undefined ) ? 2 : this.inputOptions.spikethickness,
+      spikedash : ( this.inputOptions === undefined || this.inputOptions.spikedash === undefined ) ? "dash" : this.inputOptions.spikedash,
+      spikemode : ( this.inputOptions === undefined || this.inputOptions.spikemode === undefined ) ? "toaxis" : this.inputOptions.spikemode,
+      tickangle : ( this.inputOptions === undefined || this.inputOptions.tickangle === undefined ) ? 0 : this.inputOptions.tickangle,
+      tickprefix : ( this.inputOptions === undefined || this.inputOptions.tickprefix === undefined ) ? "" : this.inputOptions.tickprefix,
+      showtickprefix : ( this.inputOptions === undefined || this.inputOptions.showtickprefix === undefined ) ? "none" : this.inputOptions.showtickprefix,
+      ticksuffix : ( this.inputOptions === undefined || this.inputOptions.ticksuffix === undefined ) ? "" : this.inputOptions.ticksuffix,
+      showticksuffix : ( this.inputOptions === undefined || this.inputOptions.showticksuffix === undefined ) ? "none" : this.inputOptions.showticksuffix,
+      showexponent : ( this.inputOptions === undefined || this.inputOptions.showexponent === undefined ) ? "all" : this.inputOptions.showexponent,
+      exponentformat : ( this.inputOptions === undefined || this.inputOptions.exponentformat === undefined ) ? "power" : this.inputOptions.exponentformat,
+      minexponent : ( this.inputOptions === undefined || this.inputOptions.minexponent === undefined ) ? 3 : this.inputOptions.minexponent,
+      separatethousands : ( this.inputOptions === undefined || this.inputOptions.separatethousands === undefined ) ? true : this.inputOptions.separatethousands,
+      showline : ( this.inputOptions === undefined || this.inputOptions.showline === undefined ) ? true : this.inputOptions.showline,
+      linecolor : ( this.inputOptions === undefined || this.inputOptions.linecolor === undefined ) ? "#000a12" : this.inputOptions.linecolor,
+      linewidth : ( this.inputOptions === undefined || this.inputOptions.linewidth === undefined ) ? 1 : this.inputOptions.linewidth,
+      showgrid : ( this.inputOptions === undefined || this.inputOptions.showgrid === undefined ) ? true : this.inputOptions.showgrid,
+      gridcolor : ( this.inputOptions === undefined || this.inputOptions.gridcolor === undefined ) ? "#4f5b62" : this.inputOptions.gridcolor,
+      gridwidth : ( this.inputOptions === undefined || this.inputOptions.gridwidth === undefined ) ? 1 : this.inputOptions.gridwidth,
+      zeroline : ( this.inputOptions === undefined || this.inputOptions.zeroline === undefined ) ? true : this.inputOptions.zeroline,
+      zerolinecolor : ( this.inputOptions === undefined || this.inputOptions.zerolinecolor === undefined ) ? "#000a12" : this.inputOptions.zerolinecolor,
+      zerolinewidth : ( this.inputOptions === undefined || this.inputOptions.zerolinewidth === undefined ) ? 1 : this.inputOptions.zerolinewidth,
+      side : ( this.inputOptions === undefined || this.inputOptions.side === undefined ) ? "bottom" : this.inputOptions.side,
+      anchor : ( this.inputOptions === undefined || this.inputOptions.anchor === undefined ) ? "free": this.inputOptions.anchoe,
+      overlaying : ( this.inputOptions === undefined || this.inputOptions.overlaying === undefined ) ? false : this.inputOptions.overlaying,
+      position : ( this.inputOptions === undefined || this.inputOptions.position === undefined ) ? 0 : this.inputOptions.position,
       tickfont: {
-        family: ( this.xaxis === undefined || this.xaxis.tickfont === undefined || this.xaxis.tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.xaxis.tickfont.family,
-        size: ( this.xaxis === undefined || this.xaxis.tickfont === undefined || this.xaxis.tickfont.size === undefined ) ? 20 : this.xaxis.tickfont.size,
-        color : ( this.xaxis === undefined || this.xaxis.tickfont === undefined || this.xaxis.tickfont.color === undefined ) ? "#000a12" : this.xaxis.tickfont.color,
+        family: ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.inputOptions.tickfont.family,
+        size: ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.size === undefined ) ? 20 : this.inputOptions.tickfont.size,
+        color : ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.color === undefined ) ? "#000a12" : this.inputOptions.tickfont.color,
       },
       title: {
-        text : ( this.xaxis === undefined || this.xaxis.title === undefined || this.xaxis.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.xaxis.title.text,
+        text : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.inputOptions.title.text,
         font : {
-          family: ( this.xaxis === undefined ||  this.xaxis.title === undefined || this.xaxis.title.font === undefined || this.xaxis.title.font.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.xaxis.title.font.family,
-          size: ( this.xaxis === undefined || this.xaxis.title === undefined || this.xaxis.title.font === undefined || this.xaxis.title.font.size === undefined ) ? 20 : this.xaxis.title.font.size,
-          color : ( this.xaxis === undefined || this.xaxis.title === undefined || this.xaxis.title.font === undefined || this.xaxis.title.font.color === undefined ) ? "#000a12" : this.xaxis.title.font.color,
+          family: ( this.inputOptions === undefined ||  this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.inputOptions.title.font.family,
+          size: ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.size === undefined ) ? 20 : this.inputOptions.title.font.size,
+          color : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.color === undefined ) ? "#000a12" : this.inputOptions.title.font.color,
         },
-        standoff : ( this.xaxis === undefined || this.xaxis.title === undefined || this.xaxis.title.standoff === undefined ) ? 10 : this.xaxis.title.standoff ,
+        standoff : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.standoff === undefined ) ? 10 : this.inputOptions.title.standoff ,
       },
       rangeslider : {
-        visible : ( this.xaxis === undefined || this.xaxis.rangeslider === undefined || this.xaxis.rangeslider.visible === undefined ) ? false : this.xaxis.rangeslider.visible,
-        thickness : ( this.xaxis === undefined || this.xaxis.rangeslider === undefined || this.xaxis.rangeslider.thickness === undefined ) ?  0.12 : this.xaxis.rangeslider.thickness,
-        bgcolor : ( this.xaxis === undefined || this.xaxis.rangeslider === undefined || this.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.xaxis.rangeslider.bgcolor,
-        borderwidth : ( this.xaxis === undefined || this.xaxis.rangeslider === undefined || this.xaxis.rangeslider.borderwidth === undefined ) ? 1 : this.xaxis.rangeslider.borderwidth,
-        bordercolor : ( this.xaxis === undefined || this.xaxis.rangeslider === undefined || this.xaxis.rangeslider.bordercolor === undefined ) ?  "#263238" : this.xaxis.rangeslider.bordercolor,
+        visible : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.visible === undefined ) ? false : this.inputOptions.rangeslider.visible,
+        thickness : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.thickness === undefined ) ?  0.12 : this.inputOptions.rangeslider.thickness,
+        bgcolor : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.inputOptions.rangeslider.bgcolor,
+        borderwidth : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.borderwidth === undefined ) ? 1 : this.inputOptions.rangeslider.borderwidth,
+        bordercolor : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.bordercolor === undefined ) ?  "#263238" : this.inputOptions.rangeslider.bordercolor,
       }
 
     }
@@ -105,23 +106,22 @@ class BottomAxis  {
 
     return {
 
-      general: {
-     
-        intro : "Here you can modify the bottom x-axis",
-        id : `${this.prefix}__chartLayoutPanel__xaxis`,
-        cssClasses:["chartLayout", "subPanel"],
-        title : "Bottom Axis",
+      basicOptions: {
+        intro : "Here you can modify the bottom x-axis general",
+        id : `${this.prefix}__bottomAxisBasicOptionsSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Basic Options",
         fields : [
           [
             {
-              id : "chartLayout[xaxis][visible]",
+              id : "bottomAxis[visible]",
               title : "Show",	
               type : "checkbox",
               value : this.options().visible,
               hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
             },
             {
-              id : "chartLayout[xaxis][type]",
+              id : "bottomAxis[type]",
               title : "Type",	
               type : "select",
               options : {
@@ -139,14 +139,14 @@ class BottomAxis  {
           ],
           [
             // {
-            //   id : "chartLayout[xaxis][color]",
+            //   id : "bottomAxis[color]",
             //   title : "Colr",	
             //   type : "color",
             //   value : this.options().color,
             //   hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
             // },
             {
-              id : "chartLayout[xaxis][side]", 
+              id : "bottomAxis[side]", 
               title : "Side", 
               type : "select",
               options : {
@@ -157,62 +157,10 @@ class BottomAxis  {
               disabled: ! this.options().visible  ? true : false,
               hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
             },
-            {
-              id : "chartLayout[xaxis][title][text]",
-              title : "Title",
-              type : "text", 
-              value : this.options().title.text,
-              disabled: ! this.options().visible  ? true : false,
-              hint: "Sets the title of the y-axis."
-            },
-            
-
           ],
           [
             {
-              id : "chartLayout[xaxis][title][font][family]",
-              title : "Title Font",	
-              type : "select",
-              options : this.fontFamily,
-              value : this.options().title.font.family,
-              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
-              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-            },
-            {
-              id : "chartLayout[xaxis][title][font][size]", 
-              title : "Title Font Size", 
-              type : "number",
-              min : 1,
-              max : 100,
-              step : 0.5,
-              value : this.options().title.font.size,
-              disabled: ( ! this.options().visible || ! this.options().title.text )  ? true : false,
-              hint : "number greater than or equal to 1"
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][title][font][color]",
-              title : "Title Font Color",
-              type : "color", 
-              value : this.options().title.font.color,
-              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
-            },
-            {
-              id : "chartLayout[xaxis][title][standoff]",
-              title : "Title Standoff ",
-              type : "number",
-              min : 0,
-              max : 2000,
-              step : 0.5,
-              value : this.options().title.standoff,
-              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
-              hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
-            }
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][autotypenumbers]",
+              id : "bottomAxis[autotypenumbers]",
               title : "Auto Type Numbers",	
               type : "select",
               options : {
@@ -224,7 +172,7 @@ class BottomAxis  {
               hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
             },
             {
-              id : "chartLayout[xaxis][autorange]",
+              id : "bottomAxis[autorange]",
               title : "Auto Range",	
               type : "select",
               options : {
@@ -239,7 +187,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][fixedrange]",
+              id : "bottomAxis[fixedrange]",
               title : "Fixed Range",	
               type : "checkbox",
               value : this.options().fixedrange,
@@ -247,7 +195,7 @@ class BottomAxis  {
               hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
             },
             {
-              id : "chartLayout[xaxis][rangemode]",
+              id : "bottomAxis[rangemode]",
               title : "Range Mode",	
               type : "select",
               options : {
@@ -262,7 +210,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][range]",
+              id : "bottomAxis[range]",
               title : "Range",	
               type : "text",
               value : this.options().range.join(),
@@ -270,7 +218,7 @@ class BottomAxis  {
               hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
             },
             {
-              id : "chartLayout[xaxis][scaleanchor]",
+              id : "bottomAxis[scaleanchor]",
               title : "Scale Anchor",	
               type : "text",
               value : this.options().scaleanchor,
@@ -280,7 +228,102 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][ticks]",
+              id : "bottomAxis[mirror]",
+              title : "Mirror",	
+              type : "select",
+              options : {
+                true: "Enabled",
+                ticks: "Ticks",
+                false: "Disabled",
+                all: "All",
+                allticks: "All Ticks",
+              },
+              value : this.options().mirror,
+              disabled:! this.options().visible  ? true : false,
+              hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
+            },
+            {
+              id : "bottomAxis[automargin]",
+              title : "Auto Margin",	
+              type : "checkbox",
+              value : this.options().automargin,
+              disabled:! this.options().visible  ? true : false,
+              hint: "Determines whether long tick labels automatically grow the figure margins."
+            },
+          ],
+        ],
+      },
+
+      title: {
+        intro : "Here you can modify the bottom x-axis title",
+        id : `${this.prefix}__bottomAxisTitleSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Title",
+        fields : [
+          [
+            {
+              id : "bottomAxis[title][text]",
+              title : "Title",
+              type : "text", 
+              value : this.options().title.text,
+              disabled: ! this.options().visible  ? true : false,
+              hint: "Sets the title of the y-axis."
+            },
+          ],
+          [
+            {
+              id : "bottomAxis[title][font][family]",
+              title : "Title Font",	
+              type : "select",
+              options : this.fontFamily,
+              value : this.options().title.font.family,
+              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
+              hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+            },
+            {
+              id : "bottomAxis[title][font][size]", 
+              title : "Title Font Size", 
+              type : "number",
+              min : 1,
+              max : 100,
+              step : 0.5,
+              value : this.options().title.font.size,
+              disabled: ( ! this.options().visible || ! this.options().title.text )  ? true : false,
+              hint : "number greater than or equal to 1"
+            },
+          ],
+          [
+            {
+              id : "bottomAxis[title][font][color]",
+              title : "Title Font Color",
+              type : "color", 
+              value : this.options().title.font.color,
+              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
+            },
+            {
+              id : "bottomAxis[title][standoff]",
+              title : "Title Standoff ",
+              type : "number",
+              min : 0,
+              max : 2000,
+              step : 0.5,
+              value : this.options().title.standoff,
+              disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
+              hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
+            }
+          ],
+        ]
+      },
+
+      ticks: {
+        intro : "Here you can modify the bottom x-axis ticks",
+        id : `${this.prefix}__bottomAxisTicksSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Ticks",
+        fields : [
+          [
+            {
+              id : "bottomAxis[ticks]",
               title : "Show Ticks",	
               type : "select",
               options : {
@@ -293,7 +336,7 @@ class BottomAxis  {
               hint: "Determines whether ticks are drawn or not. If '', this axis' ticks are not drawn. If 'outside' ('inside'), this axis' are drawn outside (inside) the axis lines."
             },
             {
-              id : "chartLayout[xaxis][tickmode]",
+              id : "bottomAxis[tickmode]",
               title : "Tick Mode",	
               type : "select",
               options : {
@@ -308,7 +351,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][nticks]",
+              id : "bottomAxis[nticks]",
               title : "Number of Ticks",	
               type : "number",
               min : 0,
@@ -319,7 +362,7 @@ class BottomAxis  {
               hint: "Specifies the maximum number of ticks for the particular axis. The actual number of ticks will be chosen automatically to be less than or equal to `nticks`. Has an effect only if `tickmode` is set to 'auto'."
             },
             {
-              id : "chartLayout[xaxis][tick0]",
+              id : "bottomAxis[tick0]",
               title : "First Tick Position",	
               type : "number",
               value : this.options().tick0,
@@ -329,7 +372,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][dtick]",
+              id : "bottomAxis[dtick]",
               title : "Tick Spacing",	
               type : "number",
               value : this.options().dtick,
@@ -337,7 +380,7 @@ class BottomAxis  {
               hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
             },
             {
-              id : "chartLayout[xaxis][tickvals]",
+              id : "bottomAxis[tickvals]",
               title : "Tick Positions",	
               type : "text",
               value : this.options().tickvals.join(),
@@ -347,7 +390,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][ticktext]",
+              id : "bottomAxis[ticktext]",
               title : "Tick Label",	
               type : "text",
               value : this.options().ticktext.join(),
@@ -355,7 +398,7 @@ class BottomAxis  {
               hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
             },
             {
-              id : "chartLayout[xaxis][ticklen]",
+              id : "bottomAxis[ticklen]",
               title : "Tick Length",	
               type : "number",
               min : 0,
@@ -369,7 +412,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][tickwidth]",
+              id : "bottomAxis[tickwidth]",
               title : "Tick width",	
               type : "number",
               min : 0,
@@ -381,7 +424,7 @@ class BottomAxis  {
               hint: "Sets the tick width (in px)."
             },
             {
-              id : "chartLayout[xaxis][tickcolor]",
+              id : "bottomAxis[tickcolor]",
               title : "Tick color",	
               type : "color",
               value : this.options().tickcolor,
@@ -389,9 +432,17 @@ class BottomAxis  {
               hint: "Sets the tick color."
             },
           ],
+        ],
+      },
+      ticklabels: {
+        intro : "Here you can modify the bottom x-axis ticklabels",
+        id : `${this.prefix}__bottomAxisTicklabelsSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Tick Labels",
+        fields : [
           [
             {
-              id : "chartLayout[xaxis][showticklabels]",
+              id : "bottomAxis[showticklabels]",
               title : "Show Tick Labels",	
               type : "checkbox",
               value : this.options().showticklabels,
@@ -399,7 +450,7 @@ class BottomAxis  {
               hint: "Determines whether or not the tick labels are drawn."
             },
             {
-              id : "chartLayout[xaxis][ticklabelposition]",
+              id : "bottomAxis[ticklabelposition]",
               title : "Tick Label Position",	
               type : "select",
               options : {
@@ -417,7 +468,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][tickfont][family]",
+              id : "bottomAxis[tickfont][family]",
               title : "Tick Label Font",	
               type : "select",
               options : this.fontFamily,
@@ -426,7 +477,7 @@ class BottomAxis  {
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
             {
-              id : "chartLayout[xaxis][tickfont][size]", 
+              id : "bottomAxis[tickfont][size]", 
               title : "Tick  Label Font Size", 
               type : "number",
               min : 1,
@@ -439,14 +490,14 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][tickfont][color]",
+              id : "bottomAxis[tickfont][color]",
               title : "Tick Font Color",
               type : "color", 
               value : this.options().tickfont.color,
               disabled: ( ! this.options().visible || ! this.options().showticklabels )  ? true : false,
             },
             {
-              id : "chartLayout[xaxis][tickangle]", 
+              id : "bottomAxis[tickangle]", 
               title : "Tick Label Angle", 
               type : "number",
               min : -180,
@@ -459,7 +510,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][showtickprefix]", 
+              id : "bottomAxis[showtickprefix]", 
               title : "Show Tick Label Prefix", 
               type : "select",
               options : {
@@ -473,8 +524,8 @@ class BottomAxis  {
               hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
             },
             {
-              id : "chartLayout[xaxis][tickprefix]", 
-              title : "Tick  Label Prefix", 
+              id : "bottomAxis[tickprefix]", 
+              title : "Tick Label Prefix", 
               type : "Text",
               value : this.options().tickprefix,
               disabled: ( ! this.options().visible || ! this.options().showticklabels || this.options().showtickprefix === "none" )  ? true : false,
@@ -483,7 +534,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][showticksuffix]", 
+              id : "bottomAxis[showticksuffix]", 
               title : "Show Tick Label Suffix", 
               type : "select",
               options : {
@@ -497,7 +548,7 @@ class BottomAxis  {
               hint : "If 'all', all tick labels are displayed with a suffix. If 'first', only the first tick is displayed with a suffix. If 'last', only the last tick is displayed with a suffix. If 'none', tick suffixes are hidden.Sets a tick label suffix."
             },
             {
-              id : "chartLayout[xaxis][ticksuffix]", 
+              id : "bottomAxis[ticksuffix]", 
               title : "Tick Label Suffix", 
               type : "Text",
               value : this.options().ticksuffix,
@@ -505,34 +556,17 @@ class BottomAxis  {
               hint : "Sets a tick label suffix."
             },
           ],
+        ],
+      },
+      spikes: {
+        intro : "Here you can modify the bottom x-axis spikes",
+        id : `${this.prefix}__bottomAxisSpikesSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Spikes",
+        fields : [
           [
             {
-              id : "chartLayout[xaxis][mirror]",
-              title : "Mirror",	
-              type : "select",
-              options : {
-                true: "Enabled",
-                ticks: "Ticks",
-                false: "Disabled",
-                all: "All",
-                allticks: "All Ticks",
-              },
-              value : this.options().mirror,
-              disabled:! this.options().visible  ? true : false,
-              hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
-            },
-            {
-              id : "chartLayout[xaxis][automargin]",
-              title : "Auto Margin",	
-              type : "checkbox",
-              value : this.options().automargin,
-              disabled:! this.options().visible  ? true : false,
-              hint: "Determines whether long tick labels automatically grow the figure margins."
-            },
-          ],
-          [
-            {
-              id : "chartLayout[xaxis][showspikes]",
+              id : "bottomAxis[showspikes]",
               title : "Show Spikes",	
               type : "checkbox",
               value : this.options().showspikes,
@@ -540,7 +574,7 @@ class BottomAxis  {
               hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
             },
             {
-              id : "chartLayout[xaxis][spikemode]",
+              id : "bottomAxis[spikemode]",
               title : "Spike Mode",	
               type : "select",
               options : {
@@ -559,7 +593,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][spikedash]",
+              id : "bottomAxis[spikedash]",
               title : "Spike Type",	
               type : "select",
               options : {
@@ -575,7 +609,7 @@ class BottomAxis  {
               hint: "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
             },
             {
-              id : "chartLayout[xaxis][spikethickness]",
+              id : "bottomAxis[spikethickness]",
               title : "Spike Thiclness",	
               type : "number",
               min : 0,
@@ -588,15 +622,25 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][spikecolor]",
+              id : "bottomAxis[spikecolor]",
               title : "Spike Color",	
               type : "color",
               value : this.options().spikecolor,
               disabled: ! this.options().showspikes ? true : false,
               hint: "Sets the spike color. If undefined, will use the series colorSets the tick color."
             },
+          ],
+        ],
+      },
+      exponent: {
+        intro : "Here you can modify the bottom x-axis exponent",
+        id : `${this.prefix}__bottomAxisExponentSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Exponent",
+        fields : [
+          [
             {
-              id : "chartLayout[xaxis][showexponent]", 
+              id : "bottomAxis[showexponent]", 
               title : "Show Exponent", 
               type : "select",
               options : {
@@ -612,7 +656,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][exponentformat]", 
+              id : "bottomAxis[exponentformat]", 
               title : "Exponent Format", 
               type : "select",
               options : {
@@ -628,7 +672,7 @@ class BottomAxis  {
               hint : "Determines a formatting rule for the tick exponents. For example, consider the number 1,000,000,000. If 'none', it appears as 1,000,000,000. If 'e', 1e+9. If 'E', 1E+9. If 'power', 1x10^9 (with 9 in a super script). If 'SI', 1G. If 'B', 1B.If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
             },
             {
-              id : "chartLayout[xaxis][minexponent]", 
+              id : "bottomAxis[minexponent]", 
               title : "Minimum Exponent", 
               type : "number",
               value : this.options().minexponent,
@@ -638,15 +682,25 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][separatethousands]", 
+              id : "bottomAxis[separatethousands]", 
               title : "Seperate Thousands", 
               type : "checkbox",
               value : this.options().separatethousands,
               disabled: ! this.options().visible  ? true : false,
               hint : "If 'true', even 4-digit integers are separated"
             },
+          ],
+        ],
+      },
+      linesGrids: {
+        intro : "Here you can modify the bottom x-axis linesGrids",
+        id : `${this.prefix}__bottomAxisLinesGridsSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Lines & Grids",
+        fields : [
+          [
             {
-              id : "chartLayout[xaxis][showline]", 
+              id : "bottomAxis[showline]", 
               title : "Show Axis Bounding Line", 
               type : "checkbox",
               value : this.options().showline,
@@ -656,7 +710,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][linewidth]", 
+              id : "bottomAxis[linewidth]", 
               title : "Axis Bounding Line Width", 
               type : "number",
               min : 1,
@@ -667,7 +721,7 @@ class BottomAxis  {
               hint : "Sets the width (in px) of the axis line."
             },
             {
-              id : "chartLayout[xaxis][linecolor]", 
+              id : "bottomAxis[linecolor]", 
               title : "Axis Bounding Line Color", 
               type : "color",
               value : this.options().linecolor,
@@ -677,7 +731,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][zeroline]", 
+              id : "bottomAxis[zeroline]", 
               title : "Show Zero Line", 
               type : "checkbox",
               value : this.options().zeroline,
@@ -685,7 +739,7 @@ class BottomAxis  {
               hint : "Determines whether or not a line is drawn at along the 0 value of this axis. If 'true', the zero line is drawn on top of the grid lines."
             },
             {
-              id : "chartLayout[xaxis][showgrid]", 
+              id : "bottomAxis[showgrid]", 
               title : "Show Grid", 
               type : "checkbox",
               value : this.options().showgrid,
@@ -695,7 +749,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][zerolinecolor]", 
+              id : "bottomAxis[zerolinecolor]", 
               title : "Zero Line Color", 
               type : "color",
               value : this.options().zerolinecolor,
@@ -703,7 +757,7 @@ class BottomAxis  {
               hint : "Sets the line color of the zero line."
             },
             {
-              id : "chartLayout[xaxis][zerolinewidth]", 
+              id : "bottomAxis[zerolinewidth]", 
               title : "Zero Line Width", 
               type : "number",
               min : 1,
@@ -716,7 +770,7 @@ class BottomAxis  {
           ],
           [
             {
-              id : "chartLayout[xaxis][gridwidth]", 
+              id : "bottomAxis[gridwidth]", 
               title : "Grid Width", 
               type : "number",
               min : 1,
@@ -727,7 +781,7 @@ class BottomAxis  {
               hint : "Sets the width (in px) of the grid lines."
             },
             {
-              id : "chartLayout[xaxis][gridcolor]", 
+              id : "bottomAxis[gridcolor]", 
               title : "GridColor", 
               type : "color",
               value : this.options().gridcolor,
@@ -737,14 +791,14 @@ class BottomAxis  {
           ],
           [
             // {
-            //   id : "chartLayout[xaxis][anchor]", 
+            //   id : "bottomAxis[anchor]", 
             //   title : "Anchor", 
             //   type : "text",
             //   value : this.options().anchor,
             //   hint : "If set to an opposite-letter axis id (e.g. `x2`, `y`), this axis is bound to the corresponding opposite-letter axis. If set to 'free', this axis' position is determined by `position`.  Set anchoe and position to undefined to ignore both"
             // },
             // {
-            //   id : "chartLayout[xaxis][position]", 
+            //   id : "bottomAxis[position]", 
             //   title : "Position", 
             //   type : "number",
             //   min : 0,
@@ -758,7 +812,7 @@ class BottomAxis  {
           ],
           [
             // {
-            //   id : "chartLayout[xaxis][overlaying]", 
+            //   id : "bottomAxis[overlaying]", 
             //   title : "Overlaying", 
             //   type : "text",
             //   value : this.options().overlaying,
@@ -767,9 +821,74 @@ class BottomAxis  {
           ]
         ]
         
-      }  
-  
-      
+      },
+      rangeslider : {
+        intro : "Here you can modify the plot x-axis range slider",
+        id : `${this.prefix}__bottomAxisRangesliderSubPanel`,
+        cssClasses:["bottomAxis", "subPanel"],
+        title : "Range Slider",
+        fields : [
+          [
+            {
+              id : "bottomAxis[rangeslider][visible]",
+              title : "Show Range Slider",
+              type : "checkbox", 
+              value : this.options().rangeslider.visible,
+              hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
+            },
+            {
+              id : "chartLayout[showMinMaxAvgTable]",
+              title : "Show Min/Max/Avg Table",
+              type : "checkbox", 
+              value : this.options().showMinMaxAvgTable,
+              disabled: ! this.options().rangeslider.visible ? true : false,
+              hint: "Determines whether or not the Min/Max?Avg table will be visible"
+            },
+          ],
+          [
+            {
+              id: "bottomAxis[rangeslider][thickness]",
+              title:"Range Slider Height",
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.01,
+              value: this.options().rangeslider.thickness,
+              disabled: ! this.options().rangeslider.visible ? true : false,
+              hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
+            },
+            {
+              id : "bottomAxis[rangeslider][bgcolor]",
+              title : "Background Color",
+              type : "color", 
+              value : this.options().rangeslider.bgcolor,
+              disabled: ! this.options().rangeslider.visible ? true : false,
+              hint: "Sets the background color of the range slider."
+            },
+          ],
+          [
+            {
+              id: "bottomAxis[rangeslider][borderwidth]",
+              title:"Border Width",
+              type : "number",
+              min : 0,
+              max : 100,
+              step : 1,
+              value: this.options().rangeslider.borderwidth,
+              disabled: ! this.options().rangeslider.visible ? true : false,
+              hint: "Sets the border width of the range slider."
+            },
+            {
+              id : "bottomAxis[rangeslider][bordercolor]",
+              title : "Border Color",
+              type : "color", 
+              value : this.options().rangeslider.bordercolor,
+              disabled: ! this.options().rangeslider.visible ? true : false,
+              hint: "Sets the border color of the range slider."
+            },
+          ]
+        ]  
+      }, 
     }
     
   }
