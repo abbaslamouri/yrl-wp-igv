@@ -1,5 +1,6 @@
 import Accordion from "./Accordion"
 import panel from "./panel"
+import BottomAxis from "./BottomAxis"
 import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
@@ -8,6 +9,15 @@ import { displayAdminMessage } from "./utilities"
 
 
 const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
+
+  // Render bottom axis
+  const bottomAxisInstance = new BottomAxis( iwpgvCharts.chart.bottomAxis.options, iwpgvCharts.chart.chartParams.options.chartType, iwpgvObj )
+  iwpgvCharts.chart.bottomAxis.options = bottomAxisInstance.options()
+  iwpgvCharts.chart.bottomAxis.panel.sections = bottomAxisInstance.sections()
+  panel(iwpgvCharts.chart.bottomAxis.panel, iwpgvObj)
+  document.querySelector( `.accordion__toggle.chartLayout.panel` ).classList.remove("hidden")
+  document.querySelector( `.accordion__content.chartLayout.panel` ).classList.remove("hidden")
+  return
 
 
 // Assemble chart layout chart and and render chart layout panel

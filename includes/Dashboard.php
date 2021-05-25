@@ -598,6 +598,16 @@ if (!class_exists('Dashboard')) {
 									"sections" => []
 								]
 							],
+              "bottomAxis" => [
+								"options" => isset( $chart["bottomAxis"]["options"] ) ? $chart["bottomAxis"]["options"] : [],
+								"panel" => [
+									"id" => "{$this->prefix}__bottomAxis",
+									"cssClasses" => ["bottomAxis", "panel"],
+									"title" => __("Bottom Axis", $this->plugin),
+									"intro" => "",
+									"sections" => []
+								]
+							],
 							"chartLayout" => [
 								"options" => isset( $chart["chartLayout"]["options"] ) ? $chart["chartLayout"]["options"] : [],
 								"panel" => [
