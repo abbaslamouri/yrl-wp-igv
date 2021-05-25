@@ -88,86 +88,9 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
           case "chartLayout":
 
-
-            // if ( key.includes( "config" ) ) {
-            //   // Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-            //   // chart.chartLayout.options.config[key.split(".")[1]] = value
-            //   if ( chart.chartLayout.options.config.displayModeBar ){
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
-            //   }else {
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
-            //   }
-            //   // Plotly.plot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
-            // } else if ( key === "xaxis.range" ) {
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.toString().split(",").map( ( item ) => { return parseFloat( item ) } ) }, chart.chartLayout.options.config )
-            // } else if ( key === "xaxis.autorange" ) {
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
-            // } else if ( key === "xaxis.mirror" ) {
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value === "true" ? true : value === "false" ? false : value }, chart.chartLayout.options.config )
-            // }
-            // else if ( key === "xaxis.tickmode" ) {
-            //   if ( value === "array" ) {
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = false
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = false
-            //   } else {
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][tickvals]`).readOnly = true
-            //     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][ticktext]`).readOnly = true
-            //   }
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  value }, chart.chartLayout.options.config )
-            // }else if ( key === "xaxis.tickvals" || key === "xaxis.ticktext" ) {
-            //   // console.log(value.split(",").map( ( item ) => { return  item } ))
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value.split(",").map( ( item ) => { return  item } ) }, chart.chartLayout.options.config )
-            // } else if (key === "hovermode" || key === "legend.itemclick" ) {
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]:  ( event.target.value !== "disabled" ) ? event.target.value : false }, chart.chartLayout.options.config )
-            // } else {
-            //   switch(keyParts.length){
-            //     case 1:
-            //       // chart.chartLayout.options[keyParts[0]] = value
-            //       break
-            //     case 2:
-            //       // chart.chartLayout.options[keyParts[0]][keyParts[1]] = value
-            //       // console.log(chart.chartLayout.options[keyParts[0]][keyParts[1]])
-            //       break
-            //     case 3:
-            //       // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]] = value
-            //       // if (key === "xaxis.rangeslider.visible" ) {
-            //       //   if ( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked ) break
-            //       //   if (value) {
-            //       //     showElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-            //       //     showElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-            //       //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.remove("hidden")
-            //       //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.remove("hidden")
-            //       //     const xAxisMin = ( chart.chartLayout.options.xaxis.range[0] ) ? chart.chartLayout.options.xaxis.range[0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
-            //       //     const xAxisMax = ( chart.chartLayout.options.xaxis.range[1] ) ? chart.chartLayout.options.xaxis.range[1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-            //       //     chart.minMaxAvgTableChart.options = fetchMinMaxAvgTableChartData( chart, spreadsheet, xAxisMin, xAxisMax )
-            //       //     Plotly.newPlot(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTableChart.options], chart.minMaxAvgTableChart.options.layout, chart.chartLayout.options.config) 
-            //       //   } else {
-            //       //     hideElementById( `${iwpgvObj.prefix}__plotMinMaxAvg` )
-            //       //     hideElementById( `${iwpgvObj.prefix}__plotlyMinMaxAvgTable` )
-            //       //     document.querySelector(`.accordion__toggle.minMaxAvgTableChart.panel`).classList.add("hidden")
-            //       //     document.querySelector(`.accordion__content.minMaxAvgTableChart.panel`).classList.add("hidden")
-            //       //   }
-            //       // }
-            //       break
-            //     case 4:
-            //         // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]] = event.target.type === 'checkbox' ? event.target.checked : value
-            //       break
-            //     case 5:
-            //         // chart[control].options[keyParts[0]][keyParts[1]][keyParts[2]][keyParts[3]][keyParts[4]] = event.target.type === 'checkbox' ? event.target.checked : value
-            //       break
-            //   }
-            //   // console.log("X",chart.chartLayout)
-
-            //   // Plotly.relayout( `${iwpgvObj.prefix}__plotlyChart`, { [key]: value }, chart.chartLayout.options.config )
-            // }
-
             if ( key.includes( "config" ) ) {
               Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-              // if ( chart.chartLayout.options.config.displayModeBar ){
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = false
-              // }else {
-                // document.getElementById(`${iwpgvObj.prefix}__chartLayout[config][displaylogo]`).disabled = true
-              // }
+            
               chart.chartLayout.options.config[key.split(".")[1]] = value
               Plotly.plot( `${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config )
             } else {
@@ -189,6 +112,12 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
                   value = "" === value ? [] : value.split(",").map( ( item ) => { return item } )
                   console.log(value)
                   break
+                case "legend.itemclick":
+                case "legend.itemdoubleclick":
+                case "hovermode":
+                    value = "false" === value ? false : value
+                    console.log("LEG")
+                    break
                 default:
                   break
               }
@@ -196,7 +125,7 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
 
             }
 
-            console.log("CRT", chart.chartLayout.options)
+            console.log("CRT", chart.chartLayout.options.hoverlabel)
 
             const layout = chart.chartLayout.options
             const layoutInputIdPrefix = `${iwpgvObj.prefix}__chartLayout`
@@ -207,6 +136,44 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             document.getElementById(`${layoutInputIdPrefix}[title][font][color]`).disabled = ! layout.title.text  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[title][x]`).disabled = ! layout.title.text  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[title][y]`).disabled = ! layout.title.text  ? true : false
+
+            // Legend
+            document.getElementById(`${layoutInputIdPrefix}[legend][bgcolor]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][bordercolor]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][borderwidth]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][font][family]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][font][size]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][font][color]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][title][text]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][family]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][size]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][color]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][title][side]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][orientation]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][itemsizing]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][itemwidth]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][itemclick]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][itemdoubleclick]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][x]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][y]`).disabled = ! layout.showlegend ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[legend][valign]`).disabled = ! layout.showlegend ? true : false
+
+
+            // Hover Label
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][bgcolor]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][bordercolor]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][align]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][namelength]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][font][family]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][font][size]`).disabled = ! layout.hovermode ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[hoverlabel][font][color]`).disabled = ! layout.hovermode ? true : false
+
+            // Modebar
+            document.getElementById(`${layoutInputIdPrefix}[modebar][orientation]`).disabled = ! layout.config.displayModeBar ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[modebar][bgcolor]`).disabled = ! layout.config.displayModeBar ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[modebar][color]`).disabled = ! layout.config.displayModeBar ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[modebar][activecolor]`).disabled = ! layout.config.displayModeBar ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[config][displaylogo]`).disabled = ! layout.config.displayModeBar ? true : false
            
             // X-Axis
             document.getElementById(`${layoutInputIdPrefix}[xaxis][type]`).disabled = ! layout.xaxis.visible  ? true : false
@@ -262,6 +229,15 @@ const drawChart = async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
             document.getElementById(`${layoutInputIdPrefix}[xaxis][title][font][size]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[xaxis][title][font][color]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
             document.getElementById(`${layoutInputIdPrefix}[xaxis][title][standoff]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.title.text )  ? true : false
+
+
+            // Range Slider
+            // Range Slider
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][thickness]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][bgcolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][borderwidth]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[xaxis][rangeslider][bordercolor]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
+            document.getElementById(`${layoutInputIdPrefix}[showMinMaxAvgTable]`).disabled = ( ! layout.xaxis.visible || ! layout.xaxis.rangeslider.visible )  ? true : false
 
             break
 

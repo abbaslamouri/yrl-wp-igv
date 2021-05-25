@@ -32,7 +32,7 @@ class ChartLayout extends ChartDefault {
 
       config:{
         responsive : ( this.layout.config  === undefined || this.layout.config.responsive  === undefined ) ? true : this.layout.config.responsive,
-        displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? true :this.layout.config.displayModeBar,
+        displayModeBar : ( this.layout.config  === undefined || this.layout.config.displayModeBar  === undefined ) ? false :this.layout.config.displayModeBar,
         displaylogo : ( this.layout.config  === undefined || this.layout.config.displaylogo  === undefined ) ? true : this.layout.config.displaylogo,
       },
       showlegend : ( this.layout.showlegend === undefined ) ? true : this.layout.showlegend,
@@ -42,7 +42,7 @@ class ChartLayout extends ChartDefault {
       width : ( this.layout.width === undefined ) ? null : this.layout.width,
       height : ( this.layout.height === undefined ) ? 500 : this.layout.height,
       autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
-      hovermode : ( this.layout.hovermode === undefined ) ? "closest" : this.layout.hovermode === "disabled" ? false : this.layout.hovermode,
+      hovermode : ( this.layout.hovermode === undefined ) ? "closest" : "false" === this.layout.hovermode ? false : this.layout.hovermode,
       font : {
         family : (  this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.layout.font.family,
         size : (  this.layout.font === undefined || this.layout.font.size === undefined ) ? 20 : this.layout.font.size,
@@ -79,8 +79,8 @@ class ChartLayout extends ChartDefault {
         orientation : ( this.layout.legend === undefined || this.layout.legend.orientation === undefined ) ? "v" : this.layout.legend.orientation,
         itemsizing : ( this.layout.legend === undefined || this.layout.legend.itemsizing === undefined ) ? "trace" : this.layout.legend.itemsizing,
         itemwidth : ( this.layout.legend === undefined || this.layout.legend.itemwidth === undefined ) ? 50 : this.layout.legend.itemwidth,
-        itemclick : ( this.layout.legend === undefined || this.layout.legend.itemclick === undefined ) ? false : this.layout.legend.itemclick === "disabled" ? false : this.layout.legend.itemclick,
-        itemdoubleclick : ( this.layout.legend === undefined || this.layout.legend.itemdoubleclick === undefined ) ? false : this.layout.legend.itemdoubleclick === "disabled" ? false : this.layout.legend.itemdoubleclick,
+        itemclick : ( this.layout.legend === undefined || this.layout.legend.itemclick === undefined ) ? false : this.layout.legend.itemclick === "false" ? false : this.layout.legend.itemclick,
+        itemdoubleclick : ( this.layout.legend === undefined || this.layout.legend.itemdoubleclick === undefined ) ? false : this.layout.legend.itemdoubleclick === "false" ? false : this.layout.legend.itemdoubleclick,
         x : ( this.layout.legend === undefined || this.layout.legend.x === undefined ) ?1.04 :  this.layout.legend.x,
         y : ( this.layout.legend === undefined || this.layout.legend.y === undefined ) ? 1.00 : this.layout.legend.y,
         valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
@@ -1823,6 +1823,7 @@ class ChartLayout extends ChartDefault {
                 bottom: "Bottom"
               },
               value : this.options().legend.valign,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the vertical alignment of the symbols with respect to their associated text."
             },
           ],
@@ -1832,6 +1833,7 @@ class ChartLayout extends ChartDefault {
               title : "Background Color",
               type : "color", 
               value : this.options().legend.bgcolor,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the legend background color. Defaults to `layout.paper_bgcolor`."
             },
             {
@@ -1839,6 +1841,7 @@ class ChartLayout extends ChartDefault {
               title : "Border Color",
               type : "color", 
               value : this.options().legend.bordercolor,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the color of the border enclosing the legend."
             },
           ],
@@ -1849,6 +1852,7 @@ class ChartLayout extends ChartDefault {
               type : "select",
               options : this.fontFamily,
               value : this.options().legend.font.family,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
           ],
@@ -1861,6 +1865,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 0.5,
               value : this.options().legend.font.size,
+              disabled: ! this.options().showlegend ? true : false,
               hint : "number greater than or equal to 1"
             },
             {
@@ -1868,6 +1873,7 @@ class ChartLayout extends ChartDefault {
               title : "Font Color",
               type : "color", 
               value : this.options().legend.font.color,
+              disabled: ! this.options().showlegend ? true : false,
             },
           ],
           [
@@ -1879,6 +1885,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value : this.options().legend.borderwidth,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the width (in px) of the border enclosing the legend."
             },
             {
@@ -1890,6 +1897,7 @@ class ChartLayout extends ChartDefault {
                 v: "Vertical"
               },
               value : this.options().legend.orientation,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the orientation of the legend."
             },
           ],
@@ -1903,6 +1911,7 @@ class ChartLayout extends ChartDefault {
                 constant: "Constant"
               },
               value : this.options().legend.itemsizing,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Determines if the legend items symbols scale with their corresponding 'trace' attributes or remain 'constant' independent of the symbol size on the graph."
             },
             {
@@ -1913,6 +1922,7 @@ class ChartLayout extends ChartDefault {
               max : 1000,
               step : 1,
               value : this.options().legend.itemwidth,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text)."
             },
           ],
@@ -1924,9 +1934,10 @@ class ChartLayout extends ChartDefault {
               options : {
                 toggle: "Toggle",
                 toggleothers: "Toggle Other",
-                disabled: "Disabled"
+                false: "Disabled"
               },
-              value : ( this.options().legend.itemclick ) ? this.options().legend.itemclick : "disabled",
+              value : this.options().legend.itemclick,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
             },
             {
@@ -1936,9 +1947,10 @@ class ChartLayout extends ChartDefault {
               options : {
                 toggle: "Toggle",
                 toggleothers: "Toggle Other",
-                disabled: "Disabled"
+                false: "Disabled"
               },
-              value : ( this.options().legend.itemdoubleclick ) ? this.options().legend.itemdoubleclick : "disabled",
+              value : this.options().legend.itemdoubleclick,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Determines the behavior on legend item doubleclick. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
             },
           ],
@@ -1951,6 +1963,7 @@ class ChartLayout extends ChartDefault {
               max : 3,
               step : 0.01,
               value : this.options().legend.x,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the x position (in normalized coordinates) of the legend. Defaults to '1.02' for vertical legends and defaults to '0' for horizontal legends."
             },
             {
@@ -1961,6 +1974,7 @@ class ChartLayout extends ChartDefault {
               max : 3,
               step : 0.01,
               value : this.options().legend.y,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the y position (in normalized coordinates) of the legend. Defaults to '1' for vertical legends, defaults to '-0.1' for horizontal legends on graphs w/o range sliders and defaults to '1.1' for horizontal legends on graph with one or multiple range sliders."
             },
           ],
@@ -1970,6 +1984,7 @@ class ChartLayout extends ChartDefault {
               title : "Legend Title",
               type : "text", 
               value : this.options().legend.title.text,
+              disabled: ! this.options().showlegend ? true : false,
               hint: "Sets the title of the legend."
             },
             {
@@ -1982,6 +1997,7 @@ class ChartLayout extends ChartDefault {
                 "top left": "Top Left"
               }, 
               value : this.options().legend.title.side,
+              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
               hint: "Determines the location of legend's title with respect to the legend items. Defaulted to 'top' with `orientation` is 'h'. Defaulted to 'left' with `orientation` is 'v'. The 'top left' options could be used to expand legend area in both x and y sides."
             }
           ],
@@ -1992,6 +2008,7 @@ class ChartLayout extends ChartDefault {
               type : "select",
               options : this.fontFamily,
               value : this.options().legend.title.font.family,
+             disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
           ],
@@ -2004,6 +2021,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 0.5,
               value : this.options().legend.title.font.size,
+             disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
               hint : "number greater than or equal to 1"
             },
             {
@@ -2011,6 +2029,7 @@ class ChartLayout extends ChartDefault {
               title : "Legend Title Font Color",
               type : "color", 
               value : this.options().legend.title.font.color,
+             disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
             },
           ],
         ]  
@@ -2235,11 +2254,11 @@ class ChartLayout extends ChartDefault {
                 x: "X",
                 y: "Y",
                 closest: "Closest",
-                disabled: "Disabled",
+                false: "Disabled",
                 "x unified": "X Unified",
                 "y unified": "Y Unified"
               },
-              value : (this.options().hovermode)? this.options().hovermode : "disabled",
+              value : this.options().hovermode,
               hint: "Determines the mode of hover interactions. If 'closest', a single hoverlabel will appear for the 'closest' point within the `hoverdistance`. If 'x' (or 'y'), multiple hoverlabels will appear for multiple points at the 'closest' x- (or y-) coordinate within the `hoverdistance`, with the caveat that no more than one hoverlabel will appear per trace. If 'x unified' (or 'y unified'), a single hoverlabel will appear multiple points at the closest x- (or y-) coordinate within the `hoverdistance` with the caveat that no more than one hoverlabel will appear per trace. In this mode, spikelines are enabled by default perpendicular to the specified axis. If false, hover interactions are disabled. If `clickmode` includes the 'select' flag, `hovermode` defaults to 'closest'. If `clickmode` lacks the 'select' flag, it defaults to 'x' or 'y' (depending on the trace's `orientation` value) for plots based on cartesian coordinates. For anything else the default value is 'closest'."
             },
           ],
@@ -2249,6 +2268,7 @@ class ChartLayout extends ChartDefault {
               title : "Background Color",
               type : "color", 
               value : this.options().hoverlabel.bgcolor,
+              disabled: false === this.options().hovermode ? true : false,
               hint: "Sets the background color of all hover labels on graph"
             },
             {
@@ -2256,6 +2276,7 @@ class ChartLayout extends ChartDefault {
               title : "Border Color",
               type : "color", 
               value : this.options().hoverlabel.bordercolor,
+              disabled: false === this.options().hovermode ? true : false,
               hint: "Sets the border color of all hover labels on graph."
             },
           ],
@@ -2266,6 +2287,7 @@ class ChartLayout extends ChartDefault {
               type : "select",
               options : this.fontFamily,
               value : this.options().hoverlabel.font.family,
+              disabled: false === this.options().hovermode ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
           ],
@@ -2278,6 +2300,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 0.5,
               value : this.options().hoverlabel.font.size,
+              disabled: false === this.options().hovermode ? true : false,
               hint : "number greater than or equal to 1"
             },
             {
@@ -2285,6 +2308,7 @@ class ChartLayout extends ChartDefault {
               title : "Hover Label Font Color",
               type : "color", 
               value : this.options().hoverlabel.font.color,
+              disabled: false === this.options().hovermode ? true : false,
             },
           ],
           [
@@ -2298,6 +2322,7 @@ class ChartLayout extends ChartDefault {
                 auto: "Auto"
               },
               value : this.options().hoverlabel.align,
+              disabled: false === this.options().hovermode ? true : false,
               hint: "Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines"
             },
             {
@@ -2308,6 +2333,7 @@ class ChartLayout extends ChartDefault {
               max : 2000,
               step : 1,
               value : this.options().hoverlabel.namelength,
+              disabled: false === this.options().hovermode ? true : false,
               hint : "Sets the default length (in number of characters) of the trace name in the hover labels for all traces. -1 shows the whole name regardless of length. 0-3 shows the first 0-3 characters, and an integer >3 will show the whole name if it is less than that many characters, but if it is longer, will truncate to `namelength - 3` characters and add an ellipsis."
             },
           ]
@@ -2333,7 +2359,7 @@ class ChartLayout extends ChartDefault {
               title : "Display Plotly Logo ?",
               type : "checkbox", 
               value : this.options().config.displaylogo,
-              disabled: this.options().config.displayModeBar ? false : true,
+              disabled: ! this.options().config.displayModeBar ? true: false,
               hint: ""
             },
           ],
@@ -2343,6 +2369,7 @@ class ChartLayout extends ChartDefault {
               title : "Background Color",
               type : "color", 
               value : this.options().modebar.bgcolor,
+              disabled: ! this.options().config.displayModeBar ? true: false,
               hint: "Sets the background color of the modebar."
             },
             {
@@ -2354,6 +2381,7 @@ class ChartLayout extends ChartDefault {
                 v: "Vertical"
               },
               value: this.options().modebar.orientation,
+              disabled: ! this.options().config.displayModeBar ? true: false,
               hint: "Sets the orientation of the modebar"
             },
           ],
@@ -2363,6 +2391,7 @@ class ChartLayout extends ChartDefault {
               title : "Icon Color",
               type : "color", 
               value : this.options().modebar.color,
+              disabled: ! this.options().config.displayModeBar ? true: false,
               hint: "Sets the color of the icons in the modebar."
             },
             {
@@ -2370,6 +2399,7 @@ class ChartLayout extends ChartDefault {
               title : "Active Icon Color",
               type : "color", 
               value : this.options().modebar.activecolor,
+              disabled: ! this.options().config.displayModeBar ? true: false,
               hint: "Sets the color of the active or hovered on icons in the modebar."
             },
           ],
@@ -2394,8 +2424,11 @@ class ChartLayout extends ChartDefault {
               title : "Show Min/Max/Avg Table",
               type : "checkbox", 
               value : this.options().showMinMaxAvgTable,
+              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
               hint: "Determines whether or not the Min/Max?Avg table will be visible"
             },
+          ],
+          [
             {
               id: "chartLayout[xaxis][rangeslider][thickness]",
               title:"Range Slider Height",
@@ -2404,17 +2437,19 @@ class ChartLayout extends ChartDefault {
               max : 1,
               step : 0.01,
               value: this.options().xaxis.rangeslider.thickness,
+              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
               hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
             },
-          ],
-          [
             {
               id : "chartLayout[xaxis][rangeslider][bgcolor]",
               title : "Background Color",
               type : "color", 
               value : this.options().xaxis.rangeslider.bgcolor,
+              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
               hint: "Sets the background color of the range slider."
             },
+          ],
+          [
             {
               id: "chartLayout[xaxis][rangeslider][borderwidth]",
               title:"Border Width",
@@ -2423,6 +2458,7 @@ class ChartLayout extends ChartDefault {
               max : 100,
               step : 1,
               value: this.options().xaxis.rangeslider.borderwidth,
+              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
               hint: "Sets the border width of the range slider."
             },
             {
@@ -2430,6 +2466,7 @@ class ChartLayout extends ChartDefault {
               title : "Border Color",
               type : "color", 
               value : this.options().xaxis.rangeslider.bordercolor,
+              disabled: ! this.options().xaxis.rangeslider.visible ? true : false,
               hint: "Sets the border color of the range slider."
             },
           ]
