@@ -236,7 +236,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   // Load accordion
   // new Accordion( { collapsed: false }, iwpgvObj )
-  new Accordion(['.accordion-container', '.accordion-container-1', '.accordion-container-2']);
+const accordion1 = new Accordion('.accordion-1', { } )
+  accordion1.openAll()
 
 
 

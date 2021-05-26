@@ -48,8 +48,8 @@ class ChartParams {
       general : {
         id : `${this.prefix}__chartParamsSubpanel-general`,
         cssClasses:["chartParams", "subPanel"],
-        title : "",
-        intro : "",
+        title : "nnnnn",
+        intro : "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         fields : [
           [
             {
@@ -63,7 +63,7 @@ class ChartParams {
           [
             {
               id : "chartParams[fileUpload]",
-              cssClasses : ['hidden', "no-hint"],
+              // cssClasses : ['hidden', "no-hint"],
               title : "Selected File", 
               readOnly: true,
               type : "text",
@@ -74,7 +74,7 @@ class ChartParams {
           [
             {
               id : "chartParams[chartId]",
-              cssClasses : ['hidden', "no-hint"],
+              // cssClasses : ['hidden', "no-hint"],
               title : "Chart ID", 
               readOnly: true,
               type : "text",
@@ -84,7 +84,7 @@ class ChartParams {
           [
             {
               id : "chartParams[sheetId]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title : "Sheet",	
               type : "select",
               options : [],
@@ -95,7 +95,7 @@ class ChartParams {
           [
             {
               id : "chartParams[chartType]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title : "Chart Type",	
               type : "select",
               options : this.chartTypes,
@@ -107,7 +107,7 @@ class ChartParams {
             {
               id : "chartParams[fileId]",
               title : "",	
-              type : "hidden",
+              type : "text",
               value : this.options()['fileId'],
             },
           ],

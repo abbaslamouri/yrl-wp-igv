@@ -7,99 +7,6 @@
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix), admin_url('admin.php')); ?>" title="<?php esc_attr_e( 'Go Back' ); ?>"><?php esc_attr_e( 'Cancel' ); ?></a>
   </div>
 
-  <div class="accordion-container">
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      
-
-            <div class="accordion-container-1">
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-
-                    <div class="accordion-container-2">
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-              </div>
-
-
-          </div>
-        </div>
-
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
-
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-  </div>
-
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-  </div>
-</div>
-
   <!-- Admin messages -->
   <div class="admin-messages"></div>
 
@@ -134,6 +41,13 @@
 
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
+
+        <div class="accordion-1">
+          <div class="ac chartParams">
+            <h2 class="ac-header"><button class="ac-trigger">Chart Parameters</button></h2>
+            <div class="ac-panel"></div>
+          </div>
+        </div>
 
         <div class="accordion">
           <?php foreach ( $payload["chart"] as $element ) :?>

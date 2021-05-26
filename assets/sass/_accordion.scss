@@ -1,6 +1,47 @@
 
 .yrl_wp_igv__admin, .yrl_wp_igv__public {
 
+  .accordion-1 {
+
+    .ac {
+      &-trigger {
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+        // cursor: pointer;
+        padding: 0.5rem 0.5rem;
+        color:rgba( $color-s-dark, 1 );
+        background-color: rgba( $color-primary,1 );
+        font-size: 0.8rem;
+        font-weight: 500;
+        // border: 1px solid rgba( $color-p-dark,1 );
+        // border-radius: 2px;
+        // margin: 0.1rem 0;
+      }
+
+      &-panel {
+        background-color: rgba( $color-p-light,1) ;
+        padding: 0.5rem;
+
+        .intro {
+          margin:0;
+          padding:0;
+          font-size: 0.8rem;
+          color:rgba( $color-s-dark, 0.7);
+        }
+      }
+      
+      &.is-active {
+        .ac-trigger {
+          color:rgba( $color-s-dark, .7 );
+        }
+
+      }
+    }
+
+    
+  }
+
   .accordion {
     &__toggle {
       display: flex;
@@ -35,5 +76,7 @@
     
     }
   }
+
+  
 
 }

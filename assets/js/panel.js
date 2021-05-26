@@ -1,6 +1,12 @@
 const panel = function (panel, iwpgvObj) {
+  console.log("Pabel", panel)
 
+  
   const subpanelAccordion = document.getElementById( panel.id).querySelector(".accordion")
+  const newsubpanelAccordion = document.querySelector(`.accordion-1 .${panel.cssClasses[0]} .ac-panel`)
+  console.log(newsubpanelAccordion)
+
+  
 
     // Loop through accordion panel sections
     const sections = panel.sections
@@ -58,6 +64,7 @@ const panel = function (panel, iwpgvObj) {
 
         // Add field group to subpanel content
         subpanelContent.appendChild(fieldGroup)
+        newsubpanelAccordion.appendChild(fieldGroup)
       }
     }
 
