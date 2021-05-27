@@ -1,5 +1,6 @@
 import Accordion from "./Accordion"
 import panel from "./panel"
+import renderFields from "./render-fields"
 import BasicOptions from "./BasicOptions"
 import ChartTitle from "./ChartTitle"
 import ChartLegend from "./ChartLegend"
@@ -13,17 +14,17 @@ import { displayAdminMessage } from "./utilities"
 
 
 
-const renderPanels = ( iwpgvCharts, iwpgvObj, spreadsheet) => {
+const renderPanels = ( chart, spreadsheet, iwpgvObj) => {
 
-  const chart = iwpgvCharts.chart
+  console.log(chart)
 
   // Render layout basic options panel
-  const basicOptionsInstance = new BasicOptions( chart.basicOptions.options, iwpgvObj )
-  chart.basicOptions.options = basicOptionsInstance.options()
-  chart.basicOptions.panel.sections = basicOptionsInstance.sections()
-  panel(chart.basicOptions.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.basicOptions.panel` ).classList.remove("hidden")
+  const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, iwpgvObj )
+  chart.basicOptions = basicOptionsInstance.options()
+  renderFields(basicOptionsInstance.inputFields(), "basicOptionsPanel", iwpgvObj)
+
+  // document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.basicOptions.panel` ).classList.remove("hidden")
 
   // Render chart title panel
   const chartTitleInstance = new ChartTitle( chart.chartTitle.options, iwpgvObj )

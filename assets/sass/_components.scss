@@ -1,9 +1,22 @@
 .yrl_wp_igv__admin, .yrl_wp_igv__public {
 
+  /*************************************************
+  ***************************BUTTONS****************
+  **************************************************/
+  .btn {
+    background-color: rgba( $color-secondary, 1 ) !important;
+    color: rgba( $color-p-light, 1 ) !important;
+  }
 
+
+  /*************************************************
+  ********************MAIN ACCORDION****************
+  **************************************************/
   .accordion-1 {
 
     .ac {
+
+      
 
       &-trigger {
        
@@ -17,37 +30,9 @@
         
       }
 
-<<<<<<< HEAD
-      // select {
-      //   option {
-      //     grid-column: 1 / 6;
-      //   }
-      // }
-
-      input, select {
-        grid-column: 1 / 5;
-        grid-row: 2 / 3;
-        font-size:.7rem;
-        padding: .1rem 1rem;
-        border-radius: 3px 0 0 3px;
-        display:flex;
-        // width:100%;
-        // display:inline-block;
-
-        &.stretch {
-          grid-column: 1 / 6;
-        }
-
-        &[type=button] {
-          grid-column: 1 / 6;
-          grid-row: 1 / 2;
-          // background-color: rgba( $color-secondary, 1 );
-          // color: rgba( $color-p-light, 1 )
-=======
       &.is-active {
         .ac-trigger {
           background-color: rgba( $color-primary,.5);
->>>>>>> 0f19bb493ddfccc51474a24d23ce98003bc3f94b
         }
       }
 
@@ -68,7 +53,9 @@
   }
 
 
-
+  /*************************************************
+  ************************FORM GROUP****************
+  **************************************************/
   .form-group {
 
     &__input{
@@ -129,10 +116,7 @@
   //   display: none !important;
   // }
 
-  // .btn {
-  //   background-color: rgba( $color-secondary, 1 );
-  //   color: rgba( $color-p-light, 1 )
-  // }
+  
 
   // .field-group {
 

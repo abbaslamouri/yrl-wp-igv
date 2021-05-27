@@ -579,42 +579,17 @@ const hidePanels = ( ) => {
 // Show sheet select field
 const setSheetIdOptions = function (spreadsheet, sheetIdInput) {
 
-  // // Get sheet node
-  // const sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-
   // Remove all options
-  sheetIdInput.options.length = 0;
+  sheetIdInput.options.length = 0
 
   // Add default option
-  sheetIdInput.options[sheetIdInput.options.length] = new Option(
-    "Select Sheet",
-    "",
-    false,
-    false
-  );
+  sheetIdInput.options[sheetIdInput.options.length] = new Option( "Select Sheet", "", false, false )
 
   // Loop through all sheets in the spreadsheet and set options
   for (const prop in spreadsheet) {
-    sheetIdInput.options[sheetIdInput.options.length] = new Option(
-      spreadsheet[prop]["sheetName"],
-      prop,
-      false,
-      false
-    );
+    sheetIdInput.options[sheetIdInput.options.length] = new Option( spreadsheet[prop]["sheetName"], prop, false, false ) 
   }
 
-  // // Set value
-  // if (value) {
-  //   sheetIdInput.value = value;
-  // } else {
-  //   if (sheetIdInput.options.length === 2) sheetIdInput.value = sheetIdInput.options[1].value;
-  // }
-  // return sheetIdInput.value
-
-  // Add/Remove classes
-  // sheetIdInput.classList.remove("hidden");
-  // sheetIdInput.closest(".form-group").classList.remove("hidden");
-  // sheetIdInput.closest(".field-group").classList.remove("hidden");
 }
 
 // const appendFormSaveBtn = function (form, iwpgvObj) {

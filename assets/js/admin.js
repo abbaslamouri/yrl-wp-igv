@@ -19,6 +19,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   let iwpgvCharts = typeof yrl_wp_igv_charts !== undefined ?  yrl_wp_igv_charts : {}
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
+  let jsonRes = {}
+  let chart = {}
   let spreadsheet = []
   // let oldIwpgvCharts = Object.assign({}, iwpgvCharts)
 
@@ -91,19 +93,18 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       // Add media uploader event handler
       mediaUploader.on("select", async function () {
 
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .spinner` )
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .warning` )
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .loading` )
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .spinner` )
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .warning` )
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .loading` )
 
         // Hide all but chart params panels
-        hidePanels()
+        // hidePanels()
 
         // Hide admin messages
-        document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`).innerHTML = ""
+        // document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`).innerHTML = ""
 
         // Hide chart and table charts
         Plotly.purge(`${iwpgvObj.prefix}__plotlyChart`)
-        // Plotly.purge(`${iwpgvObj.prefix}__plotlyTable`)
         Plotly.purge(`${iwpgvObj.prefix}__plotlyMinMaxAvgTable`)
 
         // Hide min/max inputs if visible
@@ -121,20 +122,36 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         document.getElementsByName(`${iwpgvObj.prefix}__chartParams[fileUpload]`)[0].value = attachment.filename
         document.getElementsByName(`${iwpgvObj.prefix}__chartParams[fileId]`)[0].value = attachment.id
 
-        // Fetch spreadsheet
-        spreadsheet = await selectFile( attachment, iwpgvObj )
+        // Fetch response
+        jsonRes = await selectFile( attachment, iwpgvObj )
+        console.log("JSONRES-UPLOAD", jsonRes)
+    
+        // Bail is server response status = error
+        if (jsonRes.status && jsonRes.status === "error") throw new Error(  jsonRes.message )
 
-        // Set sheetId select field options and show it
-        setSheetIdOptions (spreadsheet, document.getElementsByName( `${iwpgvObj.prefix}__chartParams[sheetId]` )[0] )
-        showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+        // get spreadsheet
+        spreadsheet = jsonRes.spreadsheet
+        chart.chartParams = {}
 
-        // Show remaining chart params fields
-        showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
-        showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
+        // Set sheet Id select field options, update sheet Id select field values
+        const sheetIdInput = document.getElementsByName( `${iwpgvObj.prefix}__chartParams[sheetId]` )[0]
+        setSheetIdOptions (spreadsheet, sheetIdInput )
+        console.log(sheetIdInput.options)
+        sheetIdInput.selectedIndex = sheetIdInput.options.length == 2 ? 1 : ""
 
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .spinner` )
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .warning` )
-        toggleElementByClass( `.${iwpgvObj.prefix}__admin .loading` )
+        // Set chart type value
+        document.getElementsByName( `${iwpgvObj.prefix}__chartParams[chartType]` )[0].value = ""
+
+        // // Set sheetId select field options and show it
+        // showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
+
+        // // Show remaining chart params fields
+        // showInputField( `${iwpgvObj.prefix}__chartParams[fileUpload]` )
+        // showInputField( `${iwpgvObj.prefix}__chartParams[chartType]` )
+
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .spinner` )
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .warning` )
+        // toggleElementByClass( `.${iwpgvObj.prefix}__admin .loading` )
 
 
       })
@@ -146,78 +163,39 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         mediaUploader.open()      
       })
 
-
+      // Add click event listener to the Save Chart button
       document.getElementById(`${iwpgvObj.prefix}__saveChart`).addEventListener("click", function (event) {  
         event.preventDefault()
         saveChart(iwpgvCharts.chart, iwpgvObj)
         return false
       })
 
-
-      document.addEventListener( "change", function (event) {
+      // Add change event listener to all input fields
+      document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm`).addEventListener( "change", function (event) {
 
         // Bail if the clicked item is not inside the `${iwpgvCharts.prefix}__chartOptionsForm` form 
-        if (  ! event.target.closest("form") ||  event.target.closest("form").id !== `${iwpgvObj.prefix}__chartOptionsForm` ||  ! event.target.classList.contains(`${iwpgvObj.prefix}__chartParams`)  ) return
+        if ( ! event.target.classList.contains(`chartParam`)  ) return
 
         // Update chart params options
-        iwpgvCharts.chart.chartParams.options.fileUpload = document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value
-        iwpgvCharts.chart.chartParams.options.sheetId = document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value
-        iwpgvCharts.chart.chartParams.options.chartType = document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value
-        // iwpgvCharts.chart.chartParams.options.enableRangeSlider = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableRangeSlider]`).checked
-        // iwpgvCharts.chart.chartParams.options.enableTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableTableChart]`).checked
-        // iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart = document.getElementById(`${iwpgvObj.prefix}__chartParams[enableMinMaxTableChart]`).checked
-
-
-
-
-        // if ( ! iwpgvCharts.chart.chartParams.options.enableMinMaxTableChart ) {
-        //   document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
-        //   document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
-        // }
-
-
-
-        // iwpgvCharts.chart.chartLayout.options.xaxis = {rangeslider: {visible: iwpgvCharts.chart.chartParams.options.enableRangeSlider}}
-
+        chart.chartParams.fileUpload = document.getElementsByName( `${iwpgvObj.prefix}__chartParams[fileUpload]` )[0].value
+        chart.chartParams.fileId = document.getElementsByName( `${iwpgvObj.prefix}__chartParams[fileId]` )[0].value
+        chart.chartParams.sheetId = document.getElementsByName( `${iwpgvObj.prefix}__chartParams[sheetId]` )[0].value
+        chart.chartParams.chartType = document.getElementsByName( `${iwpgvObj.prefix}__chartParams[chartType]` )[0].value
 
         // Bail if no file, sheet Id or chart type
-        if( ! document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value ||  ! document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`).value || ! document.getElementById(`${iwpgvObj.prefix}__chartParams[chartType]`).value   ) return
+        if( ! chart.chartParams.fileUpload ||  ! chart.chartParams.fileId || ! chart.chartParams.sheetId || ! chart.chartParams.chartType   ) return
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
-        const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
+        const sheetIdInput =  document.getElementsByName(`${iwpgvObj.prefix}__chartParams[sheetId]`)[0]
           if (spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
-          // console.log("HERE")
           for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {
             delete iwpgvCharts.chart.chartTraces.options[i]
             delete iwpgvCharts.chart.chartTraces.panel.sections[i]
           }
         }
 
-
-
-        // document.addEventListener( "change", chartParamsHandler )
-
-
-
-
-
-
-        // console.log("======", jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId], iwpgvCharts.chart.chartTraces.options)
-
-        // const sheetIdInput =  document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`)
-        // // if (iwpgvCharts.chart.chartTraces.options.length && iwpgvCharts.chart.chartParams.options.sheetId && iwpgvCharts.jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId] && jsonResjsonRes..spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.jsonRes.spreadsheet[iwpgvCharts.chart.chartParams.options.sheetId].data.length) {
-        //   if (jsonRes.spreadsheet[sheetIdInput.value].data.length < iwpgvCharts.chart.chartTraces.options.length) {
-        //   // console.log("HERE")
-        //   for (let i = jsonRes.spreadsheet[sheetIdInput.value].data.length-1; i < iwpgvCharts.chart.chartTraces.options.length; i++ ) {
-        //     delete iwpgvCharts.chart.chartTraces.options[i]
-        //     delete iwpgvCharts.chart.chartTraces.panel.sections[i]
-        //   }
-        // }
-
-        
-
-        
-        drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
+        // Render input fields and set chart options
+        drawChart( chart, spreadsheet, iwpgvObj )
 
 
       } )
@@ -236,18 +214,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   // Load accordion
   // new Accordion( { collapsed: false }, iwpgvObj )
-<<<<<<< HEAD
-const accordion1 = new Accordion('.accordion-1', { } )
-=======
-  const accordion1Options = { 
-    // elementClass: "accordion-1__Panel",
-    // triggerClass: "accordion-1__Trigger",
-    // panelClass: "accordion-1__Content",
-    // activeClass: "isActive",
-    // duration: 400,
-  }
+  const accordion1Options = { duration: 400 }
   const accordion1 = new Accordion( '.accordion-1', accordion1Options );
->>>>>>> 0f19bb493ddfccc51474a24d23ce98003bc3f94b
   accordion1.openAll()
 
 

@@ -32,9 +32,6 @@
         </div>
       </div>
 
-      <!-- Data table goes here -->
-      <div id="<?php echo "{$this->prefix}__plotlyTable" ?>" class=''></div>
-
     </div>
 
     <div class="chart-options">
@@ -42,96 +39,72 @@
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
 
-<<<<<<< HEAD
+
+
         <div class="accordion-1">
-          <div class="ac chartParams">
+          
+          <div class="ac chartParamsPanel">
             <h2 class="ac-header"><button class="ac-trigger">Chart Parameters</button></h2>
-            <div class="ac-panel"></div>
-          </div>
-        </div>
-
-=======
-
-
-      <div class="accordion-1">
-        
-        <div class="ac">
-          <h2 class="ac-header"><button class="ac-trigger">Chart Parameters</button></h2>
-          <div class="ac-panel">
-            <p class="ac-text intro">This where you can upload a new file, select a sheet and a chart type</p>
-            
-            <div class="field-group hundred-zero">
-              <div class="form-group">
-                <input type="button" class="form-group__input button button-primary" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" value="Upload New File">
-                <label for="" class="form-group__label"></label>
-              </div>
-            </div>
-
-            <div class="field-group fifty-fifty">
-              <div class="form-group">
-                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
-                <label for="" class="form-group__label">Selected File</label>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
-                <label for="" class="form-group__label">Chart Id</label>
-              </div>
-            </div>
-
-            <div class="field-group hundred-zero">
-              <div class="form-group">
-                <select class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Chart Id">
-                  <option value="" selected>Select Sheet</option>
-                </select>
-                <label for="" class="form-group__label">Sheet</label>
-              </div>
-            </div>
-
-            <div class="field-group hundred-zero">
-              <div class="form-group">
-                <select class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
-                  <option value="" selected>Select Chart Type</option>
-                  <option value="LineChart" selected>Line Chart</option>
-                  <option value="ScatterChart" selected>Scatter Chart</option>
-                  <option value="PieChart" selected>Pie Chart</option>
-                  <option value="BarChart" selected>Bar Chart</option>
-                </select>
-                <label for="" class="form-group__label">Chart Type</label>
-              </div>
-            </div>
-
-            <div class="field-group">
-              <div class="form-group">
-                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" readonly>
-                <label for="" class="form-group__label">File Id</label>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-
-
->>>>>>> 0f19bb493ddfccc51474a24d23ce98003bc3f94b
-        <div class="accordion">
-          <?php foreach ( $payload["chart"] as $element ) :?>
-            <?php if ($element["panel"]["id"] !== "{$this->prefix}__chartConfigPanel") :?>
-              <div class="accordion__toggle hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>">
-                <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
-                <svg class="accordion__svg">
-                  <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
-                </svg>
-              </div>
-              <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
-                <div class="panelIntro">
-                  <?php echo $element["panel"]["intro"]?>
+            <div class="ac-panel">
+              <p class="ac-text intro">This where you can upload a new file, select a sheet and a chart type</p>
+              
+              <div class="field-group hundred-zero">
+                <div class="form-group">
+                  <input type="button" class="form-group__input button btn" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" value="Upload New File">
+                  <label for="" class="form-group__label"></label>
                 </div>
-                <div class="accordion"></div>
               </div>
-            <?php endif; ?>
-          <?php endforeach ?>
+
+              <div class="field-group fifty-fifty">
+                <div class="form-group">
+                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
+                  <label for="" class="form-group__label">Selected File</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
+                  <label for="" class="form-group__label">Chart Id</label>
+                </div>
+              </div>
+
+              <div class="field-group hundred-zero">
+                <div class="form-group">
+                  <select class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Sheet">
+                    <!-- <option value="" selected>Select Sheet</option> -->
+                  </select>
+                  <label for="" class="form-group__label">Sheet</label>
+                </div>
+              </div>
+
+              <div class="field-group hundred-zero">
+                <div class="form-group">
+                  <select class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
+                    <option value="" selected>Select Chart Type</option>
+                    <option value="LineChart" selected>Line Chart</option>
+                    <option value="ScatterChart" selected>Scatter Chart</option>
+                    <option value="PieChart" selected>Pie Chart</option>
+                    <option value="BarChart" selected>Bar Chart</option>
+                  </select>
+                  <label for="" class="form-group__label">Chart Type</label>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <div class="form-group">
+                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" readonly>
+                  <label for="" class="form-group__label">File Id</label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="ac basicOptionsPanel">
+            <h2 class="ac-header"><button class="ac-trigger">Basic Options</button></h2>
+            <div class="ac-panel">
+              <p class="ac-text intro">Here you can modify the plot basic options</p>
+            </div>
+          </div>
+
         </div>
 
       </form>

@@ -42,27 +42,6 @@
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
 
-<<<<<<< HEAD
-        <div class="accordion">
-          <?php foreach ( $payload["chart"] as $element ) :?>
-            <?php if ($element["panel"]["id"] !== "{$this->prefix}__chartConfigPanel") :?>
-              <div class="accordion__toggle hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>">
-                <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
-                <svg class="accordion__svg">
-                  <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
-                </svg>
-              </div>
-              <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
-                <div class="panelIntro">
-                  <?php echo $element["panel"]["intro"]?>
-                </div>
-                <div class="accordion"></div>
-              </div>
-            <?php endif; ?>
-          <?php endforeach ?>
-        </div>
-
-=======
 
 
       <div class="accordion-1">
@@ -124,7 +103,26 @@
 
       </div>
 
->>>>>>> 0f19bb493ddfccc51474a24d23ce98003bc3f94b
+
+      <div class="accordion">
+          <?php foreach ( $payload["chart"] as $element ) :?>
+            <?php if ($element["panel"]["id"] !== "{$this->prefix}__chartConfigPanel") :?>
+              <div class="accordion__toggle hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>">
+                <div class="accordion__heading-title"><?php echo $element["panel"]["title"]?></div>
+                <svg class="accordion__svg">
+                  <use href="<?php echo "{$this->url}/assets/img/icons.svg#icon-keyboard_arrow_right" ?>" ></use>
+                </svg>
+              </div>
+              <div id="<?php echo "{$element["panel"]["id"]}"; ?>" class="accordion__content panel hidden <?php echo implode(" ", $element["panel"]["cssClasses"]); ?>" >
+                <div class="panelIntro">
+                  <?php echo $element["panel"]["intro"]?>
+                </div>
+                <div class="accordion"></div>
+              </div>
+            <?php endif; ?>
+          <?php endforeach ?>
+        </div>
+
       </form>
 
         <!-- Accordion will be injected here -->
