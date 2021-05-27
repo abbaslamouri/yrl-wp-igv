@@ -54,7 +54,7 @@ class ChartParams {
           [
             {
               id : "chartParams[mediaUploadBtn]",
-              cssClasses : ['button', 'button-secondary', "btn"], 
+              // cssClasses : ['button', 'button-secondary', "btn"], 
               title : "Upload File", 
               type : "button",
               value : this.options()['mediaUploadBtn'],
