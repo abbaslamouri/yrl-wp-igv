@@ -21,7 +21,8 @@ const renderPanels = ( chart, spreadsheet, iwpgvObj) => {
   // Render layout basic options panel
   const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, iwpgvObj )
   chart.basicOptions = basicOptionsInstance.options()
-  renderFields(basicOptionsInstance.inputFields(), "basicOptionsPanel", iwpgvObj)
+  renderFields(basicOptionsInstance.sections(), "basicOptionsPanel", iwpgvObj)
+  return
 
   // document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
   // document.querySelector( `.accordion__content.basicOptions.panel` ).classList.remove("hidden")
