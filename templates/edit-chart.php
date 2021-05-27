@@ -7,99 +7,6 @@
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix), admin_url('admin.php')); ?>" title="<?php esc_attr_e( 'Go Back' ); ?>"><?php esc_attr_e( 'Cancel' ); ?></a>
   </div>
 
-  <div class="accordion-container">
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      
-
-            <div class="accordion-container-1">
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-
-                    <div class="accordion-container-2">
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-
-                <div class="ac">
-                  <h2 class="ac-header">
-                    <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-                  </h2>
-                  <div class="ac-panel">
-                    <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </div>
-                </div>
-              </div>
-
-
-          </div>
-        </div>
-
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-
-        <div class="ac">
-          <h2 class="ac-header">
-            <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-          </h2>
-          <div class="ac-panel">
-            <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
-
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-  </div>
-
-  <div class="ac">
-    <h2 class="ac-header">
-      <button class="ac-trigger">Lorem ipsum dolor sit amet.</button>
-    </h2>
-    <div class="ac-panel">
-      <p class="ac-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-  </div>
-</div>
-
   <!-- Admin messages -->
   <div class="admin-messages"></div>
 
@@ -134,6 +41,69 @@
 
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
+
+
+
+      <div class="accordion-1">
+        
+        <div class="ac">
+          <h2 class="ac-header"><button class="ac-trigger">Chart Parameters</button></h2>
+          <div class="ac-panel">
+            <p class="ac-text intro">This where you can upload a new file, select a sheet and a chart type</p>
+            
+            <div class="field-group hundred-zero">
+              <div class="form-group">
+                <input type="button" class="form-group__input button button-primary" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" value="Upload New File">
+                <label for="" class="form-group__label"></label>
+              </div>
+            </div>
+
+            <div class="field-group fifty-fifty">
+              <div class="form-group">
+                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
+                <label for="" class="form-group__label">Selected File</label>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
+                <label for="" class="form-group__label">Chart Id</label>
+              </div>
+            </div>
+
+            <div class="field-group hundred-zero">
+              <div class="form-group">
+                <select class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Chart Id">
+                  <option value="" selected>Select Sheet</option>
+                </select>
+                <label for="" class="form-group__label">Sheet</label>
+              </div>
+            </div>
+
+            <div class="field-group hundred-zero">
+              <div class="form-group">
+                <select class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
+                  <option value="" selected>Select Chart Type</option>
+                  <option value="LineChart" selected>Line Chart</option>
+                  <option value="ScatterChart" selected>Scatter Chart</option>
+                  <option value="PieChart" selected>Pie Chart</option>
+                  <option value="BarChart" selected>Bar Chart</option>
+                </select>
+                <label for="" class="form-group__label">Chart Type</label>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="form-group">
+                <input type="text" class="form-group__input" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" readonly>
+                <label for="" class="form-group__label">File Id</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
 
         <div class="accordion">
           <?php foreach ( $payload["chart"] as $element ) :?>

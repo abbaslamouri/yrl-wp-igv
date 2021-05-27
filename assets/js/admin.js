@@ -48,14 +48,14 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
     // Add new chart or edit an existing chart
     if ( iwpgvCharts.action && iwpgvCharts.action === "editChart" ) {
 
-      // Assemble chart Params chart and panels
-      const chartParamsInstance = new ChartParams( iwpgvCharts.chart.chartParams.options, iwpgvObj )
-      iwpgvCharts.chart.chartParams.options = chartParamsInstance.options()
-      iwpgvCharts.chart.chartParams.panel.sections = chartParamsInstance.sections()
-      panel(iwpgvCharts.chart.chartParams.panel, iwpgvObj)
-      document.querySelector( `.accordion__toggle.chartParams` ).classList.remove("hidden")
-      document.querySelector( `.accordion__content.chartParams` ).classList.remove("hidden")
-      // document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
+      // // Assemble chart Params chart and panels
+      // const chartParamsInstance = new ChartParams( iwpgvCharts.chart.chartParams.options, iwpgvObj )
+      // iwpgvCharts.chart.chartParams.options = chartParamsInstance.options()
+      // iwpgvCharts.chart.chartParams.panel.sections = chartParamsInstance.sections()
+      // panel(iwpgvCharts.chart.chartParams.panel, iwpgvObj)
+      // document.querySelector( `.accordion__toggle.chartParams` ).classList.remove("hidden")
+      // document.querySelector( `.accordion__content.chartParams` ).classList.remove("hidden")
+      // // document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).readOnly = true
     
       if ( iwpgvCharts.chart.chartParams.options.chartId) {
 
@@ -118,14 +118,14 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         if ( ! attachment ||  ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
         // Update selected file and file Id
-        document.getElementById(`${iwpgvObj.prefix}__chartParams[fileUpload]`).value = attachment.filename
-        document.getElementById(`${iwpgvObj.prefix}__chartParams[fileId]`).value = attachment.id
+        document.getElementsByName(`${iwpgvObj.prefix}__chartParams[fileUpload]`)[0].value = attachment.filename
+        document.getElementsByName(`${iwpgvObj.prefix}__chartParams[fileId]`)[0].value = attachment.id
 
         // Fetch spreadsheet
         spreadsheet = await selectFile( attachment, iwpgvObj )
 
         // Set sheetId select field options and show it
-        setSheetIdOptions(spreadsheet, document.getElementById(`${iwpgvObj.prefix}__chartParams[sheetId]`))
+        setSheetIdOptions (spreadsheet, document.getElementsByName( `${iwpgvObj.prefix}__chartParams[sheetId]` )[0] )
         showInputField( `${iwpgvObj.prefix}__chartParams[sheetId]` )
 
         // Show remaining chart params fields
@@ -141,7 +141,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
 
       // Add click event listener to the chart params panel inoput fields
-      document.getElementById(`${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`).addEventListener("click", async function (event) {
+      document.getElementsByName(`${iwpgvObj.prefix}__chartParams[mediaUploadBtn]`)[0].addEventListener("click", async function (event) {
         event.preventDefault()
         mediaUploader.open()      
       })
@@ -236,7 +236,15 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   // Load accordion
   // new Accordion( { collapsed: false }, iwpgvObj )
-  new Accordion(['.accordion-container', '.accordion-container-1', '.accordion-container-2']);
+  const accordion1Options = { 
+    // elementClass: "accordion-1__Panel",
+    // triggerClass: "accordion-1__Trigger",
+    // panelClass: "accordion-1__Content",
+    // activeClass: "isActive",
+    // duration: 400,
+  }
+  const accordion1 = new Accordion( '.accordion-1', accordion1Options );
+  accordion1.openAll()
 
 
 

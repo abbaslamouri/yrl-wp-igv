@@ -54,7 +54,7 @@ class ChartParams {
           [
             {
               id : "chartParams[mediaUploadBtn]",
-              cssClasses : ['button', 'button-secondary', "btn"], 
+              // cssClasses : ['button', 'button-secondary', "btn"], 
               title : "Upload File", 
               type : "button",
               value : this.options()['mediaUploadBtn'],
@@ -63,7 +63,7 @@ class ChartParams {
           [
             {
               id : "chartParams[fileUpload]",
-              cssClasses : ['hidden', "no-hint"],
+              // cssClasses : ['hidden', "no-hint"],
               title : "Selected File", 
               readOnly: true,
               type : "text",
@@ -74,7 +74,7 @@ class ChartParams {
           [
             {
               id : "chartParams[chartId]",
-              cssClasses : ['hidden', "no-hint"],
+              // cssClasses : ['hidden', "no-hint"],
               title : "Chart ID", 
               readOnly: true,
               type : "text",
@@ -84,7 +84,7 @@ class ChartParams {
           [
             {
               id : "chartParams[sheetId]",
-              cssClasses : ['hidden'],
+              // cssClasses : ['hidden'],
               title : "Sheet",	
               type : "select",
               options : [],
@@ -107,7 +107,7 @@ class ChartParams {
             {
               id : "chartParams[fileId]",
               title : "",	
-              type : "hidden",
+              type : "text",
               value : this.options()['fileId'],
             },
           ],

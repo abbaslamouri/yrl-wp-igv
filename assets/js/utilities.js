@@ -29,6 +29,20 @@ const colors = () => {
 }
 
 
+// const chartTypes = () => {
+
+//   return {						// All chart types supported by this plugin
+//     "": "Select Chart Type",
+//     LineChart: "Line Chart",
+//     ScatterChart: "Scatter Chart",
+//     BarChart: "Bar Chart",
+//     ColumnChart: "Column Chart",
+//     PieChart: "Pie Chart",
+//   }
+
+// }
+
+
 const displayAdminMessage = (message, status, iwpgvObj) => {
   const messageDiv = document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`)
   if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
@@ -677,6 +691,7 @@ function chartOptionKey(fieldId) {
 module.exports = {
   fontFamily,
   colors,
+  // chartTypes,
   displayAdminMessage,
   showElementById,
   hideElementById,
