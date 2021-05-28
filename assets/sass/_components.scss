@@ -4,7 +4,7 @@
   ***************************BUTTONS****************
   **************************************************/
   .btn {
-    background-color: rgba( $color-secondary, 1 ) !important;
+    background-color: rgba( $color_primary, 1 ) !important;
     color: rgba( $color-p-light, 1 ) !important;
   }
 
@@ -16,33 +16,44 @@
 
     .ac {
 
-      
+      border: 1px solid $color-p-dark;
+      margin-bottom: 1px;
+
+      &-header {
+        background-color: rgba( $color_secondary,1 );
+      }
 
       &-trigger {
        
-        color: rgba( $color-s-dark , 1 );
-        background-color: rgba( $color-primary,1 );
-        font-size: 0.8rem;
+        color: rgba( $color_p_light,1 );
+        // background-color: rgba( $color-primary,1 );
+        // font-size: 0.8rem;
 
         &:focus {
-          color: rgba( $color-s-dark , 1 );
+          // color: rgba( $color-s-dark , 1 );
         }
         
       }
 
       &.is-active {
-        .ac-trigger {
-          background-color: rgba( $color-primary,.5);
+
+        .ac-header {
+          background-color: rgba( $color_secondary,.3);
         }
+
+        .ac-trigger {
+          color: rgba( $color_s_dark , 1 );
+        }
+
       }
 
       &-panel {
 
-        background-color: rgba( $color-primary, .6) ;
-        padding: 0.5rem;
+        background-color: rgba( $color_p_medium, .4) ;
+        padding: 0 0.5rem;
     
         .intro {
-          font-size:.7rem;
+          font-size:.8rem;
           margin:.5rem 0;
           padding:0;
           line-height: 1.4;
@@ -58,17 +69,28 @@
   **************************************************/
   .form-group {
 
+    display:grid;
+    grid-template-columns: 1fr 1.9rem;
+    grid-template-rows: auto;
+
     &__input{
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
       font-size:.7rem;
       font-family: inherit;
       color:inherit;
       padding: .3rem 1.5rem;
+      border: 1px solid red;
       border-radius: 2px;
-      background-color: rgba($color-grey-light, 1);
+      background-color: rgba(#FFFFFF, .8);
       border:none;
       border-bottom: 3px solid transparent;
       display:block;
       width:100%;
+
+      &.btn {
+        border-bottom: none;
+      }
 
       &:focus{
         outline: none;
@@ -94,12 +116,56 @@
     }
 
     &__label{
+      grid-column: 1 / 3;
+      grid-row: 2 / 3;
       font-size:.7rem;
       font-weight:500;
       margin-top:.2rem;
       margin-left:1.45rem;
       display:block;
       transition: all .9s
+    }
+
+    &__tooltip {
+      grid-column: 2 / 3;
+      grid-row: 1 / 1;
+
+      &-question-mark {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        color: rgba( $color-p-light, 1 );
+        background-color: rgba( $color-s-light, .5 );
+        height:1.9rem;
+        width:1.9rem;
+        cursor: pointer;
+        border-radius: 0 3px 3px 0;
+
+        &:hover + .form-group__tooltip-hint {
+          visibility: visible;
+          opacity: 1;
+          overflow:visible;
+          z-index:9999
+        }
+
+      }
+
+      &-hint {
+        position: absolute;
+        visibility: hidden;
+        min-width: 310px;
+        max-width:100%;
+        font-size: .8rem;
+        background-color: rgba($color-s-dark,1);
+        color: #fff;
+        border-radius: 6px;
+        padding: 1rem;
+        bottom: 120%;
+        right:0;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
     }
 
   }

@@ -197,6 +197,9 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Render input fields and set chart options
         drawChart( chart, spreadsheet, iwpgvObj )
 
+        accordion1.closeAll()
+
+
 
       } )
 
@@ -214,9 +217,9 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   // Load accordion
   // new Accordion( { collapsed: false }, iwpgvObj )
-  const accordion1Options = { duration: 400 }
+  const accordion1Options = { duration: 400,  }
   const accordion1 = new Accordion( '.accordion-1', accordion1Options );
-  accordion1.openAll()
+  accordion1.open(0)
 
 
 

@@ -1,6 +1,5 @@
 import Accordion from "./Accordion"
 import panel from "./panel"
-import renderFields from "./render-fields"
 import BasicOptions from "./BasicOptions"
 import ChartTitle from "./ChartTitle"
 import ChartLegend from "./ChartLegend"
@@ -21,7 +20,7 @@ const renderPanels = ( chart, spreadsheet, iwpgvObj) => {
   // Render layout basic options panel
   const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, iwpgvObj )
   chart.basicOptions = basicOptionsInstance.options()
-  renderFields(basicOptionsInstance.sections(), "basicOptionsPanel", iwpgvObj)
+  panel(basicOptionsInstance.sections(), "basicOptionsPanel", iwpgvObj)
   return
 
   // document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
