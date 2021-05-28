@@ -44,40 +44,41 @@
         <div class="accordion-1">
           
           <div class="ac chartParamsPanel">
-            <h2 class="ac-header"><button class="ac-trigger">Chart Parameters</button></h2>
-            <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+            <h2 class="ac-header"><div class="ac-trigger">Chart Parameters</div></h2>
+            <div class="ac-panel hidden">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. . </p>
               
-              <div class="field-group hundred-zero">
+              <div class="field-group">
                 <div class="form-group">
-                  <input type="button" class="form-group__input button btn" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" value="Upload New File">
+                  <button type="button" class="form-group__btn btn button" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" >Upload New File </button>
                   <label for="" class="form-group__label"></label>
                 </div>
               </div>
 
-              <div class="field-group fifty-fifty">
+              <div class="field-group">
                 <div class="form-group">
-                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
+                  <input type="text" class="form-group__input chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
                   <label for="" class="form-group__label">Selected File</label>
                 </div>
+              </div>
+              <div class="field-group">
                 <div class="form-group">
-                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
+                  <input type="text" class="form-group__input chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
                   <label for="" class="form-group__label">Chart Id</label>
                 </div>
               </div>
 
-              <div class="field-group hundred-zero">
+              <div class="field-group">
                 <div class="form-group">
-                  <select class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Sheet">
-                    <!-- <option value="" selected>Select Sheet</option> -->
+                  <select class="form-group__input form-group__input-select chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Sheet">
                   </select>
                   <label for="" class="form-group__label">Sheet</label>
                 </div>
               </div>
 
-              <div class="field-group hundred-zero">
+              <div class="field-group">
                 <div class="form-group">
-                  <select class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
+                  <select class="form-group__input form-group__input-select chartParam" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
                     <option value="" selected>Select Chart Type</option>
                     <option value="LineChart" selected>Line Chart</option>
                     <option value="ScatterChart" selected>Scatter Chart</option>
@@ -89,7 +90,7 @@
                     <div class="form-group__tooltip-question-mark">?</div>
                     <div class="form-group__tooltip-hint">
                     HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'. 
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                     </div>
                   </div>
                 </div>
@@ -97,7 +98,7 @@
 
               <div class="field-group">
                 <div class="form-group">
-                  <input type="text" class="form-group__input chartParam" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" readonly>
+                  <input type="text" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" >
                   <label for="" class="form-group__label">File Id</label>
                 </div>
               </div>
@@ -106,7 +107,7 @@
           </div>
 
           <div class="ac basicOptionsPanel">
-            <h2 class="ac-header"><button class="ac-trigger">Basic Options</button></h2>
+            <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel">
             </div>
           </div>

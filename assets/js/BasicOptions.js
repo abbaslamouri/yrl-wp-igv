@@ -48,8 +48,7 @@ class BasicOPtions {
         title : "Basic Options",
         fieldGroups : [
           {
-            id : "field_01",
-            cssClasses : ["field-group", "seventyfive-twentyfive"],
+            cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
                 id : "basicOptions[width]", 
@@ -74,7 +73,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_02",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
@@ -98,8 +96,7 @@ class BasicOPtions {
             ]
           },
           {
-            id: "field_03",
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "seventyFive-twentyFive"],
             inputs: [
               {
                 id : "basicOptions[font][color]",
@@ -117,7 +114,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_04",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
@@ -137,7 +133,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_05",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
@@ -153,7 +148,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_06",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
@@ -179,7 +173,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_07",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {
@@ -205,7 +198,6 @@ class BasicOPtions {
             ]
           },
           {
-            id : "field_08",
             cssClasses : ["field-group", "fifty-fifty"],
             inputs: [
               {

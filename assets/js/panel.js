@@ -44,7 +44,7 @@ const panel = function (panelSections, panelId, iwpgvObj) {
       acHeader.classList.add("ac-header")
    
       // Create trigger button
-      const acTrigger = document.createElement("button")
+      const acTrigger = document.createElement("div")
       acTrigger.classList.add("ac-trigger")
 
       // Create heading title and add to trigger button
@@ -141,8 +141,8 @@ const fetchformGroup = (field, iwpgvObj) => {
 
   // Add field type or options depending on whether input field is select or otherwise
   if (field.type === "select") {
-    // const options = field.options
 
+    inputField.classList.add("form-group__input-select")
     // Remove all options
     inputField.options.length = 0
 
@@ -157,6 +157,8 @@ const fetchformGroup = (field, iwpgvObj) => {
     }
   } else {
     inputField.type = field.type
+    if (field.type === "checkbox") inputField.classList.add("form-group__input-checkbox")
+    if (field.type === "color") inputField.classList.add("form-group__input-color")
   }
 
   // Set field id, name, classlist and value attributes
@@ -203,6 +205,10 @@ const fetchformGroup = (field, iwpgvObj) => {
     // Create tooltip div
     const tooltip = document.createElement("div")
     tooltip.classList.add("form-group__tooltip")
+
+    if (field.type === "checkbox") tooltip.classList.add("form-group__tooltip-ttCheckbox")
+    if (field.type === "color") tooltip.classList.add("form-group__tooltip-ttColor")
+
 
     // Create tooltip question mark span and add to tooltip div
     const tooltipQuestionMarkDiv = document.createElement("div")

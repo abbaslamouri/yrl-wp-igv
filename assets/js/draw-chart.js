@@ -30,7 +30,7 @@ const drawChart = async( chart, spreadsheet, iwpgvObj ) => {
   document.getElementById( `${iwpgvObj.prefix}__saveChart` ).classList.remove("hidden")
   
   // Render chart
-  await renderChart( iwpgvCharts, iwpgvObj, spreadsheet)
+  await renderChart( chart, spreadsheet, iwpgvObj )
 
   // // Add range slider event handler
   // eval(`${iwpgvObj.prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
@@ -53,7 +53,7 @@ const drawChart = async( chart, spreadsheet, iwpgvObj ) => {
   // })
 
 
-  document.addEventListener("change", async function (event) {
+  document.addEventListener("input", async function (event) {
   
     event.preventDefault()
 

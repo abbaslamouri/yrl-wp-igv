@@ -2,12 +2,12 @@ import Plotly from 'plotly.js-dist'
 import { showElementById, fetchMinMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 
 
-const renderChart =  async( iwpgvCharts, iwpgvObj, spreadsheet ) => {
+const renderChart =  async( chart, spreadsheet, iwpgvObj ) => {
 
   const rangeMinInput = document.getElementById( `${iwpgvObj.prefix}__rangeMinInput` )
   const rangeMaxInput = document.getElementById( `${iwpgvObj.prefix}__rangeMaxInput` )
 
-  const chart = iwpgvCharts.chart
+  // const chart = iwpgvCharts.chart
 
   // console.log(chart)
   
