@@ -41,12 +41,12 @@
 
 
 
-        <div class="accordion-1">
+        <div class="accordion accordion__level-1 main__Acc">
           
           <div class="ac chartParamsPanel">
             <h2 class="ac-header"><div class="ac-trigger">Chart Parameters</div></h2>
             <div class="ac-panel hidden">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. . </p>
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
               
               <div class="field-group">
                 <div class="form-group">
@@ -106,8 +106,14 @@
             </div>
           </div>
 
-          <div class="ac basicOptionsPanel">
+          <div class="ac chartBasicOptionsPanel">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
+            <div class="ac-panel">
+            </div>
+          </div>
+
+          <div class="ac charTracesPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
             </div>
           </div>

@@ -121,15 +121,6 @@
         column-gap: 1.5em;
         margin-bottom:1rem;
 
-        &.hundred-zero {
-
-          grid-template-columns: 1fr;
-
-          .form-group {
-            grid-column: 1 / 3;
-          }
-
-        }
     
         &.fifty-fifty {
           grid-template-columns: 1fr 1fr;

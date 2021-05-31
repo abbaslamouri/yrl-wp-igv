@@ -5,17 +5,18 @@ let accordionDiv
 let acPanel
 
 
-const panel = function (panelSections, panelId, iwpgvObj) {
+const panel = function (panelSections, panelCssClass, iwpgvObj) {
 
-  console.log("PanelSections", panelSections, Object.keys(panelSections))
+  console.log("PanelSections", panelSections, panelCssClass)
 
   // panel content div
-  const panelContent = document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .${panelId} .ac-panel`)
+  const panelContent = document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .${panelCssClass} .ac-panel`)
+  console.log("PC",panelContent)
   
   // Create new accordion if there are 2=two or more sections
   if (Object.keys(panelSections).length > 1) {
     accordionDiv = document.createElement("div")
-    accordionDiv.classList.add("accordion-2")
+    accordionDiv.classList.add("accordion", "accordion__level-3", `${panelCssClass}__Acc`)
 
     // Add accordion to panel
     panelContent.appendChild(accordionDiv)
@@ -92,9 +93,9 @@ const panel = function (panelSections, panelId, iwpgvObj) {
       }
       
       // Loop through fields
-      for (const el in row.inputs) {
+      for (const el in row.inputFields) {
 
-        const formGroup = fetchformGroup( row.inputs[el], iwpgvObj )
+        const formGroup = fetchformGroup( row.inputFields[el], iwpgvObj )
         
         fieldGroup.appendChild( formGroup )
 
@@ -117,7 +118,8 @@ const panel = function (panelSections, panelId, iwpgvObj) {
   // Load accordion if there more than 2 sections
   if (Object.keys(panelSections).length > 1) {
     const accordion2Options = { duration: 400 }
-    new Accordion( '.accordion-2', accordion2Options );
+    new Accordion( `.${iwpgvObj.prefix}__admin .${panelCssClass}__Acc`, accordion2Options );
+    console.log("HERE")
   }
 
   
@@ -127,7 +129,7 @@ const panel = function (panelSections, panelId, iwpgvObj) {
 
 const fetchformGroup = (field, iwpgvObj) => {
 
-  // const field = row.inputs[el]
+  // const field = row.inputFields[el]
   // console.log("FIELD", field)
 
 

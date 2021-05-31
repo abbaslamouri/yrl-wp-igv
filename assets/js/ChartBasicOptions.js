@@ -1,6 +1,6 @@
 import { fontFamily } from "./utilities"
 
-class BasicOPtions {
+class ChartBasicOPtions {
 
   constructor( inputOptions, iwpgvObj ) {
 
@@ -43,13 +43,11 @@ class BasicOPtions {
       
       basicOptions: {
         intro : "Here you can modify the bottom x-axis general",
-        // id : `${this.prefix}__bottomAxisBasicOptionsSubPanel`,
-        // cssClasses:["bottomAxis", "subPanel"],
         title : "Basic Options",
         fieldGroups : [
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[width]", 
                 title : "Plot Width", 
@@ -74,7 +72,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[font][family]",
                 title : "Font Family",	
@@ -96,8 +94,8 @@ class BasicOPtions {
             ]
           },
           {
-            cssClasses : ["field-group", "seventyFive-twentyFive"],
-            inputs: [
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
               {
                 id : "basicOptions[font][color]",
                 title : "Font Color",
@@ -115,7 +113,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[paper_bgcolor]",
                 title : "Paper Color",
@@ -134,7 +132,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[margin][pad]", 
                 title : "Chart Padding", 
@@ -149,7 +147,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[margin][l]", 
                 title : "Left Margin", 
@@ -174,7 +172,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[margin][t]", 
                 title : "Top Margin", 
@@ -199,7 +197,7 @@ class BasicOPtions {
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
-            inputs: [
+            inputFields: [
               {
                 id : "basicOptions[margin][autoexpand]", 
                 title : "Margin Auto Expand", 
@@ -218,6 +216,37 @@ class BasicOPtions {
           }
         ]
       },
+      basicOption2: {
+        intro : "Here you can modify the bottom x-axis general",
+        title : "Basic Options",
+        fieldGroups : [
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : "basicOptions[width2]", 
+                title : "Plot Width", 
+                type : "number",
+                min : 10,
+                max : 2000,
+                step : 10,
+                value : this.options().width,
+                hint : "Sets the plot's width (in px)."
+              },
+              {
+                id : "basicOptions[height2]", 
+                title : "Plot Height", 
+                type : "number",
+                min : 10,
+                max : 2000,
+                step : 10,
+                value : this.options().height,
+                hint : "Sets the plot's height (in px)."
+              },
+            ]
+          },
+        ]
+      },
      
     }
 
@@ -225,6 +254,6 @@ class BasicOPtions {
 
 }
 
-export default BasicOPtions;
+export default ChartBasicOPtions;
 
 

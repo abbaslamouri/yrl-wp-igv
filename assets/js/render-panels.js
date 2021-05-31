@@ -1,6 +1,8 @@
-import Accordion from "./Accordion"
+// import Accordion from "./Accordion"
+import Accordion from 'accordion-js';
+import 'accordion-js/dist/accordion.min.css';
 import panel from "./panel"
-import BasicOptions from "./BasicOptions"
+import ChartBasicOptions from "./ChartBasicOptions"
 import ChartTitle from "./ChartTitle"
 import ChartLegend from "./ChartLegend"
 import HoverLabel from "./HoverLabel"
@@ -11,17 +13,93 @@ import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
 import { displayAdminMessage } from "./utilities"
 
+const renderPanels = ( chart, spreadsheet, iwpgvObj ) => {
 
-
-const renderPanels = ( chart, spreadsheet, iwpgvObj) => {
-
-  console.log(chart)
+  console.log("CHART", chart)
 
   // Render layout basic options panel
-  const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, iwpgvObj )
-  chart.basicOptions = basicOptionsInstance.options()
-  panel(basicOptionsInstance.sections(), "basicOptionsPanel", iwpgvObj)
-  return
+  const basicOptionsInstance = new ChartBasicOptions( ( chart.chartBasicOptions !== undefined ) ? chart.chartBasicOptions : {}, iwpgvObj )
+  chart.chartBasicOptions = basicOptionsInstance.options()
+  panel( basicOptionsInstance.sections(), "chartBasicOptionsPanel", iwpgvObj )
+
+
+// Assemble chart traces chart and and render chart traces panel
+if ( spreadsheet ) {
+
+  // Get chart traces panel content div
+  const chartTracesContentPanel = document.querySelector( `.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .charTracesPanel .ac-panel` )
+
+  // Create new accordion and add accordion to panel
+  const accordionDiv = document.createElement( "div" )
+  accordionDiv.classList.add( "accordion","accordion__level-2", "chartTraces__Acc" )
+
+  chartTracesContentPanel.appendChild(accordionDiv)
+
+  chart.chartTracesOptions = ( chart.chartTracesOptions !== undefined )? chart.chartTracesOptions : {}
+  let index = 1
+  while ( index < spreadsheet[chart.chartParams.sheetId].labels.length ) {  
+    
+    // Create intro p
+    const introDiv = document.createElement("div")
+    introDiv.classList.add( "ac-text", "intro" )
+
+    // Create accordion panel
+    const ac = document.createElement( "div" )
+    ac.classList.add( "ac", `chartTraces_${index-1}_Panel` )
+
+    // Create ac header
+    const acHeader = document.createElement( "h2" )
+    acHeader.classList.add( "ac-header" )
+
+    // Create trigger button
+    const acTrigger = document.createElement( "div" )
+    acTrigger.classList.add( "ac-trigger" )
+
+    // Create heading title and add to trigger button
+    const headingTitle = document.createTextNode( Object.values( spreadsheet[chart.chartParams.sheetId].labels)[index] )
+    acTrigger.appendChild( headingTitle )
+
+    // Add trigger button to header
+    acHeader.appendChild( acTrigger )
+
+    // Add header to ac
+    ac.appendChild( acHeader )
+
+    // Add ac to accordion
+    accordionDiv.appendChild( ac )
+
+    // Create accordion content
+    const acPanel = document.createElement( "div" )
+    acPanel.classList.add( "ac-panel" )
+
+    // Add content to ac
+    ac.appendChild(acPanel)
+
+    // Add p tag to content
+    acPanel.appendChild(introDiv)
+
+    chart.chartTracesOptions[index-1] = ( chart.chartTracesOptions[index-1] !== undefined )? chart.chartTracesOptions[index-1] : {}
+    const chartTraceInstance =  new ChartTrace( chart.chartTracesOptions[index-1], spreadsheet, index, chart.chartParams.sheetId, chart.chartParams.chartType, iwpgvObj )
+    chart.chartTracesOptions[index-1] = chartTraceInstance.options()
+    // chart.chartTraces.sections[index-1] = chartTraceInstance.sections()
+    panel(chartTraceInstance.sections(), `chartTraces_${index-1}_Panel`, iwpgvObj)
+    index++
+  }
+
+  // Load accordion
+  new Accordion( `.${iwpgvObj.prefix}__admin .chartTraces__Acc`, { duration: 400 } )
+
+  
+} else {
+  
+  displayAdminMessage( `${chart.chartParams.options.fileUpload} is missing. Please upload a new file`, "error", iwpgvObj)
+  
+}
+
+console.log("CHART1", {...chart})
+
+return
+
 
   // document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
   // document.querySelector( `.accordion__content.basicOptions.panel` ).classList.remove("hidden")

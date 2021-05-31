@@ -12,7 +12,7 @@
   /*************************************************
   ********************MAIN ACCORDION****************
   **************************************************/
-  .accordion-1 {
+  .accordion {
 
     .ac {
 
@@ -35,16 +35,12 @@
         
       }
 
-      &.is-active {
-
-        .ac-header {
+      &.is-active > .ac-header {
           background-color: rgba( $color_secondary,.3);
-        }
-
-        .ac-trigger {
+      }
+      
+      &.is-active > .ac-trigger {
           color: rgba( $color_s_dark , 1 );
-        }
-
       }
 
       &-panel {

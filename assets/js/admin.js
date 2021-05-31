@@ -197,8 +197,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Render input fields and set chart options
         drawChart( chart, spreadsheet, iwpgvObj )
 
-        accordion1.closeAll()
-        accordion1.open( 1 )
+        mainAccordion.closeAll()
+        // accordion1.open( 1 )
 
 
 
@@ -217,27 +217,19 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   }
   
-  document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .accordion-1 .chartParamsPanel .ac-panel`).classList.remove( "hidden" )  
+  document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .main__Acc .chartParamsPanel .ac-panel`).classList.remove( "hidden" )  
 
 
   // Load accordion
-  const accordion1 = new Accordion( 
+  const mainAccordion = new Accordion( 
     
-    '.accordion-1', 
+    `.${iwpgvObj.prefix}__admin .main__Acc`, 
     {
       duration: 400,
     }
     
   )
-  accordion1.open(0)
-
-  
-
-  console.log( document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .accordion-1 .chartParamsPanel .ac-panel`).classList )
-
-  
-
-
+  mainAccordion.open(0)
 
 
 
