@@ -216,37 +216,6 @@ class ChartBasicOPtions {
           }
         ]
       },
-      basicOption2: {
-        intro : "Here you can modify the bottom x-axis general",
-        title : "Basic Options",
-        fieldGroups : [
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "basicOptions[width2]", 
-                title : "Plot Width", 
-                type : "number",
-                min : 10,
-                max : 2000,
-                step : 10,
-                value : this.options().width,
-                hint : "Sets the plot's width (in px)."
-              },
-              {
-                id : "basicOptions[height2]", 
-                title : "Plot Height", 
-                type : "number",
-                min : 10,
-                max : 2000,
-                step : 10,
-                value : this.options().height,
-                hint : "Sets the plot's height (in px)."
-              },
-            ]
-          },
-        ]
-      },
      
     }
 

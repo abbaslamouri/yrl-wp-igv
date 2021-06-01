@@ -18,7 +18,7 @@ const renderChart =  async( chart, spreadsheet, iwpgvObj ) => {
   if ( spreadsheet ) {
 
     
-    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces.options), chart.chartLayout.options, chart.chartLayout.options.config)
+    await Plotly.newPlot(`${iwpgvObj.prefix}__plotlyChart`, Object.values(chart.chartTraces), chart.chartLayout) //, chart.chartLayout.options.config)
 
     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][range]`).value = chart.chartLayout.options.xaxis.range.join()
     // document.getElementById(`${iwpgvObj.prefix}__chartLayout[xaxis][autorange]`).value = "false"

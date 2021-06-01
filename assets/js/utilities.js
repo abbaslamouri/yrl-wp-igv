@@ -29,18 +29,18 @@ const colors = () => {
 }
 
 
-// const chartTypes = () => {
+const chartTypes = () => {
 
-//   return {						// All chart types supported by this plugin
-//     "": "Select Chart Type",
-//     LineChart: "Line Chart",
-//     ScatterChart: "Scatter Chart",
-//     BarChart: "Bar Chart",
-//     ColumnChart: "Column Chart",
-//     PieChart: "Pie Chart",
-//   }
+  return {
+    "": "Select Chart Type",
+    LineChart: "Line Chart",
+    ScatterChart: "Scatter Chart",
+    BarChart: "Bar Chart",
+    ColumnChart: "Column Chart",
+    PieChart: "Pie Chart",
+  }
 
-// }
+}
 
 
 const displayAdminMessage = (message, status, iwpgvObj) => {
@@ -666,7 +666,7 @@ function chartOptionKey(fieldId) {
 module.exports = {
   fontFamily,
   colors,
-  // chartTypes,
+  chartTypes,
   displayAdminMessage,
   showElementById,
   hideElementById,

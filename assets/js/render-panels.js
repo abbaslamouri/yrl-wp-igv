@@ -8,7 +8,7 @@ import ChartLegend from "./ChartLegend"
 import HoverLabel from "./HoverLabel"
 import ModeBar from "./ModeBar"
 import ChartAxis from "./ChartAxis"
-import ChartLayout from "./ChartLayout"
+// import ChartLayout from "./ChartLayout"
 import ChartTrace from "./ChartTrace"
 import TableChart from "./TableChart"
 import { displayAdminMessage } from "./utilities"
@@ -18,10 +18,68 @@ const renderPanels = ( chart, spreadsheet, iwpgvObj ) => {
   console.log("CHART", chart)
 
   // Render layout basic options panel
-  const basicOptionsInstance = new ChartBasicOptions( ( chart.chartBasicOptions !== undefined ) ? chart.chartBasicOptions : {}, iwpgvObj )
-  chart.chartBasicOptions = basicOptionsInstance.options()
-  panel( basicOptionsInstance.sections(), "chartBasicOptionsPanel", iwpgvObj )
+  const chartBasicOptionsInstance = new ChartBasicOptions( ( chart.chartBasicOptions !== undefined ) ? chart.chartBasicOptions : {}, iwpgvObj )
+  chart.chartBasicOptions = chartBasicOptionsInstance.options()
+  panel( chartBasicOptionsInstance.sections(), "chartBasicOptionsPanel", iwpgvObj )
 
+  // Render layout chart title panel
+  const chartTitleInstance = new ChartTitle( ( chart.chartTitle !== undefined ) ? chart.chartTitle : {}, iwpgvObj )
+  chart.chartTitle = chartTitleInstance.options()
+  panel( chartTitleInstance.sections(), "chartTitlePanel", iwpgvObj )
+
+  // Render layout chart legend panel
+  const chartLegendInstance = new ChartLegend( ( chart.chartLegend !== undefined ) ? chart.chartLegend : {}, iwpgvObj )
+  chart.chartLegend = chartLegendInstance.options()
+  panel( chartLegendInstance.sections(), "chartLegendPanel", iwpgvObj )
+
+  // Render layout chart hoverlabel panel
+  const chartHoverLabelInstance = new HoverLabel( ( chart.chartHoverLabel !== undefined ) ? chart.chartHoverLabel : {}, iwpgvObj )
+  chart.chartHoverLabel = chartHoverLabelInstance.options()
+  panel( chartHoverLabelInstance.sections(), "chartHoverLabelPanel", iwpgvObj )
+
+  // Render layout chart modebar panel
+  const chartModeBarInstance = new ModeBar( ( chart.chartModeBar !== undefined ) ? chart.chartModeBar : {}, iwpgvObj )
+  chart.chartModeBar = chartModeBarInstance.options()
+  panel( chartModeBarInstance.sections(), "chartModeBarPanel", iwpgvObj )
+
+  // Render layout bottom axis options panel
+  const bottomAxisInstance = new ChartAxis( ( chart.bottomAxis !== undefined ) ? chart.bottomAxis : {}, chart.chartParams.chartType, "bottomAxis", iwpgvObj )
+  chart.bottomAxis = bottomAxisInstance.options()
+  panel( bottomAxisInstance.sections(), "bottomAxisPanel", iwpgvObj )
+
+  // Render layout bottom axis options panel
+  const topAxisInstance = new ChartAxis( ( chart.topAxis !== undefined ) ? chart.topAxis : {}, chart.chartParams.chartType, "topAxis", iwpgvObj )
+  chart.topAxis = topAxisInstance.options()
+  panel( topAxisInstance.sections(), "topAxisPanel", iwpgvObj )
+
+  // Render layout bottom axis options panel
+  const leftAxisInstance = new ChartAxis( ( chart.leftAxis !== undefined ) ? chart.leftAxis : {}, chart.chartParams.chartType, "leftAxis", iwpgvObj )
+  chart.leftAxis = leftAxisInstance.options()
+  panel( leftAxisInstance.sections(), "leftAxisPanel", iwpgvObj )
+
+  // Render layout bottom axis options panel
+  const rightAxisInstance = new ChartAxis( ( chart.rightAxis !== undefined ) ? chart.rightAxis : {}, chart.chartParams.chartType, "rightAxis", iwpgvObj )
+  chart.rightAxis = rightAxisInstance.options()
+  panel( rightAxisInstance.sections(), "rightAxisPanel", iwpgvObj )
+
+  chart.chartLayout = { ...chart.chartBasicOptions }
+  chart.chartLayout.title = chart.chartTitle
+  chart.chartLayout.legend = chart.chartLegend
+  chart.chartLayout.xaxis = chart.bottomAxis
+  chart.chartLayout.xaxis2 = chart.topAxis
+  chart.chartLayout.yaxis = chart.leftAxis
+  chart.chartLayout.yaxis2 = chart.rightAxis
+
+  
+
+   
+
+
+ 
+
+
+
+  
 
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
@@ -35,7 +93,7 @@ if ( spreadsheet ) {
 
   chartTracesContentPanel.appendChild(accordionDiv)
 
-  chart.chartTracesOptions = ( chart.chartTracesOptions !== undefined )? chart.chartTracesOptions : {}
+  chart.chartTraces = ( chart.chartTraces !== undefined )? chart.chartTraces : {}
   let index = 1
   while ( index < spreadsheet[chart.chartParams.sheetId].labels.length ) {  
     
@@ -78,9 +136,9 @@ if ( spreadsheet ) {
     // Add p tag to content
     acPanel.appendChild(introDiv)
 
-    chart.chartTracesOptions[index-1] = ( chart.chartTracesOptions[index-1] !== undefined )? chart.chartTracesOptions[index-1] : {}
-    const chartTraceInstance =  new ChartTrace( chart.chartTracesOptions[index-1], spreadsheet, index, chart.chartParams.sheetId, chart.chartParams.chartType, iwpgvObj )
-    chart.chartTracesOptions[index-1] = chartTraceInstance.options()
+    chart.chartTraces[index-1] = ( chart.chartTraces[index-1] !== undefined )? chart.chartTraces[index-1] : {}
+    const chartTraceInstance =  new ChartTrace( chart.chartTraces[index-1], spreadsheet, index, chart.chartParams.sheetId, chart.chartParams.chartType, iwpgvObj )
+    chart.chartTraces[index-1] = chartTraceInstance.options()
     // chart.chartTraces.sections[index-1] = chartTraceInstance.sections()
     panel(chartTraceInstance.sections(), `chartTraces_${index-1}_Panel`, iwpgvObj)
     index++
@@ -104,69 +162,69 @@ return
   // document.querySelector( `.accordion__toggle.basicOptions.panel` ).classList.remove("hidden")
   // document.querySelector( `.accordion__content.basicOptions.panel` ).classList.remove("hidden")
 
-  // Render chart title panel
-  const chartTitleInstance = new ChartTitle( chart.chartTitle.options, iwpgvObj )
-  chart.chartTitle.options = chartTitleInstance.options()
-  chart.chartTitle.panel.sections = chartTitleInstance.sections()
-  panel(chart.chartTitle.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.chartTitle.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.chartTitle.panel` ).classList.remove("hidden")
+  // // Render chart title panel
+  // const chartTitleInstance = new ChartTitle( chart.chartTitle.options, iwpgvObj )
+  // chart.chartTitle.options = chartTitleInstance.options()
+  // chart.chartTitle.panel.sections = chartTitleInstance.sections()
+  // panel(chart.chartTitle.panel, iwpgvObj)
+  // document.querySelector( `.accordion__toggle.chartTitle.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.chartTitle.panel` ).classList.remove("hidden")
 
-  // Render chart legend panel
-  const chartLegendInstance = new ChartLegend( chart.chartLegend.options, iwpgvObj )
-  chart.chartLegend.options = chartLegendInstance.options()
-  chart.chartLegend.panel.sections = chartLegendInstance.sections()
-  panel(chart.chartLegend.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.chartLegend.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.chartLegend.panel` ).classList.remove("hidden")
+  // // Render chart legend panel
+  // const chartLegendInstance = new ChartLegend( chart.chartLegend.options, iwpgvObj )
+  // chart.chartLegend.options = chartLegendInstance.options()
+  // chart.chartLegend.panel.sections = chartLegendInstance.sections()
+  // panel(chart.chartLegend.panel, iwpgvObj)
+  // document.querySelector( `.accordion__toggle.chartLegend.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.chartLegend.panel` ).classList.remove("hidden")
 
-  // Render chart legend panel
-  const hoverLabelInstance = new HoverLabel( chart.hoverLabel.options, iwpgvObj )
-  chart.hoverLabel.options = hoverLabelInstance.options()
-  chart.hoverLabel.panel.sections = hoverLabelInstance.sections()
-  panel(chart.hoverLabel.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.hoverLabel.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.hoverLabel.panel` ).classList.remove("hidden")
+  // // Render chart legend panel
+  // const hoverLabelInstance = new HoverLabel( chart.hoverLabel.options, iwpgvObj )
+  // chart.hoverLabel.options = hoverLabelInstance.options()
+  // chart.hoverLabel.panel.sections = hoverLabelInstance.sections()
+  // panel(chart.hoverLabel.panel, iwpgvObj)
+  // document.querySelector( `.accordion__toggle.hoverLabel.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.hoverLabel.panel` ).classList.remove("hidden")
 
-  // Render mode bar panel
-  const modeBarlInstance = new ModeBar( chart.modeBar.options, iwpgvObj )
-  chart.modeBar.options = modeBarlInstance.options()
-  chart.modeBar.panel.sections = modeBarlInstance.sections()
-  panel(chart.modeBar.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.modeBar.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.modeBar.panel` ).classList.remove("hidden")
+  // // Render mode bar panel
+  // const modeBarlInstance = new ModeBar( chart.modeBar.options, iwpgvObj )
+  // chart.modeBar.options = modeBarlInstance.options()
+  // chart.modeBar.panel.sections = modeBarlInstance.sections()
+  // panel(chart.modeBar.panel, iwpgvObj)
+  // document.querySelector( `.accordion__toggle.modeBar.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.modeBar.panel` ).classList.remove("hidden")
 
-  // Render bottom axis
-  const bottomAxisInstance = new ChartAxis( chart.bottomAxis.options, chart.chartParams.options.chartType, "bottomAxis", iwpgvObj )
-  chart.bottomAxis.options = bottomAxisInstance.options()
-  chart.bottomAxis.panel.sections = bottomAxisInstance.sections()
-  panel(chart.bottomAxis.panel, iwpgvObj)
-  document.querySelector( `.accordion__toggle.bottomAxis.panel` ).classList.remove("hidden")
-  document.querySelector( `.accordion__content.bottomAxis.panel` ).classList.remove("hidden")
+  // // Render bottom axis
+  // const bottomAxisInstance = new ChartAxis( chart.bottomAxis.options, chart.chartParams.options.chartType, "bottomAxis", iwpgvObj )
+  // chart.bottomAxis.options = bottomAxisInstance.options()
+  // chart.bottomAxis.panel.sections = bottomAxisInstance.sections()
+  // panel(chart.bottomAxis.panel, iwpgvObj)
+  // document.querySelector( `.accordion__toggle.bottomAxis.panel` ).classList.remove("hidden")
+  // document.querySelector( `.accordion__content.bottomAxis.panel` ).classList.remove("hidden")
 
-   // Render top axis
-   const topAxisInstance = new ChartAxis( chart.topAxis.options, chart.chartParams.options.chartType, "topAxis", iwpgvObj )
-   chart.topAxis.options = topAxisInstance.options()
-   chart.topAxis.panel.sections = topAxisInstance.sections()
-   panel(chart.topAxis.panel, iwpgvObj)
-   document.querySelector( `.accordion__toggle.topAxis.panel` ).classList.remove("hidden")
-   document.querySelector( `.accordion__content.topAxis.panel` ).classList.remove("hidden")
+  //  // Render top axis
+  //  const topAxisInstance = new ChartAxis( chart.topAxis.options, chart.chartParams.options.chartType, "topAxis", iwpgvObj )
+  //  chart.topAxis.options = topAxisInstance.options()
+  //  chart.topAxis.panel.sections = topAxisInstance.sections()
+  //  panel(chart.topAxis.panel, iwpgvObj)
+  //  document.querySelector( `.accordion__toggle.topAxis.panel` ).classList.remove("hidden")
+  //  document.querySelector( `.accordion__content.topAxis.panel` ).classList.remove("hidden")
 
-    // Render left axis
-    const leftAxisInstance = new ChartAxis( chart.leftAxis.options, chart.chartParams.options.chartType, "leftAxis", iwpgvObj )
-    chart.leftAxis.options = leftAxisInstance.options()
-    chart.leftAxis.panel.sections = leftAxisInstance.sections()
-    panel(chart.leftAxis.panel, iwpgvObj)
-    document.querySelector( `.accordion__toggle.leftAxis.panel` ).classList.remove("hidden")
-    document.querySelector( `.accordion__content.leftAxis.panel` ).classList.remove("hidden")
+  //   // Render left axis
+  //   const leftAxisInstance = new ChartAxis( chart.leftAxis.options, chart.chartParams.options.chartType, "leftAxis", iwpgvObj )
+  //   chart.leftAxis.options = leftAxisInstance.options()
+  //   chart.leftAxis.panel.sections = leftAxisInstance.sections()
+  //   panel(chart.leftAxis.panel, iwpgvObj)
+  //   document.querySelector( `.accordion__toggle.leftAxis.panel` ).classList.remove("hidden")
+  //   document.querySelector( `.accordion__content.leftAxis.panel` ).classList.remove("hidden")
 
-     // Render right axis
-   const rightAxisInstance = new ChartAxis( chart.rightAxis.options, chart.chartParams.options.chartType, "rightAxis", iwpgvObj )
-   chart.rightAxis.options = rightAxisInstance.options()
-   chart.rightAxis.panel.sections = rightAxisInstance.sections()
-   panel(chart.rightAxis.panel, iwpgvObj)
-   document.querySelector( `.accordion__toggle.rightAxis.panel` ).classList.remove("hidden")
-   document.querySelector( `.accordion__content.rightAxis.panel` ).classList.remove("hidden")
+  //    // Render right axis
+  //  const rightAxisInstance = new ChartAxis( chart.rightAxis.options, chart.chartParams.options.chartType, "rightAxis", iwpgvObj )
+  //  chart.rightAxis.options = rightAxisInstance.options()
+  //  chart.rightAxis.panel.sections = rightAxisInstance.sections()
+  //  panel(chart.rightAxis.panel, iwpgvObj)
+  //  document.querySelector( `.accordion__toggle.rightAxis.panel` ).classList.remove("hidden")
+  //  document.querySelector( `.accordion__content.rightAxis.panel` ).classList.remove("hidden")
 
 
 // // Assemble chart layout chart and and render chart layout panel

@@ -3,47 +3,36 @@
   margin:1rem 2rem 1rem 0;
   padding:2rem;
 
-  // .chart-library {
-  //   display: grid;
-  //   grid-template-columns: repeat(3, 1fr);
-  //   grid-gap: 1rem;
-  //   grid-column: 1 / span 2;
-  //   padding:2rem;
-  //   border: 1px solid grey;
-  //   margin-top: 2rem;
+  .page-title {
 
-  //   .file-missing {
-  //     font-size: 1.2rem;
-  //     display:flex;
-  //     justify-content: center;
-  //     align-items: center;
-  //     padding:3rem .5rem;
-  //     color:$color-danger;
-  //   }
+    a {
+      margin-left:1rem;
+    }
+  }
 
-  // }
+  .admin-messages {
+    margin: 1rem 0;
+  }
 
-  
-  // .admin-heading {
-  //   margin-bottom: 2rem;
-  //   color:$color-danger;
+  .chart-library {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    grid-column: 1 / span 2;
+    padding:2rem;
+    border: 1px solid grey;
+    margin-top: 2rem;
 
-  //   display: flex;
-  //   align-items: center;
+    // .file-missing {
+    //   font-size: 1.2rem;
+    //   display:flex;
+    //   justify-content: center;
+    //   align-items: center;
+    //   padding:3rem .5rem;
+    //   color:$color-danger;
+    // }
 
-  //   h2 {
-  //     font-size: 1.6rem;
-  //   }
-
-  //   a {
-  //     margin-left: 1rem;
-  //   }
-  // }
-
-  // .admin-messages {
-  //   margin-bottom: 1rem;
-  // }
-
+   }
 
   .edit-chart {
     // position:relative;
@@ -51,23 +40,24 @@
     width:100%;
     display:grid;
     grid-template-columns: 1fr minmax(350px,25%);
-    grid-gap: 2rem;
-  //   min-height: 400px;
-    border: 1px solid grey;
-  //   padding: 2rem;
+    grid-gap: 1rem;
+    border-radius: 3px;
+    border: 1px solid rgba($color_p_dark, 1);
+    padding:1rem;
 
     .chart-view {
-  //     position:relative;
-  //     overflow-y: scroll;
-  //     // float:left;
-  //     // display: flex;
-  //     // flex-direction: column;
-  //     // justify-items: start;
-  //     // padding: 2rem;
-  //     position: relative;
-  //     background-color: $color-grey-light;
-  //     border-radius: 3px;
-  //     border: 1px solid grey;
+      // position:relative;
+      // overflow-y: scroll;
+      // float:left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      // padding: 2rem;
+      // position: relative;
+      background-color: $color-grey-light;
+      border-radius: 3px;
+      border: 1px solid rgba($color_p_dark, 1);
 
   //     .spinner {
   //       width: 8rem;
@@ -80,48 +70,37 @@
   //       visibility:visible !important
   //     }
 
-  //     .loading {
-  //       font-size: 5rem;
-  //       font-family:inherit;
-  //       position: absolute;
-  //       top: 50%;
-  //       left: 50%;
-  //       transform: translate(-50%, -50%);
-  //       z-index: 1000;
-  //       visibility:visible !important
-  //     }
+      .warning {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgba($color_danger, 1);
+        line-height: 2rem;
+      }
 
-  //     .warning {
-  //       font-weight: 700;
-  //       color: orangered;
-  //       line-height: 2rem;
-  //       position: absolute;
-  //       top: 50%;
-  //       left: 50%;
-  //       transform: translate(-50%, -50%);
-  //     }
-
+      .loading {
+        font-size: 3rem;
+        font-family:inherit;
+        // z-index: 1000;
+        // visibility:visible !important
+      }
 
     }
 
     .chart-options {
     
-
-
       overflow-y: scroll;
-      border: 1px solid grey;
+      border: 1px solid rgba($color_p_dark, 1);
       padding: 0.5rem;
+      border-radius: 3px;
 
       .field-group {
 
         position:relative;
-
         display:grid;
         grid-template-rows: auto;
         column-gap: 1.5em;
         margin-bottom:1rem;
 
-    
         &.fifty-fifty {
           grid-template-columns: 1fr 1fr;
     
@@ -149,29 +128,6 @@
         }
         
       }
-
-      
-
-      
-
-      // .field-group {
-      //   display: grid;
-      //   grid-gap: 1rem;
-      //   margin-bottom: 0.5rem;
-
-      //   &.single-field {
-      //     grid-template-columns: 1fr; //repeat(2, minmax(min-content, 1fr);
-      //   }
-    
-      //   &.dual-field {
-      //     grid-template-columns: repeat(2, 1fr); //repeat(2, minmax(min-content, 1fr);
-      //   }
-    
-      //   &.triple-field {
-      //     grid-template-columns: repeat(3, minmax(0, 1fr));
-      //   }
-
-      // }
 
     }
 

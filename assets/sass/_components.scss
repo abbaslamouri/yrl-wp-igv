@@ -36,7 +36,7 @@
       }
 
       &.is-active > .ac-header {
-          background-color: rgba( $color_secondary,.3);
+          background-color: rgba( $color_secondary,.8);
       }
       
       &.is-active > .ac-trigger {
@@ -69,11 +69,19 @@
     grid-template-columns: 1fr 1fr 1fr 1.9rem;
     grid-template-rows: auto;
 
+    select {
+      margin-right:0px;
+      option {
+        width:100%;
+
+      }
+    }
+
     &__btn {
       grid-column: 1 / 2;
     }
 
-    &__input{
+    &__input {
       grid-column: 1 / 4;
       grid-row: 1 / 2;
       font-size:.7rem;
