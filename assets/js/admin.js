@@ -119,7 +119,6 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Set sheet Id select field options, update sheet Id select field values
         const sheetIdInput = document.getElementsByName( `${prefix}__fileUpload[sheetId]` )[0]
         setSheetIdOptions (spreadsheet, sheetIdInput )
-        console.log(sheetIdInput.options)
         sheetIdInput.selectedIndex = sheetIdInput.options.length == 2 ? 1 : ""
 
         // Set chart type value

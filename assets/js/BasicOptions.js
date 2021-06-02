@@ -27,7 +27,7 @@ class BasicOPtions {
         r : ( this.inputOptions.margin === undefined || this.inputOptions.margin.r === undefined ) ? 100 : this.inputOptions.margin.r,
         t : ( this.inputOptions.margin === undefined || this.inputOptions.margin.t === undefined ) ? 110 : this.inputOptions.margin.t,
         b : ( this.inputOptions.margin === undefined || this.inputOptions.margin.b === undefined ) ? 150 : this.inputOptions.margin.b,
-        pad: ( this.inputOptions.margin === undefined || this.inputOptions.margin.pad === undefined ) ? 20 : this.inputOptions.margin.pad,
+        pad: ( this.inputOptions.margin === undefined || this.inputOptions.margin.pad === undefined ) ? 80 : this.inputOptions.margin.pad,
         autoexpand: ( this.inputOptions.margin === undefined || this.inputOptions.margin.autoexpand === undefined ) ? true : this.inputOptions.margin.autoexpand,
       },
       paper_bgcolor : ( this.inputOptions.paper_bgcolor === undefined ) ? "#b0bec5" :  this.inputOptions.paper_bgcolor,

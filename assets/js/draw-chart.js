@@ -71,7 +71,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
         break
 
       default:
-
         const control = chartOptionKey(event.target.id).control
         const key = chartOptionKey(event.target.id).key
         const keyParts = key.split(".")
@@ -85,20 +84,52 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
         switch ( control ) {
 
           case "basicOptions":
-
-            if ( key === "responsive" || key === "staticPlot" ) {
+            if ( key === "responsive" ) {
+              // if response is checked then set width to null (100%)
+              if ( value ) {
+                chart.layout.width = null
+                document.getElementsByName( `${prefix}__basicOptions[width]`)[0].value = null
+              }
+              chart.config[key] = value
               Plotly.purge(`${prefix}__plotlyChart`)
-              chart.basicOptions[key] = value
-              chart.config.[key] = value
+              Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+            } else  if ( key === "staticPlot" ) {
+              chart.config[key] = value
+              Plotly.purge(`${prefix}__plotlyChart`)
               Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
             } else {
+              switch (key) {
+                case "width":
+                  if (value) {
+                    document.getElementsByName( `${prefix}__basicOptions[responsive]`)[0].checked = false
+                  } else {
+                    value = null
+                    document.getElementsByName( `${prefix}__basicOptions[responsive]`)[0].checked = true
+                  }
+                  break
+                
+                default:
+                  break
+              }
+              console.log("basicOptions",chart)
               Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
             }
-            console.log("CCCCC",chart)
-
             break
 
-          
+          case "chartTitle":
+              console.log("title",chart)
+              Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
+              break
+
+          case "chartLegend":
+              console.log("legend",chart)
+              // if ( key === "showlegend") {
+              //   Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
+              // } else {
+                Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
+              // }
+              break
+
           case "layout":
 
             if ( key.includes( "config" ) ) {
@@ -142,33 +173,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
             const layout = chart.layout
             const layoutInputIdPrefix = `${prefix}__chartLayout`
 
-            // Plot title
-            document.getElementById(`${layoutInputIdPrefix}[title][font][family]`).disabled = ! layout.title.text  ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[title][font][size]`).disabled = ! layout.title.text  ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[title][font][color]`).disabled = ! layout.title.text  ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[title][x]`).disabled = ! layout.title.text  ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[title][y]`).disabled = ! layout.title.text  ? true : false
+           
 
-            // Legend
-            document.getElementById(`${layoutInputIdPrefix}[legend][bgcolor]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][bordercolor]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][borderwidth]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][font][family]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][font][size]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][font][color]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][title][text]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][family]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][size]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][title][font][color]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][title][side]`).disabled = ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][orientation]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][itemsizing]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][itemwidth]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][itemclick]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][itemdoubleclick]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][x]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][y]`).disabled = ! layout.showlegend ? true : false
-            document.getElementById(`${layoutInputIdPrefix}[legend][valign]`).disabled = ! layout.showlegend ? true : false
+            
 
 
             // Hover Label
@@ -252,8 +259,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
             break
 
-
-
           case "chartTraces":
 
             const keyArr = key.split(".")
@@ -322,9 +327,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
             document.getElementById(`${traceInputIdPrefix}[connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
 
             break
-            
-
-            
+                   
 
           case "tableChart":
           case "minMaxAvgTableChart":
@@ -391,9 +394,40 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
             if (plotlyTable) Plotly.newPlot(plotlyTable, [chart[control].options], chart[control].options.layout) 
 
         }
+
+        // Plot title
+        document.getElementsByName(`${prefix}__chartTitle[title][font][family]`).disabled = ! chart.layout.title.text  ? true : false
+        document.getElementsByName(`${prefix}__chartTitle[title][font][size]`).disabled = ! chart.layout.title.text  ? true : false
+        document.getElementsByName(`${prefix}__chartTitle[title][font][color]`).disabled = ! chart.layout.title.text  ? true : false
+        document.getElementsByName(`${prefix}__chartTitle[title][x]`).disabled = ! chart.layout.title.text  ? true : false
+        document.getElementsByName(`${prefix}__chartTitle[title][y]`).disabled = ! chart.layout.title.text  ? true : false
+
+        // Legend
+        document.getElementsByName(`${prefix}__chartLegend[legend][bgcolor]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][bordercolor]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][borderwidth]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][font][family]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][font][size]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][font][color]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][title][text]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][title][font][family]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][title][font][size]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][title][font][color]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][title][side]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][orientation]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][itemsizing]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][itemwidth]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][itemclick]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][itemdoubleclick]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][x]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][y]`)[0].disabled = ! chart.layout.showlegend ? true : false
+        document.getElementsByName(`${prefix}__chartLegend[legend][valign]`)[0].disabled = ! chart.layout.showlegend ? true : false
+
         break
 
     }
+
+    
 
     return false
 

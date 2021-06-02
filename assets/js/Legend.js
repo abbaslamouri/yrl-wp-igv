@@ -110,7 +110,7 @@ class Legend {
                 id : "chartLegend[legend][font][family]",
                 title : "Font Family",	
                 type : "select",
-                options : this.fontFamily,
+                options : fontFamily(),
                 value : this.options().legend.font.family,
                 disabled: ! this.options().showlegend ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
@@ -287,7 +287,7 @@ class Legend {
                 id : "chartLegend[legend][title][font][family]",
                 title : "Legend Title Font",	
                 type : "select",
-                options : this.fontFamily,
+                options : fontFamily(),
                 value : this.options().legend.title.font.family,
               disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."

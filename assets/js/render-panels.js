@@ -62,7 +62,7 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
 
   chart.layout = { ...chart.basicOptions }
   chart.layout.showlegend = chart.legend.showlegend
-  chart.layout.title = chart.title
+  chart.layout.title = chart.title.title
   chart.layout.legend = chart.legend.legend
   chart.layout.xaxis = chart.bottomAxis
   chart.layout.xaxis2 = chart.topAxis
