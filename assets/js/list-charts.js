@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 import deleteChart from "./delete-chart"
 
 
-const listCharts = async function ( charts, iwpgvObj) {
+const listCharts = async function ( charts, prefix) {
 
   Object.values(charts).forEach( async(el) => {
 
@@ -26,16 +26,16 @@ const listCharts = async function ( charts, iwpgvObj) {
         el.chartLayout.options.config = { displayModeBar: false }
       }
 
-      await Plotly.newPlot(`${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout.options, el.chartLayout.options.config)
+      await Plotly.newPlot(`${prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout.options, el.chartLayout.options.config)
 
     } else {
-      document.getElementById( `${iwpgvObj.prefix}__chart__${el.chartParams.options.chartId}` ).innerHTML = `<div class='file-missing'>${el.chartParams.options.fileUpload} cannot be found</div>`
+      document.getElementById( `${prefix}__chart__${el.chartParams.options.chartId}` ).innerHTML = `<div class='file-missing'>${el.chartParams.options.fileUpload} cannot be found</div>`
     }
   
   })
 
 
-  document.querySelectorAll( `.${iwpgvObj.prefix}__admin .delete-chart`).forEach( ( element ) => {
+  document.querySelectorAll( `.${prefix}__admin .delete-chart`).forEach( ( element ) => {
 
     element.addEventListener("click", function (event) {  
       event.preventDefault()
@@ -49,11 +49,11 @@ const listCharts = async function ( charts, iwpgvObj) {
       })
       .then((willDelete) => {
         if (willDelete) {
-          const jsonRes = deleteChart(event.target.closest(".delete-chart").dataset.chartId, iwpgvObj)
+          const jsonRes = deleteChart(event.target.closest(".delete-chart").dataset.chartId, prefix)
           console.log("RESPONSE-DELETE", jsonRes)
-          if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
-          const card = document.getElementById(`${iwpgvObj.prefix}__chart__${event.target.closest(".delete-chart").dataset.chartId}__card`)
-          document.querySelector(`.${iwpgvObj.prefix}__admin .chart-library`).removeChild(card)
+          if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success", prefix)
+          const card = document.getElementById(`${prefix}__chart__${event.target.closest(".delete-chart").dataset.chartId}__card`)
+          document.querySelector(`.${prefix}__admin .chart-library`).removeChild(card)
           swal(`Chart (ID=${event.target.closest(".delete-chart").dataset.chartId}) has been deleted!`, {
             icon: "success",
           });

@@ -1,10 +1,10 @@
 
 class ModeBar {
 
-  constructor(inputOptions, iwpgvObj ) {
+  constructor(inputOptions, prefix ) {
 
     this.inputOptions = inputOptions
-    this.prefix = iwpgvObj.prefix
+    this.prefix = prefix
 
   }
 

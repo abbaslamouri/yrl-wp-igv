@@ -52,8 +52,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      // padding: 2rem;
+      // align-items: center;
+      padding: 2rem;
       // position: relative;
       background-color: $color-grey-light;
       border-radius: 3px;
@@ -74,14 +74,20 @@
         font-size: 1rem;
         font-weight: 700;
         color: rgba($color_danger, 1);
+        align-self: center;
         line-height: 2rem;
       }
 
       .loading {
         font-size: 3rem;
         font-family:inherit;
+        align-self: center;
         // z-index: 1000;
         // visibility:visible !important
+      }
+
+      .plotly {
+        // width:90%;
       }
 
     }

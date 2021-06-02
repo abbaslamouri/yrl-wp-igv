@@ -1,8 +1,8 @@
 import Plotly from 'plotly.js-dist'
 import selectFile from './select-file'
 import saveChart from './save-chart'
-import FileUpload from "./FileUpload"
-import panel from "./panel"
+// import FileUpload from "./FileUpload"
+// import panel from "./panel"
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
 import drawChart from "./draw-chart"
@@ -16,9 +16,9 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = {...iwpgvCharts.chart}
-  let spreadsheet = []
-  let prefix = prefix
+  let chart = iwpgvCharts.chart
+  let spreadsheet = iwpgvCharts.spreadsheet
+  let prefix = iwpgvObj.prefix
 
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
@@ -37,33 +37,29 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
     if (! iwpgvCharts.action && iwpgvCharts.action !== "listCharts" && iwpgvCharts.action !== "editChart" ) throw new Error( "Invalid action" )
 
     // List all charts
-    if (iwpgvCharts.action && ( iwpgvCharts.action === "listCharts" ||  iwpgvCharts.action === "deleteChart" ) ) {
+    if ( iwpgvCharts.action === "listCharts" ||  iwpgvCharts.action === "deleteChart" ) listCharts( iwpgvCharts.charts, iwpgvObj)
 
-      listCharts( iwpgvCharts.charts, iwpgvObj)
-
-    }
-    
     // Add new chart or edit an existing chart
-    if ( iwpgvCharts.action && iwpgvCharts.action === "editChart" ) {
+    if ( iwpgvCharts.action === "editChart" ) {
     
-      if ( chart.fileUpload.options.chartId) {
+      if ( chart.fileUpload && chart.fileUpload.chartId) {
 
-        spreadsheet = iwpgvCharts.spreadsheet
+        // spreadsheet = iwpgvCharts.spreadsheet
         
         // Set sheetId select field value and options 
         if ( spreadsheet) {
-          setSheetIdOptions(spreadsheet, document.getElementById(`${prefix}__chartParams[sheetId]`))
-          document.getElementById(`${prefix}__chartParams[sheetId]`).value = chart.fileUpload.options.sheetId
-          showInputField( `${prefix}__chartParams[sheetId]` )
+          setSheetIdOptions(spreadsheet, document.getElementById(`${prefix}__fileUpload[sheetId]`))
+          document.getElementById(`${prefix}__fileUpload[sheetId]`).value = chart.fileUpload.options.sheetId
+          // showInputField( `${prefix}__fileUpload[sheetId]` )
         }
 
         // Show remaining chart params fields
-        if ( chart.fileUpload.options.chartId ) showInputField( `${prefix}__chartParams[chartId]` )
-        showInputField( `${prefix}__chartParams[fileUpload]` )
-        showInputField( `${prefix}__chartParams[chartType]` )
+        // if ( chart.fileUpload && chart.fileUpload.chartId ) showInputField( `${prefix}__fileUpload[chartId]` )
+        // showInputField( `${prefix}__fileUpload[fileUpload]` )
+        // showInputField( `${prefix}__fileUpload[chartType]` )
         
         // Draw chart
-        drawChart( iwpgvCharts, iwpgvObj, spreadsheet )
+        drawChart( iwpgvCharts, prefix, spreadsheet )
       }
 
       // Initialize the media uploader
@@ -106,8 +102,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         if ( ! attachment ||  ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
         // Update selected file and file Id
-        document.getElementsByName(`${prefix}__chartParams[fileUpload]`)[0].value = attachment.filename
-        document.getElementsByName(`${prefix}__chartParams[fileId]`)[0].value = attachment.id
+        document.getElementsByName(`${prefix}__fileUpload[fileName]`)[0].value = attachment.filename
+        document.getElementsByName(`${prefix}__fileUpload[fileId]`)[0].value = attachment.id
 
         // Fetch response
         jsonRes = await selectFile( attachment, iwpgvObj )
@@ -121,20 +117,20 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         chart.fileUpload = {}
 
         // Set sheet Id select field options, update sheet Id select field values
-        const sheetIdInput = document.getElementsByName( `${prefix}__chartParams[sheetId]` )[0]
+        const sheetIdInput = document.getElementsByName( `${prefix}__fileUpload[sheetId]` )[0]
         setSheetIdOptions (spreadsheet, sheetIdInput )
         console.log(sheetIdInput.options)
         sheetIdInput.selectedIndex = sheetIdInput.options.length == 2 ? 1 : ""
 
         // Set chart type value
-        document.getElementsByName( `${prefix}__chartParams[chartType]` )[0].value = ""
+        document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].value = ""
 
         // // Set sheetId select field options and show it
-        // showInputField( `${prefix}__chartParams[sheetId]` )
+        // showInputField( `${prefix}__fileUpload[sheetId]` )
 
         // // Show remaining chart params fields
-        // showInputField( `${prefix}__chartParams[fileUpload]` )
-        // showInputField( `${prefix}__chartParams[chartType]` )
+        // showInputField( `${prefix}__fileUpload[fileUpload]` )
+        // showInputField( `${prefix}__fileUpload[chartType]` )
 
         // toggleElementByClass( `.${prefix}__admin .spinner` )
         // toggleElementByClass( `.${prefix}__admin .warning` )
@@ -145,7 +141,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
 
       // Add click event listener to the chart params panel inoput fields
-      document.getElementsByName(`${prefix}__chartParams[mediaUploadBtn]`)[0].addEventListener("click", async function (event) {
+      document.getElementsByName(`${prefix}__fileUpload[mediaUploadBtn]`)[0].addEventListener("click", async function (event) {
         event.preventDefault()
         mediaUploader.open()      
       })
@@ -161,41 +157,36 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", function (event) {
 
         // Bail if the clicked item is not inside the `${iwpgvCharts.prefix}__chartOptionsForm` form 
-        if ( ! event.target.classList.contains(`chartParam`)  ) return
+        if ( ! event.target.classList.contains(`fileUpload`)  ) return
 
         // Update chart params options
-        chart.fileUpload.fileUpload = document.getElementsByName( `${prefix}__chartParams[fileUpload]` )[0].value
-        chart.fileUpload.fileId = document.getElementsByName( `${prefix}__chartParams[fileId]` )[0].value
-        chart.fileUpload.sheetId = document.getElementsByName( `${prefix}__chartParams[sheetId]` )[0].value
-        chart.fileUpload.chartType = document.getElementsByName( `${prefix}__chartParams[chartType]` )[0].value
+        chart.fileUpload.fileName = document.getElementsByName( `${prefix}__fileUpload[fileName]` )[0].value
+        chart.fileUpload.fileId = document.getElementsByName( `${prefix}__fileUpload[fileId]` )[0].value
+        chart.fileUpload.sheetId = document.getElementsByName( `${prefix}__fileUpload[sheetId]` )[0].value
+        chart.fileUpload.chartType = document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].value
 
         // Bail if no file, sheet Id or chart type
-        if( ! chart.fileUpload.fileUpload ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
+        if( ! chart.fileUpload.fileName ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
-        const sheetIdInput =  document.getElementsByName(`${prefix}__chartParams[sheetId]`)[0]
-          if (spreadsheet[sheetIdInput.value].data.length < chart.chartTraces.options.length) {
-          for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < chart.chartTraces.options.length; i++ ) {
-            delete chart.chartTraces.options[i]
-            delete chart.chartTraces.panel.sections[i]
+        if (chart.traces) {
+          const sheetIdInput =  document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0]
+            if (spreadsheet[sheetIdInput.value].data.length < chart.traces.length) {
+            for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < chart.traces.length; i++ ) {
+              delete chart.traces[i]
+            }
           }
         }
 
         // Render input fields and set chart options
-        drawChart( chart, spreadsheet, iwpgvObj )
+        drawChart( chart, spreadsheet, prefix )
 
+        // Close all accordion panels
         mainAccordion.closeAll()
-        // accordion1.open( 1 )
-
-
-
 
       } )
 
-
-
     }
-
 
   } catch (error) {
 
@@ -204,21 +195,11 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
   }
   
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .chartParamsPanel .ac-panel`).classList.remove( "hidden" )  
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
 
-
-  // Load accordion
-  const mainAccordion = new Accordion( 
-    
-    `.${prefix}__admin .main__Acc`, 
-    {
-      duration: 400,
-    }
-    
-  )
+  // Create mainaccordion and open first panel
+  const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
   mainAccordion.open(0)
-
-
 
  }
 

@@ -1,7 +1,7 @@
 import { fontFamily, colors } from "./utilities"
 
 
-class ChartTrace {
+class Trace {
 
   constructor(trace, spreadsheet, index, sheetId, chartType, iwpgvObj ) {
 
@@ -738,4 +738,4 @@ class ChartTrace {
 
 }
 
-export default ChartTrace;
+export default Trace;

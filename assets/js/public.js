@@ -1,5 +1,5 @@
 import Plotly from 'plotly.js-dist'
-import ChartTrace from "./ChartTrace"
+import Trace from "./Trace"
 import { hideElementById, showElementById, fetchminMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 import "../sass/public.scss"
 
@@ -22,7 +22,7 @@ if ( typeof yrl_wp_igv__plotlyChart === "undefined" ||  yrl_wp_igv__plotlyChart.
   let index = 1;
   while (index < payload.spreadsheet[paramsOptions.sheetId].labels.length) {
     payload.chart.chartTraces.options[index-1] = ( payload.chart.chartTraces.options[index-1] !== undefined )? payload.chart.chartTraces.options[index-1] : {}
-    const chartTraceInstance =  new ChartTrace( payload.chart.chartTraces.options[index-1], payload.spreadsheet, index, paramsOptions.sheetId, paramsOptions.chartType, payload.prefix ) 
+    const chartTraceInstance =  new Trace( payload.chart.chartTraces.options[index-1], payload.spreadsheet, index, paramsOptions.sheetId, paramsOptions.chartType, payload.prefix ) 
     payload.chart.chartTraces.options[index-1] = chartTraceInstance.options()
     // payload.chart.chartTraces.panel.sections[index-1] = chartTraceInstance.sections()
     index++

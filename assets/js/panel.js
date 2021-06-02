@@ -5,13 +5,10 @@ let accordionDiv
 let acPanel
 
 
-const panel = function (panelSections, panelCssClass, iwpgvObj) {
-
-  console.log("PanelSections", panelSections, panelCssClass)
+const panel = function (panelSections, panelCssClass, prefix) {
 
   // panel content div
-  const panelContent = document.querySelector(`.${iwpgvObj.prefix}__admin #${iwpgvObj.prefix}__chartOptionsForm .${panelCssClass} .ac-panel`)
-  console.log("PC",panelContent)
+  const panelContent = document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .${panelCssClass} .ac-panel`)
   
   // Create new accordion if there are 2=two or more sections
   if (Object.keys(panelSections).length > 1) {
@@ -95,7 +92,7 @@ const panel = function (panelSections, panelCssClass, iwpgvObj) {
       // Loop through fields
       for (const el in row.inputFields) {
 
-        const formGroup = fetchformGroup( row.inputFields[el], iwpgvObj )
+        const formGroup = fetchformGroup( row.inputFields[el], prefix )
         
         fieldGroup.appendChild( formGroup )
 
@@ -105,21 +102,17 @@ const panel = function (panelSections, panelCssClass, iwpgvObj) {
         } else {
           panelContent.appendChild( fieldGroup )
         }
-        
 
       }
 
     }
-
-    
 
   }
 
   // Load accordion if there more than 2 sections
   if (Object.keys(panelSections).length > 1) {
     const accordion2Options = { duration: 400 }
-    new Accordion( `.${iwpgvObj.prefix}__admin .${panelCssClass}__Acc`, accordion2Options );
-    console.log("HERE")
+    new Accordion( `.${prefix}__admin .${panelCssClass}__Acc`, accordion2Options );
   }
 
   
@@ -127,7 +120,7 @@ const panel = function (panelSections, panelCssClass, iwpgvObj) {
 }
 
 
-const fetchformGroup = (field, iwpgvObj) => {
+const fetchformGroup = (field, prefix) => {
 
   // const field = row.inputFields[el]
   // console.log("FIELD", field)
@@ -164,8 +157,8 @@ const fetchformGroup = (field, iwpgvObj) => {
   }
 
   // Set field id, name, classlist and value attributes
-  inputField.id = `${iwpgvObj.prefix}__${field.id}`
-  inputField.name = `${iwpgvObj.prefix}__${field.id}`
+  inputField.id = `${prefix}__${field.id}`
+  inputField.name = `${prefix}__${field.id}`
   if (field.type === "checkbox") {
     if (field.value) inputField.checked = true
   } else {
@@ -193,7 +186,7 @@ const fetchformGroup = (field, iwpgvObj) => {
     if (field.type !== "hidden") {
     const labelElem = document.createElement( "label" )
     labelElem.classList.add("form-group__label");
-    labelElem.htmlFor = `${iwpgvObj.prefix}__${field.id}`
+    labelElem.htmlFor = `${prefix}__${field.id}`
     const labelText = field.title
       ? document.createTextNode( field.title )
       : document.createTextNode( "\u00A0" );

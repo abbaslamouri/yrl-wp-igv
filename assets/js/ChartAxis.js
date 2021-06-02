@@ -3,11 +3,11 @@ import { fontFamily } from "./utilities"
 
 class ChartAxis  {
 
-  constructor( inputOPtions, chartType, axisId, iwpgvObj ) {
+  constructor( inputOPtions, chartType, axisId, prefix ) {
 
     this.inputOPtions = inputOPtions
-    this.prefix = iwpgvObj.prefix
     this.axisId = axisId
+    this.prefix = prefix
 
     switch (chartType) {
       case "LineChart":

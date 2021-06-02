@@ -1,11 +1,11 @@
 import { fontFamily } from "./utilities"
 
-class ChartTitle {
+class Title {
 
-  constructor(inputOptions, iwpgvObj ) {
+  constructor(inputOptions, prefix ) {
 
     this.inputOptions = inputOptions
-    this.prefix = iwpgvObj.prefix
+    this.prefix = prefix
 
   }
 
@@ -123,6 +123,6 @@ class ChartTitle {
 
 }
 
-export default ChartTitle
+export default Title
 
 

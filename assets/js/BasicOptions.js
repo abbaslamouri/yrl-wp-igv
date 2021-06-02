@@ -1,11 +1,11 @@
 import { fontFamily } from "./utilities"
 
-class ChartBasicOPtions {
+class BasicOPtions {
 
-  constructor( inputOptions, iwpgvObj ) {
+  constructor( inputOptions, prefix ) {
 
     this.inputOptions = inputOptions
-    this.prefix = iwpgvObj.prefix
+    this.prefix = prefix
    
   }
 
@@ -14,6 +14,7 @@ class ChartBasicOPtions {
     return {
       
       responsive : ( this.inputOptions.responsive  === undefined ) ? true : this.inputOptions.responsive,
+      staticPlot : ( this.inputOptions.staticPlot  === undefined ) ? false : this.inputOptions.staticPlot,
       width : ( this.inputOptions.width === undefined ) ? null : this.inputOptions.width,
       height : ( this.inputOptions.height === undefined ) ? 500 : this.inputOptions.height,
       font : {
@@ -22,7 +23,7 @@ class ChartBasicOPtions {
         color : (  this.inputOptions.font === undefined || this.inputOptions.font.color === undefined ) ? "#000a12" : this.inputOptions.font.color,
       },
       margin: {
-        l : ( this.inputOptions.margin === undefined || this.inputOptions.margin.l === undefined ) ? 100 : this.inputOptions.margin.l,
+        l : ( this.inputOptions.margin === undefined || this.inputOptions.margin.l === undefined ) ? 150 : this.inputOptions.margin.l,
         r : ( this.inputOptions.margin === undefined || this.inputOptions.margin.r === undefined ) ? 100 : this.inputOptions.margin.r,
         t : ( this.inputOptions.margin === undefined || this.inputOptions.margin.t === undefined ) ? 110 : this.inputOptions.margin.t,
         b : ( this.inputOptions.margin === undefined || this.inputOptions.margin.b === undefined ) ? 150 : this.inputOptions.margin.b,
@@ -104,9 +105,21 @@ class ChartBasicOPtions {
               },
               {
                 id : "basicOptions[responsive]",
-                title : "Responsive ?",
+                title : "Responsive",
                 type : "checkbox", 
                 value : this.options().responsive,
+                hint: ""
+              },
+            ]
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : "basicOptions[staticPlot]",
+                title : "Static PLot ?",
+                type : "checkbox", 
+                value : this.options().staticPlot,
                 hint: ""
               },
             ]
@@ -223,6 +236,6 @@ class ChartBasicOPtions {
 
 }
 
-export default ChartBasicOPtions;
+export default BasicOPtions;
 
 

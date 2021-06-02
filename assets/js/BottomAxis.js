@@ -3,10 +3,10 @@ import { fontFamily } from "./utilities"
 
 class BottomAxis  {
 
-  constructor( inputOPtions, chartType, iwpgvObj ) {
+  constructor( inputOPtions, chartType, prefix ) {
 
     this.inputOPtions = inputOPtions
-    this.prefix = iwpgvObj.prefix
+    this.prefix = prefix
 
     switch (chartType) {
       case "LineChart":

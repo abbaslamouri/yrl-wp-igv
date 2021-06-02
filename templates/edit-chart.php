@@ -40,34 +40,34 @@
 
         <div class="accordion accordion__level-1 main__Acc">
           
-          <div class="ac chartParamsPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Parameters</div></h2>
+          <div class="ac fileUploadPanel">
+            <h2 class="ac-header"><div class="ac-trigger">File Upload</div></h2>
             <div class="ac-panel hidden">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
               
               <div class="field-group">
                 <div class="form-group">
-                  <button type="button" class="form-group__btn btn button" name="<?php echo "{$this->prefix}__chartParams[mediaUploadBtn]"; ?>" >Upload New File </button>
+                  <button type="button" class="form-group__btn btn button" name="<?php echo "{$this->prefix}__fileUpload[mediaUploadBtn]"; ?>" >Upload New File </button>
                   <label for="" class="form-group__label"></label>
                 </div>
               </div>
 
               <div class="field-group">
                 <div class="form-group">
-                  <input type="text" class="form-group__input chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[fileUpload]"; ?>" placeholder="Selected File" readonly>
+                  <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[fileName]"; ?>" placeholder="Selected File" readonly>
                   <label for="" class="form-group__label">Selected File</label>
                 </div>
               </div>
               <div class="field-group">
                 <div class="form-group">
-                  <input type="text" class="form-group__input chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[chartId]"; ?>" placeholder="Chart Id"  readonly>
+                  <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartId]"; ?>" placeholder="Chart Id"  readonly>
                   <label for="" class="form-group__label">Chart Id</label>
                 </div>
               </div>
 
               <div class="field-group">
                 <div class="form-group">
-                  <select class="form-group__input form-group__input-select chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[sheetId]"; ?>" placeholder="Sheet">
+                  <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[sheetId]"; ?>" placeholder="Sheet">
                   </select>
                   <label for="" class="form-group__label">Sheet</label>
                 </div>
@@ -75,7 +75,7 @@
 
               <div class="field-group">
                 <div class="form-group">
-                  <select class="form-group__input form-group__input-select chartParam no-hint" name="<?php echo "{$this->prefix}__chartParams[chartType]"; ?>">
+                  <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartType]"; ?>">
                     <option value="" selected>Select Chart Type</option>
                     <option value="LineChart">Line Chart</option>
                     <option value="ScatterChart">Scatter Chart</option>
@@ -95,7 +95,7 @@
 
               <div class="field-group">
                 <div class="form-group">
-                  <input type="text" name="<?php echo "{$this->prefix}__chartParams[fileId]"; ?>" >
+                  <input type="text" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
                   <label for="" class="form-group__label">File Id</label>
                 </div>
               </div>
@@ -103,32 +103,32 @@
             </div>
           </div>
 
-          <div class="ac chartBasicOptionsPanel">
+          <div class="ac basicOptionsPanel">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac chartTitlePanel">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Title</div></h2>
+          <div class="ac titlePanel">
+            <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac chartLegendPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Legend</div></h2>
+          <div class="ac legendPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Legend</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac chartHoverLabelPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Hover Label</div></h2>
+          <div class="ac hoverLabelPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Hover Label</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac chartModeBarPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Mode Bar</div></h2>
+          <div class="ac modeBarPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Mode Bar</div></h2>
             <div class="ac-panel">
             </div>
           </div>
@@ -152,12 +152,12 @@
           </div>
 
           <div class="ac rightAxisPanel">
-            <h2 class="ac-header"><div class="ac-trigger">RightAxis</div></h2>
+            <h2 class="ac-header"><div class="ac-trigger">Right Axis</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac charTracesPanel">
+          <div class="ac tracesPanel">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
             </div>
