@@ -1,6 +1,6 @@
 import { fontFamily } from "./utilities"
 
-class HoverLabel {
+class Hoverlabel {
 
   constructor(inputOptions, prefix ) {
 
@@ -45,7 +45,7 @@ class HoverLabel {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "hoverLabel[hovermode]",
+                id : "hoverlabel[hovermode]",
                 title : "Hover Mode",	
                 type : "select",
                 options : {
@@ -65,7 +65,7 @@ class HoverLabel {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "hoverLabel[hoverlabel][bgcolor]",
+                id : "hoverlabel[hoverlabel][bgcolor]",
                 title : "Background Color",
                 type : "color", 
                 value : this.options().hoverlabel.bgcolor,
@@ -73,7 +73,7 @@ class HoverLabel {
                 hint: "Sets the background color of all hover labels on graph"
               },
               {
-                id : "hoverLabel[hoverlabel][bordercolor]",
+                id : "hoverlabel[hoverlabel][bordercolor]",
                 title : "Border Color",
                 type : "color", 
                 value : this.options().hoverlabel.bordercolor,
@@ -86,7 +86,7 @@ class HoverLabel {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "hoverLabel[hoverlabel][font][family]",
+                id : "hoverlabel[hoverlabel][font][family]",
                 title : "Hover label Font",	
                 type : "select",
                 options : fontFamily(),
@@ -100,7 +100,7 @@ class HoverLabel {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "hoverLabel[hoverlabel][font][size]", 
+                id : "hoverlabel[hoverlabel][font][size]", 
                 title : "Hover Label Font Size", 
                 type : "number",
                 min : 1,
@@ -111,7 +111,7 @@ class HoverLabel {
                 hint : "number greater than or equal to 1"
               },
               {
-                id : "hoverLabel[hoverlabel][font][color]",
+                id : "hoverlabel[hoverlabel][font][color]",
                 title : "Hover Label Font Color",
                 type : "color", 
                 value : this.options().hoverlabel.font.color,
@@ -123,7 +123,7 @@ class HoverLabel {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "hoverLabel[hoverlabel][align]",
+                id : "hoverlabel[hoverlabel][align]",
                 title : "Hover label Alignmentr",	
                 type : "select",
                 options : {
@@ -136,7 +136,7 @@ class HoverLabel {
                 hint: "Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines"
               },
               {
-                id : "hoverLabel[hoverlabel][namelength]", 
+                id : "hoverlabel[hoverlabel][namelength]", 
                 title : "Hover Label Length", 
                 type : "number",
                 min : -1,
@@ -155,6 +155,6 @@ class HoverLabel {
 
 }
 
-export default HoverLabel
+export default Hoverlabel
 
 

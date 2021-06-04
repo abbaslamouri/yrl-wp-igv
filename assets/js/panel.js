@@ -11,13 +11,13 @@ const panel = function (panelSections, panelCssClass, prefix) {
   const panelContent = document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .${panelCssClass} .ac-panel`)
   
   // Create new accordion if there are 2=two or more sections
-  if (Object.keys(panelSections).length > 1) {
+  // if (Object.keys(panelSections).length > 1) {
     accordionDiv = document.createElement("div")
     accordionDiv.classList.add("accordion", "accordion__level-3", `${panelCssClass}__Acc`)
 
     // Add accordion to panel
     panelContent.appendChild(accordionDiv)
-  }
+  // }
 
   
   // Loop through accordion panel sections
@@ -31,7 +31,7 @@ const panel = function (panelSections, panelCssClass, prefix) {
     const introText = document.createTextNode(panelSections[prop].intro)
     introDiv.appendChild(introText)
 
-    if (Object.keys(panelSections).length > 1) {
+    // if (Object.keys(panelSections).length > 1) {
       
       // Create accordion panel
       const ac = document.createElement("div")
@@ -65,14 +65,14 @@ const panel = function (panelSections, panelCssClass, prefix) {
       // Add content to ac
       ac.appendChild(acPanel)
 
-    }
+    // }
 
     // Add p tag to content
-    if (Object.keys(panelSections).length > 1) {
-      acPanel.appendChild(introDiv)
-    } else {
+    // if (Object.keys(panelSections).length > 1) {
+      // acPanel.appendChild(introDiv)
+    // } else {
       panelContent.appendChild(introDiv)
-    }
+    // }
 
     
 
@@ -110,10 +110,10 @@ const panel = function (panelSections, panelCssClass, prefix) {
   }
 
   // Load accordion if there more than 2 sections
-  if (Object.keys(panelSections).length > 1) {
-    const accordion2Options = { duration: 400 }
-    new Accordion( `.${prefix}__admin .${panelCssClass}__Acc`, accordion2Options );
-  }
+  // if (Object.keys(panelSections).length > 1) {
+    // const accordion2Options = { duration: 400 }
+    new Accordion( `.${prefix}__admin .${panelCssClass}__Acc`, { duration: 400 } );
+  // }
 
   
 

@@ -1,5 +1,5 @@
 
-class ModeBar {
+class Modebar {
 
   constructor(inputOptions, prefix ) {
 
@@ -40,14 +40,14 @@ class ModeBar {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modeBar[displayModeBar]",
+                id : "modebar[displayModeBar]",
                 title : "Display ModeBar ?",
                 type : "checkbox", 
                 value : this.options().displayModeBar,
                 hint: ""
               },
               {
-                id : "modeBar[displaylogo]",
+                id : "modebar[displaylogo]",
                 title : "Display Plotly Logo ?",
                 type : "checkbox", 
                 value : this.options().displaylogo,
@@ -60,7 +60,7 @@ class ModeBar {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modeBar[modebar][bgcolor]",
+                id : "modebar[modebar][bgcolor]",
                 title : "Background Color",
                 type : "color", 
                 value : this.options().modebar.bgcolor,
@@ -68,7 +68,7 @@ class ModeBar {
                 hint: "Sets the background color of the modebar."
               },
               {
-                id: "modeBar[modebar][orientation]",
+                id: "modebar[modebar][orientation]",
                 title:"Modebar Orientation",
                 type : "select",
                 options : {
@@ -85,7 +85,7 @@ class ModeBar {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modeBar[modebar][color]",
+                id : "modebar[modebar][color]",
                 title : "Icon Color",
                 type : "color", 
                 value : this.options().modebar.color,
@@ -93,7 +93,7 @@ class ModeBar {
                 hint: "Sets the color of the icons in the modebar."
               },
               {
-                id : "modeBar[modebar][activecolor]",
+                id : "modebar[modebar][activecolor]",
                 title : "Active Icon Color",
                 type : "color", 
                 value : this.options().modebar.activecolor,
@@ -108,6 +108,6 @@ class ModeBar {
   }
 }
 
-export default ModeBar
+export default Modebar
 
 

@@ -62,6 +62,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         drawChart( iwpgvCharts, prefix, spreadsheet )
       }
 
+      chart.fileUpload = {}
+
       // Initialize the media uploader
       if (mediaUploader) mediaUploader.open()
         
@@ -114,7 +116,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
 
         // get spreadsheet
         spreadsheet = jsonRes.spreadsheet
-        chart.fileUpload = {}
+        // chart.fileUpload = {}
 
         // Set sheet Id select field options, update sheet Id select field values
         const sheetIdInput = document.getElementsByName( `${prefix}__fileUpload[sheetId]` )[0]
@@ -199,6 +201,9 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   // Create mainaccordion and open first panel
   const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
   mainAccordion.open(0)
+
+  new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
+
 
  }
 

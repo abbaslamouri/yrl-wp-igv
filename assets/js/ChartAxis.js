@@ -8,6 +8,8 @@ class ChartAxis  {
     this.inputOPtions = inputOPtions
     this.axisId = axisId
     this.prefix = prefix
+    this.axisSideOptions = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
+    this.axisSideDefault = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? "bottom" : "left"
 
     switch (chartType) {
       case "LineChart":
@@ -34,7 +36,7 @@ class ChartAxis  {
       range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [] : this.inputOptions.range,
       // range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.inputOptions.range,
       fixedrange : ( this.inputOptions === undefined || this.inputOptions.fixedrange === undefined ) ? true : this.inputOptions.fixedrange,
-      scaleanchor : ( this.inputOptions === undefined || this.inputOptions.scaleanchor === undefined ) ? null : this.inputOptions.scaleanchor,
+      // scaleanchor : ( this.inputOptions === undefined || this.inputOptions.scaleanchor === undefined ) ? null : this.inputOptions.scaleanchor,
       ticks : ( this.inputOptions === undefined || this.inputOptions.ticks === undefined ) ? "outside" : this.inputOptions.ticks,
       tickmode : ( this.inputOptions === undefined || this.inputOptions.tickmode === undefined ) ? "auto" : this.inputOptions.tickmode,
       nticks : ( this.inputOptions === undefined || this.inputOptions.nticks === undefined ) ? null : this.inputOptions.nticks,
@@ -72,8 +74,8 @@ class ChartAxis  {
       zeroline : ( this.inputOptions === undefined || this.inputOptions.zeroline === undefined ) ? true : this.inputOptions.zeroline,
       zerolinecolor : ( this.inputOptions === undefined || this.inputOptions.zerolinecolor === undefined ) ? "#000a12" : this.inputOptions.zerolinecolor,
       zerolinewidth : ( this.inputOptions === undefined || this.inputOptions.zerolinewidth === undefined ) ? 1 : this.inputOptions.zerolinewidth,
-      side : ( this.inputOptions === undefined || this.inputOptions.side === undefined ) ? "bottom" : this.inputOptions.side,
-      anchor : ( this.inputOptions === undefined || this.inputOptions.anchor === undefined ) ? "free": this.inputOptions.anchoe,
+      side : ( this.inputOptions === undefined || this.inputOptions.side === undefined ) ? this.axisSideDefault : this.inputOptions.side,
+      // anchor : ( this.inputOptions === undefined || this.inputOptions.anchor === undefined ) ? "free": this.inputOptions.anchor,
       overlaying : ( this.inputOptions === undefined || this.inputOptions.overlaying === undefined ) ? false : this.inputOptions.overlaying,
       position : ( this.inputOptions === undefined || this.inputOptions.position === undefined ) ? 0 : this.inputOptions.position,
       tickfont: {
@@ -155,10 +157,7 @@ class ChartAxis  {
                 id : `${this.axisId}[side]`, 
                 title : "Side", 
                 type : "select",
-                options : {
-                  bottom: "Bottom",
-                  top: "Top"
-                },
+                options : this.axisSideOptions,
                 value : this.options().side,
                 disabled: ! this.options().visible  ? true : false,
                 hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
@@ -229,17 +228,17 @@ class ChartAxis  {
                 title : "Range",	
                 type : "text",
                 value : this.options().range.join(),
-                disabled: ( ! this.options().visible  || this.options().autorange ) ? true : false,
+                // disabled: ( ! this.options().visible  || this.options().autorange ) ? true : false,
                 hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
               },
-              {
-                id : `${this.axisId}[scaleanchor]`,
-                title : "Scale Anchor",	
-                type : "text",
-                value : this.options().scaleanchor,
-                disabled: ! this.options().visible  ? true : false,
-                hint: "If set to another axis id (e.g. `x2`, `y`), the range of this axis changes together with the range of the corresponding axis such that the scale of pixels per unit is in a constant ratio. Both axes are still zoomable, but when you zoom one, the other will zoom the same amount, keeping a fixed midpoint. `constrain` and `constraintoward` determine how we enforce the constraint. You can chain these, ie `yaxis: {scaleanchor: 'x'}, xaxis2: {scaleanchor: 'y'}` but you can only link axes of the same `type`. The linked axis can have the opposite letter (to constrain the aspect ratio) or the same letter (to match scales across subplots). Loops (`yaxis: {scaleanchor: 'x'}, xaxis: {scaleanchor: 'y'}` or longer) are redundant and the last constraint encountered will be ignored to avoid possible inconsistent constraints via `scaleratio`. Note that setting axes simultaneously in both a `scaleanchor` and a `matches` constraint is currently forbidden."
-              },
+              // {
+              //   id : `${this.axisId}[scaleanchor]`,
+              //   title : "Scale Anchor",	
+              //   type : "text",
+              //   value : this.options().scaleanchor,
+              //   disabled: ! this.options().visible  ? true : false,
+              //   hint: "If set to another axis id (e.g. `x2`, `y`), the range of this axis changes together with the range of the corresponding axis such that the scale of pixels per unit is in a constant ratio. Both axes are still zoomable, but when you zoom one, the other will zoom the same amount, keeping a fixed midpoint. `constrain` and `constraintoward` determine how we enforce the constraint. You can chain these, ie `yaxis: {scaleanchor: 'x'}, xaxis2: {scaleanchor: 'y'}` but you can only link axes of the same `type`. The linked axis can have the opposite letter (to constrain the aspect ratio) or the same letter (to match scales across subplots). Loops (`yaxis: {scaleanchor: 'x'}, xaxis: {scaleanchor: 'y'}` or longer) are redundant and the last constraint encountered will be ignored to avoid possible inconsistent constraints via `scaleratio`. Note that setting axes simultaneously in both a `scaleanchor` and a `matches` constraint is currently forbidden."
+              // },
             ],
           },
           {
@@ -910,13 +909,13 @@ class ChartAxis  {
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
-              // {
-              //   id : `${this.axisId}[overlaying]`, 
-              //   title : "Overlaying", 
-              //   type : "text",
-              //   value : this.options().overlaying,
-              //   hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
-              // },
+              {
+                id : `${this.axisId}[overlaying]`, 
+                title : "Overlaying", 
+                type : "text",
+                value : this.options().overlaying,
+                hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
+              },
             ]
           }
         ]

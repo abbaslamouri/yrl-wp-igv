@@ -14,6 +14,14 @@
   **************************************************/
   .accordion {
 
+    &__level-2 {
+      margin: .5rem 0;
+
+      .ac-trigger {
+        font-size: .8rem !important;
+      }
+    }
+
     .ac {
 
       border: 1px solid $color-p-dark;
@@ -26,8 +34,7 @@
       &-trigger {
        
         color: rgba( $color_p_light,1 );
-        // background-color: rgba( $color-primary,1 );
-        // font-size: 0.8rem;
+        font-size: 0.9rem;
 
         &:focus {
           // color: rgba( $color-s-dark , 1 );
@@ -46,7 +53,7 @@
       &-panel {
 
         background-color: rgba( $color_p_medium, .4) ;
-        padding: 0 0.5rem;
+        padding: 0 .5rem;
     
         .intro {
           font-size:.8rem;
@@ -55,6 +62,10 @@
           line-height: 1.4;
         }
       
+      }
+
+      &-text {
+        margin-top: 2rem !important;
       }
     }
   }
@@ -95,6 +106,10 @@
       border-bottom: 3px solid transparent;
       display:block;
       width:100%;
+
+      &:disabled {
+        // background-color: red;
+      }
 
       &.no-hint {
         grid-column: 1 / 5;

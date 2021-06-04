@@ -42,71 +42,14 @@
           
           <div class="ac fileUploadPanel">
             <h2 class="ac-header"><div class="ac-trigger">File Upload</div></h2>
-            <div class="ac-panel hidden">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-              
-              <div class="field-group">
-                <div class="form-group">
-                  <button type="button" class="form-group__btn btn button" name="<?php echo "{$this->prefix}__fileUpload[mediaUploadBtn]"; ?>" >Upload New File </button>
-                  <label for="" class="form-group__label"></label>
-                </div>
-              </div>
-
-              <div class="field-group">
-                <div class="form-group">
-                  <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[fileName]"; ?>" placeholder="Selected File" readonly>
-                  <label for="" class="form-group__label">Selected File</label>
-                </div>
-              </div>
-              <div class="field-group">
-                <div class="form-group">
-                  <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartId]"; ?>" placeholder="Chart Id"  readonly>
-                  <label for="" class="form-group__label">Chart Id</label>
-                </div>
-              </div>
-
-              <div class="field-group">
-                <div class="form-group">
-                  <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[sheetId]"; ?>" placeholder="Sheet">
-                  </select>
-                  <label for="" class="form-group__label">Sheet</label>
-                </div>
-              </div>
-
-              <div class="field-group">
-                <div class="form-group">
-                  <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartType]"; ?>">
-                    <option value="" selected>Select Chart Type</option>
-                    <option value="LineChart">Line Chart</option>
-                    <option value="ScatterChart">Scatter Chart</option>
-                    <option value="PieChart">Pie Chart</option>
-                    <option value="BarChart">Bar Chart</option>
-                  </select>
-                  <label for="" class="form-group__label">Chart Type</label>
-                  <!-- <div class="form-group__tooltip">
-                    <div class="form-group__tooltip-question-mark">?</div>
-                    <div class="form-group__tooltip-hint">
-                    HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'. 
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </div>
-                  </div> -->
-                </div>
-              </div>
-
-              <div class="field-group">
-                <div class="form-group">
-                  <input type="text" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
-                  <label for="" class="form-group__label">File Id</label>
-                </div>
-              </div>
-
+            <div class="ac-panel">
+              <?php require "{$this->path}templates/file-upload.php"; ?>
             </div>
           </div>
 
           <div class="ac basicOptionsPanel">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
           </div>
 
           <div class="ac titlePanel">
@@ -121,22 +64,21 @@
             </div>
           </div>
 
-          <div class="ac hoverLabelPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Hover Label</div></h2>
+          <div class="ac hoverlabelPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Hoverlabel</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac modeBarPanel">
-            <h2 class="ac-header"><div class="ac-trigger">Mode Bar</div></h2>
+          <div class="ac modebarPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac bottomAxisPanel">
+          <div class="ac xaxisPanel">
             <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"><?php require "{$this->path}templates/xaxis.php"; ?></div>
           </div>
 
           <div class="ac topAxisPanel">

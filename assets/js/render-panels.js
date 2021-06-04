@@ -5,8 +5,8 @@ import panel from "./panel"
 import BasicOptions from "./BasicOptions"
 import Title from "./Title"
 import Legend from "./Legend"
-import HoverLabel from "./HoverLabel"
-import ModeBar from "./ModeBar"
+import Hoverlabel from "./Hoverlabel"
+import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 // import ChartLayout from "./ChartLayout"
 import Trace from "./Trace"
@@ -15,65 +15,69 @@ import { displayAdminMessage } from "./utilities"
 
 const renderPanels = ( chart, spreadsheet, prefix ) => {
 
-  // Render layout basic options panel
-  const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, prefix )
-  chart.basicOptions = basicOptionsInstance.options()
-  panel( basicOptionsInstance.sections(), "basicOptionsPanel", prefix )
+  // // Render layout basic options panel
+  // const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, prefix )
+  // chart.basicOptions = basicOptionsInstance.options()
+  // panel( basicOptionsInstance.sections(), "basicOptionsPanel", prefix )
 
-  // Render layout chart title panel
-  const titleInstance = new Title( ( chart.title !== undefined ) ? chart.title : {}, prefix )
-  chart.title = titleInstance.options()
-  panel( titleInstance.sections(), "titlePanel", prefix )
+  // // Render layout chart title panel
+  // const titleInstance = new Title( ( chart.title !== undefined ) ? chart.title : {}, prefix )
+  // chart.title = titleInstance.options()
+  // panel( titleInstance.sections(), "titlePanel", prefix )
 
-  // Render layout chart legend panel
-  const legendInstance = new Legend( ( chart.legend !== undefined ) ? chart.legend : {}, prefix )
-  chart.legend = legendInstance.options()
-  panel( legendInstance.sections(), "legendPanel", prefix )
+  // // Render layout chart legend panel
+  // const legendInstance = new Legend( ( chart.legend !== undefined ) ? chart.legend : {}, prefix )
+  // chart.legend = legendInstance.options()
+  // panel( legendInstance.sections(), "legendPanel", prefix )
 
-  // Render layout chart hoverlabel panel
-  const hoverLabelInstance = new HoverLabel( ( chart.hoverLabel !== undefined ) ? chart.hoverLabel : {}, prefix )
-  chart.hoverLabel = hoverLabelInstance.options()
-  panel( hoverLabelInstance.sections(), "hoverLabelPanel", prefix )
+  // // Render layout chart hoverlabel panel
+  // const hoverlabelInstance = new Hoverlabel( ( chart.hoverlabel !== undefined ) ? chart.hoverlabel : {}, prefix )
+  // chart.hoverlabel = hoverlabelInstance.options()
+  // panel( hoverlabelInstance.sections(), "hoverlabelPanel", prefix )
 
-  // Render layout chart modebar panel
-  const modeBarInstance = new ModeBar( ( chart.modeBar !== undefined ) ? chart.modeBar : {}, prefix )
-  chart.modeBar = modeBarInstance.options()
-  panel( modeBarInstance.sections(), "modeBarPanel", prefix )
+  // // Render layout chart modebar panel
+  // const modebarInstance = new Modebar( ( chart.modebar !== undefined ) ? chart.modebar : {}, prefix )
+  // chart.modebar = modebarInstance.options()
+  // panel( modebarInstance.sections(), "modebarPanel", prefix )
 
-  // Render layout bottom axis options panel
-  const bottomAxisInstance = new ChartAxis( ( chart.bottomAxis !== undefined ) ? chart.bottomAxis : {}, chart.fileUpload.chartType, "bottomAxis", prefix )
-  chart.bottomAxis = bottomAxisInstance.options()
-  panel( bottomAxisInstance.sections(), "bottomAxisPanel", prefix )
+  // // Render layout bottom axis options panel
+  // const bottomAxisInstance = new ChartAxis( ( chart.bottomAxis !== undefined ) ? chart.bottomAxis : {}, chart.fileUpload.chartType, "bottomAxis", prefix )
+  // chart.bottomAxis = bottomAxisInstance.options()
+  // panel( bottomAxisInstance.sections(), "bottomAxisPanel", prefix )
 
-  // Render layout bottom axis options panel
-  const topAxisInstance = new ChartAxis( ( chart.topAxis !== undefined ) ? chart.topAxis : {}, chart.fileUpload.chartType, "topAxis", prefix )
-  chart.topAxis = topAxisInstance.options()
-  panel( topAxisInstance.sections(), "topAxisPanel", prefix )
+  // // Render layout bottom axis options panel
+  // const topAxisInstance = new ChartAxis( ( chart.topAxis !== undefined ) ? chart.topAxis : {}, chart.fileUpload.chartType, "topAxis", prefix )
+  // chart.topAxis = topAxisInstance.options()
+  // panel( topAxisInstance.sections(), "topAxisPanel", prefix )
 
-  // Render layout bottom axis options panel
-  const leftAxisInstance = new ChartAxis( ( chart.leftAxis !== undefined ) ? chart.leftAxis : {}, chart.fileUpload.chartType, "leftAxis", prefix )
-  chart.leftAxis = leftAxisInstance.options()
-  panel( leftAxisInstance.sections(), "leftAxisPanel", prefix )
+  // // Render layout bottom axis options panel
+  // const leftAxisInstance = new ChartAxis( ( chart.leftAxis !== undefined ) ? chart.leftAxis : {}, chart.fileUpload.chartType, "leftAxis", prefix )
+  // chart.leftAxis = leftAxisInstance.options()
+  // panel( leftAxisInstance.sections(), "leftAxisPanel", prefix )
 
-  // Render layout bottom axis options panel
-  const rightAxisInstance = new ChartAxis( ( chart.rightAxis !== undefined ) ? chart.rightAxis : {}, chart.fileUpload.chartType, "rightAxis", prefix )
-  chart.rightAxis = rightAxisInstance.options()
-  panel( rightAxisInstance.sections(), "rightAxisPanel", prefix )
+  // // Render layout bottom axis options panel
+  // const rightAxisInstance = new ChartAxis( ( chart.rightAxis !== undefined ) ? chart.rightAxis : {}, chart.fileUpload.chartType, "rightAxis", prefix )
+  // chart.rightAxis = rightAxisInstance.options()
+  // panel( rightAxisInstance.sections(), "rightAxisPanel", prefix )
 
-  chart.layout = { ...chart.basicOptions }
-  chart.layout.showlegend = chart.legend.showlegend
-  chart.layout.title = chart.title.title
-  chart.layout.legend = chart.legend.legend
-  chart.layout.xaxis = chart.bottomAxis
-  chart.layout.xaxis2 = chart.topAxis
-  chart.layout.yaxis = chart.leftAxis
-  chart.layout.yaxis2 = chart.rightAxis
-  chart.config = {
-    responsive: chart.basicOptions.responsive,
-    staticPlot: chart.basicOptions.staticPlot,
-    displayModeBar: chart.basicOptions.displayModeBar,
-    displaylogo: chart.basicOptions.displaylogo,
-  }
+  // chart.layout = { ...chart.basicOptions }
+  // chart.layout.showlegend = chart.legend.showlegend
+  // chart.layout.hovermode = chart.hoverlabel.hovermode
+  // chart.layout.title = chart.title.title
+  // chart.layout.legend = chart.legend.legend
+  // chart.layout.hoverlabel = chart.hoverlabel.hoverlabel
+  // chart.layout.modebar = chart.modebar.modebar
+  // chart.layout.xaxis = chart.bottomAxis
+  // chart.layout.xaxis2 = chart.topAxis
+  // chart.layout.yaxis = chart.leftAxis
+  // chart.layout.yaxis2 = chart.rightAxis
+  // chart.config = {
+  //   responsive: chart.basicOptions.responsive,
+  //   staticPlot: chart.basicOptions.staticPlot,
+  //   displayModeBar: chart.modebar.displayModeBar,
+  //   displaylogo: chart.modebar.displaylogo,
+  // }
+  chart.layout = {}
 
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
@@ -94,6 +98,10 @@ if ( spreadsheet ) {
     // Create intro p
     const introDiv = document.createElement("div")
     introDiv.classList.add( "ac-text", "intro" )
+
+    // Create intro text and add to intro div
+    const introText = document.createTextNode("Hello World")
+    introDiv.appendChild(introText)
 
     // Create accordion panel
     const ac = document.createElement( "div" )
@@ -129,6 +137,13 @@ if ( spreadsheet ) {
 
     // Add p tag to content
     acPanel.appendChild(introDiv)
+    
+    chart.traces[index-1] = {
+      x : spreadsheet[chart.fileUpload.sheetId].data[0],
+      y : spreadsheet[chart.fileUpload.sheetId].data[index],
+      name : Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index]
+    }
+
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
     const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, prefix )

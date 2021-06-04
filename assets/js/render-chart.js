@@ -18,7 +18,11 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
   if ( spreadsheet ) {
 
     
-    await Plotly.newPlot(`${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config)
+    await Plotly.newPlot(`${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout)
+
+    document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = chart.layout.xaxis.autorange
+    document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].value = chart.layout.xaxis.range.join()
+
 
     // document.getElementById(`${prefix}__chartLayout[xaxis][range]`).value = chart.chartLayout.options.xaxis.range.join()
     // document.getElementById(`${prefix}__chartLayout[xaxis][autorange]`).value = "false"
