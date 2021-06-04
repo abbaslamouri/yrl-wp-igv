@@ -122,7 +122,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],     
             inputFields : [
               {
-                id : `chartTraces[${this.index-1}][visible]`,  
+                id : `traces[${this.index-1}][visible]`,  
                 title : "Trace Visibility",  
                 type : "select",
                 options : {
@@ -134,7 +134,7 @@ class Trace {
                 hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible)."
               },
               {
-                id : `chartTraces[${this.index-1}][mode]`, 
+                id : `traces[${this.index-1}][mode]`, 
                 title : "Mode", 	
                 type : "select", 
                 options : {
@@ -156,7 +156,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][xaxis]`, 
+                id : `traces[${this.index-1}][xaxis]`, 
                 title : "x-Axis", 	
                 type : "select", 
                 options : {
@@ -168,7 +168,7 @@ class Trace {
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
               {
-                id : `chartTraces[${this.index-1}][yaxis]`, 
+                id : `traces[${this.index-1}][yaxis]`, 
                 title : "Y-Axis", 	
                 type : "select", 
                 options : {
@@ -185,7 +185,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][showlegend]`, 
+                id : `traces[${this.index-1}][showlegend]`, 
                 title : "Show In Legend", 	
                 type : "checkbox",
                 value :  this.options().showlegend,
@@ -193,7 +193,7 @@ class Trace {
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
               {
-                id : `chartTraces[${this.index-1}][name]`,  
+                id : `traces[${this.index-1}][name]`,  
                 title : "Label in Legend",  
                 type : "text",
                 value : this.options().name,
@@ -212,7 +212,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][marker][symbol]`, 
+                id : `traces[${this.index-1}][marker][symbol]`, 
                 title : "Marker Symbol", 	
                 type : "number",
                 min : 1,
@@ -223,7 +223,7 @@ class Trace {
                 hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
               },
               {
-                id : `chartTraces[${this.index-1}][marker][size]`, 
+                id : `traces[${this.index-1}][marker][size]`, 
                 title : "Marker Size", 	
                 type : "number",
                 min : 1,
@@ -239,7 +239,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][marker][opacity]`, 
+                id : `traces[${this.index-1}][marker][opacity]`, 
                 title : "Marker Opacity", 	
                 type : "number",
                 min : 0,
@@ -250,7 +250,7 @@ class Trace {
                 hint : "Sets the marker's opacity."
               },
               {
-                id : `chartTraces[${this.index-1}][marker][color]`,  
+                id : `traces[${this.index-1}][marker][color]`,  
                 title : "Marker Color",  
                 type : "color",
                 value : this.options().marker.color,
@@ -263,7 +263,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][marker][line][color]`, 
+                id : `traces[${this.index-1}][marker][line][color]`, 
                 title : "Marker Line Color", 	
                 type : "color",
                 value :  this.options().marker.line.color,
@@ -271,7 +271,7 @@ class Trace {
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
-                id : `chartTraces[${this.index-1}][marker][line][width]`, 
+                id : `traces[${this.index-1}][marker][line][width]`, 
                 title : "Marker Line Width", 	
                 type : "number",
                 min : 0,
@@ -287,7 +287,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][marker][gradient][type]`, 
+                id : `traces[${this.index-1}][marker][gradient][type]`, 
                 title : "Marker Gradient Type", 	
                 type : "select",
                 options : {
@@ -301,7 +301,7 @@ class Trace {
                 hint : "Sets the type of gradient used to fill the markers"
               },
               {
-                id : `chartTraces[${this.index-1}][marker][gradient][color]`, 
+                id : `traces[${this.index-1}][marker][gradient][color]`, 
                 title : "Marker gradient Color", 	
                 type : "color",
                 value :  this.options().marker.gradient.color,
@@ -314,7 +314,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][marker][maxdisplayed]`, 
+                id : `traces[${this.index-1}][marker][maxdisplayed]`, 
                 title : "Marker Max Displayed", 	
                 type : "number",
                 min : 1,
@@ -325,7 +325,7 @@ class Trace {
                 hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
               },
               {
-                id : `chartTraces[${this.index-1}][opacity]`, 
+                id : `traces[${this.index-1}][opacity]`, 
                 title : "Trace Opacity", 	
                 type : "number",
                 min : 0,
@@ -341,7 +341,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][line][shape]`,  
+                id : `traces[${this.index-1}][line][shape]`,  
                 title : "Line Shape",  
                 type : "select",
                 options : {
@@ -357,7 +357,7 @@ class Trace {
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
               },
               {
-                id : `chartTraces[${this.index-1}][line][width]`, 
+                id : `traces[${this.index-1}][line][width]`, 
                 title : "Line Width", 	
                 type : "number",
                 min : 1,
@@ -373,7 +373,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][line][dash]`, 
+                id : `traces[${this.index-1}][line][dash]`, 
                 title : "Line Type", 	
                 type : "text",
                 value :  this.options().line.dash,
@@ -381,7 +381,7 @@ class Trace {
                 hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
               },
               {
-                id : `chartTraces[${this.index-1}][line][color]`,  
+                id : `traces[${this.index-1}][line][color]`,  
                 title : "Line Color",  
                 type : "color",
                 value : this.options().line.color,
@@ -394,7 +394,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][line][smoothing]`, 
+                id : `traces[${this.index-1}][line][smoothing]`, 
                 title : "line Smoothing", 	
                 type : "number",
                 min : 1,
@@ -405,7 +405,7 @@ class Trace {
                 hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
               }, 
               {
-                id : `chartTraces[${this.index-1}][line][simplify]`, 
+                id : `traces[${this.index-1}][line][simplify]`, 
                 title : "line Simplify", 	
                 type : "checkbox",
                 value :  this.options().line.simplify,
@@ -418,7 +418,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][text]`, 
+                id : `traces[${this.index-1}][text]`, 
                 title : "Text", 	
                 type : "text",
                 value :  Array.isArray( this.options( ).text ) ? this.options().text.join() : this.options().text,
@@ -431,7 +431,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][textposition]`, 
+                id : `traces[${this.index-1}][textposition]`, 
                 title : "Text Position", 	
                 type : "select",
                 options : {
@@ -450,7 +450,7 @@ class Trace {
                 hint : "Sets the positions of the `text` elements with respects to the (x,y) coordinates."
               },
               {
-                id : `chartTraces[${this.index-1}][textfont][family]`,
+                id : `traces[${this.index-1}][textfont][family]`,
                 title : "Text Font",	
                 type : "select",
                 options : fontFamily(),
@@ -464,14 +464,14 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][textfont][color]`,
+                id : `traces[${this.index-1}][textfont][color]`,
                 title : "Text Font Color",
                 type : "color", 
                 value : this.options().textfont.color,
                 disabled: true !== this.options().visible  ? true : false,
               }, 
               {
-                id : `chartTraces[${this.index-1}][textfont][size]`, 
+                id : `traces[${this.index-1}][textfont][size]`, 
                 title : "Text Font Size", 
                 type : "number",
                 min : 1,
@@ -487,7 +487,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][hovertext]`, 
+                id : `traces[${this.index-1}][hovertext]`, 
                 title : "Hover Text", 	
                 type : "text",
                 value :  Array.isArray( this.options().hovertext ) ? this.options().hovertext.join() : this.options().hovertext,
@@ -495,7 +495,7 @@ class Trace {
                 hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
               },
               {
-                id : `chartTraces[${this.index-1}][hoverinfo]`, 
+                id : `traces[${this.index-1}][hoverinfo]`, 
                 title : "Hover Info.", 	
                 type : "select",
                 options : {
@@ -518,7 +518,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][align]`, 
+                id : `traces[${this.index-1}][hoverlabel][align]`, 
                 title : "Hover Label Alignment", 
                 type : "select",
                 options : {
@@ -531,7 +531,7 @@ class Trace {
                 hint : "Type: enumerated or array of enumerateds , one of ( 'left' | 'right' | 'auto' ).  Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines.  Default: 'auto'"
               },
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][namelength]`, 
+                id : `traces[${this.index-1}][hoverlabel][namelength]`, 
                 title : "Hover Label Name Length", 
                 type : "number",
                 min : -1,
@@ -547,7 +547,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][font][family]`,
+                id : `traces[${this.index-1}][hoverlabel][font][family]`,
                 title : "Hover Label Font",	
                 type : "select",
                 options : fontFamily(),
@@ -556,7 +556,7 @@ class Trace {
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][font][size]`, 
+                id : `traces[${this.index-1}][hoverlabel][font][size]`, 
                 title : "Hover Label Font Size", 
                 type : "number",
                 min : 1,
@@ -572,14 +572,14 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][font][color]`,
+                id : `traces[${this.index-1}][hoverlabel][font][color]`,
                 title : "Hover Label Font Color",
                 type : "color", 
                 value : this.options().hoverlabel.font.color,
                 disabled: true !== this.options().visible  ? true : false,
               },
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][bgcolor]`,
+                id : `traces[${this.index-1}][hoverlabel][bgcolor]`,
                 title : "Hover label Bg. Color",
                 type : "color", 
                 value : this.options().hoverlabel.bgcolor,
@@ -592,7 +592,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][hoverlabel][bordercolor]`,
+                id : `traces[${this.index-1}][hoverlabel][bordercolor]`,
                 title : "Hover label Border Color",
                 type : "color", 
                 value : this.options().hoverlabel.bordercolor,
@@ -605,7 +605,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][error_y][visible]`,
+                id : `traces[${this.index-1}][error_y][visible]`,
                 title : "Show Error",	
                 type : "checkbox",
                 value : this.options().error_y.visible,
@@ -613,7 +613,7 @@ class Trace {
                 hint: "Determines whether or not this set of error bars is visible."
               },
               {
-                id : `chartTraces[${this.index-1}][error_y][type]`, 
+                id : `traces[${this.index-1}][error_y][type]`, 
                 title : "Error Type", 
                 type : "select",
                 options : {
@@ -632,7 +632,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][error_y][value]`,
+                id : `traces[${this.index-1}][error_y][value]`,
                 title : "Value",
                 type : "number", 
                 value : this.options().error_y.value,
@@ -640,7 +640,7 @@ class Trace {
                 hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars."
               },
               {
-                id : `chartTraces[${this.index-1}][error_y][valueminus]`,
+                id : `traces[${this.index-1}][error_y][valueminus]`,
                 title : "Value Minus",
                 type : "number", 
                 value : this.options().error_y.valueminus,
@@ -653,7 +653,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][error_y][array]`,
+                id : `traces[${this.index-1}][error_y][array]`,
                 title : "Error Array",	
                 type : "text",
                 value : this.options().error_y.array.join(),
@@ -661,7 +661,7 @@ class Trace {
                 hint: "Sets the data corresponding the length of each error bar. Values are plotted relative to the underlying data. Determines whether or not this set of error bars is array."
               },
               {
-                id : `chartTraces[${this.index-1}][error_y][arrayminus]`, 
+                id : `traces[${this.index-1}][error_y][arrayminus]`, 
                 title : "Error Array Minus", 
                 type : "text",
                 value : this.options().error_y.arrayminus.join(),
@@ -674,7 +674,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][error_y][color]`,
+                id : `traces[${this.index-1}][error_y][color]`,
                 title : "Error Bar Color",
                 type : "color", 
                 value : this.options().error_y.color,
@@ -682,7 +682,7 @@ class Trace {
                 hint: "Sets the stoke color of the error bars."
               },
               {
-                id : `chartTraces[${this.index-1}][error_y][symmetric]`,
+                id : `traces[${this.index-1}][error_y][symmetric]`,
                 title : "Symmetric ?",
                 type : "checkbox", 
                 value : this.options().error_y.symmetric,
@@ -695,7 +695,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][error_y][width]`, 
+                id : `traces[${this.index-1}][error_y][width]`, 
                 title : "Error Bar Width", 
                 type : "number",
                 min : 1,
@@ -706,7 +706,7 @@ class Trace {
                 hint : "Sets the width (in px) of the cross-bar at both ends of the error bars."
               },
               {
-                id : `chartTraces[${this.index-1}][error_y][thickness]`, 
+                id : `traces[${this.index-1}][error_y][thickness]`, 
                 title : "Error Bar Line Thickness", 
                 type : "number",
                 min : 1,
@@ -722,7 +722,7 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `chartTraces[${this.index-1}][connectgaps]`, 
+                id : `traces[${this.index-1}][connectgaps]`, 
                 title : "Connect Gaps", 
                 type : "checkbox",
                 value : this.options().connectgaps,
