@@ -575,9 +575,174 @@ const hidePanels = ( ) => {
 // }
 
 
+const createAccordionPanel = ( acCssClass, targetTitle, intro ) => {
+
+   // Create accordion panel
+   const ac = document.createElement( "div" )
+   ac.classList.add( "ac", acCssClass )
+
+   // Create intro p
+   const introDiv = document.createElement( "div" )
+   introDiv.classList.add( "ac-text", "intro" )
+
+   // Create intro text and add to intro div
+   const introText = document.createTextNode(intro)
+   introDiv.appendChild(introText)
+
+   // Create ac header
+   const acHeader = document.createElement( "h2" )
+   acHeader.classList.add( "ac-header" )
+
+   // Create trigger button
+   const acTrigger = document.createElement( "div" )
+   acTrigger.classList.add( "ac-trigger" )
+
+   // Create heading title and add to trigger button
+   const headingTitle = document.createTextNode( targetTitle )
+   acTrigger.appendChild( headingTitle )
+
+   // Add trigger button to header
+   acHeader.appendChild( acTrigger )
+
+   // Add header to ac
+   ac.appendChild( acHeader )
+
+   // Create accordion content
+   const acPanel = document.createElement( "div" )
+   acPanel.classList.add( "ac-panel" )
+
+  // Add p tag to content
+  acPanel.appendChild(introDiv)
+
+   // Add content to ac
+   ac.appendChild(acPanel)
+
+   return ac
+
+}
+
+
+
+
+const fetchformGroup = (field, prefix) => {
+
+  // const field = row.inputFields[el]
+  // console.log("FIELD", field)
+
+
+  // Create form group
+  const formGroup = document.createElement( "div" )
+  formGroup.classList.add("form-group");
+
+  // Create input/select field and add css class
+  let inputField = field.type === "select" ? document.createElement("select"): document.createElement("input")
+  inputField.classList.add("form-group__input")
+
+  // Add field type or options depending on whether input field is select or otherwise
+  if (field.type === "select") {
+
+    inputField.classList.add("form-group__input-select")
+    // Remove all options
+    inputField.options.length = 0
+
+    // Add options
+    for (const prop in field.options) {
+      inputField.options[inputField.options.length] = new Option(
+        field.options[prop],
+        prop,
+        false,
+        false
+      );
+    }
+  } else {
+    inputField.type = field.type
+    if (field.type === "checkbox") inputField.classList.add("form-group__input-checkbox")
+    if (field.type === "color") inputField.classList.add("form-group__input-color")
+  }
+
+  // Set field id, name, classlist and value attributes
+  inputField.id = `${prefix}__${field.id}`
+  inputField.name = `${prefix}__${field.id}`
+  if (field.type === "checkbox") {
+    if (field.value) inputField.checked = true
+  } else {
+    inputField.value = field.value
+  }
+  if (field.cssClasses) {
+    for (const cssClass in field.cssClasses) {
+      inputField.classList.add(field.cssClasses[cssClass])
+    }
+  }
+
+  // add min, number input max, max, step AND PLAVE HOLDERif any
+  if (field.min) inputField.min = field.min
+  if (field.max) inputField.max = field.max
+  if (field.step) inputField.step = field.step
+  if (field.title) inputField.placeholder = field.title
+  if ( field.readOnly ) inputField.readOnly = true
+  if ( field.disabled ) inputField.disabled = true
+  if ( field.required ) inputField.required = true
+
+  // Add form group box to form group
+  formGroup.appendChild(inputField)
+
+    // Create label
+    if (field.type !== "hidden") {
+    const labelElem = document.createElement( "label" )
+    labelElem.classList.add("form-group__label");
+    labelElem.htmlFor = `${prefix}__${field.id}`
+    const labelText = field.title
+      ? document.createTextNode( field.title )
+      : document.createTextNode( "\u00A0" );
+    labelElem.appendChild( labelText );
+    formGroup.appendChild( labelElem );
+  }
+
+  // Add hint to form group
+  if (field.hint) {
+
+    // Create tooltip div
+    const tooltip = document.createElement("div")
+    tooltip.classList.add("form-group__tooltip")
+
+    if (field.type === "checkbox") tooltip.classList.add("form-group__tooltip-ttCheckbox")
+    if (field.type === "color") tooltip.classList.add("form-group__tooltip-ttColor")
+
+
+    // Create tooltip question mark span and add to tooltip div
+    const tooltipQuestionMarkDiv = document.createElement("div")
+    tooltipQuestionMarkDiv.classList.add("form-group__tooltip-question-mark")
+    const tooltipQuestionMark = document.createTextNode("?")
+    tooltipQuestionMarkDiv.appendChild(tooltipQuestionMark)
+    tooltip.appendChild(tooltipQuestionMarkDiv)
+
+    // Create tooltip hint and ad to tooltip
+    const tooltipHintDiv = document.createElement("div")
+    tooltipHintDiv.classList.add("form-group__tooltip-hint")
+    const hintText = document.createTextNode(field.hint)
+    tooltipHintDiv.appendChild(hintText)
+    tooltip.appendChild(tooltipHintDiv)
+
+    // Add tooltip to form group
+    formGroup.appendChild(tooltip)
+
+  } 
+
+  // hide for group if input field has a hidden class
+  if (field.cssClasses && field.cssClasses.includes("hidden")) {
+    formGroup.classList.add("hidden")
+  }
+
+  return formGroup
+  
+}
+
+
+
+
 
 // Show sheet select field
-const setSheetIdOptions = function (spreadsheet, sheetIdInput) {
+const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
   // Remove all options
   sheetIdInput.options.length = 0
@@ -677,6 +842,7 @@ module.exports = {
   showInputField,
   hideInputField,
   toggleInputField,
+  createAccordionPanel,
   setSheetIdOptions,
   showPanels,
   hidePanels,
@@ -684,4 +850,5 @@ module.exports = {
   fetchMinMaxAvgTableChartData,
   getMinMaxAvgData,
   chartOptionKey,
+  fetchformGroup
 };

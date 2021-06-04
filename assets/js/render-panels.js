@@ -1,7 +1,7 @@
 // import Accordion from "./Accordion"
 import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
-import panel from "./panel"
+import panel from "./field-groups"
 import BasicOptions from "./BasicOptions"
 import Title from "./Title"
 import Legend from "./Legend"
@@ -11,7 +11,7 @@ import ChartAxis from "./ChartAxis"
 // import ChartLayout from "./ChartLayout"
 import Trace from "./Trace"
 import TableChart from "./TableChart"
-import { displayAdminMessage } from "./utilities"
+import { displayAdminMessage, createAccordionPanel, fetchformGroup } from "./utilities"
 
 const renderPanels = ( chart, spreadsheet, prefix ) => {
 
@@ -83,60 +83,16 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
 if ( spreadsheet ) {
 
   // Get chart traces panel content div
-  const chartTracesContentPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel` )
-
-  // Create new accordion and add accordion to panel
-  const accordionDiv = document.createElement( "div" )
-  accordionDiv.classList.add( "accordion","accordion__level-2", "traces__Acc" )
-
-  chartTracesContentPanel.appendChild(accordionDiv)
+  const tracesAccordion = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc` )
 
   chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1
   while ( index < spreadsheet[chart.fileUpload.sheetId].labels.length ) {  
-    
-    // Create intro p
-    const introDiv = document.createElement("div")
-    introDiv.classList.add( "ac-text", "intro" )
 
-    // Create intro text and add to intro div
-    const introText = document.createTextNode("Hello World")
-    introDiv.appendChild(introText)
+    // Add trace panel to accordion
+    tracesAccordion.appendChild( createAccordionPanel(  `traces${index-1}Panel`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
 
-    // Create accordion panel
-    const ac = document.createElement( "div" )
-    ac.classList.add( "ac", `traces_${index-1}_Panel` )
 
-    // Create ac header
-    const acHeader = document.createElement( "h2" )
-    acHeader.classList.add( "ac-header" )
-
-    // Create trigger button
-    const acTrigger = document.createElement( "div" )
-    acTrigger.classList.add( "ac-trigger" )
-
-    // Create heading title and add to trigger button
-    const headingTitle = document.createTextNode( Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index] )
-    acTrigger.appendChild( headingTitle )
-
-    // Add trigger button to header
-    acHeader.appendChild( acTrigger )
-
-    // Add header to ac
-    ac.appendChild( acHeader )
-
-    // Add ac to accordion
-    accordionDiv.appendChild( ac )
-
-    // Create accordion content
-    const acPanel = document.createElement( "div" )
-    acPanel.classList.add( "ac-panel" )
-
-    // Add content to ac
-    ac.appendChild(acPanel)
-
-    // Add p tag to content
-    acPanel.appendChild(introDiv)
     
     chart.traces[index-1] = {
       x : spreadsheet[chart.fileUpload.sheetId].data[0],
@@ -144,12 +100,60 @@ if ( spreadsheet ) {
       name : Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index]
     }
 
-
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
     const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, prefix )
     chart.traces[index-1] = chartTraceInstance.options()
     // chart.traces.sections[index-1] = chartTraceInstance.sections()
-    panel(chartTraceInstance.sections(), `traces_${index-1}_Panel`, prefix)
+    // panel(chartTraceInstance.sections(), `traces_${index-1}_Panel`, prefix)
+
+    // Create trace sections acordion div
+    const traceSectionsAccordionDiv = document.createElement("div")
+    traceSectionsAccordionDiv.classList.add("accordion", "accordion__level-3", `traces${index-1}__Acc`)
+
+    // Get chart traces panel content div
+    // const traceSectionsPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel` )
+
+    const sections = chartTraceInstance.sections()
+    for ( const section in sections ) {
+      console.log("PROP",section, sections)
+      // Add trace panel to accordion
+      // traceSectionsPanel.appendChild( createAccordionPanel(  ["accordion", "accordion__level-2", `traces${index-1}${section}__Acc`], sections[section].title, sections[section].intro ) )
+
+      // for (const fieldRow in sections[section].fieldGroups) {
+      
+      //   const row = sections[section].fieldGroups[fieldRow];
+  
+      //   //Create field group and add apprpriate css classes
+      //   const fieldGroup = document.createElement( "div" )
+      //   if (row.cssClasses) {
+      //     for (const cssClass in row.cssClasses) {
+      //       fieldGroup.classList.add(row.cssClasses[cssClass])
+      //     }
+      //   }
+        
+      //   // Loop through fields
+      //   for (const el in row.inputFields) {
+  
+      //     const formGroup = fetchformGroup( row.inputFields[el], prefix )
+          
+      //     fieldGroup.appendChild( formGroup )
+  
+      //     // Add field group to content
+      //     // if (Object.keys(panelSections).length > 1) {
+      //       // acPanel.appendChild( fieldGroup )
+      //     // } else {
+      //       // panelContent.appendChild( fieldGroup )
+      //     // }
+  
+      //   }
+  
+      // }
+
+
+    }
+
+
+
     index++
   }
 

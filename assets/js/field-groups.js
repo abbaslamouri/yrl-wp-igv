@@ -97,11 +97,11 @@ const panel = function (panelSections, panelCssClass, prefix) {
         fieldGroup.appendChild( formGroup )
 
         // Add field group to content
-        if (Object.keys(panelSections).length > 1) {
+        // if (Object.keys(panelSections).length > 1) {
           acPanel.appendChild( fieldGroup )
-        } else {
+        // } else {
           panelContent.appendChild( fieldGroup )
-        }
+        // }
 
       }
 

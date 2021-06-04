@@ -22,6 +22,14 @@
       }
     }
 
+    &__level-3 {
+      margin: .5rem 0;
+
+      .ac-trigger {
+        font-size: .7rem !important;
+      }
+    }
+
     .ac {
 
       border: 1px solid $color-p-dark;

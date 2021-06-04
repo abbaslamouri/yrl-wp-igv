@@ -102,6 +102,8 @@
           <div class="ac tracesPanel">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <div class="accordion accordion__level-2 traces__Acc"></div>
             </div>
           </div>
 
