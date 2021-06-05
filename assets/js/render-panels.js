@@ -77,7 +77,7 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   //   displayModeBar: chart.modebar.displayModeBar,
   //   displaylogo: chart.modebar.displaylogo,
   // }
-  chart.layout = {}
+  // chart.layout = {}
 
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
@@ -85,7 +85,7 @@ if ( spreadsheet ) {
   // Get chart traces panel content div
   const tracesAccordion = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc` )
 
-  chart.traces = ( chart.traces !== undefined )? chart.traces : {}
+  // chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1
   while ( index < spreadsheet[chart.fileUpload.sheetId].labels.length ) {  
 
@@ -97,62 +97,70 @@ if ( spreadsheet ) {
     chart.traces[index-1] = {
       x : spreadsheet[chart.fileUpload.sheetId].data[0],
       y : spreadsheet[chart.fileUpload.sheetId].data[index],
-      name : Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index]
+      name : Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
+      visible : true,
     }
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
-    const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, prefix )
-    chart.traces[index-1] = chartTraceInstance.options()
+    const chartTraceInstance =  new Trace( chart.traces[index-1], index )
+    // chart.traces[index-1] = chartTraceInstance.options()
     // chart.traces.sections[index-1] = chartTraceInstance.sections()
     // panel(chartTraceInstance.sections(), `traces_${index-1}_Panel`, prefix)
 
     // Create trace sections acordion div
     const traceSectionsAccordionDiv = document.createElement("div")
-    traceSectionsAccordionDiv.classList.add("accordion", "accordion__level-3", `traces${index-1}__Acc`)
+    traceSectionsAccordionDiv.classList.add("accordion", "accordion__level-3", `trace${index-1}__Acc`)
 
+    // Get chart traces panel content div
+    const traceAccordion = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel` )
+
+    traceAccordion.appendChild( traceSectionsAccordionDiv )
     // Get chart traces panel content div
     // const traceSectionsPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel` )
 
     const sections = chartTraceInstance.sections()
     for ( const section in sections ) {
-      console.log("PROP",section, sections)
+      // console.log("PROP",section, sections)
       // Add trace panel to accordion
-      // traceSectionsPanel.appendChild( createAccordionPanel(  ["accordion", "accordion__level-2", `traces${index-1}${section}__Acc`], sections[section].title, sections[section].intro ) )
-
-      // for (const fieldRow in sections[section].fieldGroups) {
+      traceSectionsAccordionDiv.appendChild( createAccordionPanel(  `traces${index-1}${section}Panel`, sections[section].title, sections[section].intro ) )
       
-      //   const row = sections[section].fieldGroups[fieldRow];
+      const acPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel .traces${index-1}${section}Panel .ac-panel` )
+
+      for (const fieldRow in sections[section].fieldGroups) {
+      
+        const row = sections[section].fieldGroups[fieldRow];
   
-      //   //Create field group and add apprpriate css classes
-      //   const fieldGroup = document.createElement( "div" )
-      //   if (row.cssClasses) {
-      //     for (const cssClass in row.cssClasses) {
-      //       fieldGroup.classList.add(row.cssClasses[cssClass])
-      //     }
-      //   }
+        //Create field group and add apprpriate css classes
+        const fieldGroup = document.createElement( "div" )
+        if (row.cssClasses) {
+          for (const cssClass in row.cssClasses) {
+            fieldGroup.classList.add(row.cssClasses[cssClass])
+          }
+        }
         
-      //   // Loop through fields
-      //   for (const el in row.inputFields) {
+        // Loop through fields
+        for (const el in row.inputFields) {
   
-      //     const formGroup = fetchformGroup( row.inputFields[el], prefix )
+          const formGroup = fetchformGroup( row.inputFields[el], prefix )
           
-      //     fieldGroup.appendChild( formGroup )
+          fieldGroup.appendChild( formGroup )
+          // console.log(fieldGroup)
   
-      //     // Add field group to content
-      //     // if (Object.keys(panelSections).length > 1) {
-      //       // acPanel.appendChild( fieldGroup )
-      //     // } else {
-      //       // panelContent.appendChild( fieldGroup )
-      //     // }
+          // Add field group to content
+          // if (Object.keys(panelSections).length > 1) {
+            acPanel.appendChild( fieldGroup )
+          // } else {
+            // panelContent.appendChild( fieldGroup )
+          // }
   
-      //   }
+        }
   
-      // }
+      }
 
 
     }
 
-
+    new Accordion( `.${prefix}__admin .trace${index-1}__Acc`, { duration: 400 } )
 
     index++
   }

@@ -23,6 +23,25 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
 
+  chart.fileUpload = ( chart.fileUpload.length )? chart.fileUpload : {}
+  // chart.config = ( chart.config.length )? chart.config : {}
+  chart.traces = ( chart.traces.length )? chart.traces : {}
+  
+  // chart.layout.xaxis2 = {
+  //   visible: true,
+  //   overlaying: "x",
+  //   side: "top",
+  // }
+
+  // chart.layout.yaxis2 = {
+  //   visible: true,
+  //   overlaying: "y",
+  //   side: "right",
+  // }
+
+  console.log(chart)
+
+
 
   try {
 
@@ -47,11 +66,12 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // spreadsheet = iwpgvCharts.spreadsheet
         
         // Set sheetId select field value and options 
-        if ( spreadsheet) {
-          setSheetIdOptions(spreadsheet, document.getElementById(`${prefix}__fileUpload[sheetId]`))
-          document.getElementById(`${prefix}__fileUpload[sheetId]`).value = chart.fileUpload.options.sheetId
+        if ( ! spreadsheet) throw new Error( `Spreadsheet for chart (ID: ${chart.fileUpload.chartId}) (File: ${chart.fileUpload.fileName}) is missing` )
+          
+        setSheetIdOptions(spreadsheet, document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0])
+        document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0].value = chart.fileUpload.sheetId
           // showInputField( `${prefix}__fileUpload[sheetId]` )
-        }
+        
 
         // Show remaining chart params fields
         // if ( chart.fileUpload && chart.fileUpload.chartId ) showInputField( `${prefix}__fileUpload[chartId]` )
@@ -62,7 +82,6 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         drawChart( iwpgvCharts, prefix, spreadsheet )
       }
 
-      chart.fileUpload = {}
 
       // Initialize the media uploader
       if (mediaUploader) mediaUploader.open()
@@ -79,8 +98,8 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       mediaUploader.on("select", async function () {
 
         // toggleElementByClass( `.${prefix}__admin .spinner` )
-        // toggleElementByClass( `.${prefix}__admin .warning` )
-        // toggleElementByClass( `.${prefix}__admin .loading` )
+        document.querySelector( `.${prefix}__admin .warning` ).classList.add("hidden")
+        document.querySelector( `.${prefix}__admin .loading` ).classList.remove("hidden")
 
         // Hide all but chart params panels
         // hidePanels()
@@ -126,6 +145,10 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Set chart type value
         document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].value = ""
 
+        // toggleElementByClass( `.${prefix}__admin .spinner` )
+        document.querySelector( `.${prefix}__admin .warning` ).classList.remove("hidden")
+        document.querySelector( `.${prefix}__admin .loading` ).classList.add("hidden")
+
         // // Set sheetId select field options and show it
         // showInputField( `${prefix}__fileUpload[sheetId]` )
 
@@ -150,7 +173,7 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
       // Add click event listener to the Save Chart button
       document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
         event.preventDefault()
-        saveChart(iwpgvCharts.chart, iwpgvObj)
+        saveChart(chart, iwpgvObj)
         return false
       })
 
@@ -182,6 +205,9 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
         // Render input fields and set chart options
         drawChart( chart, spreadsheet, prefix )
 
+        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
+        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
+
         // Close all accordion panels
         mainAccordion.closeAll()
 
@@ -195,15 +221,14 @@ if (  typeof yrl_wp_igv_charts !== "undefined" ) {
     console.log("CAUGHT ERROR", error)
 
   }
-  
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
 
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
+  
   // Create mainaccordion and open first panel
   const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
   mainAccordion.open(0)
 
   new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
-
 
  }
 

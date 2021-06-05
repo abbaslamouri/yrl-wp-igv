@@ -9,7 +9,7 @@ const saveChart = async function (chart, iwpgvObj) {
   try {
 
     // Bail if there are no chart traces, a file or a sheet id
-    if (! Object.values(chart.chartTraces.options).length || ! chart.chartParams.options.fileUpload || ! chart.chartParams.options.sheetId ) {
+    if (! Object.values(chart.traces).length || ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId ) {
       throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
     }
 
@@ -34,8 +34,8 @@ const saveChart = async function (chart, iwpgvObj) {
     if (jsonRes.status && jsonRes.status === "error ") throw new Error(  jsonRes.message )
 
     // Update chart Id field
-    document.getElementById(`${iwpgvObj.prefix}__chartParams[chartId]`).value = jsonRes.chartId
-    toggleInputField(`${iwpgvObj.prefix}__chartParams[chartId]`)
+    document.getElementsByName(`${iwpgvObj.prefix}__fileUpload[chartId]`)[0].value = jsonRes.chartId
+    // toggleInputField(`${iwpgvObj.prefix}__fileUpload[chartId]`)
 
     // Success handler
     if (jsonRes.status && ( jsonRes.status === "success" || jsonRes.status === "unchanged" ) ) displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
