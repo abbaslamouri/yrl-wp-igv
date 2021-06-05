@@ -80,9 +80,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           switch(key) {
 
             case "xaxis.autorange":
-              value = "false" === value ? false : "true" === value ? true : value
-              if ( true === value ){
+              if ( value ){
                 chart.layout.xaxis.range = []
+                document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].value = ""
               }
               break
 
@@ -108,6 +108,12 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
       }
 
     }
+
+    // xaxis
+    document.getElementsByName(`${prefix}__layout[xaxis][type]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+    document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
+    document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+
 
     return false
 

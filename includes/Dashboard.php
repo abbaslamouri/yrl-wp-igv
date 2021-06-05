@@ -114,7 +114,7 @@ if (!class_exists('Dashboard')) {
           "plot_bgcolor" => "#ffffff",
           "xaxis" => [
             "visible" => true,
-            "autorange" => false,
+            "autorange" => true,
             "title" => [
               "text" => 'Wavelength ( &#181;m )'
             ],
