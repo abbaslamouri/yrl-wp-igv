@@ -1,7 +1,9 @@
 import Plotly from 'plotly.js-dist'
+import Accordion from 'accordion-js'
+import 'accordion-js/dist/accordion.min.css'
 import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
-import { setSheetIdOptions, showInputField, showElementById, hideElementById, getMinMaxAvgData, fetchMinMaxAvgTableChartData, chartOptionKey } from "./utilities"
+import { chartOptionKey } from "./utilities"
 
 const drawChart = async( chart, spreadsheet, prefix ) => {
 
@@ -25,12 +27,39 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // Render panels
   renderPanels( chart, spreadsheet, prefix )
 
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
+
+  // Create mainaccordion and open first panel
+  const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
+  // mainAccordion.open(0)
+
+  new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
+  new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
+  new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
+  new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
+
+  // Close all accordion panels
+  mainAccordion.closeAll()
+
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById( `${prefix}__saveChart` ).disabled = false
   document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
   
   // Render chart
   await renderChart( chart, spreadsheet, prefix )
+
+  document.querySelector( `.${prefix}__admin .loading` ).classList.add("hidden")
+
 
   
 

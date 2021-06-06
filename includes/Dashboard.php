@@ -623,9 +623,12 @@ if (!class_exists('Dashboard')) {
 								throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
 							}
 
-						}
+						} else {
+              
+              $chart = $this->default_chart();
 
-						$chart = $this->default_chart();
+            }
+
 
 
           // Set response
@@ -724,7 +727,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      wp_send_json($_POST);
+      // wp_send_json($_POST);
 
 			try {
 				
@@ -785,6 +788,8 @@ if (!class_exists('Dashboard')) {
 					$charts[$chart_id]["layout"]["xaxis"]["range"] = $xaxis_range_arr;
 				}
 
+
+
 				// if ( ! $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) {
 				// 	$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = [];
 				// } else {
@@ -841,6 +846,17 @@ if (!class_exists('Dashboard')) {
 
 
         // add undefined checkbox values
+        $charts[$chart_id]["layout"]["xaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["visible"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["xaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["xaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["visible"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["yaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["visible"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["yaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["yaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["visible"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["config"]["displayModeBar"] = isset( $_POST["{$this->prefix}__config"]["displayModeBar"] ) ?  true : false;
+        $charts[$chart_id]["config"]["displaylogo"] = isset( $_POST["{$this->prefix}__config"]["displaylogo"] ) ?  true : false;
+
 				// $layout = $_POST["{$this->prefix}__layout"];
 				// $charts[$chart_id]["layout"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
         // $charts[$chart_id]["layout"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;

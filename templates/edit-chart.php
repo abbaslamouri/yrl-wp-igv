@@ -3,7 +3,7 @@
   $layout = $payload["chart"]["layout"];
   $__layout = "{$this->prefix}__layout";
 
-  $config = $payload["chart"]["config"];
+  $config = isset( $payload["chart"]["config"] ) ? $payload["chart"]["config"] : [];
   $__config = "{$this->prefix}__config";
   // print_r($payload)
 

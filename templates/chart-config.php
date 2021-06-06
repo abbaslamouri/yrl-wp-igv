@@ -4,7 +4,7 @@
 <div class="field-group fifty-fifty">
   <div class="form-group">
     <?php $value = ( isset( $config ) && isset( $config["displayModeBar"] ) ) ? $config["displayModeBar"] : "#ffffff"; ?>
-    <input type="checkbox" class="form-group__input form-group__input-checkbox config" id="<?php echo "{$__config}[displayModeBar]"; ?>" name="<?php echo "{$__config}[displayModeBar]"; ?>" <?php checked( $value, true, true ); ?> >
+    <input type="checkbox" class="form-group__input form-group__input-checkbox config" id="<?php echo "{$__config}[displayModeBar]"; ?>" name="<?php echo "{$__config}[displayModeBar]"; ?>" <?php echo $value ? "checked" : ""; ?> >
     <label for="<?php echo "{$__config}[displayModeBar]"; ?>" class="form-group__label">Display Mode Bar</label>
     <div class="form-group__tooltip form-group__tooltip-ttCheckbox">
       <div class="form-group__tooltip-question-mark">?</div>
@@ -15,7 +15,7 @@
   </div>
   <div class="form-group">
   <?php $value = ( isset( $config ) && isset( $config["displaylogo"] ) ) ? $config["displaylogo"] : "#ffffff"; ?>
-    <input type="checkbox" class="form-group__input form-group__input-checkbox config" id="<?php echo "{$__config}[displaylogo]"; ?>" name="<?php echo "{$__config}[displaylogo]"; ?>" <?php checked( $value, true, true ); ?> >
+    <input type="checkbox" class="form-group__input form-group__input-checkbox config" id="<?php echo "{$__config}[displaylogo]"; ?>" name="<?php echo "{$__config}[displaylogo]"; ?>" <?php echo $value ? "checked" : ""; ?> >
     <label for="<?php echo "{$__config}[displaylogo]"; ?>" class="form-group__label">Display Logo</label>
     <div class="form-group__tooltip form-group__tooltip-ttCheckbox">
       <div class="form-group__tooltip-question-mark">?</div>

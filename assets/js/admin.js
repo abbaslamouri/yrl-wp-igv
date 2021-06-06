@@ -1,15 +1,15 @@
 import Plotly from 'plotly.js-dist'
 import selectFile from './select-file'
 import saveChart from './save-chart'
-import Accordion from 'accordion-js'
-import 'accordion-js/dist/accordion.min.css'
+// import Accordion from 'accordion-js'
+// import 'accordion-js/dist/accordion.min.css'
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import { displayAdminMessage, setSheetIdOptions,  } from "./utilities"
 import "../sass/admin.scss"
 
-// console.log("iwpgvObj", {...yrl_wp_igv_obj})
-// console.log("iwpgvCharts", {...yrl_wp_igv_charts})
+console.log("iwpgvObj", {...yrl_wp_igv_obj})
+console.log("iwpgvCharts", {...yrl_wp_igv_charts})
 
 if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
@@ -43,22 +43,27 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
     // Add new chart or edit an existing chart
     if ( iwpgvCharts.action === "editChart" ) {
 
-      chart.fileUpload = chart.fileUpload.length ? chart.fileUpload : {}
-      chart.traces = chart.traces.length ? chart.traces : {}
-
-      console.log(chart)
+      chart.fileUpload = {...chart.fileUpload}
+      chart.traces = {...chart.traces}
     
       if ( chart.fileUpload.chartId) {
         
         // Set sheetId select field value and options 
         if ( ! spreadsheet) throw new Error( `Spreadsheet for chart (ID: ${chart.fileUpload.chartId}) (File: ${chart.fileUpload.fileName}) is missing` )
           
+        // Set fileupload input parameters
+        document.getElementsByName(`${prefix}__fileUpload[fileName]`)[0].value = chart.fileUpload.fileName
+        document.getElementsByName(`${prefix}__fileUpload[chartId]`)[0].value = chart.fileUpload.chartId
         setSheetIdOptions(spreadsheet, document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0])
         document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0].value = chart.fileUpload.sheetId
+        document.getElementsByName(`${prefix}__fileUpload[chartType]`)[0].value = chart.fileUpload.chartType
+        document.getElementsByName(`${prefix}__fileUpload[fileId]`)[0].value = chart.fileUpload.fileId
 
-        
+        document.querySelector( `.${prefix}__admin .warning` ).classList.add("hidden")
+
+
         // Draw chart
-        drawChart( iwpgvCharts, prefix, spreadsheet )
+        drawChart( chart, spreadsheet, prefix )
       }
 
 
@@ -187,35 +192,34 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         // Render input fields and set chart options
         drawChart( chart, spreadsheet, prefix )
 
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
 
-        // Close all accordion panels
-        mainAccordion.closeAll()
+        // // Close all accordion panels
+        // mainAccordion.closeAll()
 
-        document.querySelector( `.${prefix}__admin .loading` ).classList.add("hidden")
 
       } )
 
       document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
   
-      // Create mainaccordion and open first panel
-      const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
-      mainAccordion.open(0)
+      // // Create mainaccordion and open first panel
+      // const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
+      // mainAccordion.open(0)
 
-      new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
 
 
     }
