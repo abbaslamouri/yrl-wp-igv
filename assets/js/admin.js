@@ -8,10 +8,10 @@ import listCharts from "./list-charts"
 import { displayAdminMessage, setSheetIdOptions,  } from "./utilities"
 import "../sass/admin.scss"
 
-console.log("iwpgvObj", {...yrl_wp_igv_obj})
-  console.log("iwpgvCharts", {...yrl_wp_igv_charts})
+// console.log("iwpgvObj", {...yrl_wp_igv_obj})
+// console.log("iwpgvCharts", {...yrl_wp_igv_charts})
 
-if (  undefined !== yrl_wp_igv_charts ) {
+if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
   let iwpgvCharts = typeof yrl_wp_igv_charts !== undefined ?  yrl_wp_igv_charts : {}
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
@@ -21,6 +21,9 @@ if (  undefined !== yrl_wp_igv_charts ) {
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   let spreadsheet = iwpgvCharts.spreadsheet
   let prefix = iwpgvObj.prefix
+
+  console.log("iwpgvObj", {...iwpgvObj})
+  console.log("iwpgvCharts", {...iwpgvCharts})
 
   try {
 
@@ -35,48 +38,24 @@ if (  undefined !== yrl_wp_igv_charts ) {
     if (! iwpgvCharts.action && iwpgvCharts.action !== "listCharts" && iwpgvCharts.action !== "editChart" ) throw new Error( "Invalid action" )
 
     // List all charts
-    if ( iwpgvCharts.action === "listCharts" ||  iwpgvCharts.action === "deleteChart" ) listCharts( charts, iwpgvObj)
+    if ( iwpgvCharts.action === "listCharts" ||  iwpgvCharts.action === "deleteChart" ) listCharts( charts, prefix)
 
     // Add new chart or edit an existing chart
     if ( iwpgvCharts.action === "editChart" ) {
 
-      console.log("iwpgvObj", {...iwpgvObj})
-      console.log("iwpgvCharts", {...iwpgvCharts})
-
       chart.fileUpload = chart.fileUpload.length ? chart.fileUpload : {}
-      // chart.config = chart.config.length ? chart.config : {}
       chart.traces = chart.traces.length ? chart.traces : {}
-      
-      // chart.layout.xaxis2 = {
-      //   visible: true,
-      //   overlaying: "x",
-      //   side: "top",
-      // }
-
-      // chart.layout.yaxis2 = {
-      //   visible: true,
-      //   overlaying: "y",
-      //   side: "right",
-      // }
 
       console.log(chart)
     
-      if ( chart.fileUpload && chart.fileUpload.chartId) {
-
-        // spreadsheet = iwpgvCharts.spreadsheet
+      if ( chart.fileUpload.chartId) {
         
         // Set sheetId select field value and options 
         if ( ! spreadsheet) throw new Error( `Spreadsheet for chart (ID: ${chart.fileUpload.chartId}) (File: ${chart.fileUpload.fileName}) is missing` )
           
         setSheetIdOptions(spreadsheet, document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0])
         document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0].value = chart.fileUpload.sheetId
-          // showInputField( `${prefix}__fileUpload[sheetId]` )
-        
 
-        // Show remaining chart params fields
-        // if ( chart.fileUpload && chart.fileUpload.chartId ) showInputField( `${prefix}__fileUpload[chartId]` )
-        // showInputField( `${prefix}__fileUpload[fileUpload]` )
-        // showInputField( `${prefix}__fileUpload[chartType]` )
         
         // Draw chart
         drawChart( iwpgvCharts, prefix, spreadsheet )
@@ -209,6 +188,7 @@ if (  undefined !== yrl_wp_igv_charts ) {
         drawChart( chart, spreadsheet, prefix )
 
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
+        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
@@ -226,6 +206,18 @@ if (  undefined !== yrl_wp_igv_charts ) {
 
       } )
 
+      document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
+  
+      // Create mainaccordion and open first panel
+      const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
+      mainAccordion.open(0)
+
+      new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
+      new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
+      new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
+      new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
+
+
     }
 
   } catch (error) {
@@ -234,17 +226,6 @@ if (  undefined !== yrl_wp_igv_charts ) {
     console.log("CAUGHT ERROR", error)
 
   }
-
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )  
-  
-  // Create mainaccordion and open first panel
-  const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
-  mainAccordion.open(0)
-
-  new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
 
 }
 

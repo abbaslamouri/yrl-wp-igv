@@ -2,6 +2,9 @@
 <?php 
   $layout = $payload["chart"]["layout"];
   $__layout = "{$this->prefix}__layout";
+
+  $config = $payload["chart"]["config"];
+  $__config = "{$this->prefix}__config";
   // print_r($payload)
 
 ?>
@@ -59,6 +62,11 @@
           <div class="ac basicOptionsPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
+          </div>
+
+          <div class="ac configPanel hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
+            <div class="ac-panel"><?php require "{$this->path}templates/chart-config.php"; ?></div>
           </div>
 
           <div class="ac tracesPanel hidden">

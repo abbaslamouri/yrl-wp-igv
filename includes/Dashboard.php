@@ -141,6 +141,8 @@ if (!class_exists('Dashboard')) {
         ],
         "config" => [
           "responsive" => true,
+					// "displayModeBar" => false,
+					// "displaylogo" => false
         ],
         "traces" => []
       ];
@@ -722,7 +724,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      // wp_send_json($_POST);
+      wp_send_json($_POST);
 
 			try {
 				
@@ -767,6 +769,7 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["fileUpload"]["chartId"] = $chart_id;
 				$charts[$chart_id]["layout"] = ( isset( $_POST["{$this->prefix}__layout"] ) ) ? $_POST["{$this->prefix}__layout"] : [];
 				$charts[$chart_id]["traces"] = ( isset( $_POST["{$this->prefix}__traces"] ) ) ?  $_POST["{$this->prefix}__traces"] : [];
+				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
 				// $charts[$chart_id]["tableChart"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
 				$charts[$chart_id]["minMaxAvgTableChart"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
 
@@ -782,25 +785,25 @@ if (!class_exists('Dashboard')) {
 					$charts[$chart_id]["layout"]["xaxis"]["range"] = $xaxis_range_arr;
 				}
 
-				if ( ! $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) {
-					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = [];
-				} else {
-					$xaxis_tickvals_arr = [];
-					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) as $value) {
-						array_push($xaxis_tickvals_arr, floatval($value));
-					}
-					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
-				}
+				// if ( ! $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) {
+				// 	$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = [];
+				// } else {
+				// 	$xaxis_tickvals_arr = [];
+				// 	foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) as $value) {
+				// 		array_push($xaxis_tickvals_arr, floatval($value));
+				// 	}
+				// 	$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
+				// }
 
-				if ( ! $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) {
-					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = [];
-				} else {
-					$xaxis_ticktext_arr = [];
-					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) as $value) {
-						array_push($xaxis_ticktext_arr, floatval($value));
-					}
-					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
-				}
+				// if ( ! $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) {
+				// 	$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = [];
+				// } else {
+				// 	$xaxis_ticktext_arr = [];
+				// 	foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) as $value) {
+				// 		array_push($xaxis_ticktext_arr, floatval($value));
+				// 	}
+				// 	$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
+				// }
 
 
         // Convert xaxis2 array type fields to array
@@ -814,25 +817,25 @@ if (!class_exists('Dashboard')) {
           $charts[$chart_id]["layout"]["xaxis2"]["range"] = $xaxis2_range_arr;
         }
 
-        if ( ! $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) {
-          $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = [];
-        } else {
-          $xaxis2_tickvals_arr = [];
-          foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) as $value) {
-            array_push($xaxis2_tickvals_arr, floatval($value));
-          }
-          $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = $xaxis2_tickvals_arr;
-        }
+        // if ( ! $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) {
+        //   $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = [];
+        // } else {
+        //   $xaxis2_tickvals_arr = [];
+        //   foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) as $value) {
+        //     array_push($xaxis2_tickvals_arr, floatval($value));
+        //   }
+        //   $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = $xaxis2_tickvals_arr;
+        // }
 
-        if ( ! $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) {
-          $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = [];
-        } else {
-          $xaxis2_ticktext_arr = [];
-          foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) as $value) {
-            array_push($xaxis2_ticktext_arr, floatval($value));
-          }
-          $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = $xaxis2_ticktext_arr;
-        }
+        // if ( ! $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) {
+        //   $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = [];
+        // } else {
+        //   $xaxis2_ticktext_arr = [];
+        //   foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) as $value) {
+        //     array_push($xaxis2_ticktext_arr, floatval($value));
+        //   }
+        //   $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = $xaxis2_ticktext_arr;
+        // }
 	
 
 

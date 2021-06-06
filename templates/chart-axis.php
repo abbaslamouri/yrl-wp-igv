@@ -9,7 +9,7 @@
       <div class="field-group twentyFive-seventyFive"> 
         <div class="form-group">
           <?php $value = ( isset( $layout ) && isset( $layout[$chart_axis] ) && isset( $layout[$chart_axis]["visible"] ) ) ? $layout[$chart_axis]["visible"] : false; ?>
-          <input type="checkbox" class="form-group__input form-group__input-checkbox layout" id="<?php echo "{$__layout}[{$chart_axis}][visible]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][visible]"; ?>" <?php echo $value ? "checked" : "" ?> >
+          <input type="checkbox" class="form-group__input form-group__input-checkbox layout" id="<?php echo "{$__layout}[{$chart_axis}][visible]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][visible]"; ?>" <?php checked( $value, true, true ); ?> >
           <label for="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" class="form-group__label">Visible</label>
           <div class="form-group__tooltip form-group__tooltip-ttCheckbox">
             <div class="form-group__tooltip-question-mark">?</div>
@@ -37,7 +37,7 @@
       <div class="field-group twentyFive-seventyFive"> 
         <div class="form-group">
           <?php $value = ( isset( $layout ) && isset( $layout[$chart_axis] ) && isset( $layout[$chart_axis]["autorange"] ) ) ? $layout[$chart_axis]["autorange"] : false; ?>
-          <input type="checkbox" class="form-group__input form-group__input-checkbox layout" id="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" <?php echo $value ? "checked" : "" ?> <?php echo ! $layout[$chart_axis]["visible"] ? "disabled" : ""; ?> >
+          <input type="checkbox" class="form-group__input form-group__input-checkbox layout" id="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" <?php checked( $value, true, true ); ?> <?php echo ! $layout[$chart_axis]["visible"] ? "disabled" : ""; ?> >
           <label for="<?php echo "{$__layout}[{$chart_axis}][autorange]"; ?>" class="form-group__label">Auto Range</label>
           <div class="form-group__tooltip form-group__tooltip-ttCheckbox">
             <div class="form-group__tooltip-question-mark">?</div>

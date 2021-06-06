@@ -6,30 +6,32 @@ import deleteChart from "./delete-chart"
 const listCharts = async function ( charts, prefix) {
 
   Object.values(charts).forEach( async(el) => {
+    
+    const config = undefined !== el.config ? el.config : {}
 
     if (el.sheet) {
 
-      for ( let i=0; i < el.chartTraces.options.length; i++) {
+      for ( let i=0; i < el.traces.length; i++) {
 
-        el.chartTraces.options[i].x = el.sheet.data[0]
-        el.chartTraces.options[i].y = el.sheet.data[i+1]
+        el.traces[i].x = el.sheet.data[0]
+        el.traces[i].y = el.sheet.data[i+1]
         
-        el.chartTraces.options[i].showlegend = false
-        el.chartLayout.options.hovermode = false
-        el.chartLayout.options.height = 200
-        el.chartLayout.options.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
-        el.chartLayout.options.title.font.size = 12
-        el.chartLayout.options.title.x = .15
-        el.chartLayout.options.title.y = .95
-        el.chartLayout.options.font.size = 12
-        el.chartLayout.options.xaxis = { rangeslider: { visible: false} }
-        el.chartLayout.options.config = { displayModeBar: false }
+        el.traces[i].showlegend = false
+        el.layout.hovermode = false
+        el.layout.height = 200
+        el.layout.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
+        // el.layout.title.font.size = undefined !== el.layout.title && undefined !== el.layout.title.font && undefined !== el.layout.title.font.size ? 12 : null
+        // el.layout.title.x = .15
+        // el.layout.title.y = .95
+        // el.layout.font.size = 12
+        // el.layout.xaxis = { rangeslider: { visible: false} }
+        config.displayModeBar = false 
       }
 
-      await Plotly.newPlot(`${prefix}__chart__${el.chartParams.options.chartId}`, el.chartTraces.options, el.chartLayout.options, el.chartLayout.options.config)
+      await Plotly.newPlot(`${prefix}__chart__${el.fileUpload.chartId}`, el.traces, el.layout, config)
 
     } else {
-      document.getElementById( `${prefix}__chart__${el.chartParams.options.chartId}` ).innerHTML = `<div class='file-missing'>${el.chartParams.options.fileUpload} cannot be found</div>`
+      document.getElementById( `${prefix}__chart__${el.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${el.fileUpload.fileUpload} cannot be found</div>`
     }
   
   })

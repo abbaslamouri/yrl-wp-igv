@@ -57,7 +57,7 @@
         endforeach;
       else :
       ?>
-        <div> Ther no charts to display</div>
+        <div class="no-charts"> Ther no charts to display</div>
       <?php endif; ?>
     <!-- </form> -->
   </div>
