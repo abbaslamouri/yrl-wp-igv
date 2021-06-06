@@ -1,6 +1,6 @@
 
 
-<div class="accordion accordion__level-2 xaxis__Acc">
+<div class="<?php echo "accordion accordion__level-2 {$chart_axis}__Acc"; ?>">
   
   <div class="ac">
     <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
@@ -65,7 +65,7 @@
     <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
     <div class="ac-panel">
       <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-      <div class="field-group seventyFive-twentyFive">
+      <div class="field-group sixty-forty">
         <div class="form-group">
           <?php $value = ( isset( $layout ) && isset( $layout[$chart_axis] ) && isset( $layout[$chart_axis]["title"] ) && isset( $layout[$chart_axis]["title"]["text"] ) ) ? $layout[$chart_axis]["title"]["text"] : ""; ?>
           <input type="text" class="form-group__input layout" id="<?php echo "{$__layout}[{$chart_axis}][title][text]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][title][text]"; ?>" value="<?php echo $value ?>" >

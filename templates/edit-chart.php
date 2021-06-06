@@ -61,6 +61,14 @@
             <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
           </div>
 
+          <div class="ac tracesPanel hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
+            <div class="ac-panel">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <div class="accordion accordion__level-2 traces__Acc"></div>
+            </div>
+          </div>
+
           <div class="ac titlePanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
             <div class="ac-panel">
@@ -91,29 +99,27 @@
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
           </div>
 
-          <div class="ac topAxisPanel hidden">
+          <div class="ac xaxis2Panel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Top Axis</div></h2>
+            <?php $chart_axis = "xaxis2" ?>
+            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac leftAxisPanel hidden">
+          <div class="ac yaxisPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Left Axis</div></h2>
+            <?php $chart_axis = "yaxis" ?>
+            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac rightAxisPanel hidden">
+          <div class="ac yaxis2Panel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Right Axis</div></h2>
+            <?php $chart_axis = "yaxis2" ?>
+            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
-            </div>
-          </div>
-
-          <div class="ac tracesPanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
-            <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-              <div class="accordion accordion__level-2 traces__Acc"></div>
             </div>
           </div>
 

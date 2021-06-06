@@ -26,7 +26,7 @@ class Trace {
                   false : "Hidden",
                   legendonly : "Legend Only",
                 },
-                value : this.trace.visible,
+                value : undefined === this.trace.visible ? "true" : this.trace.visible,
                 hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible). Default: visible"
               },
               {
@@ -59,7 +59,7 @@ class Trace {
                   x : "Bottom",
                   x2 : "Top",
                 },
-                value : this.trace.xaxis ? this.trace.xaxis : null,
+                value : undefined === this.trace.xaxis ? "x" : this.trace.xaxis,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
@@ -71,7 +71,7 @@ class Trace {
                   y : "Left",
                   y2 : "Right",
                 },
-                value :  this.trace.yaxis ? this.trace.yaxis : null,
+                value :  undefined === this.trace.yaxis ? "y" : this.trace.yaxis,
                 disabled: false === this.trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
@@ -84,7 +84,7 @@ class Trace {
                 id : `traces[${this.index-1}][showlegend]`, 
                 title : "Show In Legend", 	
                 type : "checkbox",
-                value :  ( this.trace.showlegend  && this.trace.showlegend ) ? true : false,
+                value :  undefined === this.trace.showlegend ? true : this.trace.showlegend,
                 disabled: false == this.trace.visible  ? true : false,
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
@@ -92,7 +92,7 @@ class Trace {
                 id : `traces[${this.index-1}][name]`,  
                 title : "Label in Legend",  
                 type : "text",
-                value : this.trace.name !== undefined ? this.trace.name : null,
+                value : undefined !== this.trace.name ? this.trace.name : null,
                 disabled: false == this.trace.visible  ? true : false,
                 hint : "The trace name appear as the legend item and on hover."
               },

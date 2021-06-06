@@ -124,14 +124,17 @@ if (!class_exists('Dashboard')) {
           ],
           "xaxis2" => [
             "visible" => true,
+            "autorange" => true,
             "overlaying" => "x",
             "side" => "top",
           ],
           "yaxis" => [
-            "visible" => true
+            "visible" => true,
+            "autorange" => true,
           ],
           "yaxis2" => [
             "visible" => true,
+            "autorange" => true,
             "overlaying" => "y",
             "side" => "right",
           ]
@@ -186,7 +189,7 @@ if (!class_exists('Dashboard')) {
 				}
 
 				// Fetch spreadsheet
-				$spreadsheet = $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] );
+				$spreadsheet = $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] );
 
 				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
 			 	if (  is_wp_error( $spreadsheet ) ) {
@@ -564,12 +567,12 @@ if (!class_exists('Dashboard')) {
             $payload[$chart_id] = $chart;
 
             // Fetch spreadsheet
-            $spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) : null;
+            $spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
 
             // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
             // if (  ! is_wp_error( $spreadsheet ) ) {
               // Fetch sheet
-            $payload[$chart_id]['sheet'] = $spreadsheet[$chart['chartParams']['options']['sheetId']];
+            $payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
               // $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
               // throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
             // } else {
@@ -581,6 +584,7 @@ if (!class_exists('Dashboard')) {
           }
 
 					$payload = array_reverse($payload);
+
 
           // Set payload and response
           $response = [ 'status' => "success", 'message' => null, 'action'	=> 'listCharts', 'charts' => $payload ];
@@ -611,7 +615,7 @@ if (!class_exists('Dashboard')) {
 								$chart = $charts[$chart_id];
 
 								// Fetch spreadsheet
-								$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['chartParams']['options']['fileId'] ) ) ?  $this->fetch_spreadsheet($chart['chartParams']['options']['fileId']) : null;
+								$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ?  $this->fetch_spreadsheet($chart['fileUpload']['fileId']) : null;
 							
 							} else {
 								throw new \Exception(  __(wp_kses_post("We cannot find a chart with ID = {$chart_id}"), $this->plugin ) );
@@ -620,6 +624,7 @@ if (!class_exists('Dashboard')) {
 						}
 
 						$chart = $this->default_chart();
+
 
           // Set response
           $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet];
@@ -633,13 +638,14 @@ if (!class_exists('Dashboard')) {
 
         // Set payload
         $payload = ["chart" => $chart];
+
 				
 			}
 
       // Display Template
       echo $this->get_template_html($template, $payload);
 
-      // Pass js parameters
+      // Send js parameters
       wp_localize_script( 
         "{$this->plugin}-admin",
         "{$this->prefix}_charts", 
@@ -716,7 +722,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      wp_send_json($_POST);
+      // wp_send_json($_POST);
 
 			try {
 				
@@ -725,7 +731,7 @@ if (!class_exists('Dashboard')) {
         }
         
         // verify if a file, a sheet and a chart type were selected
-				if (! isset($_POST["{$this->prefix}__chartParams"]["fileUpload"]) || ! isset($_POST["{$this->prefix}__chartParams"]["sheetId"]) || ! isset ($_POST["{$this->prefix}__chartParams"]["chartType"])) { 
+				if ( ! isset( $_POST["{$this->prefix}__fileUpload"]["fileId"] ) || ! isset( $_POST["{$this->prefix}__fileUpload"]["fileName"] ) || ! isset( $_POST["{$this->prefix}__fileUpload"]["sheetId"] ) || ! isset ( $_POST["{$this->prefix}__fileUpload"]["chartType"] ) ) { 
           throw new \Exception (__("Please selecte a file, a sheet and a chart type.", $this->plugin));
 				}
 				
@@ -735,7 +741,7 @@ if (!class_exists('Dashboard')) {
 				}
 
 				// Verify if the axes are set
-				// if ( $_POST["{$this->prefix}__chartParams"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
+				// if ( $_POST["{$this->prefix}__fileUpload"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
         //   throw new \Exception (__("Axis options missing.", $this->plugin));
 				// }
        	// wp_send_json($_POST);
@@ -746,111 +752,111 @@ if (!class_exists('Dashboard')) {
 			
 
         // There is a chart Id (edit)
-        if (isset($_POST["{$this->prefix}__chartParams"]["chartId"]) && $_POST["{$this->prefix}__chartParams"]["chartId"]) {
-					$chart_id = $_POST["{$this->prefix}__chartParams"]["chartId"];
+        if (isset($_POST["{$this->prefix}__fileUpload"]["chartId"]) && $_POST["{$this->prefix}__fileUpload"]["chartId"]) {
+					$chart_id = $_POST["{$this->prefix}__fileUpload"]["chartId"];
 					      //  wp_send_json($_POST);
 
 				// New chart
         } else {
 					$last_chart = end( $charts );
-					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["chartParams"]["options"]["chartId"] + 1 : 16327;
+					$chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
 				}
 
 				// Assemble chart
-				$charts[$chart_id]["chartParams"]["options"] = (  isset( $_POST["{$this->prefix}__chartParams"] ) ) ?  $_POST["{$this->prefix}__chartParams"] : [];
-				$charts[$chart_id]["chartParams"]["options"]["chartId"] = $chart_id;
-				$charts[$chart_id]["chartLayout"]["options"] = ( isset( $_POST["{$this->prefix}__chartLayout"] ) ) ? $_POST["{$this->prefix}__chartLayout"] : [];
-				$charts[$chart_id]["chartTraces"]["options"] = ( isset( $_POST["{$this->prefix}__chartTraces"] ) ) ?  $_POST["{$this->prefix}__chartTraces"] : [];
-				$charts[$chart_id]["tableChart"]["options"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
-				$charts[$chart_id]["minMaxAvgTableChart"]["options"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+				$charts[$chart_id]["fileUpload"] = (  isset( $_POST["{$this->prefix}__fileUpload"] ) ) ?  $_POST["{$this->prefix}__fileUpload"] : [];
+				$charts[$chart_id]["fileUpload"]["chartId"] = $chart_id;
+				$charts[$chart_id]["layout"] = ( isset( $_POST["{$this->prefix}__layout"] ) ) ? $_POST["{$this->prefix}__layout"] : [];
+				$charts[$chart_id]["traces"] = ( isset( $_POST["{$this->prefix}__traces"] ) ) ?  $_POST["{$this->prefix}__traces"] : [];
+				// $charts[$chart_id]["tableChart"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTableChart"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
 
 
 				// Convert xaxis array type fields to array
-				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] ) {
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] = [];
+				if ( ! $charts[$chart_id]["layout"]["xaxis"]["range"] ) {
+					$charts[$chart_id]["layout"]["xaxis"]["range"] = [];
 				} else {
 					$xaxis_range_arr = [];
-					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] ) as $value) {
+					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["range"] ) as $value) {
 						array_push($xaxis_range_arr, floatval($value));
 					}
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["range"] = $xaxis_range_arr;
+					$charts[$chart_id]["layout"]["xaxis"]["range"] = $xaxis_range_arr;
 				}
 
-				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] ) {
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] = [];
+				if ( ! $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) {
+					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = [];
 				} else {
 					$xaxis_tickvals_arr = [];
-					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] ) as $value) {
+					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) as $value) {
 						array_push($xaxis_tickvals_arr, floatval($value));
 					}
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
+					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
 				}
 
-				if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] ) {
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] = [];
+				if ( ! $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) {
+					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = [];
 				} else {
 					$xaxis_ticktext_arr = [];
-					foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] ) as $value) {
+					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) as $value) {
 						array_push($xaxis_ticktext_arr, floatval($value));
 					}
-					$charts[$chart_id]["chartLayout"]["options"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
+					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
 				}
 
 
-					// Convert xaxis2 array type fields to array
-					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] ) {
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] = [];
-					} else {
-						$xaxis2_range_arr = [];
-						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] ) as $value) {
-							array_push($xaxis2_range_arr, floatval($value));
-						}
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["range"] = $xaxis2_range_arr;
-					}
-	
-					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] ) {
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] = [];
-					} else {
-						$xaxis2_tickvals_arr = [];
-						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] ) as $value) {
-							array_push($xaxis2_tickvals_arr, floatval($value));
-						}
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["tickvals"] = $xaxis2_tickvals_arr;
-					}
-	
-					if ( ! $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] ) {
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] = [];
-					} else {
-						$xaxis2_ticktext_arr = [];
-						foreach (explode( ",", $charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] ) as $value) {
-							array_push($xaxis2_ticktext_arr, floatval($value));
-						}
-						$charts[$chart_id]["chartLayout"]["options"]["xaxis2"]["ticktext"] = $xaxis2_ticktext_arr;
-					}
+        // Convert xaxis2 array type fields to array
+        if ( ! $charts[$chart_id]["layout"]["xaxis2"]["range"] ) {
+          $charts[$chart_id]["layout"]["xaxis2"]["range"] = [];
+        } else {
+          $xaxis2_range_arr = [];
+          foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["range"] ) as $value) {
+            array_push($xaxis2_range_arr, floatval($value));
+          }
+          $charts[$chart_id]["layout"]["xaxis2"]["range"] = $xaxis2_range_arr;
+        }
+
+        if ( ! $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) {
+          $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = [];
+        } else {
+          $xaxis2_tickvals_arr = [];
+          foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] ) as $value) {
+            array_push($xaxis2_tickvals_arr, floatval($value));
+          }
+          $charts[$chart_id]["layout"]["xaxis2"]["tickvals"] = $xaxis2_tickvals_arr;
+        }
+
+        if ( ! $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) {
+          $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = [];
+        } else {
+          $xaxis2_ticktext_arr = [];
+          foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] ) as $value) {
+            array_push($xaxis2_ticktext_arr, floatval($value));
+          }
+          $charts[$chart_id]["layout"]["xaxis2"]["ticktext"] = $xaxis2_ticktext_arr;
+        }
 	
 
 
 
         // add undefined checkbox values
-				// $layout = $_POST["{$this->prefix}__chartLayout"];
-				// $charts[$chart_id]["chartLayout"]["options"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["autosize"] = ( isset( $layout["autosize"] ) ) ?  $layout["autosize"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["hovermode"] = ( isset( $layout["hovermode"] ) ) ?  $layout["hovermode"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["legend"]["itemclick"] = ( isset( $layout["legend"]["itemclick"] ) ) ?  $layout["legend"]["itemclick"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["legend"]["itemdoubleclick"] = ( isset( $layout["legend"]["itemdoubleclick"] ) ) ?  $layout["legend"]["itemdoubleclick"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["automargin"] = ( isset( $layout["xaxis"]["automargin"] ) ) ?  $layout["xaxis"]["automargin"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["yaxis"]["fixedrange"] = ( isset( $layout["yaxis"]["fixedrange"] ) ) ?  $layout["yaxis"]["fixedrange"] : false;
-        // $charts[$chart_id]["chartLayout"]["options"]["margin"]["autoexpand"] = ( isset( $layout["margin"]["autoexpand"] ) ) ?  $layout["margin"]["autoexpand"] : false;
+				// $layout = $_POST["{$this->prefix}__layout"];
+				// $charts[$chart_id]["layout"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
+        // $charts[$chart_id]["layout"]["config"]["displayModeBar"] = ( isset( $layout["config"]["displayModeBar"] ) ) ?  $layout["config"]["displayModeBar"] : false;
+        // $charts[$chart_id]["layout"]["config"]["displaylogo"] = ( isset( $layout["config"]["displaylogo"] ) ) ?  $layout["config"]["displaylogo"] : false;
+        // $charts[$chart_id]["layout"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
+        // $charts[$chart_id]["layout"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
+        // $charts[$chart_id]["layout"]["showMinMaxAvgTable"] = ( isset( $layout["showMinMaxAvgTable"] ) ) ?  $layout["showMinMaxAvgTable"] : false;
+        // $charts[$chart_id]["layout"]["autosize"] = ( isset( $layout["autosize"] ) ) ?  $layout["autosize"] : false;
+        // $charts[$chart_id]["layout"]["hovermode"] = ( isset( $layout["hovermode"] ) ) ?  $layout["hovermode"] : false;
+        // $charts[$chart_id]["layout"]["legend"]["itemclick"] = ( isset( $layout["legend"]["itemclick"] ) ) ?  $layout["legend"]["itemclick"] : false;
+        // $charts[$chart_id]["layout"]["legend"]["itemdoubleclick"] = ( isset( $layout["legend"]["itemdoubleclick"] ) ) ?  $layout["legend"]["itemdoubleclick"] : false;
+        // $charts[$chart_id]["layout"]["xaxis"]["automargin"] = ( isset( $layout["xaxis"]["automargin"] ) ) ?  $layout["xaxis"]["automargin"] : false;
+        // $charts[$chart_id]["layout"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;
+        // $charts[$chart_id]["layout"]["yaxis"]["fixedrange"] = ( isset( $layout["yaxis"]["fixedrange"] ) ) ?  $layout["yaxis"]["fixedrange"] : false;
+        // $charts[$chart_id]["layout"]["margin"]["autoexpand"] = ( isset( $layout["margin"]["autoexpand"] ) ) ?  $layout["margin"]["autoexpand"] : false;
         
-        // $charts[$chart_id]["chartLayout"]["options"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
+        // $charts[$chart_id]["layout"]["showlegend"] = ( isset( $layout["showlegend"] ) ) ?  $layout["showlegend"] : false;
         
-        // $charts[$chart_id]["chartLayout"]["options"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;	
+        // $charts[$chart_id]["layout"]["xaxis"]["rangeslider"]["visible"] = ( isset( $layout["xaxis"]["rangeslider"]["visible"] ) ) ?  $layout["xaxis"]["rangeslider"]["visible"] : false;	
 
 					// $charts[$chart_id]["minMaxAvgTableChart"]["options"]["layout"]["autosize"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"]["layout"]["autosize"] ) ) ? true : false;
        

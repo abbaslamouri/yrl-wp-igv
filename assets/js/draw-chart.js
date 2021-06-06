@@ -84,15 +84,27 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
                 chart.layout.xaxis.range = []
                 document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].value = ""
               }
+              Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
               break
 
             case "xaxis.range":
-              value = "" === value ? [] : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
+              // value = "" === value ? null : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
+              if (value) {
+                value = value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
+                Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value } )
+                document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = true
+              } else {
+                const update = { "xaxis.range": null, "xaxis.autorange": true}
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
+              }
               break
-              
+
+            default:
+              Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
+ 
           }
 
-          Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
+          // Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
           console.log("Layout", chart)
           break
 
@@ -102,6 +114,17 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           const traceNumber = keyArr.shift()
           const optionKey = keyArr.join(".")
           console.log("OPT", optionKey, traceNumber)
+
+          switch (optionKey) {
+            case "visible":
+              value = "true" === value ? true : "false" === value ? false : value
+              break
+
+            default:
+
+              break
+          }
+
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
           console.log("TRACES",chart.traces[traceNumber])
           break
