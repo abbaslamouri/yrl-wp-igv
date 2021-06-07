@@ -3,9 +3,11 @@
   $layout = $payload["chart"]["layout"];
   $__layout = "{$this->prefix}__layout";
 
-  $config = isset( $payload["chart"]["config"] ) ? $payload["chart"]["config"] : [];
+  $config = $payload["chart"]["config"];
   $__config = "{$this->prefix}__config";
   // print_r($payload)
+  print_r($layout["xaxis"])
+
 
 ?>
 
@@ -102,30 +104,42 @@
           </div>
 
           <div class="ac xaxisPanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
-            <?php $chart_axis = "xaxis" ?>
+            <?php 
+              $chart_axis = "xaxis";
+              $axis_title = "Bottom Axis";
+            ?>
+            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
           </div>
 
           <div class="ac xaxis2Panel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Top Axis</div></h2>
-            <?php $chart_axis = "xaxis2" ?>
+          <?php
+            $chart_axis = "xaxis2";
+            $axis_title = "Top Axis";
+          ?>
+            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
           <div class="ac yaxisPanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Left Axis</div></h2>
-            <?php $chart_axis = "yaxis" ?>
+            <?php
+              $chart_axis = "yaxis";
+              $axis_title = "Left Axis";
+            ?>
+            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
           <div class="ac yaxis2Panel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Right Axis</div></h2>
-            <?php $chart_axis = "yaxis2" ?>
+            <?php
+              $chart_axis = "yaxis2";
+              $axis_title = "Right Axis";
+            ?>
+            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>

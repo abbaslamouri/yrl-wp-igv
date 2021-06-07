@@ -81,10 +81,10 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
 
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
-  console.log("XXXXX", chart.fileUpload)
 
   // Get chart traces panel content div
   const tracesAccordion = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc` )
+  tracesAccordion.innerHTML = ""
 
   // chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1

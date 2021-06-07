@@ -91,4 +91,30 @@
       </div>
     </div>
   </div>
+
+
+  <?php if ( $chart_axis === "xaxis" || $chart_axis === "xaxis2" ): ?>
+  <div class="ac">
+    <h2 class="ac-header"><div class="ac-trigger">Range Slider</div></h2>
+    <div class="ac-panel">
+      <p class="ac-text intro"><?php echo "{$axis_title} Range Slider setting options."; ?></p>
+      <div class="field-group twentyFive-seventyFive">
+        
+        <div class="form-group">
+          <?php $value = ( isset( $layout ) && isset( $layout[$chart_axis] ) && isset( $layout[$chart_axis]["rangeslider"]["visible"] ) ) ? $layout[$chart_axis]["rangeslider"]["visible"] : false; ?>
+          <input type="checkbox" class="form-group__input form-group__input-checkbox layout" id="<?php echo "{$__layout}[{$chart_axis}][rangeslider][visible]"; ?>" name="<?php echo "{$__layout}[{$chart_axis}][rangeslider][visible]"; ?>" <?php echo $value ? "checked" : ""; ?> <?php echo ! $layout[$chart_axis]["visible"] ? "disabled" : ""; ?> >
+          <label for="<?php echo "{$__layout}[{$chart_axis}][rangeslider][visible]"; ?>" class="form-group__label">Visible</label>
+          <div class="form-group__tooltip form-group__tooltip-ttCheckbox">
+            <div class="form-group__tooltip-question-mark">?</div>
+            <div class="form-group__tooltip-hint">
+              If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes.
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <?php endif; ?>
+
 </div>

@@ -17,6 +17,7 @@ const selectFile = async function ( attachment, iwpgvObj ) {
     formData.append( "action", iwpgvObj.file_select_action );
     formData.append( "nonce", iwpgvObj.file_select_nonce );
     formData.append( "fileId", attachment.id );
+    // formData.append( "chartId", document.getElementsByName( `${iwpgvObj.prefix}__fileUpload[chartId]` )[0].value );
 
     //send ajax resquest
     return await fetchData(formData)

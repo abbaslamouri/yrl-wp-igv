@@ -28,32 +28,14 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // Render panels
   renderPanels( chart, spreadsheet, prefix )
 
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
+  
 
-  console.log(typeof mainAccordion == undefined)
+  // // Create mainaccordion and open first panel
+  // const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
+  // // Close all accordion panels
+  // // mainAccordion.closeAll()
 
-
-  if ( mainAccordion ) {
-    console.log("LLLLLLLLLLAXX")
-    mainAccordion.destroy()
-  }
-
-  // Create mainaccordion and open first panel
-  mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
-  // Close all accordion panels
-  mainAccordion.closeAll()
-
-  console.log("ACC1", mainAccordion)
+  // console.log("ACC", mainAccordion)
 
 
   // new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
@@ -69,6 +51,18 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   
   // Render chart
   await renderChart( chart, spreadsheet, prefix )
+
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
 
   document.querySelector( `.${prefix}__admin .loading` ).classList.add("hidden")
 

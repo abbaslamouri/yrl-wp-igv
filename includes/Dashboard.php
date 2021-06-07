@@ -118,15 +118,18 @@ if (!class_exists('Dashboard')) {
             "title" => [
               "text" => 'Wavelength ( &#181;m )'
             ],
-            // "rangeslider" => [
-            //   "visible" => true,
-            // ],
+            "rangeslider" => [
+              "visible" => true,
+            ],
           ],
           "xaxis2" => [
             "visible" => true,
             "autorange" => true,
             "overlaying" => "x",
             "side" => "top",
+						"rangeslider" => [
+              "visible" => true,
+            ],
           ],
           "yaxis" => [
             "visible" => true,
@@ -141,8 +144,8 @@ if (!class_exists('Dashboard')) {
         ],
         "config" => [
           "responsive" => true,
-					// "displayModeBar" => false,
-					// "displaylogo" => false
+					"displayModeBar" => false,
+					"displaylogo" => false
         ],
         "traces" => []
       ];
@@ -632,7 +635,7 @@ if (!class_exists('Dashboard')) {
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet ];
 
         } catch (\Exception $e) {
   
