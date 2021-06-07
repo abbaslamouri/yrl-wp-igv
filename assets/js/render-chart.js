@@ -31,7 +31,49 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
 
     // Render Min/Max?Avg table chart if enableMinMaxTableChart is true
-    // if ( chart.chartLayout.options.xaxis.rangeslider.visible && chart.chartLayout.options.showMinMaxAvgTable ) {
+    if ( chart.minMaxAvgTable.visible ) {
+
+      document.getElementsByName(`${prefix}__rangeMinInput`)[0].value = chart.minMaxAvgTable.rounding ? parseFloat( chart.layout.xaxis.range[0] ).toFixed( chart.minMaxAvgTable.rounding ) : chart.layout.xaxis.range[0]
+      document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value = chart.minMaxAvgTable.rounding ? parseFloat( chart.layout.xaxis.range[1] ).toFixed( chart.minMaxAvgTable.rounding ) : chart.layout.xaxis.range[1]
+          
+      // Set table header
+      // const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+      chart.minMaxAvgTable.header.values = [["Trace"], ["Min"], ["Average"], ["Max"]]
+
+      chart.minMaxAvgTable.cells.values = getMinMaxAvgData( chart, spreadsheet )
+      console.log("MINMAX", chart.minMaxAvgTable)
+
+      await Plotly.newPlot( `${prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTable], chart.minMaxAvgTable.layout, chart.minMaxAvgTable.config  )
+      // await Plotly.newPlot( `${prefix}__plotlyMinMaxAvgTable`, [chart.minMaxAvgTable], chart.minMaxAvgTable.layout, {displayModeBar: false} )
+
+      // Add range slider event handler
+      eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+       
+        document.getElementsByName(`${prefix}__rangeMinInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][0]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][0]
+        document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][1]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][1]
+        
+        Plotly.restyle( `${prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet )] } )
+
+      })
+
+
+      // Add range min and range max change event listener
+      document.addEventListener( "input", function ( event ) {
+        event.preventDefault()
+        console.log("JJJJJJJJ")
+
+        if ( event.target.name !== `${prefix}__rangeMinInput` && event.target.name !== `${prefix}__rangeMaxInput`)  return
+          const xaxisMin = document.getElementsByName(`${prefix}__rangeMinInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMinInput`)[0].value : chart.layout.xaxis.range[0]
+          const xaxisMax = document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value : chart.layout.xaxis.range[1]
+          console.log(xaxisMax, xaxisMin)
+          console.log("JJJJJJJJ")
+          // if ( parseFloat( xaxisMin ) >= parseFloat( xaxisMax ) ) return
+          Plotly.relayout(`${prefix}__plotlyChart`, { 'xaxis.range': [ parseFloat( xaxisMin ), parseFloat( xaxisMax )] })
+          console.log("JJJJJJJJxxxxxxx")
+      
+      })
+
+    }
 
     // const xAxisMin = chart.chartLayout.options.xaxis.range[0]
     // const xAxisMax = chart.chartLayout.options.xaxis.range[1]

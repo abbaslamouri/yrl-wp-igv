@@ -147,7 +147,30 @@ if (!class_exists('Dashboard')) {
 					"displayModeBar" => false,
 					"displaylogo" => false
         ],
-        "traces" => []
+        "traces" => [],
+        "minMaxAvgTable" => [
+          "visible" => true,
+          "type" => "table",
+          "rounding" => null,
+          "header" => [],
+          "cells" => [],
+          "layout" => [
+            "height" => "200",
+            "margin" => [
+              "l" =>  20,
+              "r" =>  20 ,
+              "t" => 20 ,
+              "b" =>  20 ,
+               "pad" => 0 ,
+              "autoexpand" => true,
+            ],
+          ],
+          "config" => [
+            "responsive" => true,
+            "displayModeBar" => false,
+            "displaylogo" => false
+          ]
+        ]
       ];
     }
 
@@ -851,8 +874,10 @@ if (!class_exists('Dashboard')) {
         // add undefined checkbox values
         $charts[$chart_id]["layout"]["xaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["visible"] ) ?  true : false;
         $charts[$chart_id]["layout"]["xaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["xaxis"]["rangeslider"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["rangeslider"]["visible"] ) ?  true : false;
         $charts[$chart_id]["layout"]["xaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["visible"] ) ?  true : false;
         $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["autorange"] ) ?  true : false;
+        $charts[$chart_id]["layout"]["xaxis2"]["rangeslider"][visible] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["rangeslider"]["visible"] ) ?  true : false;
         $charts[$chart_id]["layout"]["yaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["visible"] ) ?  true : false;
         $charts[$chart_id]["layout"]["yaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["autorange"] ) ?  true : false;
         $charts[$chart_id]["layout"]["yaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["visible"] ) ?  true : false;

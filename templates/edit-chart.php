@@ -5,8 +5,11 @@
 
   $config = $payload["chart"]["config"];
   $__config = "{$this->prefix}__config";
+
+  $min_max_avg_table = $payload["chart"]["minMaxAvgTable"];
+  $__min_max_avg_table = "{$this->prefix}__minMaxAvgTable";
   // print_r($payload)
-  print_r($layout["xaxis"])
+  // print_r($layout["xaxis"])
 
 
 ?>
@@ -41,7 +44,7 @@
         <div class="chart" id="<?php echo "{$this->prefix}__plotlyChart" ?>"></div>
         <div class="min-max-avg-table">
           <?php require "{$this->path}templates/min-max-inputs.php"; ?>
-          <div class="table hidden" id="<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>" ></div>
+          <div class="table " id="<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>" ></div>
         </div>
       </div>
 
@@ -143,6 +146,11 @@
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
+          </div>
+
+          <div class="ac minMaxAvgTablePanel hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Min/Max/Avg Table</div></h2>
+            <div class="ac-panel"><?php require "{$this->path}templates/min-max-avg-table.php"; ?></div>
           </div>
 
         </div>

@@ -63,31 +63,10 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .minMaxAvgTablePanel`).classList.remove( "hidden" )
 
   document.querySelector( `.${prefix}__admin .loading` ).classList.add("hidden")
 
-
-  
-
-  // // Add range slider event handler
-  // eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
-
-  //   // Bail if the event is other that range slider
-  //   if ( ! eventData['xaxis.range'] || ! chart.chartParams.options.enableMinMaxTableChart ) return
-
-  //   console.log("PPPPPP",eventData)
-  //   //
-  //   // const xAxisMin = ( eventData && eventData['xaxis.range'] ) ? eventData['xaxis.range'][0] : Math.min( ...spreadsheet[chart.chartParams.options.sheetId].data[0])
-  //   // const xAxisMax = ( eventData  && eventData['xaxis.range'] ) ? eventData['xaxis.range'][1] : Math.max(...spreadsheet[chart.chartParams.options.sheetId].data[0])
-  //   document.getElementById(`${prefix}__rangeMinInput`).value = eventData['xaxis.range'][0] //parseFloat(xAxisMin).toFixed(chart.minMaxAvgTableChart.options.rounding)
-  //   document.getElementById(`${prefix}__rangeMaxInput`).value = eventData['xaxis.range'][1] //parseFloat(xAxisMax).toFixed(chart.minMaxAvgTableChart.options.rounding)
-    
-  //   // Update Min/Max/Avg table data
-  //   // chart.minMaxAvgTableChart.options.cells.values = getMinMaxAvgData(chart, spreadsheet, eventData['xaxis.range'][0], eventData['xaxis.range'][1])
-
-  //   Plotly.restyle( `${prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData(chart, spreadsheet, eventData['xaxis.range'][0], eventData['xaxis.range'][1])] } )
-
-  // })
 
 
   document.addEventListener("input", async function (event) {
@@ -95,7 +74,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     event.preventDefault()
 
     // console.log ("EVENT",event.target.name)
-    if (  event.target.name.includes("__fileUpload") ) return
+    if (  event.target.name.includes("__fileUpload") || event.target.name.includes("__rangeMinInput") || event.target.name.includes("__rangeMaxInput") ) return
 
     if ( event.target.name === `${prefix}__rangeMinInput` || event.target.name === `${prefix}__rangeMinInput` ){
 

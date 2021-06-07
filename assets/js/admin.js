@@ -45,6 +45,9 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
       chart.fileUpload = {...chart.fileUpload}
       chart.traces = {...chart.traces}
+      chart.minMaxAvgTable = {...chart.minMaxAvgTable}
+      // chart.minMaxAvgTable.header = {...chart.minMaxAvgTable.header}
+      // chart.minMaxAvgTable.cells = {...chart.minMaxAvgTable.cells}
     
       if ( chart.fileUpload.chartId) {
         
