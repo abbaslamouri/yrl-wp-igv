@@ -11,6 +11,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   Plotly.purge(`${prefix}__plotlyChart`)
   Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
+
   // Hide min/max inputs if visible
   // hideElementById( `${prefix}__plotMinMaxAvg` )
 
@@ -39,17 +40,28 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.remove( "hidden" )
 
+  console.log(typeof mainAccordion == undefined)
+
+
+  if ( mainAccordion ) {
+    console.log("LLLLLLLLLLAXX")
+    mainAccordion.destroy()
+  }
+
   // Create mainaccordion and open first panel
-  const mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
-  // mainAccordion.open(0)
-
-  new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
-  new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
-
+  mainAccordion = new Accordion( `.${prefix}__admin .main__Acc`, { duration: 400 })
   // Close all accordion panels
   mainAccordion.closeAll()
+
+  console.log("ACC1", mainAccordion)
+
+
+  // new Accordion( `.${prefix}__admin .xaxis__Acc`, { duration: 400 })
+  // new Accordion( `.${prefix}__admin .xaxis2__Acc`, { duration: 400 })
+  // new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
+  // new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
+
+  
 
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById( `${prefix}__saveChart` ).disabled = false
@@ -88,12 +100,15 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   
     event.preventDefault()
 
-    if ( event.target.id === `${prefix}__rangeMinInput` || event.target.id === `${prefix}__rangeMinInput` ){
+    // console.log ("EVENT",event.target.name)
+    if (  event.target.name.includes("__fileUpload") ) return
+
+    if ( event.target.name === `${prefix}__rangeMinInput` || event.target.name === `${prefix}__rangeMinInput` ){
 
     } else {
 
-      const control = chartOptionKey(event.target.id).control
-      const key = chartOptionKey(event.target.id).key
+      const control = chartOptionKey(event.target.name).control
+      const key = chartOptionKey(event.target.name).key
       const keyParts = key.split(".")
       let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
 

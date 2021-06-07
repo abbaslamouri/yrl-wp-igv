@@ -8,8 +8,8 @@ import listCharts from "./list-charts"
 import { displayAdminMessage, setSheetIdOptions,  } from "./utilities"
 import "../sass/admin.scss"
 
-console.log("iwpgvObj", {...yrl_wp_igv_obj})
-console.log("iwpgvCharts", {...yrl_wp_igv_charts})
+// console.log("iwpgvObj", {...yrl_wp_igv_obj})
+// console.log("iwpgvCharts", {...yrl_wp_igv_charts})
 
 if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
@@ -94,6 +94,18 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         // Hide chart and table charts
         Plotly.purge(`${prefix}__plotlyChart`)
         Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .hoverlabelPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .modebarPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxisPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .xaxis2Panel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxisPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .yaxis2Panel`).classList.add( "hidden" )
 
         // Hide min/max inputs if visible
         // hideElementById( `${prefix}__plotMinMax` )
@@ -181,9 +193,8 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
         if (chart.traces) {
-          const sheetIdInput =  document.getElementsByName(`${prefix}__fileUpload[sheetId]`)[0]
-            if (spreadsheet[sheetIdInput.value].data.length < chart.traces.length) {
-            for (let i = spreadsheet[sheetIdInput.value].data.length-1; i < chart.traces.length; i++ ) {
+            if ( spreadsheet[chart.fileUpload.sheetId].data.length < Object.values(chart.traces).length +1 ) {
+            for ( let i = spreadsheet[chart.fileUpload.sheetId].data.length-1; i <= Object.values(chart.traces).length; i++ ) {
               delete chart.traces[i]
             }
           }
@@ -191,6 +202,8 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
         // Render input fields and set chart options
         drawChart( chart, spreadsheet, prefix )
+
+
 
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
