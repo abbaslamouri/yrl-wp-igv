@@ -48,6 +48,8 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
       // Add range slider event handler
       eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+        // Bail if the event is other that range slider
+        if ( ! eventData['xaxis.range'] ) return
        
         document.getElementsByName(`${prefix}__rangeMinInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][0]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][0]
         document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][1]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][1]
@@ -58,20 +60,20 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
 
       // Add range min and range max change event listener
-      document.addEventListener( "input", function ( event ) {
-        event.preventDefault()
-        console.log("JJJJJJJJ")
+      // document.addEventListener( "input", function ( event ) {
+      //   event.preventDefault()
+      //   console.log("JJJJJJJJ")
 
-        if ( event.target.name !== `${prefix}__rangeMinInput` && event.target.name !== `${prefix}__rangeMaxInput`)  return
-          const xaxisMin = document.getElementsByName(`${prefix}__rangeMinInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMinInput`)[0].value : chart.layout.xaxis.range[0]
-          const xaxisMax = document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value : chart.layout.xaxis.range[1]
-          console.log(xaxisMax, xaxisMin)
-          console.log("JJJJJJJJ")
-          // if ( parseFloat( xaxisMin ) >= parseFloat( xaxisMax ) ) return
-          Plotly.relayout(`${prefix}__plotlyChart`, { 'xaxis.range': [ parseFloat( xaxisMin ), parseFloat( xaxisMax )] })
-          console.log("JJJJJJJJxxxxxxx")
+      //   if ( event.target.name !== `${prefix}__rangeMinInput` || event.target.name !== `${prefix}__rangeMaxInput`)  return
+      //     // const xaxisMin = document.getElementsByName(`${prefix}__rangeMinInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMinInput`)[0].value : chart.layout.xaxis.range[0]
+      //     // const xaxisMax = document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value : chart.layout.xaxis.range[1]
+      //     // console.log(xaxisMax, xaxisMin)
+      //     // console.log("JJJJJJJJ")
+      //     // // if ( parseFloat( xaxisMin ) >= parseFloat( xaxisMax ) ) return
+      //     // Plotly.relayout(`${prefix}__plotlyChart`, { 'xaxis.range': [ parseFloat( xaxisMin ), parseFloat( xaxisMax )] })
+      //     // console.log("JJJJJJJJxxxxxxx")
       
-      })
+      // })
 
     }
 

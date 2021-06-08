@@ -115,6 +115,7 @@ if (!class_exists('Dashboard')) {
           "xaxis" => [
             "visible" => true,
             "autorange" => true,
+            // "rangemode" => "normal",
             "title" => [
               "text" => 'Wavelength ( &#181;m )'
             ],

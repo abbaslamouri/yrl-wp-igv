@@ -4,7 +4,7 @@
 <div class="field-group fifty-fifty">
   <div class="form-group">
     <?php $value = ( isset( $layout ) && isset( $layout["width"] ) ) ? $layout["width"] : null; ?>
-    <input type="number" class="form-group__input layout" id="<?php echo "{$__layout}[width]"; ?>" name="<?php echo "{$__layout}[width]"; ?>" value="<?php echo $value; ?>" >
+    <input type="number" class="form-group__input layout" id="<?php echo "{$__layout}[width]"; ?>" name="<?php echo "{$__layout}[width]"; ?>" value="<?php echo $value; ?>" min="200" max="3000" step="10" >
     <label for="<?php echo "{$__layout}[width]"; ?>" class="form-group__label">Plot Width</label>
     <div class="form-group__tooltip">
       <div class="form-group__tooltip-question-mark">?</div>
@@ -15,7 +15,7 @@
   </div>
   <div class="form-group">
   <?php $value = ( isset( $layout ) && isset( $layout["height"] ) ) ? $layout["height"] : null; ?>
-    <input type="number" class="form-group__input layout" id="<?php echo "{$__layout}[height]"; ?>" name="<?php echo "{$__layout}[height]"; ?>" value="<?php echo $value; ?>" >
+    <input type="number" class="form-group__input layout" id="<?php echo "{$__layout}[height]"; ?>" name="<?php echo "{$__layout}[height]"; ?>" value="<?php echo $value; ?>" min="200" max="3000" step="10" >
     <label for="<?php echo "{$__layout}[height]"; ?>" class="form-group__label">Plot Height</label>
     <div class="form-group__tooltip">
       <div class="form-group__tooltip-question-mark">?</div>

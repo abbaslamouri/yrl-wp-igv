@@ -74,9 +74,18 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     event.preventDefault()
 
     // console.log ("EVENT",event.target.name)
-    if (  event.target.name.includes("__fileUpload") || event.target.name.includes("__rangeMinInput") || event.target.name.includes("__rangeMaxInput") ) return
+    if (  event.target.name.includes("__fileUpload") ) return
 
-    if ( event.target.name === `${prefix}__rangeMinInput` || event.target.name === `${prefix}__rangeMinInput` ){
+    console.log(event.target.name)
+
+    if ( event.target.name === `${prefix}__rangeMinInput` || event.target.name === `${prefix}__rangeMaxInput` ){
+      const xaxisMin = document.getElementsByName(`${prefix}__rangeMinInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMinInput`)[0].value : chart.layout.xaxis.range[0]
+      const xaxisMax = document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value ? document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value : chart.layout.xaxis.range[1]
+      console.log(xaxisMax, xaxisMin)
+      console.log("JJJJJJJJ")
+      // if ( parseFloat( xaxisMin ) >= parseFloat( xaxisMax ) ) return
+      Plotly.relayout(`${prefix}__plotlyChart`, { 'xaxis.range': [ parseFloat( xaxisMin ), parseFloat( xaxisMax )] })
+      console.log("JJJJJJJJxxxxxxx")
 
     } else {
 
@@ -105,15 +114,22 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
               break
 
             case "xaxis.range":
+              let update = {}
               // value = "" === value ? null : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
               if (value) {
                 value = value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
-                Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value } )
-                document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = true
+                update = { [key]: value}
+                // Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value } )
+                // document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = chart.layout.xaxis.autorange
               } else {
-                const update = { "xaxis.range": null, "xaxis.autorange": true}
-                Plotly.relayout( `${prefix}__plotlyChart`, update)
+                update = { "xaxis.range": null, "xaxis.autorange": true}
+                // Plotly.relayout( `${prefix}__plotlyChart`, update)
+                // document.getElementsByName(`${prefix}__rangeMinInput`)[0].value = chart.layout.xaxis.range[0]
+                // document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value = chart.layout.xaxis.range[1]
               }
+              Plotly.relayout( `${prefix}__plotlyChart`, update)
+              document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = chart.layout.xaxis.autorange
+
               break
 
             default:
