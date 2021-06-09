@@ -9,7 +9,7 @@
   $min_max_avg_table = $payload["chart"]["minMaxAvgTable"];
   $__min_max_avg_table = "{$this->prefix}__minMaxAvgTable";
   // print_r($payload)
-  // print_r($layout["xaxis"])
+//  print_r($layout)
 
 
 ?>
@@ -69,22 +69,21 @@
             <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
           </div>
 
-          <div class="ac configPanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-config.php"; ?></div>
+          <div class="ac titlePanel hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
+            <div class="ac-panel"><?php require "{$this->path}templates/chart-title.php"; ?></div>
           </div>
+
+          <!-- <div class="ac configPanel hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-config.php"; ?></div>
+          </div> -->
 
           <div class="ac tracesPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
               <div class="accordion accordion__level-2 traces__Acc"></div>
-            </div>
-          </div>
-
-          <div class="ac titlePanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
-            <div class="ac-panel">
             </div>
           </div>
 
@@ -102,8 +101,7 @@
 
           <div class="ac modebarPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"><?php require "{$this->path}templates/modebar.php"; ?></div>
           </div>
 
           <div class="ac xaxisPanel hidden">

@@ -13,26 +13,26 @@ class BasicOPtions {
 
     return {
       
-      responsive : ( this.inputOptions.responsive  === undefined ) ? true : this.inputOptions.responsive,
-      staticPlot : ( this.inputOptions.staticPlot  === undefined ) ? false : this.inputOptions.staticPlot,
-      width : ( this.inputOptions.width === undefined ) ? null : this.inputOptions.width,
-      height : ( this.inputOptions.height === undefined ) ? 500 : this.inputOptions.height,
-      font : {
-        family : (  this.inputOptions.font === undefined || this.inputOptions.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.inputOptions.font.family,
-        size : (  this.inputOptions.font === undefined || this.inputOptions.font.size === undefined ) ? 20 : this.inputOptions.font.size,
-        color : (  this.inputOptions.font === undefined || this.inputOptions.font.color === undefined ) ? "#000a12" : this.inputOptions.font.color,
-      },
-      margin: {
-        l : ( this.inputOptions.margin === undefined || this.inputOptions.margin.l === undefined ) ? 150 : this.inputOptions.margin.l,
-        r : ( this.inputOptions.margin === undefined || this.inputOptions.margin.r === undefined ) ? 100 : this.inputOptions.margin.r,
-        t : ( this.inputOptions.margin === undefined || this.inputOptions.margin.t === undefined ) ? 110 : this.inputOptions.margin.t,
-        b : ( this.inputOptions.margin === undefined || this.inputOptions.margin.b === undefined ) ? 150 : this.inputOptions.margin.b,
-        pad: ( this.inputOptions.margin === undefined || this.inputOptions.margin.pad === undefined ) ? 80 : this.inputOptions.margin.pad,
-        autoexpand: ( this.inputOptions.margin === undefined || this.inputOptions.margin.autoexpand === undefined ) ? true : this.inputOptions.margin.autoexpand,
-      },
-      paper_bgcolor : ( this.inputOptions.paper_bgcolor === undefined ) ? "#b0bec5" :  this.inputOptions.paper_bgcolor,
-      plot_bgcolor : ( this.inputOptions.plot_bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.plot_bgcolor,
-      autosize : ( this.inputOptions.autosize === undefined ) ? true : this.inputOptions.autosize,
+      // responsive : ( this.inputOptions.responsive  === undefined ) ? true : this.inputOptions.responsive,
+      // staticPlot : ( this.inputOptions.staticPlot  === undefined ) ? false : this.inputOptions.staticPlot,
+      // width : ( this.inputOptions.width === undefined ) ? null : this.inputOptions.width,
+      // height : ( this.inputOptions.height === undefined ) ? 500 : this.inputOptions.height,
+      // font : {
+      //   family : (  this.inputOptions.font === undefined || this.inputOptions.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.inputOptions.font.family,
+      //   size : (  this.inputOptions.font === undefined || this.inputOptions.font.size === undefined ) ? 20 : this.inputOptions.font.size,
+      //   color : (  this.inputOptions.font === undefined || this.inputOptions.font.color === undefined ) ? "#000a12" : this.inputOptions.font.color,
+      // },
+      // margin: {
+      //   l : ( this.inputOptions.margin === undefined || this.inputOptions.margin.l === undefined ) ? 150 : this.inputOptions.margin.l,
+      //   r : ( this.inputOptions.margin === undefined || this.inputOptions.margin.r === undefined ) ? 100 : this.inputOptions.margin.r,
+      //   t : ( this.inputOptions.margin === undefined || this.inputOptions.margin.t === undefined ) ? 110 : this.inputOptions.margin.t,
+      //   b : ( this.inputOptions.margin === undefined || this.inputOptions.margin.b === undefined ) ? 150 : this.inputOptions.margin.b,
+      //   pad: ( this.inputOptions.margin === undefined || this.inputOptions.margin.pad === undefined ) ? 80 : this.inputOptions.margin.pad,
+      //   autoexpand: ( this.inputOptions.margin === undefined || this.inputOptions.margin.autoexpand === undefined ) ? true : this.inputOptions.margin.autoexpand,
+      // },
+      // paper_bgcolor : ( this.inputOptions.paper_bgcolor === undefined ) ? "#b0bec5" :  this.inputOptions.paper_bgcolor,
+      // plot_bgcolor : ( this.inputOptions.plot_bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.plot_bgcolor,
+      // autosize : ( this.inputOptions.autosize === undefined ) ? true : this.inputOptions.autosize,
     }
 
   }

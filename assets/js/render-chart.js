@@ -58,6 +58,8 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
       })
 
+      document.querySelector(`.${prefix}__admin #${prefix}__plotMinMaxAvgForm`).classList.remove( "hidden" )
+
 
       // Add range min and range max change event listener
       // document.addEventListener( "input", function ( event ) {

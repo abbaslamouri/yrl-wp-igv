@@ -53,7 +53,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   await renderChart( chart, spreadsheet, prefix )
 
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
-  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
+  // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.remove( "hidden" )
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.remove( "hidden" )
@@ -115,21 +115,19 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
             case "xaxis.range":
               let update = {}
-              // value = "" === value ? null : value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
               if (value) {
                 value = value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )
                 update = { [key]: value}
-                // Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value } )
-                // document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = chart.layout.xaxis.autorange
               } else {
                 update = { "xaxis.range": null, "xaxis.autorange": true}
-                // Plotly.relayout( `${prefix}__plotlyChart`, update)
-                // document.getElementsByName(`${prefix}__rangeMinInput`)[0].value = chart.layout.xaxis.range[0]
-                // document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value = chart.layout.xaxis.range[1]
               }
               Plotly.relayout( `${prefix}__plotlyChart`, update)
               document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].checked = chart.layout.xaxis.autorange
+              break
 
+            case "title.y":
+              value = "" === value ? "auto" : value
+              Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
               break
 
             default:
@@ -140,7 +138,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           // Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
           console.log("Layout", chart)
           break
-
           
         case "traces":
           const keyArr = key.split(".")
@@ -161,6 +158,12 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
           console.log("TRACES",chart.traces[traceNumber])
           break
+
+          case "config":
+            Plotly.purge(`${prefix}__plotlyChart`)
+            chart.config[key] = value
+            Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+            break
       }
 
     }
@@ -169,6 +172,15 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     document.getElementsByName(`${prefix}__layout[xaxis][type]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
     document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
     document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+
+    // modebar
+    document.getElementsByName(`${prefix}__config[displaylogo]`)[0].disabled = ! chart.config.displayModeBar  ? true : false
+    document.getElementsByName(`${prefix}__layout[modebar][bgcolor]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
+    document.getElementsByName(`${prefix}__layout[modebar][orientation]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
+    document.getElementsByName(`${prefix}__layout[modebar][color]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
+    document.getElementsByName(`${prefix}__layout[modebar][activecolor]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
+
+    console.log(chart)
 
 
     return false

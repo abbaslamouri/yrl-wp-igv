@@ -35,6 +35,23 @@ if (!class_exists('Dashboard')) {
 			"xlsx", "Xlsx", "xls", "Xls", "csv", "Csv", "xlsm", "Xlsm"
 		];
 
+		protected $font_family = [
+			// "" => "Select Font Family",
+			"arial" => "Arial",
+			"balto" => "Balto",
+			"Times New Roman" => "Times New Roman",
+			"Courier New" => "Courier New",
+			"Droid Sans" => "Droid Sans",
+			"Droid Serif" => "Droid Serif",
+			"Droid Sans Mono" => "Droid Sans Mono",
+			"Gravitas One" => "Gravitas One",
+			"Old Standard TT" => " Old Standard TT",
+			"Open Sans" => "Open Sans",
+			"overpass" => "Overpass",
+			"PT Sans Narrow" => "PT Sans Narrow",
+			"raleway" => "Raleway"
+		];
+
 
 		/**
 		*Magic constructor.  Gets called when class is instantiated
@@ -106,73 +123,81 @@ if (!class_exists('Dashboard')) {
     }
 
 
+
+
+		public function chart_axis($title_text, $side, $overlaying, $matches, $rangesliderVisible ) {
+      
+			return [
+				"visible" => true,
+				"side" => $side,
+				"autorange" => true,
+				"overlaying" => $overlaying,
+				"matches" => $matches,
+				// "rangemode" => "normal",
+				"title" => ["text" => $title_text],
+				"rangeslider" => ["visible" => $rangesliderVisible],
+			];
+
+		}
+
+
+		public function min_max_avg_table_options() {
+
+			return [
+				"visible" => true,
+				"type" => "table",
+				"rounding" => null,
+				"header" => [],
+				"cells" => [],
+				"layout" => [
+					"height" => "200",
+					"margin" => ["l" => 20, "r" => 20, "t" => 20, "b" => 20, "pad" => 0, "autoexpand" => true],
+				],
+				"config" => ["responsive" => true, "displayModeBar" => true, "displaylogo" => true]
+			];
+
+
+		}
+
+
+
+
+
     public function default_chart () {
+
+			
       return [
-        "fileUpload" => [], 
+        
+				"fileUpload" => [], 
         "layout" => [
+					"width" => null,
+					"height" => null,
+					"autosize" => true,
           "paper_bgcolor" => "#ffffff",
           "plot_bgcolor" => "#ffffff",
-          "xaxis" => [
-            "visible" => true,
-            "autorange" => true,
-            // "rangemode" => "normal",
-            "title" => [
-              "text" => 'Wavelength ( &#181;m )'
-            ],
-            "rangeslider" => [
-              "visible" => true,
-            ],
-          ],
-          "xaxis2" => [
-            "visible" => true,
-            "autorange" => true,
-            "overlaying" => "x",
-            "side" => "top",
-						"rangeslider" => [
-              "visible" => true,
-            ],
-          ],
-          "yaxis" => [
-            "visible" => true,
-            "autorange" => true,
-          ],
-          "yaxis2" => [
-            "visible" => true,
-            "autorange" => true,
-            "overlaying" => "y",
-            "side" => "right",
-          ]
-        ],
-        "config" => [
-          "responsive" => true,
-					"displayModeBar" => false,
-					"displaylogo" => false
-        ],
+					"title" => [
+						"text" => "Ge AR/AR 8.0 - 12.0 &#181;m",
+						"x" => 0.5,
+						"y" => "auto",
+						"font" => [
+							"family" => "raleway",
+							"size" => 14,
+							"color" => "#666666"
+						]
+						],
+          "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),
+          "xaxis2" => $this->chart_axis(  "Wavelength ( &#181;m )", "top", "x", "x", false ),
+          "yaxis" => $this->chart_axis( "Transmittance ( % )", "left", null, null, false ),
+					"yaxis2" => $this->chart_axis( "Reflectance ( % )", "right", "y", "y",false ),
+          "modebar" => ["bgcolor" => "#cccccc", "orientation" => "h", "color" => "#ffffff", "activecolor" => "#ffffff"],
+					"margin" => ["l" => 80, "r" => 80, "t" => 100, "b" => 80, "pad" => 0,"autoexpand" => true],
+				],
+        "config" => ["responsive" => true, "displayModeBar" => false, "displaylogo" => true, "staticPlot" => false],
         "traces" => [],
-        "minMaxAvgTable" => [
-          "visible" => true,
-          "type" => "table",
-          "rounding" => null,
-          "header" => [],
-          "cells" => [],
-          "layout" => [
-            "height" => "200",
-            "margin" => [
-              "l" =>  20,
-              "r" =>  20 ,
-              "t" => 20 ,
-              "b" =>  20 ,
-               "pad" => 0 ,
-              "autoexpand" => true,
-            ],
-          ],
-          "config" => [
-            "responsive" => true,
-            "displayModeBar" => false,
-            "displaylogo" => false
-          ]
-        ]
+        "minMaxAvgTable" => $this->min_max_avg_table_options()
+
       ];
+
     }
 
 
@@ -659,7 +684,7 @@ if (!class_exists('Dashboard')) {
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet ];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family ];
 
         } catch (\Exception $e) {
   
@@ -669,7 +694,7 @@ if (!class_exists('Dashboard')) {
         }
 
         // Set payload
-        $payload = ["chart" => $chart];
+        $payload = ["chart" => $chart, "fontFamily" => $this->font_family ];
 
 				
 			}
@@ -885,6 +910,10 @@ if (!class_exists('Dashboard')) {
         $charts[$chart_id]["config"]["displayModeBar"] = isset( $_POST["{$this->prefix}__config"]["displayModeBar"] ) ?  true : false;
         $charts[$chart_id]["config"]["displaylogo"] = isset( $_POST["{$this->prefix}__config"]["displaylogo"] ) ?  true : false;
         $charts[$chart_id]["minMaxAvgTable"]["visible"] = isset( $_POST["{$this->prefix}minMaxAvgTable"]["visible"] ) ?  true : false;
+
+
+
+        $charts[$chart_id]["layout"]["title"]["y"] = "" === $_POST["{$this->prefix}__layout"]["title"]["y"] ?  "auto" : $_POST["{$this->prefix}__layout"]["title"]["y"];
 
 				// $layout = $_POST["{$this->prefix}__layout"];
 				// $charts[$chart_id]["layout"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;

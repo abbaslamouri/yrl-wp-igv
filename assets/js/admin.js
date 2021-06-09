@@ -101,7 +101,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.add( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.add( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .titlePanel`).classList.add( "hidden" )
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .legendPanel`).classList.add( "hidden" )
@@ -149,6 +149,11 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         // Set chart type value
         document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].value = ""
 
+        // Unhide sheet Id and chart type select fields
+        document.getElementsByName( `${prefix}__fileUpload[fileName]` )[0].closest( ".field-group" ).classList.remove( "hidden" )
+        document.getElementsByName( `${prefix}__fileUpload[sheetId]` )[0].closest( ".field-group" ).classList.remove( "hidden" )
+        document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].closest( ".field-group" ).classList.remove( "hidden" )
+
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .fileUploadPanel .ac-panel`).classList.remove( "hidden" )
 
 
@@ -187,12 +192,6 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       // Add change event listener to all input fields
       document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", function (event) {
 
-        // Bail if the clicked item is not inside the `${iwpgvCharts.prefix}__chartOptionsForm` form 
-        if ( ! event.target.classList.contains(`fileUpload`)  ) return
-
-        document.querySelector( `.${prefix}__admin .warning` ).classList.add("hidden")
-        document.querySelector( `.${prefix}__admin .loading` ).classList.remove("hidden")
-
         // Update chart params options
         chart.fileUpload.fileName = document.getElementsByName( `${prefix}__fileUpload[fileName]` )[0].value
         chart.fileUpload.fileId = document.getElementsByName( `${prefix}__fileUpload[fileId]` )[0].value
@@ -200,7 +199,11 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         chart.fileUpload.chartType = document.getElementsByName( `${prefix}__fileUpload[chartType]` )[0].value
 
         // Bail if no file, sheet Id or chart type
-        if( ! chart.fileUpload.fileName ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
+        if( ! event.target.classList.contains(`fileUpload`) || ! chart.fileUpload.fileName ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
+
+        // Hide warning and unhide loading
+        document.querySelector( `.${prefix}__admin .warning` ).classList.add("hidden")
+        document.querySelector( `.${prefix}__admin .loading` ).classList.remove("hidden")
 
         // Remove extra traces if new spreasheet contains less columns than old spreasheet
         if (chart.traces) {

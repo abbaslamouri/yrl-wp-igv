@@ -8,21 +8,21 @@
   </div>
 </div>
 
-<div class="field-group">
+<div class="field-group hidden">
   <div class="form-group">
     <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[fileName]"; ?>" placeholder="Selected File" readonly>
     <label for="" class="form-group__label">Selected File</label>
   </div>
 </div>
 
-<div class="field-group">
+<div class="field-group hidden">
   <div class="form-group">
     <input type="text" class="form-group__input fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartId]"; ?>" placeholder="Chart Id"  readonly>
     <label for="" class="form-group__label">Chart Id</label>
   </div>
 </div>
 
-<div class="field-group">
+<div class="field-group hidden">
   <div class="form-group">
     <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[sheetId]"; ?>" placeholder="Sheet">
     </select>
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<div class="field-group">
+<div class="field-group hidden">
   <div class="form-group">
     <select class="form-group__input form-group__input-select fileUpload no-hint" name="<?php echo "{$this->prefix}__fileUpload[chartType]"; ?>">
       <option value="" selected>Select Chart Type</option>
@@ -43,9 +43,9 @@
   </div>
 </div>
 
-<div class="field-group">
+<div class="field-group hidden">
   <div class="form-group">
-    <input type="text" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
+    <input type="hidden" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
     <label for="" class="form-group__label">File Id</label>
   </div>
 </div>
