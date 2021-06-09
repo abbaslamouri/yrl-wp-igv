@@ -71,7 +71,7 @@
 
           <div class="ac configPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-config.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-config.php"; ?></div>
           </div>
 
           <div class="ac tracesPanel hidden">
@@ -102,8 +102,7 @@
 
           <div class="ac modebarPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"><?php require "{$this->path}templates/modebar.php"; ?></div>
           </div>
 
           <div class="ac xaxisPanel hidden">

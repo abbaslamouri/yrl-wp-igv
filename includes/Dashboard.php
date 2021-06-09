@@ -116,12 +116,8 @@ if (!class_exists('Dashboard')) {
             "visible" => true,
             "autorange" => true,
             // "rangemode" => "normal",
-            "title" => [
-              "text" => 'Wavelength ( &#181;m )'
-            ],
-            "rangeslider" => [
-              "visible" => true,
-            ],
+            "title" => ["text" => 'Wavelength ( &#181;m )'],
+            "rangeslider" => ["visible" => true,],
           ],
           "xaxis2" => [
             "visible" => true,
@@ -141,13 +137,10 @@ if (!class_exists('Dashboard')) {
             "autorange" => true,
             "overlaying" => "y",
             "side" => "right",
-          ]
+          ],
+          "modebar" => ["bgcolor" => "#cccccc", "orientation" => "h", "color" => "#ffffff", "activecolor" => "#ffffff"]
         ],
-        "config" => [
-          "responsive" => true,
-					"displayModeBar" => false,
-					"displaylogo" => false
-        ],
+        "config" => ["responsive" => true, "displayModeBar" => false, "displaylogo" => true],
         "traces" => [],
         "minMaxAvgTable" => [
           "visible" => true,
@@ -166,11 +159,7 @@ if (!class_exists('Dashboard')) {
               "autoexpand" => true,
             ],
           ],
-          "config" => [
-            "responsive" => true,
-            "displayModeBar" => false,
-            "displaylogo" => false
-          ]
+          "config" => ["responsive" => true, "displayModeBar" => true, "displaylogo" => true]
         ]
       ];
     }
@@ -800,8 +789,7 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["layout"] = ( isset( $_POST["{$this->prefix}__layout"] ) ) ? $_POST["{$this->prefix}__layout"] : [];
 				$charts[$chart_id]["traces"] = ( isset( $_POST["{$this->prefix}__traces"] ) ) ?  $_POST["{$this->prefix}__traces"] : [];
 				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
-				// $charts[$chart_id]["tableChart"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
-				$charts[$chart_id]["minMaxAvgTableChart"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTable"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTable"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTable"] : [];
 
 
 				// Convert xaxis array type fields to array
