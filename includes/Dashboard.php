@@ -800,8 +800,7 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["layout"] = ( isset( $_POST["{$this->prefix}__layout"] ) ) ? $_POST["{$this->prefix}__layout"] : [];
 				$charts[$chart_id]["traces"] = ( isset( $_POST["{$this->prefix}__traces"] ) ) ?  $_POST["{$this->prefix}__traces"] : [];
 				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
-				// $charts[$chart_id]["tableChart"] = ( isset( $_POST["{$this->prefix}__tableChart"] ) ) ? $_POST["{$this->prefix}__tableChart"] : [];
-				$charts[$chart_id]["minMaxAvgTableChart"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTableChart"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTableChart"] : [];
+				$charts[$chart_id]["minMaxAvgTable"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTable"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTable"] : [];
 
 
 				// Convert xaxis array type fields to array
@@ -885,6 +884,7 @@ if (!class_exists('Dashboard')) {
         $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["autorange"] ) ?  true : false;
         $charts[$chart_id]["config"]["displayModeBar"] = isset( $_POST["{$this->prefix}__config"]["displayModeBar"] ) ?  true : false;
         $charts[$chart_id]["config"]["displaylogo"] = isset( $_POST["{$this->prefix}__config"]["displaylogo"] ) ?  true : false;
+        $charts[$chart_id]["minMaxAvgTable"]["visible"] = isset( $_POST["{$this->prefix}minMaxAvgTable"]["visible"] ) ?  true : false;
 
 				// $layout = $_POST["{$this->prefix}__layout"];
 				// $charts[$chart_id]["layout"]["config"]["responsive"] = ( isset( $layout["config"]["responsive"] ) ) ?  $layout["config"]["responsive"] : false;
