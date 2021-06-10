@@ -26,6 +26,7 @@
     
   <!-- Admin messages -->
   <div class="admin-messages"></div>
+  <div class="hint-popup"></div>
 
   <!-- Content wrapper -->
   <div class="edit-chart content-wrapper">

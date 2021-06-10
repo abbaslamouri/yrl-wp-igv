@@ -2,6 +2,7 @@
 
   margin:1rem 2rem 1rem 0;
   padding:2rem;
+  position:relative;
 
   .page-title {
 
@@ -12,6 +13,23 @@
 
   .admin-messages {
     margin: 1rem 0;
+  }
+
+  .hint-popup {
+    position: absolute;
+    // visibility: hidden;
+    // min-width: 310px;
+    max-width:600px;
+    font-size: .8rem;
+    background-color: rgba($color-s-dark,1);
+    color: #fff;
+    border-radius: 6px;
+    padding: 1rem;
+    top: 0;
+    right:5rem;
+    // opacity: 0;
+    transition: opacity 0.3s;
+    z-index:999999;
   }
 
   .chart-library {
@@ -112,6 +130,10 @@
 
         &.sixty-forty {
           grid-template-columns: 3fr 2fr;
+        }
+
+        &.forty-sixty {
+          grid-template-columns: 2fr 3fr;
         }
 
         &.seventyFive-twentyFive {

@@ -181,13 +181,22 @@ if (!class_exists('Dashboard')) {
             "orientation" => "v",
             "bgcolor" => "#ffffff",
             "bordercolor" => "#ffffff",
-            "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"],
+            "font" => ["family" => "raleway", "size" => 14, "color" => "#222222"],
             "itemsizing" => "trace",
             "itemwidth" => 30,
             "itemclick" => false,
             "itemdoubleclick" => "toggle",
             "x" => 1.02,
             "y"=> 1,
+						"title" =>[
+							"text" => "",
+							"side" => "top",
+							"font" => [
+								"family" => "balto",
+								"size" => 14,
+								"color" => "#666666"
+							]
+						]
           ],
 					"title" => ["text" => "Ge AR/AR 8.0 - 12.0 &#181;m", "x" => 0.5, "y" => "auto", "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"]],
           "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),

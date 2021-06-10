@@ -69,19 +69,14 @@
 
         background-color: rgba( $color_p_medium, .4) ;
         padding: 0 .5rem;
-    
-        .intro {
-          font-size:.8rem;
-          margin:.5rem 0;
-          padding:0;
-          line-height: 1.4;
-        }
       
       }
 
       &-text {
-        margin-top: 2rem !important;
-      }
+        font-size:.8rem;
+        margin:2rem 0;
+        padding:0;
+        line-height: 1.4;      }
     }
   }
 
@@ -95,13 +90,13 @@
     grid-template-columns: 1fr 1fr 1fr 1.9rem;
     grid-template-rows: auto;
 
-    select {
-      margin-right:0px;
-      option {
-        width:100%;
+    // select {
+    //   margin-right:0px;
+    //   option {
+    //     width:100%;
 
-      }
-    }
+    //   }
+    // }
 
     &__btn {
       grid-column: 1 / 2;
@@ -123,7 +118,7 @@
       width:100%;
 
       &:disabled {
-        // background-color: red;
+        background-color:rgba( $color_danger, .1);;
       }
 
       &.no-hint {
@@ -230,29 +225,29 @@
         cursor: pointer;
         border-radius: 0 3px 3px 0;
 
-        &:hover + .form-group__tooltip-hint {
-          visibility: visible;
-          opacity: 1;
-          overflow:visible;
-          z-index:9999
-        }
+        // &:hover + .form-group__tooltip-hint {
+        //   visibility: visible;
+        //   opacity: 1;
+        //   overflow:visible;
+        //   z-index:9999
+        // }
 
       }
 
       &-hint {
         position: absolute;
         visibility: hidden;
-        min-width: 310px;
-        max-width:100%;
-        font-size: .8rem;
-        background-color: rgba($color-s-dark,1);
-        color: #fff;
-        border-radius: 6px;
-        padding: 1rem;
-        bottom: 120%;
-        right:0;
+      //   min-width: 310px;
+      //   max-width:100%;
+      //   font-size: .8rem;
+      //   background-color: rgba($color-s-dark,1);
+      //   color: #fff;
+      //   border-radius: 6px;
+      //   padding: 1rem;
+      //   bottom: 120%;
+      //   right:0;
         opacity: 0;
-        transition: opacity 0.3s;
+      //   transition: opacity 0.3s;
       }
     }
 
