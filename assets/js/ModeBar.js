@@ -12,14 +12,14 @@ class Modebar {
 
     return {
  
-      displayModeBar : ( this.inputOptions.displayModeBar  === undefined ) ? false :this.inputOptions.displayModeBar,
-      displaylogo : ( this.inputOptions.displaylogo  === undefined ) ? true : this.inputOptions.displaylogo,
-      modebar : {
-        orientation : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.orientation === undefined ) ? "h" : this.inputOptions.modebar.orientation,
-        bgcolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.modebar.bgcolor,
-        color : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.color === undefined ) ? "#000a12" : this.inputOptions.modebar.color,
-        activecolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.activecolor === undefined ) ? "#b0bec5" : this.inputOptions.modebar.activecolor,
-      },
+      // displayModeBar : ( this.inputOptions.displayModeBar  === undefined ) ? false :this.inputOptions.displayModeBar,
+      // displaylogo : ( this.inputOptions.displaylogo  === undefined ) ? true : this.inputOptions.displaylogo,
+      // modebar : {
+      //   orientation : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.orientation === undefined ) ? "h" : this.inputOptions.modebar.orientation,
+      //   bgcolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.modebar.bgcolor,
+      //   color : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.color === undefined ) ? "#000a12" : this.inputOptions.modebar.color,
+      //   activecolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.activecolor === undefined ) ? "#b0bec5" : this.inputOptions.modebar.activecolor,
+      // },
     
     }
      

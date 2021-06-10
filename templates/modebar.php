@@ -29,7 +29,7 @@
 <div class="field-group fifty-fifty">
   <div class="form-group">
     <?php //$value = ( isset( $layout["modebar"]["bgcolor"] ) ) ? $layout["modebar"]["bgcolor"] : "#ffffff"; ?>
-    <input type="color" class="form-group__input form-group__input-color layout" id="<?php echo "{$__layout}[modebar][bgcolor]"; ?>" name="<?php echo "{$__layout}[modebar][bgcolor]"; ?>" value="<?php echo $layout["modebar"]["bgcolor"]; ?>" <?php echo $value ? "checked" : ""; ?> <?php echo ! $config["displayModeBar"] ? "disabled" : ""; ?> >
+    <input type="color" class="form-group__input form-group__input-color layout" id="<?php echo "{$__layout}[modebar][bgcolor]"; ?>" name="<?php echo "{$__layout}[modebar][bgcolor]"; ?>" value="<?php echo $layout["modebar"]["bgcolor"]; ?>" <?php echo ! $config["displayModeBar"] ? "disabled" : ""; ?> >
     <label for="<?php echo "{$__layout}[modebar][bgcolor]"; ?>" class="form-group__label">Background Color</label>
     <div class="form-group__tooltip form-group__tooltip-ttColor">
       <div class="form-group__tooltip-question-mark">?</div>

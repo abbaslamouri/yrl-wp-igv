@@ -89,14 +89,12 @@
 
           <div class="ac legendPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Legend</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"><?php require "{$this->path}templates/legend.php"; ?></div>
           </div>
 
           <div class="ac hoverlabelPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Hoverlabel</div></h2>
-            <div class="ac-panel">
-            </div>
+            <div class="ac-panel"></div>
           </div>
 
           <div class="ac modebarPanel hidden">
