@@ -13,7 +13,9 @@ import Trace from "./Trace"
 import TableChart from "./TableChart"
 import { displayAdminMessage, createAccordionPanel, fetchformGroup } from "./utilities"
 
-const renderPanels = ( chart, spreadsheet, prefix ) => {
+const renderPanels = ( chart, spreadsheet, traceSeed, prefix ) => {
+
+
 
   // // Render layout basic options panel
   // const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, prefix )
@@ -94,13 +96,12 @@ if ( spreadsheet ) {
     tracesAccordion.appendChild( createAccordionPanel(  `traces${index-1}Panel`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
 
 
+    chart.traces[index-1] = {...traceSeed}
+    chart.traces[index-1].visible = true,
+    chart.traces[index-1].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
+    chart.traces[index-1].x = spreadsheet[chart.fileUpload.sheetId].data[0],
+    chart.traces[index-1].y = spreadsheet[chart.fileUpload.sheetId].data[index],
     
-    chart.traces[index-1] = {
-      x : spreadsheet[chart.fileUpload.sheetId].data[0],
-      y : spreadsheet[chart.fileUpload.sheetId].data[index],
-      name : Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
-      visible : true,
-    }
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
     const chartTraceInstance =  new Trace( chart.traces[index-1], index )
@@ -168,6 +169,44 @@ if ( spreadsheet ) {
 
   // Load accordion
   new Accordion( `.${prefix}__admin .traces__Acc`, { duration: 400 } )
+
+  // Add hover event to tooltips
+  document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip`).forEach( (el) => {
+    
+    el.addEventListener("mouseenter", function (event) {
+
+      // Reset popup div
+      document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
+
+
+      // const hint = el.querySelector( ".form-group__tooltip-hint")
+      // console.log("NEW", el.getBoundingClientRect())
+      
+      // Create tooltip popup and add it to hint popup
+      const hintDiv = document.createElement("div")
+      hintDiv.classList.add ("form-group__tooltip-popup")
+      hintDiv.innerHTML = el.querySelector( ".form-group__tooltip-hint").innerHTML
+      document.querySelector(`.${prefix}__admin .hint-popup`).appendChild(hintDiv)
+
+      // const questionMark = el.querySelector(".form-group__tooltip-question-mark")
+      // Get question mark coordinates and set hint popup position and visibility style
+      document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = `${window.innerHeight - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().y - 40}px`
+      document.querySelector(`.${prefix}__admin .hint-popup`).style.right = `${window.innerWidth - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().x - 20}px`
+      document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "1"
+      document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "visible"
+      console.log(window.innerWidth, window.innerHeight )
+
+      // Add event listener to hide hint popup on mouseleave
+      el.addEventListener("mouseleave", async function (event) {
+        // document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = "0"
+        document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "0"
+        document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "hidden"
+        document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
+      })
+
+    })
+
+  })
 
   
 } else {

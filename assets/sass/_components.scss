@@ -17,6 +17,27 @@
 
 
   /*************************************************
+  ***************************HINT POPUP****************
+  **************************************************/
+  .hint-popup {
+    position: absolute;
+    height:auto;
+    max-width:600px;
+    visibility: hidden;
+    font-size: .8rem;
+    background-color: rgba($color-s-light,1);
+    color: rgba(#ffffff,1);
+    border-radius: 6px;
+    padding: 1rem;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index:999999;
+  }
+
+
+  /*************************************************
   ********************MAIN ACCORDION****************
   **************************************************/
   .accordion {

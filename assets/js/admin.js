@@ -19,6 +19,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let jsonRes = {}
   let chart = undefined !== iwpgvCharts.chart ? iwpgvCharts.chart :{}
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
+  let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
   let prefix = iwpgvObj.prefix
 
@@ -66,7 +67,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
 
         // Draw chart
-        drawChart( chart, spreadsheet, prefix )
+        drawChart( chart, spreadsheet, traceSeed, prefix )
 
 
       }
@@ -216,17 +217,12 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         }
 
         // Render input fields and set chart options
-        drawChart( chart, spreadsheet, prefix )
+        drawChart( chart, spreadsheet, traceSeed, prefix )
 
         mainAccordion.closeAll()
 
 
-       
-
-
-
-
-
+      
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .basicOptionsPanel`).classList.remove( "hidden" )
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .configPanel`).classList.remove( "hidden" )
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Acc .tracesPanel`).classList.remove( "hidden" )
@@ -261,33 +257,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       new Accordion( `.${prefix}__admin .yaxis__Acc`, { duration: 400 })
       new Accordion( `.${prefix}__admin .yaxis2__Acc`, { duration: 400 })
 
-      // Add click event listener to the chart params panel inoput fields
-      document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip`).forEach( (el) => {
-        el.addEventListener("mouseenter", async function (event) {
-          document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
-          event.target.style.color = "orange";
-          const hint = el.querySelector( ".form-group__tooltip-hint")
-          console.log("NEW", event)
-          
-          const hintDiv = document.createElement("div")
-          hintDiv.classList.add ("form-group__tooltip-popup")
-          hintDiv.innerHTML = hint.innerHTML
-          document.querySelector(`.${prefix}__admin .hint-popup`).appendChild(hintDiv)
-
-          document.querySelector(`.${prefix}__admin .hint-popup`).style.top = `${event.screenY - 200}px`
-          document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "1"
-          document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "visible"
-          console.log(`${event.pageY}`)
-
-          el.addEventListener("mouseleave", async function (event) {
-            document.querySelector(`.${prefix}__admin .hint-popup`).style.top = "0"
-            document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "0"
-            document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "hidden"
-            document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
-          })
-
-       })
-      })
+      
      
 
 

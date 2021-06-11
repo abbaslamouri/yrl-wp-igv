@@ -160,6 +160,65 @@ if (!class_exists('Dashboard')) {
 
 
 
+    public function trace_seed() {
+      
+      return [
+
+        "visible"  => true,
+        "mode" => "lines+markers",
+        "text"  => "Hi there",
+        "textposition"  => "bottom center",
+        "hovertext"  => "",
+        "hoverinfo"  => "all",
+        "xaxis"  => "x",
+        "yaxis"  => "y",
+        "connectgaps"  => false,
+        "textfont"  => ["family"  =>  "raleway", "size"  => 16, "color"  =>null],
+        "marker"  => [
+          "symbol"  => 1,
+          "opacity" => 1,
+          "size" => 5,
+          "maxdisplayed"  => 10,
+          "color"  => null,
+          "line" => ["width" => 1, "color" => null],
+          "gradient" => ["type" => "radial", "color" => null],  
+        ],
+        "line"  => [
+          "shape" => "spline",
+          "width" => 2,
+          "color"  => null,
+          "dash" => "solid",
+          "smoothing" => 1,
+          "simplify" => true,
+        ],
+        "error_y"  => [
+          "visible" => false,
+          "type" => "percent",
+          "symmetric" => true,
+          "value" => 20,
+          "valueminus" => 20,
+          "array" => [] ,
+          "arrayminus" => [],
+          "color" => null,
+          "thickness" => 2,
+          "width" => 4,
+        ],
+        "hoverlabel"  => [
+          "bgcolor" => null,
+          "bordercolor" => null,
+          "font"  => [
+            "family"  => "raleway",
+            "size"  => 15,
+            "color"  => null,
+          ],
+          "align" => null,
+          "namelength" => -1,
+        ]
+      ];
+    }
+
+
+
 
 
     public function default_chart () {
@@ -196,7 +255,11 @@ if (!class_exists('Dashboard')) {
 								"size" => 14,
 								"color" => "#666666"
 							]
-						]
+            ],
+          ],
+          "hovermode" => "x",
+          "hoverlabel" => [
+            "bgcolor" => "red"
           ],
 					"title" => ["text" => "Ge AR/AR 8.0 - 12.0 &#181;m", "x" => 0.5, "y" => "auto", "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"]],
           "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),
@@ -698,7 +761,7 @@ if (!class_exists('Dashboard')) {
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family ];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, "traceSeed" => $this->trace_seed(), 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family ];
 
         } catch (\Exception $e) {
   

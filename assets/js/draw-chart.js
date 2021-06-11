@@ -5,7 +5,7 @@ import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
 import { chartOptionKey } from "./utilities"
 
-const drawChart = async( chart, spreadsheet, prefix ) => {
+const drawChart = async( chart, spreadsheet, traceSeed, prefix ) => {
 
   // Hide chart and table charts
   Plotly.purge(`${prefix}__plotlyChart`)
@@ -25,8 +25,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
   // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
 
+
   // Render panels
-  renderPanels( chart, spreadsheet, prefix )
+  renderPanels( chart, spreadsheet, traceSeed, prefix )
 
   
 
