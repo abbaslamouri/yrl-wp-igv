@@ -13,7 +13,7 @@ import Trace from "./Trace"
 import TableChart from "./TableChart"
 import { displayAdminMessage, createAccordionPanel, fetchformGroup } from "./utilities"
 
-const renderPanels = ( chart, spreadsheet, traceSeed, prefix ) => {
+const renderPanels = ( chart, spreadsheet, fontFamily, colors, prefix ) => {
 
 
 
@@ -94,18 +94,19 @@ if ( spreadsheet ) {
 
     // Add trace panel to accordion
     tracesAccordion.appendChild( createAccordionPanel(  `traces${index-1}Panel`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
-
-
-    chart.traces[index-1] = {...traceSeed}
-    chart.traces[index-1].visible = true,
-    chart.traces[index-1].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
-    chart.traces[index-1].x = spreadsheet[chart.fileUpload.sheetId].data[0],
-    chart.traces[index-1].y = spreadsheet[chart.fileUpload.sheetId].data[index],
+    
+    // chart.traces[index-1] = {}
+    // Object.assign(chart.traces[index-1], traceSeed)
+    // chart.traces[index-1].visible = true,
+    // chart.traces[index-1].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
+    // chart.traces[index-1].x = spreadsheet[chart.fileUpload.sheetId].data[0],
+    // chart.traces[index-1].y = spreadsheet[chart.fileUpload.sheetId].data[index],
     
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
-    const chartTraceInstance =  new Trace( chart.traces[index-1], index )
-    // chart.traces[index-1] = chartTraceInstance.options()
+    const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, fontFamily, colors )
+    chart.traces[index-1] = chartTraceInstance.options()
+
     // chart.traces.sections[index-1] = chartTraceInstance.sections()
     // panel(chartTraceInstance.sections(), `traces_${index-1}_Panel`, prefix)
 

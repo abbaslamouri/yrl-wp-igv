@@ -5,7 +5,7 @@ import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
 import { chartOptionKey } from "./utilities"
 
-const drawChart = async( chart, spreadsheet, traceSeed, prefix ) => {
+const drawChart = async( chart, spreadsheet, fontFamily, colors, prefix ) => {
 
   // Hide chart and table charts
   Plotly.purge(`${prefix}__plotlyChart`)
@@ -27,7 +27,7 @@ const drawChart = async( chart, spreadsheet, traceSeed, prefix ) => {
 
 
   // Render panels
-  renderPanels( chart, spreadsheet, traceSeed, prefix )
+  renderPanels( chart, spreadsheet, fontFamily, colors, prefix )
 
   
 
@@ -163,20 +163,26 @@ const drawChart = async( chart, spreadsheet, traceSeed, prefix ) => {
               value = "true" === value ? true : "false" === value ? false : value
               break
 
+            case "text":
+              value = "" === value ? [] : value.toString().split(",").map( ( item ) => { return item } )
+              chart.traces[traceNumber][optionKey] = value
+              // Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+              console.log("VAL", value)
+            break
+
             default:
 
               break
           }
 
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
-          console.log("TRACES",chart.traces[traceNumber])
           break
 
-          case "config":
-            Plotly.purge(`${prefix}__plotlyChart`)
-            chart.config[key] = value
-            Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
-            break
+          // case "config":
+          //   Plotly.purge(`${prefix}__plotlyChart`)
+          //   chart.config[key] = value
+          //   Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+          //   break
       }
 
     }

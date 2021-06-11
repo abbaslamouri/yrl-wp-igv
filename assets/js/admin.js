@@ -19,8 +19,10 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let jsonRes = {}
   let chart = undefined !== iwpgvCharts.chart ? iwpgvCharts.chart :{}
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
-  let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
+  // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
+  let fontFamily = iwpgvCharts.fontFamily
+  let colors = iwpgvCharts.colors
   let prefix = iwpgvObj.prefix
 
   console.log("iwpgvObj", {...iwpgvObj})
@@ -67,7 +69,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
 
         // Draw chart
-        drawChart( chart, spreadsheet, traceSeed, prefix )
+        drawChart( chart, spreadsheet, fontFamily, colors, prefix )
 
 
       }
@@ -217,9 +219,11 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         }
 
         // Render input fields and set chart options
-        drawChart( chart, spreadsheet, traceSeed, prefix )
+        drawChart( chart, spreadsheet, fontFamily, colors, prefix )
 
         mainAccordion.closeAll()
+
+        console.log("SP", spreadsheet)
 
 
       

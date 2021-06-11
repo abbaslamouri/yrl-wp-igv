@@ -139,3 +139,24 @@
   </div>
 </div>
 
+<div class="field-group fifty-fifty">
+  <div class="form-group">
+    <select class="form-group__input form-group__input-select layout" id="<?php echo "{$this->prefix}__layout[hovermode]"; ?>" name="<?php echo "{$this->prefix}__layout[hovermode]"; ?>" <?php echo ! $payload["chart"]["layout"]["showlegend"] ? "disabled" : ""; ?> >
+      <option value="x" <?php echo "x" === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >X</option>
+      <option value="y" <?php echo "y" === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >Y</option>
+      <option value="closest" <?php echo "closest" === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >Closest</option>
+      <option value="x unified" <?php echo "x unified" === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >X Unified</option>
+      <option value="y unified" <?php echo "y unified" === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >Y Unified</option>
+      <option value="false" <?php echo false === $payload["chart"]["layout"]["hovermode"] ? "selected" : ""; ?> >Disabled</option>
+    </select>
+    <label for="<?php echo "{$this->prefix}__layout[hovermode]"; ?>" class="form-group__label">Hover Mode</label>
+    <div class="form-group__tooltip form-group__tooltip-ttSelect">
+      <div class="form-group__tooltip-question-mark">?</div>
+      <div class="form-group__tooltip-hint">
+        Sets the orientation of the legend. Default: 'v'
+      </div>
+    </div>
+  </div>  
+</div>
+
+

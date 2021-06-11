@@ -52,6 +52,12 @@ if (!class_exists('Dashboard')) {
 			"raleway" => "Raleway"
 		];
 
+		protected $colors = [
+
+			"3366cc", "dc3912", "ff9900", "109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
+			
+		];
+
 
 		/**
 		*Magic constructor.  Gets called when class is instantiated
@@ -150,7 +156,8 @@ if (!class_exists('Dashboard')) {
 				"header" => [],
 				"cells" => [],
 				"layout" => [
-					"height" => "200",
+					"height" => 150,
+					// "width" => 400,
 					"margin" => ["l" => 20, "r" => 20, "t" => 20, "b" => 20, "pad" => 0, "autoexpand" => true],
 				],
 				"config" => ["responsive" => true, "displayModeBar" => true, "displaylogo" => true]
@@ -160,62 +167,62 @@ if (!class_exists('Dashboard')) {
 
 
 
-    public function trace_seed() {
+    // public function trace_seed() {
       
-      return [
+    //   return [
 
-        "visible"  => true,
-        "mode" => "lines+markers",
-        "text"  => "Hi there",
-        "textposition"  => "bottom center",
-        "hovertext"  => "",
-        "hoverinfo"  => "all",
-        "xaxis"  => "x",
-        "yaxis"  => "y",
-        "connectgaps"  => false,
-        "textfont"  => ["family"  =>  "raleway", "size"  => 16, "color"  =>null],
-        "marker"  => [
-          "symbol"  => 1,
-          "opacity" => 1,
-          "size" => 5,
-          "maxdisplayed"  => 10,
-          "color"  => null,
-          "line" => ["width" => 1, "color" => null],
-          "gradient" => ["type" => "radial", "color" => null],  
-        ],
-        "line"  => [
-          "shape" => "spline",
-          "width" => 2,
-          "color"  => null,
-          "dash" => "solid",
-          "smoothing" => 1,
-          "simplify" => true,
-        ],
-        "error_y"  => [
-          "visible" => false,
-          "type" => "percent",
-          "symmetric" => true,
-          "value" => 20,
-          "valueminus" => 20,
-          "array" => [] ,
-          "arrayminus" => [],
-          "color" => null,
-          "thickness" => 2,
-          "width" => 4,
-        ],
-        "hoverlabel"  => [
-          "bgcolor" => null,
-          "bordercolor" => null,
-          "font"  => [
-            "family"  => "raleway",
-            "size"  => 15,
-            "color"  => null,
-          ],
-          "align" => null,
-          "namelength" => -1,
-        ]
-      ];
-    }
+    //     "visible"  => true,
+    //     "mode" => "lines+markers",
+    //     "text"  => "Hi there",
+    //     "textposition"  => "bottom center",
+    //     "hovertext"  => "",
+    //     "hoverinfo"  => "all",
+    //     "xaxis"  => "x",
+    //     "yaxis"  => "y",
+    //     "connectgaps"  => false,
+    //     "textfont"  => ["family"  =>  "raleway", "size"  => 16, "color"  =>null],
+    //     "marker"  => [
+    //       "symbol"  => 1,
+    //       "opacity" => 1,
+    //       "size" => 5,
+    //       "maxdisplayed"  => 10,
+    //       "color"  => null,
+    //       "line" => ["width" => 1, "color" => null],
+    //       "gradient" => ["type" => "radial", "color" => null],  
+    //     ],
+    //     "line"  => [
+    //       "shape" => "spline",
+    //       "width" => 2,
+    //       "color"  => null,
+    //       "dash" => "solid",
+    //       "smoothing" => 1,
+    //       "simplify" => true,
+    //     ],
+    //     "error_y"  => [
+    //       "visible" => false,
+    //       "type" => "percent",
+    //       "symmetric" => true,
+    //       "value" => 20,
+    //       "valueminus" => 20,
+    //       "array" => [] ,
+    //       "arrayminus" => [],
+    //       "color" => null,
+    //       "thickness" => 2,
+    //       "width" => 4,
+    //     ],
+    //     "hoverlabel"  => [
+    //       "bgcolor" => null,
+    //       "bordercolor" => null,
+    //       "font"  => [
+    //         "family"  => "raleway",
+    //         "size"  => 15,
+    //         "color"  => null,
+    //       ],
+    //       "align" => null,
+    //       "namelength" => -1,
+    //     ]
+    //   ];
+    // }
 
 
 
@@ -229,7 +236,7 @@ if (!class_exists('Dashboard')) {
 				"fileUpload" => [], 
         "layout" => [
 					"width" => null,
-					"height" => null,
+					"height" => 300,
 					"autosize" => true,
           "paper_bgcolor" => "#ffffff",
           "plot_bgcolor" => "#ffffff",
@@ -258,9 +265,9 @@ if (!class_exists('Dashboard')) {
             ],
           ],
           "hovermode" => "x",
-          "hoverlabel" => [
-            "bgcolor" => "red"
-          ],
+          // "hoverlabel" => [
+          //   "bgcolor" => "red"
+          // ],
 					"title" => ["text" => "Ge AR/AR 8.0 - 12.0 &#181;m", "x" => 0.5, "y" => "auto", "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"]],
           "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),
           "xaxis2" => $this->chart_axis(  "Wavelength ( &#181;m )", "top", "x", "x", false ),
@@ -268,6 +275,49 @@ if (!class_exists('Dashboard')) {
 					"yaxis2" => $this->chart_axis( "Reflectance ( % )", "right", "y", "y",false ),
           "modebar" => ["bgcolor" => "#cccccc", "orientation" => "h", "color" => "#ffffff", "activecolor" => "#ffffff"],
 					"margin" => ["l" => 80, "r" => 80, "t" => 100, "b" => 80, "pad" => 0,"autoexpand" => true],
+					"annotations" =>[
+							[
+								"visible" => true,
+								"text" => 'Annotation A',
+								"textangle" => 0,
+								"font" => [
+									"family" => "balto",
+									"size" => 14,
+									"color" => "#666666"
+								],
+								"width" => null,
+								"height" => null,
+								"opacity" => 1,
+								"align" => "center",
+								"valign" => "middle",
+								"bgcolor" => "#ffffff",
+								"bordercolor" => "#000000",
+								"borderpad" => 1,
+								"borderwidth" => 1,
+								"showarrow" => true,
+								"arrowcolor" => "#000000",
+								"arrowhead" => 1,
+								"startarrowhead" => 1,
+								"arrowside" => "end",
+								"arrowsize" => 1,
+								"startarrowsize" => 1,
+								"arrowwidth" => null,
+								"standoff" => 0,
+								"startstandoff" => 0,
+								"axref" => 'pixel',
+								"ayref" => 'pixel',
+								"ax" => -30,
+								"ay" => -40,
+								"xref" => 'x',
+								"x" => 2150,
+								"xshift" => 0,
+								"yref" => 'y',
+								"y" => 20,
+								"yshift" => 0,
+
+							
+							]
+					]
 				],
         "config" => ["responsive" => true, "displayModeBar" => false, "displaylogo" => true, "staticPlot" => false],
         "traces" => [],
@@ -761,7 +811,7 @@ if (!class_exists('Dashboard')) {
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, "traceSeed" => $this->trace_seed(), 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family ];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family, "colors" => $this->colors ];
 
         } catch (\Exception $e) {
   

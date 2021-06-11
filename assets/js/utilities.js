@@ -686,10 +686,10 @@ const fetchformGroup = (field, prefix) => {
   }
 
   // add min, number input max, max, step AND PLAVE HOLDERif any
-  if (field.min) inputField.min = field.min
-  if (field.max) inputField.max = field.max
-  if (field.step) inputField.step = field.step
-  if (field.title) inputField.placeholder = field.title
+  if ( field.min ) inputField.min = field.min
+  if ( field.max ) inputField.max = field.max
+  if ( field.step ) inputField.step = field.step
+  if (field.title ) inputField.placeholder = field.title
   if ( field.readOnly ) inputField.readOnly = true
   if ( field.disabled ) inputField.disabled = true
   if ( field.required ) inputField.required = true
