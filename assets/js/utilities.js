@@ -586,7 +586,7 @@ const hidePanels = ( ) => {
 // }
 
 
-const createAccordionPanel = ( acCssClass, targetTitle, intro ) => {
+const createLevel2Panel = ( acCssClass, targetTitle, intro ) => {
 
    // Create accordion panel
    const ac = document.createElement( "div" )
@@ -749,6 +749,47 @@ const fetchformGroup = (field, prefix) => {
 }
 
 
+const createLevel3Panel = (sections, section, panelCssClass, prefix) => {
+
+  const acPanel = document.querySelector( panelCssClass )
+
+  
+  for (const fieldRow in sections[section].fieldGroups) {
+      
+    const row = sections[section].fieldGroups[fieldRow];
+
+    //Create field group and add apprpriate css classes
+    const fieldGroup = document.createElement( "div" )
+    if (row.cssClasses) {
+      for (const cssClass in row.cssClasses) {
+        fieldGroup.classList.add(row.cssClasses[cssClass])
+      }
+    }
+    
+    // Loop through fields
+    for (const el in row.inputFields) {
+
+      const formGroup = fetchformGroup( row.inputFields[el], prefix )
+      
+      fieldGroup.appendChild( formGroup )
+      // console.log(fieldGroup)
+
+      // Add field group to content
+      // if (Object.keys(panelSections).length > 1) {
+        acPanel.appendChild( fieldGroup )
+      // } else {
+        // panelContent.appendChild( fieldGroup )
+      // }
+
+    }
+
+  }
+
+  // return acPanel
+
+}
+
+
 
 
 
@@ -853,7 +894,8 @@ module.exports = {
   showInputField,
   hideInputField,
   toggleInputField,
-  createAccordionPanel,
+  createLevel2Panel,
+  createLevel3Panel,
   setSheetIdOptions,
   showPanels,
   hidePanels,

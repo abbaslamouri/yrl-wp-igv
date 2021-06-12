@@ -10,8 +10,9 @@ import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 // import ChartLayout from "./ChartLayout"
 import Trace from "./Trace"
+import Annotation from "./Annotation"
 import TableChart from "./TableChart"
-import { displayAdminMessage, createAccordionPanel, fetchformGroup } from "./utilities"
+import { displayAdminMessage, createLevel2Panel, createLevel3Panel } from "./utilities"
 
 const renderPanels = ( chart, spreadsheet, fontFamily, colors, prefix ) => {
 
@@ -84,31 +85,22 @@ const renderPanels = ( chart, spreadsheet, fontFamily, colors, prefix ) => {
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
 
+  const level1AccPanelCssClass = `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc`
+
   // Get chart traces panel content div
-  const tracesAccordion = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc` )
-  tracesAccordion.innerHTML = ""
+  // const document.querySelector( level1AccPanelCssClass ) = document.querySelector( level1AccPanelCssClass )
+  document.querySelector( level1AccPanelCssClass ).innerHTML = ""
 
   // chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1
   while ( index < spreadsheet[chart.fileUpload.sheetId].labels.length ) {  
 
-    // Add trace panel to accordion
-    tracesAccordion.appendChild( createAccordionPanel(  `traces${index-1}Panel`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
-    
-    // chart.traces[index-1] = {}
-    // Object.assign(chart.traces[index-1], traceSeed)
-    // chart.traces[index-1].visible = true,
-    // chart.traces[index-1].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[index],
-    // chart.traces[index-1].x = spreadsheet[chart.fileUpload.sheetId].data[0],
-    // chart.traces[index-1].y = spreadsheet[chart.fileUpload.sheetId].data[index],
-    
-
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
     const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, fontFamily, colors )
     chart.traces[index-1] = chartTraceInstance.options()
 
-    // chart.traces.sections[index-1] = chartTraceInstance.sections()
-    // panel(chartTraceInstance.sections(), `traces_${index-1}_Panel`, prefix)
+    // Add trace panel to accordion
+    document.querySelector( level1AccPanelCssClass ).appendChild( createLevel2Panel(  `traces${index-1}Panel`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
 
     // Create trace sections acordion div
     const traceSectionsAccordionDiv = document.createElement("div")
@@ -123,42 +115,43 @@ if ( spreadsheet ) {
 
     const sections = chartTraceInstance.sections()
     for ( const section in sections ) {
-      // console.log("PROP",section, sections)
       // Add trace panel to accordion
-      traceSectionsAccordionDiv.appendChild( createAccordionPanel(  `traces${index-1}${section}Panel`, sections[section].title, sections[section].intro ) )
+      traceSectionsAccordionDiv.appendChild( createLevel2Panel(  `traces${index-1}${section}Panel`, sections[section].title, sections[section].intro ) )
       
-      const acPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel .traces${index-1}${section}Panel .ac-panel` )
+      // const acPanel = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel .traces${index-1}${section}Panel .ac-panel` )
 
-      for (const fieldRow in sections[section].fieldGroups) {
+      createLevel3Panel(sections, section, `.${prefix}__admin #${prefix}__chartOptionsForm .tracesPanel .ac-panel .traces__Acc .traces${index-1}Panel .ac-panel .traces${index-1}${section}Panel .ac-panel`, prefix)
+
+      // for (const fieldRow in sections[section].fieldGroups) {
       
-        const row = sections[section].fieldGroups[fieldRow];
+      //   const row = sections[section].fieldGroups[fieldRow];
   
-        //Create field group and add apprpriate css classes
-        const fieldGroup = document.createElement( "div" )
-        if (row.cssClasses) {
-          for (const cssClass in row.cssClasses) {
-            fieldGroup.classList.add(row.cssClasses[cssClass])
-          }
-        }
+      //   //Create field group and add apprpriate css classes
+      //   const fieldGroup = document.createElement( "div" )
+      //   if (row.cssClasses) {
+      //     for (const cssClass in row.cssClasses) {
+      //       fieldGroup.classList.add(row.cssClasses[cssClass])
+      //     }
+      //   }
         
-        // Loop through fields
-        for (const el in row.inputFields) {
+      //   // Loop through fields
+      //   for (const el in row.inputFields) {
   
-          const formGroup = fetchformGroup( row.inputFields[el], prefix )
+      //     const formGroup = fetchformGroup( row.inputFields[el], prefix )
           
-          fieldGroup.appendChild( formGroup )
-          // console.log(fieldGroup)
+      //     fieldGroup.appendChild( formGroup )
+      //     // console.log(fieldGroup)
   
-          // Add field group to content
-          // if (Object.keys(panelSections).length > 1) {
-            acPanel.appendChild( fieldGroup )
-          // } else {
-            // panelContent.appendChild( fieldGroup )
-          // }
+      //     // Add field group to content
+      //     // if (Object.keys(panelSections).length > 1) {
+      //       acPanel.appendChild( fieldGroup )
+      //     // } else {
+      //       // panelContent.appendChild( fieldGroup )
+      //     // }
   
-        }
+      //   }
   
-      }
+      // }
 
 
     }

@@ -88,6 +88,14 @@
             </div>
           </div>
 
+          <div class="ac AnnotationsPanel">
+            <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
+            <div class="ac-panel">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <div class="accordion accordion__level-2 Annotations__Acc"></div>
+            </div>
+          </div>
+
           <div class="ac legendPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Legend</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/legend.php"; ?></div>
