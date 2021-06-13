@@ -592,6 +592,8 @@ const createLevel2Ac = ( acCssClass, targetTitle, intro ) => {
    const ac = document.createElement( "div" )
    ac.classList.add( "ac", acCssClass )
 
+   console.log("AC", ac)
+
    // Create intro p
    const introDiv = document.createElement( "div" )
    introDiv.classList.add( "ac-text", "intro" )
@@ -749,16 +751,16 @@ const fetchformGroup = (field, prefix) => {
 }
 
 
-const createPanelSections = (sections, level2AccrdionDivCssClass, level2AcDivCssClass, level3AccordionDiv, index, prefix) => {
+const createPanelSectionsOld = ( sections, prefix, level2AccordionDivCssClass, level2AcDivCssClass, level3AccordionDiv, level3AcDivCssClass ) => {
 
   for ( const section in sections ) {
 
-    const level3AcDivCssClass = `traces${index-1}${section}Ac`
+    // const level3AcDivCssClass = `traces${index-1}${section}Ac`
 
     // Add trace panel to accordion
     level3AccordionDiv.appendChild( createLevel2Ac(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
 
-    const acPanel = document.querySelector( `${level2AccrdionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
+    const acPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
 
 
     for (const fieldRow in sections[section].fieldGroups) {
@@ -793,6 +795,64 @@ const createPanelSections = (sections, level2AccrdionDivCssClass, level2AcDivCss
     }
 
     // return acPanel
+
+  }
+
+}
+
+
+
+
+const createPanelSections = ( sections, sectionsContainer, prefix ) => {
+
+  if (sectionsContainer.classList.contains("__Accordion")) {
+    console.log("hello")
+    sectionsContainer.appendChild( createLevel2Ac(  `xx`, sections[section].title, sections[section].intro ) )
+    fieldGroupsContainer = sectionsContainer.querySelector( `.ac-panel`)
+  } else {
+    fieldGroupsContainer = sectionsContainer
+  }
+  console.log("FGC", fieldGroupsContainer)
+  return
+
+  for ( const section in sections ) {
+
+    // Create intro paragraph and add it to sestion container
+    const introP = document.createElement("p")
+    introP.classList.add("ac-text", "intro")
+    introText = document.createTextNode( sections[section].intro )
+    introP.appendChild(introText)
+    sectionsContainer.appendChild(introP)
+
+
+
+     // const level3AcDivCssClass = `traces${index-1}${section}Ac`
+
+    // Add trace panel to accordion
+
+   
+
+    // Loop rhtough sections 
+    for (const fieldRow in sections[section].fieldGroups) {
+        
+      const row = sections[section].fieldGroups[fieldRow];
+
+      //Create field group and add apprpriate css classes
+      const fieldGroup = document.createElement( "div" )
+      if (row.cssClasses) {
+        for (const cssClass in row.cssClasses) {
+          fieldGroup.classList.add(row.cssClasses[cssClass])
+        }
+      }
+      
+      // Loop through fields
+      for (const el in row.inputFields) {
+        const formGroup = fetchformGroup( row.inputFields[el], prefix )
+        fieldGroup.appendChild( formGroup )
+        fieldGroupsContainer.appendChild( fieldGroup )
+      }
+
+    }
 
   }
 

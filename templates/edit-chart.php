@@ -1,13 +1,13 @@
 <!-- Create a header in the default WordPress 'wrap' container -->
 <?php 
-  $layout = $payload["chart"]["layout"];
-  $__layout = "{$this->prefix}__layout";
+  // $layout = $payload["chart"]["layout"];
+  // $__layout = "{$this->prefix}__layout";
 
-  $config = $payload["chart"]["config"];
-  $__config = "{$this->prefix}__config";
+  // $config = $payload["chart"]["config"];
+  // $__config = "{$this->prefix}__config";
 
-  $min_max_avg_table = $payload["chart"]["minMaxAvgTable"];
-  $__min_max_avg_table = "{$this->prefix}__minMaxAvgTable";
+  // $min_max_avg_table = $payload["chart"]["minMaxAvgTable"];
+  // $__min_max_avg_table = "{$this->prefix}__minMaxAvgTable";
   // print_r($payload)
 //  print_r($layout)
 
@@ -65,14 +65,16 @@
             </div>
           </div>
 
-          <div class="ac basicOptionsAc hidden">
+          <div class="ac basicOptionsAc">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
+            <div class="ac-panel">
+              <?php //require "{$this->path}templates/basic-options.php"; ?>
+            </div>
           </div>
 
           <div class="ac titleAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-title.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-title.php"; ?></div>
           </div>
 
           <!-- <div class="ac configPanel hidden">
@@ -98,7 +100,7 @@
 
           <div class="ac legendAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Legend</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/legend.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/legend.php"; ?></div>
           </div>
 
           <div class="ac hoverlabelAc hidden">
@@ -108,16 +110,20 @@
 
           <div class="ac modebarAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/modebar.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/modebar.php"; ?></div>
           </div>
 
-          <div class="ac xaxisAc hidden">
+          <div class="ac xaxisAc">
             <?php 
               $chart_axis = "xaxis";
               $axis_title = "Bottom Axis";
             ?>
             <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
+            <div class="ac-panel">
+            <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+            <div class="accordion accordion__level-3 xaxis__Accordion"></div>
+            <?php //require "{$this->path}templates/chart-axis.php"; ?>
+            </div>
           </div>
 
           <div class="ac xaxis2Ac hidden">
@@ -126,7 +132,7 @@
             $axis_title = "Top Axis";
           ?>
             <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
@@ -137,7 +143,7 @@
               $axis_title = "Left Axis";
             ?>
             <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
@@ -148,14 +154,14 @@
               $axis_title = "Right Axis";
             ?>
             <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
           <div class="ac minMaxAvgTableAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Min/Max/Avg Table</div></h2>
-            <div class="ac-panel"><?php require "{$this->path}templates/min-max-avg-table.php"; ?></div>
+            <div class="ac-panel"><?php //require "{$this->path}templates/min-max-avg-table.php"; ?></div>
           </div>
 
         </div>

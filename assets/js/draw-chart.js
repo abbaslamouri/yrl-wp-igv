@@ -5,7 +5,7 @@ import renderPanels from "./render-panels"
 import renderChart from "./render-chart"
 import { chartOptionKey } from "./utilities"
 
-const drawChart = async( chart, spreadsheet, fontFamily, colors, prefix ) => {
+const drawChart = async( chart, spreadsheet, prefix ) => {
 
   // Hide chart and table charts
   Plotly.purge(`${prefix}__plotlyChart`)
@@ -27,7 +27,7 @@ const drawChart = async( chart, spreadsheet, fontFamily, colors, prefix ) => {
 
 
   // Render panels
-  renderPanels( chart, spreadsheet, fontFamily, colors, prefix )
+  renderPanels( chart, spreadsheet, prefix )
 
   
 

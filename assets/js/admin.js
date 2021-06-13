@@ -17,7 +17,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = undefined !== iwpgvCharts.chart ? iwpgvCharts.chart :{}
+  let chart = null === iwpgvCharts.chart ? {fileUpload: {}, basicOptions: {}, xaxis: {}} : iwpgvCharts.chart 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
@@ -69,7 +69,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
 
         // Draw chart
-        drawChart( chart, spreadsheet, fontFamily, colors, prefix )
+        drawChart( chart, spreadsheet, prefix )
 
 
       }
@@ -103,17 +103,17 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         Plotly.purge(`${prefix}__plotlyChart`)
         Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
         // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .configAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
-        document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
+        // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
 
         document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.add( "hidden" )
 
@@ -219,7 +219,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         }
 
         // Render input fields and set chart options
-        drawChart( chart, spreadsheet, fontFamily, colors, prefix )
+        drawChart( chart, spreadsheet, prefix )
 
         mainAccordion.closeAll()
 
@@ -255,11 +255,12 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         mainAccordion.open(0)
       }
 
-      new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
       new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
       
      

@@ -802,14 +802,15 @@ if (!class_exists('Dashboard')) {
 
 						} else {
               
-              $chart = $this->default_chart();
+              $chart = null;
 
             }
 
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family, "colors" => $this->colors ];
+          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet ];
+          // $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family, "colors" => $this->colors ];
 
         } catch (\Exception $e) {
   

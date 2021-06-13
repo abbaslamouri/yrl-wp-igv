@@ -12,16 +12,42 @@ import ChartAxis from "./ChartAxis"
 import Trace from "./Trace"
 import Annotation from "./Annotation"
 import TableChart from "./TableChart"
-import { displayAdminMessage, createLevel2Ac, fetchformGroup, createPanelSections } from "./utilities"
+import { displayAdminMessage, createLevel2Ac, createPanelSections } from "./utilities"
 
-const renderPanels = ( chart, spreadsheet, fontFamily, colors, prefix ) => {
+const renderPanels = ( chart, spreadsheet, prefix ) => {
+
+  // Render layout basic options panel
+  let optionId = "basicOptions"
+  let sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel` )
+  sectionsContainer.innerHTML = ""
+  let OptionInstance = new BasicOptions( chart[optionId], prefix )
+  const basicOptions = OptionInstance.options()
+  createPanelSections( OptionInstance.sections(), sectionsContainer, prefix )
+
+  // Render layout xaxis panel
+  optionId = "xaxis"
+  sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel .${optionId}__Accordion` )
+  sectionsContainer.innerHTML = ""
+  OptionInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId, prefix )
+  chart.basicOptions = OptionInstance.options()
+  createPanelSections( OptionInstance.sections(), sectionsContainer, prefix )
 
 
 
-  // // Render layout basic options panel
-  // const basicOptionsInstance = new BasicOptions( ( chart.basicOptions !== undefined ) ? chart.basicOptions : {}, prefix )
-  // chart.basicOptions = basicOptionsInstance.options()
-  // panel( basicOptionsInstance.sections(), "basicOptionsPanel", prefix )
+
+
+  // Render layout bottom axis options panel
+  // const bottomAxisInstance = new ChartAxis( ( chart.bottomAxis !== undefined ) ? chart.bottomAxis : {}, chart.fileUpload.chartType, "bottomAxis", prefix )
+  // chart.bottomAxis = bottomAxisInstance.options()
+  // panel( bottomAxisInstance.sections(), "bottomAxisPanel", prefix )
+
+
+  console.log("CHART", basicOptions)
+  return
+
+
+
+  
 
   // // Render layout chart title panel
   // const titleInstance = new Title( ( chart.title !== undefined ) ? chart.title : {}, prefix )
@@ -85,11 +111,13 @@ const renderPanels = ( chart, spreadsheet, fontFamily, colors, prefix ) => {
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
 
-  const level2AccrdionDivCssClass = `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`
+  const AcPanelCssClass = `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel`
+
+  const level2AccordionDivCssClass = `${AcPanelCssClass} .traces__Accordion`
 
   // Get chart traces panel content div
-  // const document.querySelector( level2AccrdionDivCssClass ) = document.querySelector( level2AccrdionDivCssClass )
-  document.querySelector( level2AccrdionDivCssClass ).innerHTML = ""
+  // const document.querySelector( level2AccordionDivCssClass ) = document.querySelector( level2AccordionDivCssClass )
+  document.querySelector( level2AccordionDivCssClass ).innerHTML = ""
 
   // chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1
@@ -102,26 +130,28 @@ if ( spreadsheet ) {
     const level2AcDivCssClass = `traces${index-1}Ac`
 
     // Add trace panel to accordion
-    document.querySelector( level2AccrdionDivCssClass ).appendChild( createLevel2Ac(  `${level2AcDivCssClass}`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
+    document.querySelector( level2AccordionDivCssClass ).appendChild( createLevel2Ac(  `${level2AcDivCssClass}`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
     
     // Create trace sections acordion div
     const level3AccordionDiv = document.createElement("div")
     level3AccordionDiv.classList.add("accordion", "accordion__level-3", `trace${index-1}__Accordion`)
 
     // Get chart traces panel content div
-    const level2AcPanel = document.querySelector( `${level2AccrdionDivCssClass} .${level2AcDivCssClass} .ac-panel` )
+    const level2AcPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel` )
 
     level2AcPanel.appendChild( level3AccordionDiv )
 
-    createPanelSections(chartTraceInstance.sections(), level2AccrdionDivCssClass, level2AcDivCssClass, level3AccordionDiv, index, prefix)
+    const level3AcDivCssClass = `traces${index-1}${section}Ac`
 
-    new Accordion( `${level2AccrdionDivCssClass} .trace${index-1}__Accordion`, { duration: 400 } )
+    createPanelSections(chartTraceInstance.sections(), prefix, level2AccordionDivCssClass, level2AcDivCssClass, level3AccordionDiv, level3AcDivCssClass)
+
+    new Accordion( `${level2AccordionDivCssClass} .trace${index-1}__Accordion`, { duration: 400 } )
 
     index++
   }
 
   // Load accordion
-  new Accordion( level2AccrdionDivCssClass, { duration: 400 } )
+  new Accordion( level2AccordionDivCssClass, { duration: 400 } )
 
   // Add hover event to tooltips
   document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip`).forEach( (el) => {
