@@ -1,6 +1,6 @@
 
 
-<div class="<?php echo "accordion accordion__level-2 {$chart_axis}__Acc"; ?>">
+<div class="<?php echo "accordion accordion__level-2 {$chart_axis}__Accordion"; ?>">
   
   <div class="ac">
     <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>

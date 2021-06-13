@@ -2,7 +2,7 @@
 
 <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
 
-<div class="<?php echo "accordion accordion__level-2 legend__Acc"; ?>">
+<div class="<?php echo "accordion accordion__level-2 legend__Accordion"; ?>">
   
   <div class="ac">
     <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>

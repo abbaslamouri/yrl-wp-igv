@@ -56,21 +56,21 @@
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
 
-        <div class="accordion accordion__level-1 main__Acc">
+        <div class="accordion accordion__level-1 main__Accordion">
           
-          <div class="ac fileUploadPanel">
+          <div class="ac fileUploadAc">
             <h2 class="ac-header"><div class="ac-trigger">File Upload</div></h2>
             <div class="ac-panel hidden">
               <?php require "{$this->path}templates/file-upload.php"; ?>
             </div>
           </div>
 
-          <div class="ac basicOptionsPanel hidden">
+          <div class="ac basicOptionsAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/basic-options.php"; ?></div>
           </div>
 
-          <div class="ac titlePanel hidden">
+          <div class="ac titleAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/chart-title.php"; ?></div>
           </div>
@@ -80,38 +80,38 @@
             <div class="ac-panel"><?php //require "{$this->path}templates/chart-config.php"; ?></div>
           </div> -->
 
-          <div class="ac tracesPanel hidden">
+          <div class="ac tracesAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-              <div class="accordion accordion__level-2 traces__Acc"></div>
+              <div class="accordion accordion__level-2 traces__Accordion"></div>
             </div>
           </div>
 
-          <div class="ac AnnotationsPanel">
+          <div class="ac AnnotationsAc">
             <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-              <div class="accordion accordion__level-2 Annotations__Acc"></div>
+              <div class="accordion accordion__level-2 Annotations__Accordion"></div>
             </div>
           </div>
 
-          <div class="ac legendPanel hidden">
+          <div class="ac legendAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Legend</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/legend.php"; ?></div>
           </div>
 
-          <div class="ac hoverlabelPanel hidden">
+          <div class="ac hoverlabelAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Hoverlabel</div></h2>
             <div class="ac-panel"></div>
           </div>
 
-          <div class="ac modebarPanel hidden">
+          <div class="ac modebarAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/modebar.php"; ?></div>
           </div>
 
-          <div class="ac xaxisPanel hidden">
+          <div class="ac xaxisAc hidden">
             <?php 
               $chart_axis = "xaxis";
               $axis_title = "Bottom Axis";
@@ -120,7 +120,7 @@
             <div class="ac-panel"><?php require "{$this->path}templates/chart-axis.php"; ?></div>
           </div>
 
-          <div class="ac xaxis2Panel hidden">
+          <div class="ac xaxis2Ac hidden">
           <?php
             $chart_axis = "xaxis2";
             $axis_title = "Top Axis";
@@ -131,7 +131,7 @@
             </div>
           </div>
 
-          <div class="ac yaxisPanel hidden">
+          <div class="ac yaxisAc hidden">
             <?php
               $chart_axis = "yaxis";
               $axis_title = "Left Axis";
@@ -142,7 +142,7 @@
             </div>
           </div>
 
-          <div class="ac yaxis2Panel hidden">
+          <div class="ac yaxis2Ac hidden">
             <?php
               $chart_axis = "yaxis2";
               $axis_title = "Right Axis";
@@ -153,7 +153,7 @@
             </div>
           </div>
 
-          <div class="ac minMaxAvgTablePanel hidden">
+          <div class="ac minMaxAvgTableAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Min/Max/Avg Table</div></h2>
             <div class="ac-panel"><?php require "{$this->path}templates/min-max-avg-table.php"; ?></div>
           </div>

@@ -586,7 +586,7 @@ const hidePanels = ( ) => {
 // }
 
 
-const createLevel2Panel = ( acCssClass, targetTitle, intro ) => {
+const createLevel2Ac = ( acCssClass, targetTitle, intro ) => {
 
    // Create accordion panel
    const ac = document.createElement( "div" )
@@ -749,43 +749,52 @@ const fetchformGroup = (field, prefix) => {
 }
 
 
-const createLevel3Panel = (sections, section, panelCssClass, prefix) => {
+const createPanelSections = (sections, level2AccrdionDivCssClass, level2AcDivCssClass, level3AccordionDiv, index, prefix) => {
 
-  const acPanel = document.querySelector( panelCssClass )
+  for ( const section in sections ) {
 
-  
-  for (const fieldRow in sections[section].fieldGroups) {
-      
-    const row = sections[section].fieldGroups[fieldRow];
+    const level3AcDivCssClass = `traces${index-1}${section}Ac`
 
-    //Create field group and add apprpriate css classes
-    const fieldGroup = document.createElement( "div" )
-    if (row.cssClasses) {
-      for (const cssClass in row.cssClasses) {
-        fieldGroup.classList.add(row.cssClasses[cssClass])
+    // Add trace panel to accordion
+    level3AccordionDiv.appendChild( createLevel2Ac(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
+
+    const acPanel = document.querySelector( `${level2AccrdionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
+
+
+    for (const fieldRow in sections[section].fieldGroups) {
+        
+      const row = sections[section].fieldGroups[fieldRow];
+
+      //Create field group and add apprpriate css classes
+      const fieldGroup = document.createElement( "div" )
+      if (row.cssClasses) {
+        for (const cssClass in row.cssClasses) {
+          fieldGroup.classList.add(row.cssClasses[cssClass])
+        }
       }
-    }
-    
-    // Loop through fields
-    for (const el in row.inputFields) {
-
-      const formGroup = fetchformGroup( row.inputFields[el], prefix )
       
-      fieldGroup.appendChild( formGroup )
-      // console.log(fieldGroup)
+      // Loop through fields
+      for (const el in row.inputFields) {
 
-      // Add field group to content
-      // if (Object.keys(panelSections).length > 1) {
-        acPanel.appendChild( fieldGroup )
-      // } else {
-        // panelContent.appendChild( fieldGroup )
-      // }
+        const formGroup = fetchformGroup( row.inputFields[el], prefix )
+        
+        fieldGroup.appendChild( formGroup )
+        // console.log(fieldGroup)
+
+        // Add field group to content
+        // if (Object.keys(panelSections).length > 1) {
+          acPanel.appendChild( fieldGroup )
+        // } else {
+          // panelContent.appendChild( fieldGroup )
+        // }
+
+      }
 
     }
+
+    // return acPanel
 
   }
-
-  // return acPanel
 
 }
 
@@ -894,8 +903,8 @@ module.exports = {
   showInputField,
   hideInputField,
   toggleInputField,
-  createLevel2Panel,
-  createLevel3Panel,
+  createLevel2Ac,
+  createPanelSections,
   setSheetIdOptions,
   showPanels,
   hidePanels,
