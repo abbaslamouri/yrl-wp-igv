@@ -90,11 +90,13 @@
             </div>
           </div>
 
-          <div class="ac AnnotationsAc">
+          <div class="ac annotationsAc">
             <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-              <div class="accordion accordion__level-2 Annotations__Accordion"></div>
+              <div class="accordion accordion__level-2 annotations__Accordion">
+              <button class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}____addAnnotation"; ?>" >Add New</button>
+              </div>
             </div>
           </div>
 

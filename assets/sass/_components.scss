@@ -13,7 +13,13 @@
   .btn {
     background-color: rgba( $color_primary, 1 ) !important;
     color: rgba( $color-p-light, 1 ) !important;
+
+    &-danger {
+      background-color:rgba( $color_danger, 1 ) !important;
+    }
   }
+
+  
 
 
   /*************************************************

@@ -2,7 +2,7 @@ const fontFamily = () => {
 
   return {
 
-    "" : "Select Font Family",
+    // "" : "Select Font Family",
     Arial : "Arial",
     Valto: "Balto",
     "Times New Roman": "Times New Roman",
@@ -23,8 +23,10 @@ const fontFamily = () => {
 
 const colors = () => {
 
-  return [		
-    "#b71c1c", "#0d47a1", "#004d40", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", '#1976D2', "#212121", '#00796B', '#455A64', '#263238', '#303F9F', '#33691E', '#7B1FA2', '#EF6C00', '#FFA000'
+  return [
+
+    "3366cc", "dc3912", "ff9900", "109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
+
   ]
 }
 
@@ -807,8 +809,8 @@ const createPanelSections = ( sections, sectionsContainer, optionId, prefix ) =>
   for ( const section in sections ) {
 
     if (Object.values(sections).length > 1 ) {
-      sectionsContainer.appendChild( createPanel(  `${optionId}_${section}Ac`, sections[section].title, sections[section].intro ) )
-      fieldGroupsContainer = sectionsContainer.querySelector( `.${optionId}_${section}Ac .ac-panel`)
+      sectionsContainer.appendChild( createPanel(  `${optionId}${section}Ac`, sections[section].title, sections[section].intro ) )
+      fieldGroupsContainer = sectionsContainer.querySelector( `.${optionId}${section}Ac .ac-panel`)
     } else {
       fieldGroupsContainer = sectionsContainer
       
@@ -819,6 +821,7 @@ const createPanelSections = ( sections, sectionsContainer, optionId, prefix ) =>
       introP.appendChild(introText)
       fieldGroupsContainer.appendChild(introP)
     }
+
 
     // Loop rhtough sections 
     for (const fieldRow in sections[section].fieldGroups) {

@@ -2,10 +2,10 @@ import { fontFamily } from "./utilities"
 
 class BasicOPtions {
 
-  constructor( inputOptions, prefix ) {
+  constructor( inputOptions ) {
 
     this.inputOptions = inputOptions
-    this.prefix = prefix
+    // this.prefix = prefix
    
   }
 

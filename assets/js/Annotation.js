@@ -1,6 +1,8 @@
+import { fontFamily, colors } from "./utilities"
+
 class Annotation {
 
-  constructor( annotation, spreadsheet, index, sheetId, chartType, fontFamily, colors ) {
+  constructor( annotation, index ) {
 
     this.annotation = annotation;
     // this.spreadsheet = spreadsheet
@@ -9,7 +11,7 @@ class Annotation {
     // this.chartType= chartType
     // this.labels = Object.values(this.spreadsheet[this.sheetId]["labels"]);
     this.index = index;
-    // this.fontFamily = fontFamily
+    // fontFamily() = fontFamily
     // this.colors = colors
     // this.chartType = this.chart.chartParams.chartType;
 
@@ -35,7 +37,7 @@ class Annotation {
       text : ( this.annotation.text === undefined ) ? true : this.annotation.text,
       textangle : ( this.annotation.textangle === undefined ) ? 0: this.annotation.textangle,
       font : {
-        family : (  this.annotation.font === undefined || this.annotation.font.family === undefined ) ? Object.keys(this.fontFamily)[13] : this.annotation.font.family,
+        family : (  this.annotation.font === undefined || this.annotation.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.annotation.font.family,
         size : (  this.annotation.font === undefined || this.annotation.font.size === undefined ) ? 20 : this.annotation.font.size,
         color : (  this.annotation.font === undefined || this.annotation.font.color === undefined ) ? "#444444" : this.annotation.font.color,
       },
@@ -85,7 +87,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],     
             inputFields : [
               {
-                id : `annotations[${this.index-1}][visible]`,  
+                id : `annotations[${this.index}][visible]`,  
                 title : "Trace Visibility",  
                 type : "select",
                 options : {
@@ -97,7 +99,7 @@ class Annotation {
                 hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible). Default: visible"
               },
               {
-                id : `annotations[${this.index-1}][arrowside]`, 
+                id : `annotations[${this.index}][arrowside]`, 
                 title : "Arrow Side", 	
                 type : "select", 
                 options : {
@@ -116,7 +118,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],     
             inputFields : [
               {
-                id : `annotations[${this.index-1}][text]`,  
+                id : `annotations[${this.index}][text]`,  
                 title : "Text",  
                 type : "text",
                 value : this.options().text,
@@ -128,7 +130,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],     
             inputFields : [
               {
-                id : `annotations[${this.index-1}][width]`, 
+                id : `annotations[${this.index}][width]`, 
                 title : "Width", 	
                 type : "number",
                 min : 1,
@@ -139,7 +141,7 @@ class Annotation {
                 hint : "Sets the opacity of the trace."
               },
               {
-                id : `annotations[${this.index-1}][height]`, 
+                id : `annotations[${this.index}][height]`, 
                 title : "Height", 	
                 type : "number",
                 min : 1,
@@ -155,7 +157,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][opacity]`, 
+                id : `annotations[${this.index}][opacity]`, 
                 title : "Opacity", 	
                 type : "number",
                 min : 0,
@@ -166,7 +168,7 @@ class Annotation {
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
               {
-                id : `annotations[${this.index-1}][align]`, 
+                id : `annotations[${this.index}][align]`, 
                 title : "Horizontal Alignment", 	
                 type : "select", 
                 options : {
@@ -179,7 +181,7 @@ class Annotation {
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
               {
-                id : `annotations[${this.index-1}][valign]`, 
+                id : `annotations[${this.index}][valign]`, 
                 title : "Vertical Alignment", 	
                 type : "select", 
                 options : {
@@ -197,7 +199,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][textangle]`, 
+                id : `annotations[${this.index}][textangle]`, 
                 title : "Text Angle", 	
                 type : "number",
                 min : 0,
@@ -208,7 +210,7 @@ class Annotation {
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
               {
-                id : `annotations[${this.index-1}][name]`,  
+                id : `annotations[${this.index}][name]`,  
                 title : "Label in Legend",  
                 type : "text",
                 value : this.options().name,
@@ -228,7 +230,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][showarrow]`, 
+                id : `annotations[${this.index}][showarrow]`, 
                 title : "show Arrow", 	
                 type : "checkbox",
                 value : this.options().showarrow,
@@ -236,7 +238,7 @@ class Annotation {
                 hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
               },
               {
-                id : `annotations[${this.index-1}][[borderpad]`, 
+                id : `annotations[${this.index}][[borderpad]`, 
                 title : "Border Padding", 	
                 type : "number",
                 min : 1,
@@ -252,7 +254,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][borderwidth]`, 
+                id : `annotations[${this.index}][borderwidth]`, 
                 title : "Border Width", 	
                 type : "number",
                 min : 0,
@@ -263,7 +265,7 @@ class Annotation {
                 hint : "Sets the marker's opacity."
               },
               {
-                id : `annotations[${this.index-1}][arrowcolor]`,  
+                id : `annotations[${this.index}][arrowcolor]`,  
                 title : "Arrow Color",  
                 type : "color",
                 value : this.options().arrowcolor,
@@ -276,7 +278,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][arrowhead]`, 
+                id : `annotations[${this.index}][arrowhead]`, 
                 title : "Arrow Head", 	
                 type : "number",
                 min : 0,
@@ -287,7 +289,7 @@ class Annotation {
                 hint : "Sets the marker's opacity."
               },
               {
-                id : `annotations[${this.index-1}][startarrowhead]`, 
+                id : `annotations[${this.index}][startarrowhead]`, 
                 title : "Start Arrow Head", 	
                 type : "number",
                 min : 0,
@@ -303,7 +305,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][arrowsize]`, 
+                id : `annotations[${this.index}][arrowsize]`, 
                 title : "Arrow Size", 	
                 type : "number",
                 min : 0,
@@ -314,7 +316,7 @@ class Annotation {
                 hint : "Sets the marker's opacity."
               },
               {
-                id : `annotations[${this.index-1}][startarrowsize]`, 
+                id : `annotations[${this.index}][startarrowsize]`, 
                 title : "Start Arrow Size", 	
                 type : "number",
                 min : 0,
@@ -330,15 +332,15 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][bgcolor]`, 
+                id : `annotations[${this.index}][bgcolor]`, 
                 title : "Background Color", 	
                 type : "color",
                 value :  this.options().bgcolor,
-                disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
+                // disabled: ( false == this.options().visible || ! this.options().mode.includes( "marker" ) )  ? true : false,
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
-                id : `annotations[${this.index-1}][bordercolor]`, 
+                id : `annotations[${this.index}][bordercolor]`, 
                 title : "Border Color", 	
                 type : "color",
                 value :  this.options().bordercolor,
@@ -351,7 +353,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][arrowwidth]`, 
+                id : `annotations[${this.index}][arrowwidth]`, 
                 title : "Arrow Width", 	
                 type : "number",
                 min : 0,
@@ -362,7 +364,7 @@ class Annotation {
                 hint : "Sets the type of gradient used to fill the markers"
               },
               {
-                id : `annotations[${this.index-1}][standoff]`, 
+                id : `annotations[${this.index}][standoff]`, 
                 title : "Standoff", 	
                 type : "number",
                 min : 0,
@@ -378,7 +380,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][startstandoff]`, 
+                id : `annotations[${this.index}][startstandoff]`, 
                 title : "Start Standoff", 	
                 type : "number",
                 min : 0,
@@ -401,7 +403,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][axref]`,  
+                id : `annotations[${this.index}][axref]`,  
                 title : "Arrow X Reference",  
                 type : "text",
                 value : this.options().axref,
@@ -409,7 +411,7 @@ class Annotation {
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
               },
               {
-                id : `annotations[${this.index-1}][ayref]`,  
+                id : `annotations[${this.index}][ayref]`,  
                 title : "Arrow Y Reference",  
                 type : "text",
                 value : this.options().ayref,
@@ -422,7 +424,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][ax]`, 
+                id : `annotations[${this.index}][ax]`, 
                 title : "Arrow X", 	
                 type : "number",
                 // min : 1,
@@ -433,7 +435,7 @@ class Annotation {
                 hint : "Sets the width of the trace line."
               },
               {
-                id : `annotations[${this.index-1}][ay]`, 
+                id : `annotations[${this.index}][ay]`, 
                 title : "Arrow Y", 	
                 type : "number",
                 // min : 1,
@@ -449,7 +451,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][xref]`,  
+                id : `annotations[${this.index}][xref]`,  
                 title : "X Reference",  
                 type : "text",
                 value : this.options().xref,
@@ -457,7 +459,7 @@ class Annotation {
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
               },
               {
-                id : `annotations[${this.index-1}][yref]`,  
+                id : `annotations[${this.index}][yref]`,  
                 title : "Y Reference",  
                 type : "text",
                 value : this.options().yref,
@@ -470,7 +472,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][x]`, 
+                id : `annotations[${this.index}][x]`, 
                 title : "X", 	
                 type : "number",
                 // min : 1,
@@ -481,7 +483,7 @@ class Annotation {
                 hint : "Sets the width of the trace line."
               },
               {
-                id : `annotations[${this.index-1}][y]`, 
+                id : `annotations[${this.index}][y]`, 
                 title : "Y", 	
                 type : "number",
                 // min : 1,
@@ -497,7 +499,7 @@ class Annotation {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `annotations[${this.index-1}][xshift]`, 
+                id : `annotations[${this.index}][xshift]`, 
                 title : "X Shift", 	
                 type : "number",
                 min : 1,
@@ -508,7 +510,7 @@ class Annotation {
                 hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
               }, 
               {
-                id : `annotations[${this.index-1}][yshift]`, 
+                id : `annotations[${this.index}][yshift]`, 
                 title : "Y Shift", 	
                 type : "number",
                 min : 1,

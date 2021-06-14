@@ -25,7 +25,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
   // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
 
-
   // Render panels
   renderPanels( chart, spreadsheet, prefix )
 

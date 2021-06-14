@@ -20,19 +20,21 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   let optionId = "basicOptions"
   let sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel` )
   sectionsContainer.innerHTML = ""
-  const basicOptionInstance = new BasicOptions( chart[optionId], prefix )
-  const basicOptions = basicOptionInstance.options()
+  const basicOptionInstance = new BasicOptions( chart[optionId])
+  // chart.basicOptions = basicOptionInstance.options()
+  chart.layout = { ...chart.layout, ...basicOptionInstance.options() }
   createPanelSections( basicOptionInstance.sections(), sectionsContainer, optionId, prefix )
-
 
   // Render layout xaxis panel
   optionId = "xaxis"
   sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel .${optionId}__Accordion` )
   sectionsContainer.innerHTML = ""
-  const xAxisInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId, prefix )
-  const xaxisOptions = xAxisInstance.options()
+  const xAxisInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId )
+  // chart.xaxis = xAxisInstance.options()
+  chart.layout.xaxis = xAxisInstance.options()
   createPanelSections( xAxisInstance.sections(), sectionsContainer, optionId, prefix )
   new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+  
 
 
 
@@ -122,52 +124,117 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
 
-  const AcPanelCssClass = `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel`
+  const tracesAccordionDiv = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
+  tracesAccordionDiv.innerHTML = ""
 
-  const level2AccordionDivCssClass = `${AcPanelCssClass} .traces__Accordion`
-
-  // Get chart traces panel content div
-  // const document.querySelector( level2AccordionDivCssClass ) = document.querySelector( level2AccordionDivCssClass )
-  document.querySelector( level2AccordionDivCssClass ).innerHTML = ""
-
-  // chart.traces = ( chart.traces !== undefined )? chart.traces : {}
   let index = 1
-  while ( index < spreadsheet[chart.fileUpload.sheetId].labels.length ) {  
+  while ( index < spreadsheet[chart.fileUpload.sheetId].labels.length ) {
+
+    optionId = `traces${index-1}`
+
+    // Create a trace panel and add it to traces accordion
+    tracesAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
+
+    // Create level3 accordion inside new trace panel
+    const level3AccordionDiv = document.createElement("div")
+    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${optionId}__Accordion`)
+    document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .${optionId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+  
+    sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .${optionId}__Accordion`)
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
-    const chartTraceInstance =  new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType, fontFamily, colors )
-    chart.traces[index-1] = chartTraceInstance.options()
-
-    const level2AcDivCssClass = `traces${index-1}Ac`
-
-    // Add trace panel to accordion
-    document.querySelector( level2AccordionDivCssClass ).appendChild( createPanel(  `${level2AcDivCssClass}`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
-    
-    // Create trace sections acordion div
-    const level3AccordionDiv = document.createElement("div")
-    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `trace${index-1}__Accordion`)
-
-    // Get chart traces panel content div
-    const level2AcPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel` )
-
-    level2AcPanel.appendChild( level3AccordionDiv )
-
-    const level3AcDivCssClass = `traces${index-1}${section}Ac`
-
-    createPanelSections(chartTraceInstance.sections(), prefix, level2AccordionDivCssClass, level2AcDivCssClass, level3AccordionDiv, level3AcDivCssClass)
-
-    new Accordion( `${level2AccordionDivCssClass} .trace${index-1}__Accordion`, { duration: 400 } )
+    const traceInstance = new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType )
+    chart.traces[index-1] = traceInstance.options()
+    createPanelSections( traceInstance.sections(), sectionsContainer, optionId, prefix )
+    new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
 
     index++
+
   }
 
-  console.log("BASICOPTIONS", basicOptions)
-  console.log("XAXISOPTIONS", xaxisOptions)
-  console.log("TRACES", )
-  return
+  if (chart.annotations.length) {
+    console.log(chart.annotations)
+  }
+
+  document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm #${prefix}__addAnnotation`).addEventListener("click", function (event) {
+
+    event.preventDefault()
+
+    const index = chart.annotations.length
+
+    const optionId = ! chart.annotations.length ? `annotations0` : `annotations${index}`
+
+    const annotationsAccordionDiv = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion`)
+     // Create a annotation panel and add it to annotations accordion
+     annotationsAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, "New Annotation", `Here you can modify the options for New Annotation` ) )
+
+    // Create Delete annotation button
+    const deletebutton = document.createElement("button")
+    deletebutton.classList.add(`.${prefix}__deleteAnnotation`, "button", "btn", "btn-danger")
+    // deletebutton.id = `.${prefix}__annotations__${index + 1}`
+    const buttonText = document.createTextNode( "Delete Annotation" )
+    deletebutton.appendChild(buttonText)
+    document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( deletebutton )
+
+
+    // Create level3 accordion inside new annotation panel
+    const level3AccordionDiv = document.createElement("div")
+    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${optionId}__Accordion`)
+    document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+    const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .ac-panel .${optionId}__Accordion`)
+
+    chart.annotations[index] = ( chart.annotations[index] !== undefined )? chart.annotations[index] : {}
+    const annotationInstance = new Annotation( chart.annotations[index], index )
+    chart.annotations[index] = annotationInstance.options()
+    createPanelSections( annotationInstance.sections(), sectionsContainer, optionId, prefix )
+    new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+    
+    deletebutton.addEventListener("click", function (event) {
+
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this annotation",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          console.log("PPPPP", event.target.parentNode.parentNode)
+          event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
+          swal(`Annotation has been deleted!`, {
+            icon: "success",
+          });
+        } 
+        // else {
+        //   swal("Your imaginary file is safe!");
+        // }
+      })
+  
+  
+    })
+
+
+  })
+
+  document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .${prefix}__deleteAnnotation`).forEach( (el) => {
+    
+    el.addEventListener("click", function (event) {
+
+      console.log("PPPPP", event.target)
+
+    })
+
+  })
+
+
+  
+
 
   // Load accordion
-  new Accordion( level2AccordionDivCssClass, { duration: 400 } )
+  new Accordion( tracesAccordionDiv, { duration: 400 } )
 
   // Add hover event to tooltips
   document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip`).forEach( (el) => {
@@ -206,6 +273,13 @@ if ( spreadsheet ) {
     })
 
   })
+
+  console.log("CHARTY", chart)
+
+  const xx = {...chart.layout}
+  console.log("layout", chart.layout)
+  console.log("shallow", xx)
+
 
  
 

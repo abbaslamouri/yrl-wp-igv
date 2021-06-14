@@ -2,10 +2,11 @@ import Plotly from 'plotly.js-dist'
 import selectFile from './select-file'
 import saveChart from './save-chart'
 import Accordion from 'accordion-js'
+import Annotation from './Annotation'
 import 'accordion-js/dist/accordion.min.css'
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, setSheetIdOptions,  } from "./utilities"
+import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections } from "./utilities"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
@@ -17,12 +18,12 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = null === iwpgvCharts.chart ? {fileUpload: {}, basicOptions: {}, xaxis: {}, traces:{}} : iwpgvCharts.chart 
+  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {}, layout:{}, traces:{}, basicOptions: {}, xaxis: {}, annotations: [], minMaxAvgTable: {} } 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
-  let fontFamily = iwpgvCharts.fontFamily
-  let colors = iwpgvCharts.colors
+  // let fontFamily = iwpgvCharts.fontFamily
+  // let colors = iwpgvCharts.colors
   let prefix = iwpgvObj.prefix
 
   console.log("iwpgvObj", {...iwpgvObj})
@@ -46,9 +47,9 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
     // Add new chart or edit an existing chart
     if ( iwpgvCharts.action === "editChart" ) {
 
-      chart.fileUpload = {...chart.fileUpload}
-      chart.traces = {...chart.traces}
-      chart.minMaxAvgTable = {...chart.minMaxAvgTable}
+      // chart.fileUpload = {...chart.fileUpload}
+      // chart.traces = {...chart.traces}
+      // chart.minMaxAvgTable = {...chart.minMaxAvgTable}
       // chart.minMaxAvgTable.header = {...chart.minMaxAvgTable.header}
       // chart.minMaxAvgTable.cells = {...chart.minMaxAvgTable.cells}
     
@@ -223,7 +224,6 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
         mainAccordion.closeAll()
 
-        console.log("SP", spreadsheet)
 
 
       
@@ -262,11 +262,18 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       // new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
+
+      
+    
+
       
      
 
 
     }
+
+    console.log("SP", chart)
+
 
   } catch (error) {
 

@@ -3,11 +3,11 @@ import { fontFamily } from "./utilities"
 
 class ChartAxis  {
 
-  constructor( inputOPtions, chartType, axisId, prefix ) {
+  constructor( inputOPtions, chartType, axisId) {
 
     this.inputOPtions = inputOPtions
     this.axisId = axisId
-    this.prefix = prefix
+    // this.prefix = prefix
     this.axisSideOptions = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
     this.axisSideDefault = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? "bottom" : "left"
 
