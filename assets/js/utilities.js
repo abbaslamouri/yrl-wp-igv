@@ -586,13 +586,11 @@ const hidePanels = ( ) => {
 // }
 
 
-const createLevel2Ac = ( acCssClass, targetTitle, intro ) => {
+const createPanel = ( acCssClass, targetTitle, intro ) => {
 
    // Create accordion panel
    const ac = document.createElement( "div" )
    ac.classList.add( "ac", acCssClass )
-
-   console.log("AC", ac)
 
    // Create intro p
    const introDiv = document.createElement( "div" )
@@ -758,7 +756,7 @@ const createPanelSectionsOld = ( sections, prefix, level2AccordionDivCssClass, l
     // const level3AcDivCssClass = `traces${index-1}${section}Ac`
 
     // Add trace panel to accordion
-    level3AccordionDiv.appendChild( createLevel2Ac(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
+    level3AccordionDiv.appendChild( createPanel(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
 
     const acPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
 
@@ -803,34 +801,24 @@ const createPanelSectionsOld = ( sections, prefix, level2AccordionDivCssClass, l
 
 
 
-const createPanelSections = ( sections, sectionsContainer, prefix ) => {
+const createPanelSections = ( sections, sectionsContainer, optionId, prefix ) => {
 
-  if (sectionsContainer.classList.contains("__Accordion")) {
-    console.log("hello")
-    sectionsContainer.appendChild( createLevel2Ac(  `xx`, sections[section].title, sections[section].intro ) )
-    fieldGroupsContainer = sectionsContainer.querySelector( `.ac-panel`)
-  } else {
-    fieldGroupsContainer = sectionsContainer
-  }
-  console.log("FGC", fieldGroupsContainer)
-  return
-
+  // Loop through all sections
   for ( const section in sections ) {
 
-    // Create intro paragraph and add it to sestion container
-    const introP = document.createElement("p")
-    introP.classList.add("ac-text", "intro")
-    introText = document.createTextNode( sections[section].intro )
-    introP.appendChild(introText)
-    sectionsContainer.appendChild(introP)
-
-
-
-     // const level3AcDivCssClass = `traces${index-1}${section}Ac`
-
-    // Add trace panel to accordion
-
-   
+    if (Object.values(sections).length > 1 ) {
+      sectionsContainer.appendChild( createPanel(  `${optionId}_${section}Ac`, sections[section].title, sections[section].intro ) )
+      fieldGroupsContainer = sectionsContainer.querySelector( `.${optionId}_${section}Ac .ac-panel`)
+    } else {
+      fieldGroupsContainer = sectionsContainer
+      
+      //Create intro paragraph and add it to sestion container
+      const introP = document.createElement("p")
+      introP.classList.add("ac-text", "intro")
+      introText = document.createTextNode( sections[section].intro )
+      introP.appendChild(introText)
+      fieldGroupsContainer.appendChild(introP)
+    }
 
     // Loop rhtough sections 
     for (const fieldRow in sections[section].fieldGroups) {
@@ -963,7 +951,7 @@ module.exports = {
   showInputField,
   hideInputField,
   toggleInputField,
-  createLevel2Ac,
+  createPanel,
   createPanelSections,
   setSheetIdOptions,
   showPanels,

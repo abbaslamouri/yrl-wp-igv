@@ -17,7 +17,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = null === iwpgvCharts.chart ? {fileUpload: {}, basicOptions: {}, xaxis: {}} : iwpgvCharts.chart 
+  let chart = null === iwpgvCharts.chart ? {fileUpload: {}, basicOptions: {}, xaxis: {}, traces:{}} : iwpgvCharts.chart 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
@@ -257,7 +257,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
       // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
-      new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
+      // new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })

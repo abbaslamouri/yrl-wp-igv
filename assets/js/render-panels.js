@@ -12,7 +12,7 @@ import ChartAxis from "./ChartAxis"
 import Trace from "./Trace"
 import Annotation from "./Annotation"
 import TableChart from "./TableChart"
-import { displayAdminMessage, createLevel2Ac, createPanelSections } from "./utilities"
+import { displayAdminMessage, createPanel, createPanelSections } from "./utilities"
 
 const renderPanels = ( chart, spreadsheet, prefix ) => {
 
@@ -20,17 +20,20 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   let optionId = "basicOptions"
   let sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel` )
   sectionsContainer.innerHTML = ""
-  let OptionInstance = new BasicOptions( chart[optionId], prefix )
-  const basicOptions = OptionInstance.options()
-  createPanelSections( OptionInstance.sections(), sectionsContainer, prefix )
+  const basicOptionInstance = new BasicOptions( chart[optionId], prefix )
+  const basicOptions = basicOptionInstance.options()
+  createPanelSections( basicOptionInstance.sections(), sectionsContainer, optionId, prefix )
+
 
   // Render layout xaxis panel
   optionId = "xaxis"
   sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel .${optionId}__Accordion` )
   sectionsContainer.innerHTML = ""
-  OptionInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId, prefix )
-  chart.basicOptions = OptionInstance.options()
-  createPanelSections( OptionInstance.sections(), sectionsContainer, prefix )
+  const xAxisInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId, prefix )
+  const xaxisOptions = xAxisInstance.options()
+  createPanelSections( xAxisInstance.sections(), sectionsContainer, optionId, prefix )
+  new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+
 
 
 
@@ -42,8 +45,7 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   // panel( bottomAxisInstance.sections(), "bottomAxisPanel", prefix )
 
 
-  console.log("CHART", basicOptions)
-  return
+  
 
 
 
@@ -108,6 +110,15 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   // }
   // chart.layout = {}
 
+  // Render layout xaxis panel
+  // optionId = "xaxis"
+  // sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .${optionId}Ac .ac-panel .${optionId}__Accordion` )
+  // sectionsContainer.innerHTML = ""
+  // const xAxisInstance = new ChartAxis( chart[optionId], chart.fileUpload.chartType, optionId, prefix )
+  // const xaxisOptions = xAxisInstance.options()
+  // createPanelSections( xAxisInstance.sections(), sectionsContainer, optionId, prefix )
+  // new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
 
@@ -130,7 +141,7 @@ if ( spreadsheet ) {
     const level2AcDivCssClass = `traces${index-1}Ac`
 
     // Add trace panel to accordion
-    document.querySelector( level2AccordionDivCssClass ).appendChild( createLevel2Ac(  `${level2AcDivCssClass}`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
+    document.querySelector( level2AccordionDivCssClass ).appendChild( createPanel(  `${level2AcDivCssClass}`, Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index], `Here you can modify the options for ${Object.values( spreadsheet[chart.fileUpload.sheetId].labels)[index]} ` ) )
     
     // Create trace sections acordion div
     const level3AccordionDiv = document.createElement("div")
@@ -149,6 +160,11 @@ if ( spreadsheet ) {
 
     index++
   }
+
+  console.log("BASICOPTIONS", basicOptions)
+  console.log("XAXISOPTIONS", xaxisOptions)
+  console.log("TRACES", )
+  return
 
   // Load accordion
   new Accordion( level2AccordionDivCssClass, { duration: 400 } )
@@ -190,6 +206,8 @@ if ( spreadsheet ) {
     })
 
   })
+
+ 
 
   
 } else {
