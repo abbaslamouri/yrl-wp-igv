@@ -2,9 +2,9 @@ import { fontFamily } from "./utilities"
 
 class BasicOPtions {
 
-  constructor( inputOptions ) {
+  constructor( layout ) {
 
-    this.inputOptions = inputOptions
+    this.layout = layout
     // this.prefix = prefix
    
   }
@@ -13,26 +13,26 @@ class BasicOPtions {
 
     return {
       
-      responsive : ( this.inputOptions.responsive  === undefined ) ? true : this.inputOptions.responsive,
-      staticPlot : ( this.inputOptions.staticPlot  === undefined ) ? false : this.inputOptions.staticPlot,
-      width : ( this.inputOptions.width === undefined ) ? null : this.inputOptions.width,
-      height : ( this.inputOptions.height === undefined ) ? 300 : this.inputOptions.height,
+      responsive : ( this.layout.responsive  === undefined ) ? true : this.layout.responsive,
+      staticPlot : ( this.layout.staticPlot  === undefined ) ? false : this.layout.staticPlot,
+      width : ( this.layout.width === undefined ) ? null : this.layout.width,
+      height : ( this.layout.height === undefined ) ? 300 : this.layout.height,
       font : {
-        family : (  this.inputOptions.font === undefined || this.inputOptions.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.inputOptions.font.family,
-        size : (  this.inputOptions.font === undefined || this.inputOptions.font.size === undefined ) ? 14 : this.inputOptions.font.size,
-        color : (  this.inputOptions.font === undefined || this.inputOptions.font.color === undefined ) ? "#000a12" : this.inputOptions.font.color,
+        family : (  this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.layout.font.family,
+        size : (  this.layout.font === undefined || this.layout.font.size === undefined ) ? 14 : this.layout.font.size,
+        color : (  this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
       },
       margin: {
-        l : ( this.inputOptions.margin === undefined || this.inputOptions.margin.l === undefined ) ? 80 : this.inputOptions.margin.l,
-        r : ( this.inputOptions.margin === undefined || this.inputOptions.margin.r === undefined ) ? 80 : this.inputOptions.margin.r,
-        t : ( this.inputOptions.margin === undefined || this.inputOptions.margin.t === undefined ) ? 100 : this.inputOptions.margin.t,
-        b : ( this.inputOptions.margin === undefined || this.inputOptions.margin.b === undefined ) ? 80 : this.inputOptions.margin.b,
-        pad: ( this.inputOptions.margin === undefined || this.inputOptions.margin.pad === undefined ) ? 0 : this.inputOptions.margin.pad,
-        autoexpand: ( this.inputOptions.margin === undefined || this.inputOptions.margin.autoexpand === undefined ) ? true : this.inputOptions.margin.autoexpand,
+        l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
+        r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 80 : this.layout.margin.r,
+        t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 100 : this.layout.margin.t,
+        b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 80 : this.layout.margin.b,
+        pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 0 : this.layout.margin.pad,
+        autoexpand: ( this.layout.margin === undefined || this.layout.margin.autoexpand === undefined ) ? true : this.layout.margin.autoexpand,
       },
-      paper_bgcolor : ( this.inputOptions.paper_bgcolor === undefined ) ? "#b0bec5" :  this.inputOptions.paper_bgcolor,
-      plot_bgcolor : ( this.inputOptions.plot_bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.plot_bgcolor,
-      autosize : ( this.inputOptions.autosize === undefined ) ? null : this.inputOptions.autosize,
+      paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#b0bec5" :  this.layout.paper_bgcolor,
+      plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#eeeeee" : this.layout.plot_bgcolor,
+      autosize : ( this.layout.autosize === undefined ) ? null : this.layout.autosize,
     }
 
   }
@@ -50,7 +50,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[width]", 
+                id : "layout[width]", 
                 title : "Plot Width", 
                 type : "number",
                 min : 10,
@@ -60,7 +60,7 @@ class BasicOPtions {
                 hint : "Sets the plot's width (in px)."
               },
               {
-                id : "basicOptions[height]", 
+                id : "layout[height]", 
                 title : "Plot Height", 
                 type : "number",
                 min : 10,
@@ -75,7 +75,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[font][family]",
+                id : "layout[font][family]",
                 title : "Font Family",	
                 type : "select",
                 options : fontFamily(),
@@ -83,7 +83,7 @@ class BasicOPtions {
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
-                id : "basicOptions[font][size]", 
+                id : "layout[font][size]", 
                 title : "Font Size", 
                 type : "number",
                 min : 1,
@@ -98,13 +98,13 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[font][color]",
+                id : "layout[font][color]",
                 title : "Font Color",
                 type : "color", 
                 value : this.options().font.color,
               },
               {
-                id : "basicOptions[responsive]",
+                id : "layout[responsive]",
                 title : "Responsive",
                 type : "checkbox", 
                 value : this.options().responsive,
@@ -116,7 +116,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[staticPlot]",
+                id : "layout[staticPlot]",
                 title : "Static PLot ?",
                 type : "checkbox", 
                 value : this.options().staticPlot,
@@ -128,14 +128,14 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[paper_bgcolor]",
+                id : "layout[paper_bgcolor]",
                 title : "Paper Color",
                 type : "color", 
                 value : this.options().paper_bgcolor,
                 hint : "Sets the plot's height (in px)."
               },
               {
-                id : "basicOptions[plot_bgcolor]",
+                id : "layout[plot_bgcolor]",
                 title : "Background Color",
                 type : "color", 
                 value : this.options().plot_bgcolor,
@@ -147,7 +147,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[margin][pad]", 
+                id : "layout[margin][pad]", 
                 title : "Chart Padding", 
                 type : "number",
                 min : 0,
@@ -162,7 +162,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[margin][l]", 
+                id : "layout[margin][l]", 
                 title : "Left Margin", 
                 type : "number",
                 min : 0,
@@ -172,7 +172,7 @@ class BasicOPtions {
                 hint : "Sets the left margin (in px)."
               },
               {
-                id : "basicOptions[margin][r]", 
+                id : "layout[margin][r]", 
                 title : "Right Margin", 
                 type : "number",
                 min : 0,
@@ -187,7 +187,7 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[margin][t]", 
+                id : "layout[margin][t]", 
                 title : "Top Margin", 
                 type : "number",
                 min : 0,
@@ -197,7 +197,7 @@ class BasicOPtions {
                 hint : "Sets the topmargin (in px)."
               },
               {
-                id : "basicOptions[margin][b]", 
+                id : "layout[margin][b]", 
                 title : "Bottom Margin", 
                 type : "number",
                 min : 0,
@@ -212,14 +212,14 @@ class BasicOPtions {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "basicOptions[margin][autoexpand]", 
+                id : "layout[margin][autoexpand]", 
                 title : "Margin Auto Expand", 
                 type : "checkbox",
                 value : this.options().margin.autoexpand,
                 hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults."
               },
               {
-                id : "basicOptions[autosize]", 
+                id : "layout[autosize]", 
                 title : "Auto Size on Relayout", 
                 type : "checkbox",
                 value : this.options().autosize,

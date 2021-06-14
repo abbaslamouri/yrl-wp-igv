@@ -65,7 +65,7 @@
             </div>
           </div>
 
-          <div class="ac basicOptionsAc">
+          <div class="ac layoutAc">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel">
               <?php //require "{$this->path}templates/basic-options.php"; ?>

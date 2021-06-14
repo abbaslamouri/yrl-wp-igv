@@ -18,7 +18,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {}, layout:{}, traces:{}, basicOptions: {}, xaxis: {}, annotations: [], minMaxAvgTable: {} } 
+  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {}, layout:{annotations: []}, traces:{}, config: {}, minMaxAvgTable: {} } 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
@@ -272,7 +272,6 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
     }
 
-    console.log("SP", chart)
 
 
   } catch (error) {

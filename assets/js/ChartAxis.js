@@ -3,9 +3,9 @@ import { fontFamily } from "./utilities"
 
 class ChartAxis  {
 
-  constructor( inputOPtions, chartType, axisId) {
+  constructor( layout, chartType, axisId) {
 
-    this.inputOPtions = inputOPtions
+    this.layout = layout
     this.axisId = axisId
     // this.prefix = prefix
     this.axisSideOptions = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
@@ -27,77 +27,77 @@ class ChartAxis  {
 
     return {
 
-      visible : ( this.inputOptions === undefined || this.inputOptions.visible === undefined ) ? true :  this.inputOptions.visible,
-      type : ( this.inputOptions === undefined || this.inputOptions.type === undefined ) ? this.type : this.inputOptions.type,
-      // color : ( this.inputOptions === undefined || this.inputOptions.color === undefined ) ? "#000a12" : this.inputOptions.color,
-      autotypenumbers : ( this.inputOptions === undefined || this.inputOptions.autotypenumbers === undefined ) ? "convert types" : this.inputOptions.autotypenumbers,
-      autorange : ( this.inputOptions === undefined || this.inputOptions.autorange === undefined ) ? true : this.inputOptions.autorange === "false" ? false : this.inputOptions.autorange === "true" ? true : this.inputOptions.autorange,
-      rangemode : ( this.inputOptions === undefined || this.inputOptions.rangemode === undefined ) ? "normal" : this.inputOptions.rangemode,
-      range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [] : this.inputOptions.range,
-      // range : ( this.inputOptions === undefined || this.inputOptions.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.inputOptions.range,
-      fixedrange : ( this.inputOptions === undefined || this.inputOptions.fixedrange === undefined ) ? true : this.inputOptions.fixedrange,
-      // scaleanchor : ( this.inputOptions === undefined || this.inputOptions.scaleanchor === undefined ) ? null : this.inputOptions.scaleanchor,
-      ticks : ( this.inputOptions === undefined || this.inputOptions.ticks === undefined ) ? "outside" : this.inputOptions.ticks,
-      tickmode : ( this.inputOptions === undefined || this.inputOptions.tickmode === undefined ) ? "auto" : this.inputOptions.tickmode,
-      nticks : ( this.inputOptions === undefined || this.inputOptions.nticks === undefined ) ? null : this.inputOptions.nticks,
-      tick0 : ( this.inputOptions === undefined || this.inputOptions.tick0 === undefined ) ? null : this.inputOptions.tick0,
-      dtick : ( this.inputOptions === undefined || this.inputOptions.dtick === undefined ) ? null : this.inputOptions.dtick,
-      tickvals : ( this.inputOptions === undefined || this.inputOptions.tickvals === undefined ) ? [] : this.inputOptions.tickvals,
-      ticktext : ( this.inputOptions === undefined || this.inputOptions.ticktext === undefined ) ? [] : this.inputOptions.ticktext,
-      ticklabelposition : ( this.inputOptions === undefined || this.inputOptions.ticklabelposition === undefined ) ? "outside" : this.inputOptions.ticklabelposition,
-      mirror : ( this.inputOptions === undefined || this.inputOptions.mirror === undefined ) ? false : this.inputOptions.mirror === "false" ? false : this.inputOptions.mirror === "true" ? true : this.inputOptions.mirror,
-      ticklen : ( this.inputOptions === undefined || this.inputOptions.ticklen === undefined ) ? 10 : this.inputOptions.ticklen,
-      tickwidth : ( this.inputOptions === undefined || this.inputOptions.tickwidth === undefined ) ? 2 : this.inputOptions.tickwidth,
-      tickcolor : ( this.inputOptions === undefined || this.inputOptions.tickcolor === undefined ) ? "#263238" : this.inputOptions.tickcolor,
-      showticklabels : ( this.inputOptions === undefined || this.inputOptions.showticklabels === undefined ) ? true : this.inputOptions.showticklabels,
-      automargin : ( this.inputOptions === undefined || this.inputOptions.automargin === undefined ) ? true : this.inputOptions.automargin,
-      showspikes : ( this.inputOptions === undefined || this.inputOptions.showspikes === undefined ) ? true : this.inputOptions.showspikes,
-      spikecolor : ( this.inputOptions === undefined || this.inputOptions.spikecolor === undefined ) ? "#000a12" : this.inputOptions.spikecolor,
-      spikethickness : ( this.inputOptions === undefined || this.inputOptions.spikethickness === undefined ) ? 2 : this.inputOptions.spikethickness,
-      spikedash : ( this.inputOptions === undefined || this.inputOptions.spikedash === undefined ) ? "dash" : this.inputOptions.spikedash,
-      spikemode : ( this.inputOptions === undefined || this.inputOptions.spikemode === undefined ) ? "toaxis" : this.inputOptions.spikemode,
-      tickangle : ( this.inputOptions === undefined || this.inputOptions.tickangle === undefined ) ? 0 : this.inputOptions.tickangle,
-      tickprefix : ( this.inputOptions === undefined || this.inputOptions.tickprefix === undefined ) ? "" : this.inputOptions.tickprefix,
-      showtickprefix : ( this.inputOptions === undefined || this.inputOptions.showtickprefix === undefined ) ? "none" : this.inputOptions.showtickprefix,
-      ticksuffix : ( this.inputOptions === undefined || this.inputOptions.ticksuffix === undefined ) ? "" : this.inputOptions.ticksuffix,
-      showticksuffix : ( this.inputOptions === undefined || this.inputOptions.showticksuffix === undefined ) ? "none" : this.inputOptions.showticksuffix,
-      showexponent : ( this.inputOptions === undefined || this.inputOptions.showexponent === undefined ) ? "all" : this.inputOptions.showexponent,
-      exponentformat : ( this.inputOptions === undefined || this.inputOptions.exponentformat === undefined ) ? "power" : this.inputOptions.exponentformat,
-      minexponent : ( this.inputOptions === undefined || this.inputOptions.minexponent === undefined ) ? 3 : this.inputOptions.minexponent,
-      separatethousands : ( this.inputOptions === undefined || this.inputOptions.separatethousands === undefined ) ? true : this.inputOptions.separatethousands,
-      showline : ( this.inputOptions === undefined || this.inputOptions.showline === undefined ) ? true : this.inputOptions.showline,
-      linecolor : ( this.inputOptions === undefined || this.inputOptions.linecolor === undefined ) ? "#000a12" : this.inputOptions.linecolor,
-      linewidth : ( this.inputOptions === undefined || this.inputOptions.linewidth === undefined ) ? 1 : this.inputOptions.linewidth,
-      showgrid : ( this.inputOptions === undefined || this.inputOptions.showgrid === undefined ) ? true : this.inputOptions.showgrid,
-      gridcolor : ( this.inputOptions === undefined || this.inputOptions.gridcolor === undefined ) ? "#4f5b62" : this.inputOptions.gridcolor,
-      gridwidth : ( this.inputOptions === undefined || this.inputOptions.gridwidth === undefined ) ? 1 : this.inputOptions.gridwidth,
-      zeroline : ( this.inputOptions === undefined || this.inputOptions.zeroline === undefined ) ? true : this.inputOptions.zeroline,
-      zerolinecolor : ( this.inputOptions === undefined || this.inputOptions.zerolinecolor === undefined ) ? "#000a12" : this.inputOptions.zerolinecolor,
-      zerolinewidth : ( this.inputOptions === undefined || this.inputOptions.zerolinewidth === undefined ) ? 1 : this.inputOptions.zerolinewidth,
-      side : ( this.inputOptions === undefined || this.inputOptions.side === undefined ) ? this.axisSideDefault : this.inputOptions.side,
-      // anchor : ( this.inputOptions === undefined || this.inputOptions.anchor === undefined ) ? "free": this.inputOptions.anchor,
-      overlaying : ( this.inputOptions === undefined || this.inputOptions.overlaying === undefined ) ? false : this.inputOptions.overlaying,
-      position : ( this.inputOptions === undefined || this.inputOptions.position === undefined ) ? 0 : this.inputOptions.position,
+      visible : ( this.layout.xaxis === undefined || this.layout.xaxis.visible === undefined ) ? true :  this.layout.xaxis.visible,
+      type : ( this.layout.xaxis === undefined || this.layout.xaxis.type === undefined ) ? this.type : this.layout.xaxis.type,
+      // color : ( this.layout.xaxis === undefined || this.layout.xaxis.color === undefined ) ? "#000a12" : this.layout.xaxis.color,
+      autotypenumbers : ( this.layout.xaxis === undefined || this.layout.xaxis.autotypenumbers === undefined ) ? "convert types" : this.layout.xaxis.autotypenumbers,
+      autorange : ( this.layout.xaxis === undefined || this.layout.xaxis.autorange === undefined ) ? true : this.layout.xaxis.autorange === "false" ? false : this.layout.xaxis.autorange === "true" ? true : this.layout.xaxis.autorange,
+      rangemode : ( this.layout.xaxis === undefined || this.layout.xaxis.rangemode === undefined ) ? "normal" : this.layout.xaxis.rangemode,
+      range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [] : this.layout.xaxis.range,
+      // range : ( this.layout.xaxis === undefined || this.layout.xaxis.range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout.xaxis.range,
+      fixedrange : ( this.layout.xaxis === undefined || this.layout.xaxis.fixedrange === undefined ) ? true : this.layout.xaxis.fixedrange,
+      // scaleanchor : ( this.layout.xaxis === undefined || this.layout.xaxis.scaleanchor === undefined ) ? null : this.layout.xaxis.scaleanchor,
+      ticks : ( this.layout.xaxis === undefined || this.layout.xaxis.ticks === undefined ) ? "outside" : this.layout.xaxis.ticks,
+      tickmode : ( this.layout.xaxis === undefined || this.layout.xaxis.tickmode === undefined ) ? "auto" : this.layout.xaxis.tickmode,
+      nticks : ( this.layout.xaxis === undefined || this.layout.xaxis.nticks === undefined ) ? null : this.layout.xaxis.nticks,
+      tick0 : ( this.layout.xaxis === undefined || this.layout.xaxis.tick0 === undefined ) ? null : this.layout.xaxis.tick0,
+      dtick : ( this.layout.xaxis === undefined || this.layout.xaxis.dtick === undefined ) ? null : this.layout.xaxis.dtick,
+      tickvals : ( this.layout.xaxis === undefined || this.layout.xaxis.tickvals === undefined ) ? [] : this.layout.xaxis.tickvals,
+      ticktext : ( this.layout.xaxis === undefined || this.layout.xaxis.ticktext === undefined ) ? [] : this.layout.xaxis.ticktext,
+      ticklabelposition : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklabelposition === undefined ) ? "outside" : this.layout.xaxis.ticklabelposition,
+      mirror : ( this.layout.xaxis === undefined || this.layout.xaxis.mirror === undefined ) ? false : this.layout.xaxis.mirror === "false" ? false : this.layout.xaxis.mirror === "true" ? true : this.layout.xaxis.mirror,
+      ticklen : ( this.layout.xaxis === undefined || this.layout.xaxis.ticklen === undefined ) ? 10 : this.layout.xaxis.ticklen,
+      tickwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.tickwidth === undefined ) ? 2 : this.layout.xaxis.tickwidth,
+      tickcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.tickcolor === undefined ) ? "#263238" : this.layout.xaxis.tickcolor,
+      showticklabels : ( this.layout.xaxis === undefined || this.layout.xaxis.showticklabels === undefined ) ? true : this.layout.xaxis.showticklabels,
+      automargin : ( this.layout.xaxis === undefined || this.layout.xaxis.automargin === undefined ) ? true : this.layout.xaxis.automargin,
+      showspikes : ( this.layout.xaxis === undefined || this.layout.xaxis.showspikes === undefined ) ? true : this.layout.xaxis.showspikes,
+      spikecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.spikecolor === undefined ) ? "#000a12" : this.layout.xaxis.spikecolor,
+      spikethickness : ( this.layout.xaxis === undefined || this.layout.xaxis.spikethickness === undefined ) ? 2 : this.layout.xaxis.spikethickness,
+      spikedash : ( this.layout.xaxis === undefined || this.layout.xaxis.spikedash === undefined ) ? "dash" : this.layout.xaxis.spikedash,
+      spikemode : ( this.layout.xaxis === undefined || this.layout.xaxis.spikemode === undefined ) ? "toaxis" : this.layout.xaxis.spikemode,
+      tickangle : ( this.layout.xaxis === undefined || this.layout.xaxis.tickangle === undefined ) ? 0 : this.layout.xaxis.tickangle,
+      tickprefix : ( this.layout.xaxis === undefined || this.layout.xaxis.tickprefix === undefined ) ? "" : this.layout.xaxis.tickprefix,
+      showtickprefix : ( this.layout.xaxis === undefined || this.layout.xaxis.showtickprefix === undefined ) ? "none" : this.layout.xaxis.showtickprefix,
+      ticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.ticksuffix === undefined ) ? "" : this.layout.xaxis.ticksuffix,
+      showticksuffix : ( this.layout.xaxis === undefined || this.layout.xaxis.showticksuffix === undefined ) ? "none" : this.layout.xaxis.showticksuffix,
+      showexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.showexponent === undefined ) ? "all" : this.layout.xaxis.showexponent,
+      exponentformat : ( this.layout.xaxis === undefined || this.layout.xaxis.exponentformat === undefined ) ? "power" : this.layout.xaxis.exponentformat,
+      minexponent : ( this.layout.xaxis === undefined || this.layout.xaxis.minexponent === undefined ) ? 3 : this.layout.xaxis.minexponent,
+      separatethousands : ( this.layout.xaxis === undefined || this.layout.xaxis.separatethousands === undefined ) ? true : this.layout.xaxis.separatethousands,
+      showline : ( this.layout.xaxis === undefined || this.layout.xaxis.showline === undefined ) ? true : this.layout.xaxis.showline,
+      linecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.linecolor === undefined ) ? "#000a12" : this.layout.xaxis.linecolor,
+      linewidth : ( this.layout.xaxis === undefined || this.layout.xaxis.linewidth === undefined ) ? 1 : this.layout.xaxis.linewidth,
+      showgrid : ( this.layout.xaxis === undefined || this.layout.xaxis.showgrid === undefined ) ? true : this.layout.xaxis.showgrid,
+      gridcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.gridcolor === undefined ) ? "#4f5b62" : this.layout.xaxis.gridcolor,
+      gridwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.gridwidth === undefined ) ? 1 : this.layout.xaxis.gridwidth,
+      zeroline : ( this.layout.xaxis === undefined || this.layout.xaxis.zeroline === undefined ) ? true : this.layout.xaxis.zeroline,
+      zerolinecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.zerolinecolor === undefined ) ? "#000a12" : this.layout.xaxis.zerolinecolor,
+      zerolinewidth : ( this.layout.xaxis === undefined || this.layout.xaxis.zerolinewidth === undefined ) ? 1 : this.layout.xaxis.zerolinewidth,
+      side : ( this.layout.xaxis === undefined || this.layout.xaxis.side === undefined ) ? this.axisSideDefault : this.layout.xaxis.side,
+      // anchor : ( this.layout.xaxis === undefined || this.layout.xaxis.anchor === undefined ) ? "free": this.layout.xaxis.anchor,
+      overlaying : ( this.layout.xaxis === undefined || this.layout.xaxis.overlaying === undefined ) ? false : this.layout.xaxis.overlaying,
+      position : ( this.layout.xaxis === undefined || this.layout.xaxis.position === undefined ) ? 0 : this.layout.xaxis.position,
       tickfont: {
-        family: ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.inputOptions.tickfont.family,
-        size: ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.size === undefined ) ? 20 : this.inputOptions.tickfont.size,
-        color : ( this.inputOptions === undefined || this.inputOptions.tickfont === undefined || this.inputOptions.tickfont.color === undefined ) ? "#000a12" : this.inputOptions.tickfont.color,
+        family: ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.layout.xaxis.tickfont.family,
+        size: ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.size === undefined ) ? 20 : this.layout.xaxis.tickfont.size,
+        color : ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.color === undefined ) ? "#000a12" : this.layout.xaxis.tickfont.color,
       },
       title: {
-        text : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.inputOptions.title.text,
+        text : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.text === undefined ) ? "Wavelength ( &#181;m )" : this.layout.xaxis.title.text,
         font : {
-          family: ( this.inputOptions === undefined ||  this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.inputOptions.title.font.family,
-          size: ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.size === undefined ) ? 20 : this.inputOptions.title.font.size,
-          color : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.font === undefined || this.inputOptions.title.font.color === undefined ) ? "#000a12" : this.inputOptions.title.font.color,
+          family: ( this.layout.xaxis === undefined ||  this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.layout.xaxis.title.font.family,
+          size: ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.size === undefined ) ? 20 : this.layout.xaxis.title.font.size,
+          color : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.font === undefined || this.layout.xaxis.title.font.color === undefined ) ? "#000a12" : this.layout.xaxis.title.font.color,
         },
-        standoff : ( this.inputOptions === undefined || this.inputOptions.title === undefined || this.inputOptions.title.standoff === undefined ) ? 10 : this.inputOptions.title.standoff ,
+        standoff : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.standoff === undefined ) ? 10 : this.layout.xaxis.title.standoff ,
       },
       rangeslider : {
-        visible : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.visible === undefined ) ? false : this.inputOptions.rangeslider.visible,
-        thickness : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.thickness === undefined ) ?  0.12 : this.inputOptions.rangeslider.thickness,
-        bgcolor : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.inputOptions.rangeslider.bgcolor,
-        borderwidth : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.borderwidth === undefined ) ? 1 : this.inputOptions.rangeslider.borderwidth,
-        bordercolor : ( this.inputOptions === undefined || this.inputOptions.rangeslider === undefined || this.inputOptions.rangeslider.bordercolor === undefined ) ?  "#263238" : this.inputOptions.rangeslider.bordercolor,
+        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.visible,
+        thickness : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.thickness === undefined ) ?  0.12 : this.layout.xaxis.rangeslider.thickness,
+        bgcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.layout.xaxis.rangeslider.bgcolor,
+        borderwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.borderwidth === undefined ) ? 1 : this.layout.xaxis.rangeslider.borderwidth,
+        bordercolor : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.bordercolor === undefined ) ?  "#263238" : this.layout.xaxis.rangeslider.bordercolor,
       }
 
     }
@@ -119,14 +119,14 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[visible]`,
+                id : `layout[${this.axisId}][visible]`,
                 title : "Show",	
                 type : "checkbox",
                 value : this.options().visible,
                 hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
               },
               {
-                id : `${this.axisId}[type]`,
+                id : `layout[${this.axisId}][type]`,
                 title : "Type",	
                 type : "select",
                 options : {
@@ -147,14 +147,14 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               // {
-              //   id : `${this.axisId}[color]`,
+              //   id : `layout[${this.axisId}][color]`,
               //   title : "Colr",	
               //   type : "color",
               //   value : this.options().color,
               //   hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
               // },
               {
-                id : `${this.axisId}[side]`, 
+                id : `layout[${this.axisId}][side]`, 
                 title : "Side", 
                 type : "select",
                 options : this.axisSideOptions,
@@ -168,7 +168,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[autotypenumbers]`,
+                id : `layout[${this.axisId}][autotypenumbers]`,
                 title : "Auto Type Numbers",	
                 type : "select",
                 options : {
@@ -180,7 +180,7 @@ class ChartAxis  {
                 hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
               },
               {
-                id : `${this.axisId}[autorange]`,
+                id : `layout[${this.axisId}][autorange]`,
                 title : "Auto Range",	
                 type : "select",
                 options : {
@@ -198,7 +198,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[fixedrange]`,
+                id : `layout[${this.axisId}][fixedrange]`,
                 title : "Fixed Range",	
                 type : "checkbox",
                 value : this.options().fixedrange,
@@ -206,7 +206,7 @@ class ChartAxis  {
                 hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
               },
               {
-                id : `${this.axisId}[rangemode]`,
+                id : `layout[${this.axisId}][rangemode]`,
                 title : "Range Mode",	
                 type : "select",
                 options : {
@@ -224,7 +224,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[range]`,
+                id : `layout[${this.axisId}][range]`,
                 title : "Range",	
                 type : "text",
                 value : this.options().range.join(),
@@ -232,7 +232,7 @@ class ChartAxis  {
                 hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
               },
               // {
-              //   id : `${this.axisId}[scaleanchor]`,
+              //   id : `layout[${this.axisId}][scaleanchor]`,
               //   title : "Scale Anchor",	
               //   type : "text",
               //   value : this.options().scaleanchor,
@@ -245,7 +245,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[mirror]`,
+                id : `layout[${this.axisId}][mirror]`,
                 title : "Mirror",	
                 type : "select",
                 options : {
@@ -260,7 +260,7 @@ class ChartAxis  {
                 hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
               },
               {
-                id : `${this.axisId}[automargin]`,
+                id : `layout[${this.axisId}][automargin]`,
                 title : "Auto Margin",	
                 type : "checkbox",
                 value : this.options().automargin,
@@ -282,7 +282,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[title][text]`,
+                id : `layout[${this.axisId}][title][text]`,
                 title : "Title",
                 type : "text", 
                 value : this.options().title.text,
@@ -295,7 +295,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[title][font][family]`,
+                id : `layout[${this.axisId}][title][font][family]`,
                 title : "Title Font",	
                 type : "select",
                 options : fontFamily(),
@@ -304,7 +304,7 @@ class ChartAxis  {
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
-                id : `${this.axisId}[title][font][size]`, 
+                id : `layout[${this.axisId}][title][font][size]`, 
                 title : "Title Font Size", 
                 type : "number",
                 min : 1,
@@ -320,14 +320,14 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[title][font][color]`,
+                id : `layout[${this.axisId}][title][font][color]`,
                 title : "Title Font Color",
                 type : "color", 
                 value : this.options().title.font.color,
                 disabled: ( ! this.options().visible || ! this.options().title.text ) ? true : false,
               },
               {
-                id : `${this.axisId}[title][standoff]`,
+                id : `layout[${this.axisId}][title][standoff]`,
                 title : "Title Standoff ",
                 type : "number",
                 min : 0,
@@ -352,7 +352,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[ticks]`,
+                id : `layout[${this.axisId}][ticks]`,
                 title : "Show Ticks",	
                 type : "select",
                 options : {
@@ -365,7 +365,7 @@ class ChartAxis  {
                 hint: "Determines whether ticks are drawn or not. If '', this axis' ticks are not drawn. If 'outside' ('inside'), this axis' are drawn outside (inside) the axis lines."
               },
               {
-                id : `${this.axisId}[tickmode]`,
+                id : `layout[${this.axisId}][tickmode]`,
                 title : "Tick Mode",	
                 type : "select",
                 options : {
@@ -383,7 +383,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[nticks]`,
+                id : `layout[${this.axisId}][nticks]`,
                 title : "Number of Ticks",	
                 type : "number",
                 min : 0,
@@ -394,7 +394,7 @@ class ChartAxis  {
                 hint: "Specifies the maximum number of ticks for the particular axis. The actual number of ticks will be chosen automatically to be less than or equal to `nticks`. Has an effect only if `tickmode` is set to 'auto'."
               },
               {
-                id : `${this.axisId}[tick0]`,
+                id : `layout[${this.axisId}][tick0]`,
                 title : "First Tick Position",	
                 type : "number",
                 value : this.options().tick0,
@@ -407,7 +407,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[dtick]`,
+                id : `layout[${this.axisId}][dtick]`,
                 title : "Tick Spacing",	
                 type : "number",
                 value : this.options().dtick,
@@ -415,7 +415,7 @@ class ChartAxis  {
                 hint: "Sets the step in-between ticks on this axis. Use with `tick0`. Must be a positive number, or special strings available to 'log' and 'date' axes. If the axis `type` is 'log', then ticks are set every 10^(n'dtick) where n is the tick number. For example, to set a tick mark at 1, 10, 100, 1000, ... set dtick to 1. To set tick marks at 1, 100, 10000, ... set dtick to 2. To set tick marks at 1, 5, 25, 125, 625, 3125, ... set dtick to log_10(5), or 0.69897000433. 'log' has several special values; 'L<f>', where `f` is a positive number, gives ticks linearly spaced in value (but not position). For example `tick0` = 0.1, `dtick` = 'L0.5' will put ticks at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus small digits between, use 'D1' (all digits) or 'D2' (only 2 and 5). `tick0` is ignored for 'D1' and 'D2'. If the axis `type` is 'date', then you must convert the time to milliseconds. For example, to set the interval between ticks to one day, set `dtick` to 86400000.0. 'date' also has special values 'M<n>' gives ticks spaced by a number of months. `n` must be a positive integer. To set ticks on the 15th of every third month, set `tick0` to '2000-01-15' and `dtick` to 'M3'. To set ticks every 4 years, set `dtick` to 'M48'"
               },
               {
-                id : `${this.axisId}[tickvals]`,
+                id : `layout[${this.axisId}][tickvals]`,
                 title : "Tick Positions",	
                 type : "text",
                 value : this.options().tickvals.join(),
@@ -428,7 +428,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[ticktext]`,
+                id : `layout[${this.axisId}][ticktext]`,
                 title : "Tick Label",	
                 type : "text",
                 value : this.options().ticktext.join(),
@@ -436,7 +436,7 @@ class ChartAxis  {
                 hint: "Sets the text displayed at the ticks position via `tickvals`. Only has an effect if `tickmode` is set to 'array'. Used with `tickvals`"
               },
               {
-                id : `${this.axisId}[ticklen]`,
+                id : `layout[${this.axisId}][ticklen]`,
                 title : "Tick Length",	
                 type : "number",
                 min : 0,
@@ -453,7 +453,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[tickwidth]`,
+                id : `layout[${this.axisId}][tickwidth]`,
                 title : "Tick width",	
                 type : "number",
                 min : 0,
@@ -465,7 +465,7 @@ class ChartAxis  {
                 hint: "Sets the tick width (in px)."
               },
               {
-                id : `${this.axisId}[tickcolor]`,
+                id : `layout[${this.axisId}][tickcolor]`,
                 title : "Tick color",	
                 type : "color",
                 value : this.options().tickcolor,
@@ -487,7 +487,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showticklabels]`,
+                id : `layout[${this.axisId}][showticklabels]`,
                 title : "Show Tick Labels",	
                 type : "checkbox",
                 value : this.options().showticklabels,
@@ -495,7 +495,7 @@ class ChartAxis  {
                 hint: "Determines whether or not the tick labels are drawn."
               },
               {
-                id : `${this.axisId}[ticklabelposition]`,
+                id : `layout[${this.axisId}][ticklabelposition]`,
                 title : "Tick Label Position",	
                 type : "select",
                 options : {
@@ -516,7 +516,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[tickfont][family]`,
+                id : `layout[${this.axisId}][tickfont][family]`,
                 title : "Tick Label Font",	
                 type : "select",
                 options : fontFamily(),
@@ -525,7 +525,7 @@ class ChartAxis  {
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
-                id : `${this.axisId}[tickfont][size]`, 
+                id : `layout[${this.axisId}][tickfont][size]`, 
                 title : "Tick  Label Font Size", 
                 type : "number",
                 min : 1,
@@ -541,14 +541,14 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[tickfont][color]`,
+                id : `layout[${this.axisId}][tickfont][color]`,
                 title : "Tick Font Color",
                 type : "color", 
                 value : this.options().tickfont.color,
                 disabled: ( ! this.options().visible || ! this.options().showticklabels )  ? true : false,
               },
               {
-                id : `${this.axisId}[tickangle]`, 
+                id : `layout[${this.axisId}][tickangle]`, 
                 title : "Tick Label Angle", 
                 type : "number",
                 min : -180,
@@ -564,7 +564,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showtickprefix]`, 
+                id : `layout[${this.axisId}][showtickprefix]`, 
                 title : "Show Tick Label Prefix", 
                 type : "select",
                 options : {
@@ -578,7 +578,7 @@ class ChartAxis  {
                 hint : "If 'all', all tick labels are displayed with a prefix. If 'first', only the first tick is displayed with a prefix. If 'last', only the last tick is displayed with a suffix. If 'none', tick prefixes are hidden.Sets a tick label prefix."
               },
               {
-                id : `${this.axisId}[tickprefix]`, 
+                id : `layout[${this.axisId}][tickprefix]`, 
                 title : "Tick Label Prefix", 
                 type : "Text",
                 value : this.options().tickprefix,
@@ -591,7 +591,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showticksuffix]`, 
+                id : `layout[${this.axisId}][showticksuffix]`, 
                 title : "Show Tick Label Suffix", 
                 type : "select",
                 options : {
@@ -605,7 +605,7 @@ class ChartAxis  {
                 hint : "If 'all', all tick labels are displayed with a suffix. If 'first', only the first tick is displayed with a suffix. If 'last', only the last tick is displayed with a suffix. If 'none', tick suffixes are hidden.Sets a tick label suffix."
               },
               {
-                id : `${this.axisId}[ticksuffix]`, 
+                id : `layout[${this.axisId}][ticksuffix]`, 
                 title : "Tick Label Suffix", 
                 type : "Text",
                 value : this.options().ticksuffix,
@@ -627,7 +627,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showspikes]`,
+                id : `layout[${this.axisId}][showspikes]`,
                 title : "Show Spikes",	
                 type : "checkbox",
                 value : this.options().showspikes,
@@ -635,7 +635,7 @@ class ChartAxis  {
                 hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
               },
               {
-                id : `${this.axisId}[spikemode]`,
+                id : `layout[${this.axisId}][spikemode]`,
                 title : "Spike Mode",	
                 type : "select",
                 options : {
@@ -657,7 +657,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[spikedash]`,
+                id : `layout[${this.axisId}][spikedash]`,
                 title : "Spike Type",	
                 type : "select",
                 options : {
@@ -673,7 +673,7 @@ class ChartAxis  {
                 hint: "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
               },
               {
-                id : `${this.axisId}[spikethickness]`,
+                id : `layout[${this.axisId}][spikethickness]`,
                 title : "Spike Thiclness",	
                 type : "number",
                 min : 0,
@@ -689,7 +689,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[spikecolor]`,
+                id : `layout[${this.axisId}][spikecolor]`,
                 title : "Spike Color",	
                 type : "color",
                 value : this.options().spikecolor,
@@ -711,7 +711,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showexponent]`, 
+                id : `layout[${this.axisId}][showexponent]`, 
                 title : "Show Exponent", 
                 type : "select",
                 options : {
@@ -730,7 +730,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[exponentformat]`, 
+                id : `layout[${this.axisId}][exponentformat]`, 
                 title : "Exponent Format", 
                 type : "select",
                 options : {
@@ -746,7 +746,7 @@ class ChartAxis  {
                 hint : "Determines a formatting rule for the tick exponents. For example, consider the number 1,000,000,000. If 'none', it appears as 1,000,000,000. If 'e', 1e+9. If 'E', 1E+9. If 'power', 1x10^9 (with 9 in a super script). If 'SI', 1G. If 'B', 1B.If 'all', all exponents are shown besides their significands. If 'first', only the exponent of the first tick is shown. If 'last', only the exponent of the last tick is shown. If 'none', no exponents appear."
               },
               {
-                id : `${this.axisId}[minexponent]`, 
+                id : `layout[${this.axisId}][minexponent]`, 
                 title : "Minimum Exponent", 
                 type : "number",
                 value : this.options().minexponent,
@@ -759,7 +759,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[separatethousands]`, 
+                id : `layout[${this.axisId}][separatethousands]`, 
                 title : "Seperate Thousands", 
                 type : "checkbox",
                 value : this.options().separatethousands,
@@ -781,7 +781,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[showline]`, 
+                id : `layout[${this.axisId}][showline]`, 
                 title : "Show Axis Bounding Line", 
                 type : "checkbox",
                 value : this.options().showline,
@@ -794,7 +794,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[linewidth]`, 
+                id : `layout[${this.axisId}][linewidth]`, 
                 title : "Axis Bounding Line Width", 
                 type : "number",
                 min : 1,
@@ -805,7 +805,7 @@ class ChartAxis  {
                 hint : "Sets the width (in px) of the axis line."
               },
               {
-                id : `${this.axisId}[linecolor]`, 
+                id : `layout[${this.axisId}][linecolor]`, 
                 title : "Axis Bounding Line Color", 
                 type : "color",
                 value : this.options().linecolor,
@@ -818,7 +818,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[zeroline]`, 
+                id : `layout[${this.axisId}][zeroline]`, 
                 title : "Show Zero Line", 
                 type : "checkbox",
                 value : this.options().zeroline,
@@ -826,7 +826,7 @@ class ChartAxis  {
                 hint : "Determines whether or not a line is drawn at along the 0 value of this axis. If 'true', the zero line is drawn on top of the grid lines."
               },
               {
-                id : `${this.axisId}[showgrid]`, 
+                id : `layout[${this.axisId}][showgrid]`, 
                 title : "Show Grid", 
                 type : "checkbox",
                 value : this.options().showgrid,
@@ -839,7 +839,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[zerolinecolor]`, 
+                id : `layout[${this.axisId}][zerolinecolor]`, 
                 title : "Zero Line Color", 
                 type : "color",
                 value : this.options().zerolinecolor,
@@ -847,7 +847,7 @@ class ChartAxis  {
                 hint : "Sets the line color of the zero line."
               },
               {
-                id : `${this.axisId}[zerolinewidth]`, 
+                id : `layout[${this.axisId}][zerolinewidth]`, 
                 title : "Zero Line Width", 
                 type : "number",
                 min : 1,
@@ -863,7 +863,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[gridwidth]`, 
+                id : `layout[${this.axisId}][gridwidth]`, 
                 title : "Grid Width", 
                 type : "number",
                 min : 1,
@@ -874,7 +874,7 @@ class ChartAxis  {
                 hint : "Sets the width (in px) of the grid lines."
               },
               {
-                id : `${this.axisId}[gridcolor]`, 
+                id : `layout[${this.axisId}][gridcolor]`, 
                 title : "GridColor", 
                 type : "color",
                 value : this.options().gridcolor,
@@ -887,14 +887,14 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               // {
-              //   id : `${this.axisId}[anchor]`, 
+              //   id : `layout[${this.axisId}][anchor]`, 
               //   title : "Anchor", 
               //   type : "text",
               //   value : this.options().anchor,
               //   hint : "If set to an opposite-letter axis id (e.g. `x2`, `y`), this axis is bound to the corresponding opposite-letter axis. If set to 'free', this axis' position is determined by `position`.  Set anchoe and position to undefined to ignore both"
               // },
               // {
-              //   id : `${this.axisId}[position]`, 
+              //   id : `layout[${this.axisId}][position]`, 
               //   title : "Position", 
               //   type : "number",
               //   min : 0,
@@ -910,7 +910,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[overlaying]`, 
+                id : `layout[${this.axisId}][overlaying]`, 
                 title : "Overlaying", 
                 type : "text",
                 value : this.options().overlaying,
@@ -932,7 +932,7 @@ class ChartAxis  {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : `${this.axisId}[rangeslider][visible]`,
+                id : `layout[${this.axisId}][rangeslider][visible]`,
                 title : "Show Range Slider",
                 type : "checkbox", 
                 value : this.options().rangeslider.visible,
@@ -963,7 +963,7 @@ class ChartAxis  {
                 hint: "The height of the range slider as a fraction of the total plot area height (0 - 1)."
               },
               {
-                id : `${this.axisId}[rangeslider][bgcolor]`,
+                id : `layout[${this.axisId}][rangeslider][bgcolor]`,
                 title : "Background Color",
                 type : "color", 
                 value : this.options().rangeslider.bgcolor,
@@ -987,7 +987,7 @@ class ChartAxis  {
                 hint: "Sets the border width of the range slider."
               },
               {
-                id : `${this.axisId}[rangeslider][bordercolor]`,
+                id : `layout[${this.axisId}][rangeslider][bordercolor]`,
                 title : "Border Color",
                 type : "color", 
                 value : this.options().rangeslider.bordercolor,

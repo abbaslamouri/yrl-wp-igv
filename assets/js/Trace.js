@@ -57,7 +57,7 @@ class Trace {
         opacity: (  this.trace.marker === undefined || this.trace.marker.opacity === undefined ) ? 1 : this.trace.marker.opacity,
         size: (  this.trace.marker === undefined || this.trace.marker.size === undefined ) ? 5 : this.trace.marker.size,
         maxdisplayed : (  this.trace.marker === undefined || this.trace.marker.maxdisplayed === undefined ) ? 10 : this.trace.marker.maxdisplayed,
-        color : (  this.trace.marker === undefined || this.trace.marker.color === undefined ) ? colors[this.index] : this.trace.marker.color,
+        color : (  this.trace.marker === undefined || this.trace.marker.color === undefined ) ? colors()[this.index] : this.trace.marker.color,
         line: {
           width: (  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.width === undefined ) ? 1 : this.trace.marker.line.width,
           color: (  this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.color === undefined ) ?  "#4A148C" : this.trace.marker.line.color,
@@ -70,7 +70,7 @@ class Trace {
       line : {
         shape: ( this.trace.line === undefined || this.trace.line.shape === undefined ) ? "spline" : this.trace.line.shape,
         width: ( this.trace.line === undefined || this.trace.line.width === undefined ) ? 2 : this.trace.line.width,
-        color : ( this.trace.line === undefined || this.trace.line.color === undefined ) ? colors[this.index] : this.trace.line.color,
+        color : ( this.trace.line === undefined || this.trace.line.color === undefined ) ? colors()[this.index] : this.trace.line.color,
         dash: ( this.trace.line === undefined || this.trace.line.dash === undefined ) ? "solid" : this.trace.line.dash,
         smoothing: ( this.trace.line === undefined || this.trace.line.smoothing === undefined ) ? 1 : this.trace.line.smoothing,
         simplify: ( this.trace.line === undefined || this.trace.line.simplify === undefined ) ? true : this.trace.line.simplify,
@@ -83,7 +83,7 @@ class Trace {
         valueminus: ( this.trace.error_y === undefined || this.trace.error_y.valueminus === undefined ) ? 20 : this.trace.error_y.valueminus,
         array: ( this.trace.error_y === undefined || this.trace.error_y.array === undefined ) ? []: this.trace.error_y.array,
         arrayminus: ( this.trace.error_y === undefined || this.trace.error_y.arrayminus === undefined ) ? [] : this.trace.error_y.arrayminus,
-        color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? colors[this.index] : this.trace.error_y.color,
+        color: ( this.trace.error_y === undefined || this.trace.error_y.color === undefined ) ? colors()[this.index] : this.trace.error_y.color,
         thickness: ( this.trace.error_y === undefined || this.trace.error_y.thickness === undefined ) ? 2: this.trace.error_y.thickness,
         width: ( this.trace.error_y === undefined || this.trace.error_y.width === undefined ) ? 4: this.trace.error_y.width,
       },
