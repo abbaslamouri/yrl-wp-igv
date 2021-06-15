@@ -117,10 +117,10 @@
 
           <div class="ac xaxisAc">
             <?php 
-              $chart_axis = "xaxis";
-              $axis_title = "Bottom Axis";
+              //  $chart_axis = "xaxis";
+              // $axis_title = "Bottom Axis";
             ?>
-            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
+            <h2 class="ac-header"><div class="ac-trigger"><?php //echo $axis_title; ?>Bottom Axis</div></h2>
             <div class="ac-panel">
             <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
             <div class="accordion accordion__level-3 xaxis__Accordion"></div>
@@ -130,30 +130,33 @@
 
           <div class="ac xaxis2Ac hidden">
           <?php
-            $chart_axis = "xaxis2";
-            $axis_title = "Top Axis";
+            // $chart_axis = "xaxis2";
+            // $axis_title = "Top Axis";
           ?>
-            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
+            <h2 class="ac-header"><div class="ac-trigger"><?php //echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>
             <div class="ac-panel">
             </div>
           </div>
 
-          <div class="ac yaxisAc hidden">
+          <div class="ac yaxisAc">
             <?php
-              $chart_axis = "yaxis";
-              $axis_title = "Left Axis";
+              // $chart_axis = "yaxis";
+              // $axis_title = "Left Axis";
             ?>
-            <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
-            <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>
+            <h2 class="ac-header"><div class="ac-trigger"><?php //echo $axis_title; ?>Left Axis</div></h2>
             <div class="ac-panel">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <div class="accordion accordion__level-3 yaxis__Accordion"></div>
+              <?php //require "{$this->path}templates/chart-axis.php"; ?>
+            </div>
             </div>
           </div>
 
           <div class="ac yaxis2Ac hidden">
             <?php
-              $chart_axis = "yaxis2";
-              $axis_title = "Right Axis";
+              // $chart_axis = "yaxis2";
+              // $axis_title = "Right Axis";
             ?>
             <h2 class="ac-header"><div class="ac-trigger"><?php echo $axis_title; ?></div></h2>
             <div class="ac-panel"><?php //require "{$this->path}templates/chart-axis.php"; ?></div>

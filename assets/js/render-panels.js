@@ -31,6 +31,14 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   chart.layout.xaxis = xAxisInstance.options()
   createPanelSections( xAxisInstance.sections(), sectionsContainer, "xaxis", prefix )
   new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
+
+  // Render layout yaxis panel
+  sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` )
+  sectionsContainer.innerHTML = ""
+  const yAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "yaxis" )
+  chart.layout.xaxis = yAxisInstance.options()
+  createPanelSections( yAxisInstance.sections(), sectionsContainer, "yaxis", prefix )
+  new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
   
 
 

@@ -32,7 +32,7 @@ class Trace {
 
     return {
 
-      // type : ( this.trace === undefined ||  this.trace.type === undefined ) ? this.trace.type :  this.type,
+      type : ( this.trace === undefined ||  this.trace.type === undefined ) ? this.trace.type :  this.type,
       name : this.labels[this.index],
       visible : ( this.trace.visible === undefined ) ? true : "false" === this.trace.visible ? false : "true" === this.trace.visible ? true : this.trace.visible,
       showlegend : ( this.trace.showlegend === undefined ) ? true : this.trace.showlegend,

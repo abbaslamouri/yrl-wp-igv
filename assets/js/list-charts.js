@@ -5,33 +5,33 @@ import deleteChart from "./delete-chart"
 
 const listCharts = async function ( charts, prefix) {
 
-  Object.values(charts).forEach( async(el) => {
+  Object.values(charts).forEach( async(chart) => {
     
-    const config = undefined !== el.config ? el.config : {}
+    const config = undefined !== chart.config ? chart.config : {}
 
-    if (el.sheet) {
+    if (chart.sheet) {
 
-      for ( let i=0; i < el.traces.length; i++) {
+      for ( let i=0; i < chart.traces.length; i++) {
 
-        el.traces[i].x = el.sheet.data[0]
-        el.traces[i].y = el.sheet.data[i+1]
+        chart.traces[i].x = chart.sheet.data[0]
+        chart.traces[i].y = chart.sheet.data[i+1]
         
-        el.traces[i].showlegend = false
-        el.layout.hovermode = false
-        el.layout.height = 200
-        el.layout.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
-        // el.layout.title.font.size = undefined !== el.layout.title && undefined !== el.layout.title.font && undefined !== el.layout.title.font.size ? 12 : null
-        // el.layout.title.x = .15
+        chart.traces[i].showlegend = false
+        chart.layout.hovermode = false
+        chart.layout.height = 200
+        chart.layout.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
+        // chart.layout.title.font.size = undefined !== chart.layout.title && undefined !== chart.layout.title.font && undefined !== chart.layout.title.font.size ? 12 : null
+        // chart.layout.title.x = .15
         // el.layout.title.y = .95
         // el.layout.font.size = 12
         // el.layout.xaxis = { rangeslider: { visible: false} }
         config.displayModeBar = false 
       }
 
-      await Plotly.newPlot(`${prefix}__chart__${el.fileUpload.chartId}`, el.traces, el.layout, config)
+      await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, chart.traces, chart.layout, config)
 
     } else {
-      document.getElementById( `${prefix}__chart__${el.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${el.fileUpload.fileUpload} cannot be found</div>`
+      document.getElementById( `${prefix}__chart__${chart.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${chart.fileUpload.fileUpload} cannot be found</div>`
     }
   
   })
