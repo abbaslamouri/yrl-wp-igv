@@ -19,7 +19,7 @@ class Trace {
       case "LineChart":
       case "ScatterChart":
         // this.type = "scatter";
-        this.mode = "lines+markers+text";
+        this.mode = "lines+markers";
         break;
       default:
         // this.type = null;

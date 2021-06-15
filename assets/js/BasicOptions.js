@@ -1,4 +1,4 @@
-import { fontFamily } from "./utilities"
+// import { fontFamily } from "./utilities"
 
 class BasicOPtions {
 
@@ -17,22 +17,22 @@ class BasicOPtions {
       staticPlot : ( this.layout.staticPlot  === undefined ) ? false : this.layout.staticPlot,
       width : ( this.layout.width === undefined ) ? null : this.layout.width,
       height : ( this.layout.height === undefined ) ? 300 : this.layout.height,
-      font : {
-        family : (  this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.layout.font.family,
-        size : (  this.layout.font === undefined || this.layout.font.size === undefined ) ? 14 : this.layout.font.size,
-        color : (  this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
-      },
+      // font : {
+      //   family : (  this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.layout.font.family,
+      //   size : (  this.layout.font === undefined || this.layout.font.size === undefined ) ? 14 : this.layout.font.size,
+      //   color : (  this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
+      // },
       margin: {
         l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
         r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 80 : this.layout.margin.r,
         t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 100 : this.layout.margin.t,
         b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 80 : this.layout.margin.b,
-        pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 0 : this.layout.margin.pad,
+        pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 100 : this.layout.margin.pad,
         autoexpand: ( this.layout.margin === undefined || this.layout.margin.autoexpand === undefined ) ? true : this.layout.margin.autoexpand,
       },
-      paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#b0bec5" :  this.layout.paper_bgcolor,
-      plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#eeeeee" : this.layout.plot_bgcolor,
-      autosize : ( this.layout.autosize === undefined ) ? null : this.layout.autosize,
+      paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#FFFFFF" :  this.layout.paper_bgcolor,
+      plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#FFFFFF" : this.layout.plot_bgcolor,
+      autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
     }
 
   }
@@ -57,7 +57,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 10,
                 value : this.options().width,
-                hint : "Sets the plot's width (in px)."
+                hint : "Sets the plot's width (in px).  Number greater than or equal to 10.  Default: 700."
               },
               {
                 id : "layout[height]", 
@@ -67,42 +67,47 @@ class BasicOPtions {
                 max : 2000,
                 step : 10,
                 value : this.options().height,
-                hint : "Sets the plot's height (in px)."
+                hint : "Sets the plot's height (in px). Number greater than or equal to 10.  Default: 450."
               },
+            ]
+          },
+          // {
+          //   cssClasses : ["field-group", "fifty-fifty"],
+          //   inputFields: [
+          //     {
+          //       id : "layout[font][family]",
+          //       title : "Font Family",	
+          //       type : "select",
+          //       options : fontFamily(),
+          //       value : this.options().font.family,
+          //       hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+          //     },
+          //     {
+          //       id : "layout[font][size]", 
+          //       title : "Font Size", 
+          //       type : "number",
+          //       min : 1,
+          //       max : 100,
+          //       step : 0.5,
+          //       value : this.options().font.size,
+          //       hint : "number greater than or equal to 1"
+          //     },
+          //   ]
+          // },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              // {
+              //   id : "layout[font][color]",
+              //   title : "Font Color",
+              //   type : "color", 
+              //   value : this.options().font.color,
+              // },
             ]
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
-              {
-                id : "layout[font][family]",
-                title : "Font Family",	
-                type : "select",
-                options : fontFamily(),
-                value : this.options().font.family,
-                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-              },
-              {
-                id : "layout[font][size]", 
-                title : "Font Size", 
-                type : "number",
-                min : 1,
-                max : 100,
-                step : 0.5,
-                value : this.options().font.size,
-                hint : "number greater than or equal to 1"
-              },
-            ]
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "layout[font][color]",
-                title : "Font Color",
-                type : "color", 
-                value : this.options().font.color,
-              },
               {
                 id : "layout[responsive]",
                 title : "Responsive",
@@ -110,18 +115,14 @@ class BasicOPtions {
                 value : this.options().responsive,
                 hint: ""
               },
-            ]
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
               {
                 id : "layout[staticPlot]",
-                title : "Static PLot ?",
+                title : "Static",
                 type : "checkbox", 
                 value : this.options().staticPlot,
                 hint: ""
               },
+             
             ]
           },
           {
@@ -129,22 +130,22 @@ class BasicOPtions {
             inputFields: [
               {
                 id : "layout[paper_bgcolor]",
-                title : "Paper Color",
+                title : "Paper Background Color",
                 type : "color", 
                 value : this.options().paper_bgcolor,
-                hint : "Sets the plot's height (in px)."
+                hint : "Sets the background color of the paper where the graph is drawn.  Default: #FFFFFF"
               },
               {
                 id : "layout[plot_bgcolor]",
-                title : "Background Color",
+                title : "Plot Background Color",
                 type : "color", 
                 value : this.options().plot_bgcolor,
-                hint : "Sets the plot's height (in px)."
+                hint : "Sets the background color of the plotting area in-between x and y axes.  Default: #FFFFFF"
               },
             ]
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group"],
             inputFields: [
               {
                 id : "layout[margin][pad]", 
@@ -154,7 +155,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 1,
                 value : this.options().margin.pad,
-                hint : "Sets the amount of padding (in px) between the plotting area and the axis lines"
+                hint : "Sets the amount of padding (in px) between the plotting area and the axis lines.  Number greater than or equal to 0.  Default: 0"
               },
             ]
           },
@@ -169,7 +170,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 1,
                 value : this.options().margin.l,
-                hint : "Sets the left margin (in px)."
+                hint : "Sets the left margin (in px). Number greater than or equal to 0.  Default: 80"
               },
               {
                 id : "layout[margin][r]", 
@@ -179,7 +180,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 1,
                 value : this.options().margin.r,
-                hint : "Sets the right margin (in px)."
+                hint : "Sets the right margin (in px). Number greater than or equal to 0.  Default: 80"
               },
             ]
           },
@@ -194,7 +195,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 1,
                 value : this.options().margin.t,
-                hint : "Sets the topmargin (in px)."
+                hint : "Sets the top margin (in px).Number greater than or equal to 0.  Default: 100"
               },
               {
                 id : "layout[margin][b]", 
@@ -204,7 +205,7 @@ class BasicOPtions {
                 max : 2000,
                 step : 10,
                 value : this.options().margin.b,
-                hint : "Sets the bottom margin (in px)."
+                hint : "Sets the bottom margin (in px). Number greater than or equal to 0.  Default: 80"
               },
             ]
           },
@@ -216,14 +217,14 @@ class BasicOPtions {
                 title : "Margin Auto Expand", 
                 type : "checkbox",
                 value : this.options().margin.autoexpand,
-                hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults."
+                hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults.  Default: true"
               },
               {
                 id : "layout[autosize]", 
                 title : "Auto Size on Relayout", 
                 type : "checkbox",
                 value : this.options().autosize,
-                hint : "Determines whether or not a layout width or height that has been left undefined by the user is initialized on each relayout. Note that, regardless of this attribute, an undefined layout width or height is always initialized on the first call to plot."
+                hint : "Determines whether or not a layout width or height that has been left undefined by the user is initialized on each relayout. Note that, regardless of this attribute, an undefined layout width or height is always initialized on the first call to plot.  Default: true"
               },
             ]
           }

@@ -2,10 +2,9 @@ import { fontFamily } from "./utilities"
 
 class Legend {
 
-  constructor(inputOptions, prefix ) {
+  constructor( layout ) {
 
-    this.inputOptions = inputOptions
-    this.prefix = prefix
+    this.layout = layout
 
   }
 
@@ -13,33 +12,33 @@ class Legend {
 
     return {
 
-      showlegend : ( this.inputOptions.showlegend === undefined ) ? true : this.inputOptions.showlegend,
+      showlegend : ( this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
       legend : {
-        bgcolor : ( this.inputOptions.legend === undefined || this.inputOptions.legend.bgcolor === undefined ) ? '#e2f1f8' : this.inputOptions.legend.bgcolor,
-        bordercolor : ( this.inputOptions.legend=== undefined || this.inputOptions.legend.bordercolor === undefined ) ? '#000a12' : this.inputOptions.legend.bordercolor,
-        borderwidth : ( this.inputOptions.legend === undefined  || this.inputOptions.legend.borderwidth === undefined ) ? 1 : this.inputOptions.legend.borderwidth,
+        bgcolor : ( this.layout.legend === undefined || this.layout.legend.bgcolor === undefined ) ? '#FFFFFF' : this.layout.legend.bgcolor,
+        bordercolor : ( this.layout.legend=== undefined || this.layout.legend.bordercolor === undefined ) ? '#444444' : this.layout.legend.bordercolor,
+        borderwidth : ( this.layout.legend === undefined  || this.layout.legend.borderwidth === undefined ) ? 0 : this.layout.legend.borderwidth,
         font : {
-          family: ( this.inputOptions.legend === undefined || this.inputOptions.legend.font === undefined || this.inputOptions.legend.font.family === undefined  ) ? Object.keys(fontFamily())[13] : this.inputOptions.legend.font.family,
-          size: ( this.inputOptions.legend === undefined || this.inputOptions.legend.font === undefined || this.inputOptions.legend.font.size === undefined ) ? 14 : this.inputOptions.legend.font.size,
-          color : ( this.inputOptions.legend === undefined || this.inputOptions.legend.font === undefined || this.inputOptions.legend.font.color === undefined ) ? "000a12" : this.inputOptions.legend.font.color,
+          family: ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.family === undefined  ) ? Object.keys(fontFamily())[12] : this.layout.legend.font.family,
+          size: ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.size === undefined ) ? 14 : this.layout.legend.font.size,
+          color : ( this.layout.legend === undefined || this.layout.legend.font === undefined || this.layout.legend.font.color === undefined ) ? "000a12" : this.layout.legend.font.color,
         },
         title: {
-          text : ( this.inputOptions.legend === undefined || this.inputOptions.legend.title === undefined || this.inputOptions.legend.title.text === undefined ) ? "" : this.inputOptions.legend.title.text,
+          text : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.text === undefined ) ? "" : this.layout.legend.title.text,
           font : {
-            family: ( this.inputOptions.legend === undefined ||  this.inputOptions.legend.title === undefined || this.inputOptions.legend.title.font === undefined || this.inputOptions.legend.title.font.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.inputOptions.legend.title.font.family,
-            size: ( this.inputOptions.legend === undefined || this.inputOptions.legend.title === undefined || this.inputOptions.legend.title.font === undefined || this.inputOptions.legend.title.font.size === undefined ) ? 20 : this.inputOptions.legend.title.font.size,
-            color : ( this.inputOptions.legend === undefined || this.inputOptions.legend.title === undefined || this.inputOptions.legend.title.font === undefined || this.inputOptions.legend.title.font.color === undefined ) ? "#000a12" : this.inputOptions.legend.title.font.color,
+            family: ( this.layout.legend === undefined ||  this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.family === undefined  ) ?  Object.keys(fontFamily())[12] : this.layout.legend.title.font.family,
+            size: ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.size === undefined ) ? 14 : this.layout.legend.title.font.size,
+            color : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.font === undefined || this.layout.legend.title.font.color === undefined ) ? "#000a12" : this.layout.legend.title.font.color,
           },
-          side : ( this.inputOptions.legend === undefined || this.inputOptions.legend.title === undefined || this.inputOptions.legend.title.side === undefined ) ? "top" : this.inputOptions.legend.title.side ,
+          side : ( this.layout.legend === undefined || this.layout.legend.title === undefined || this.layout.legend.title.side === undefined ) ? "top" : this.layout.legend.title.side ,
         },
-        orientation : ( this.inputOptions.legend === undefined || this.inputOptions.legend.orientation === undefined ) ? "v" : this.inputOptions.legend.orientation,
-        itemsizing : ( this.inputOptions.legend === undefined || this.inputOptions.legend.itemsizing === undefined ) ? "trace" : this.inputOptions.legend.itemsizing,
-        itemwidth : ( this.inputOptions.legend === undefined || this.inputOptions.legend.itemwidth === undefined ) ? 50 : this.inputOptions.legend.itemwidth,
-        itemclick : ( this.inputOptions.legend === undefined || this.inputOptions.legend.itemclick === undefined ) ? false : this.inputOptions.legend.itemclick === "false" ? false : this.inputOptions.legend.itemclick,
-        itemdoubleclick : ( this.inputOptions.legend === undefined || this.inputOptions.legend.itemdoubleclick === undefined ) ? false : this.inputOptions.legend.itemdoubleclick === "false" ? false : this.inputOptions.legend.itemdoubleclick,
-        x : ( this.inputOptions.legend === undefined || this.inputOptions.legend.x === undefined ) ?1.04 :  this.inputOptions.legend.x,
-        y : ( this.inputOptions.legend === undefined || this.inputOptions.legend.y === undefined ) ? 1.00 : this.inputOptions.legend.y,
-        valign : ( this.inputOptions.legend === undefined || this.inputOptions.legend.valign === undefined ) ? "middle" : this.inputOptions.legend.valign,
+        orientation : ( this.layout.legend === undefined || this.layout.legend.orientation === undefined ) ? "v" : this.layout.legend.orientation,
+        itemsizing : ( this.layout.legend === undefined || this.layout.legend.itemsizing === undefined ) ? "trace" : this.layout.legend.itemsizing,
+        itemwidth : ( this.layout.legend === undefined || this.layout.legend.itemwidth === undefined ) ? 30 : this.layout.legend.itemwidth,
+        itemclick : ( this.layout.legend === undefined || this.layout.legend.itemclick === undefined ) ? "toggle" : this.layout.legend.itemclick === "false" ? false : this.layout.legend.itemclick,
+        itemdoubleclick : ( this.layout.legend === undefined || this.layout.legend.itemdoubleclick === undefined ) ? "toggle" : this.layout.legend.itemdoubleclick === "false" ? false : this.layout.legend.itemdoubleclick,
+        x : ( this.layout.legend === undefined || this.layout.legend.x === undefined ) ?1.02 :  this.layout.legend.x,
+        y : ( this.layout.legend === undefined || this.layout.legend.y === undefined ) ? 1.00 : this.layout.legend.y,
+        valign : ( this.layout.legend === undefined || this.layout.legend.valign === undefined ) ? "middle" : this.layout.legend.valign,
       },
     
     }
@@ -53,22 +52,20 @@ class Legend {
     
       legend : {
         intro : "Here you can modify the plot legend",
-        // id : `${this.prefix}__chartLegendSubPanel`,
-        // cssClasses:["chartLegend", "subPanel"],
         title : "",
         fieldGroups : [
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
-                id: "chartLegend[showlegend]",
+                id: "layout[showlegend]",
                 title:"Show Legend",
                 type: "checkbox",
                 value: this.options().showlegend,
                 hint: "Determines whether or not a legend is drawn. Default is `true` if there is a trace to show and any of these: a) Two or more traces would by default be shown in the legend. b) One pie trace is shown in the legend. c) One trace is explicitly given with `showlegend: true`"
               },
               {
-                id : "chartLegend[legend][valign]",
+                id: "layout[legend][valign]",
                 title : "Text symbol Alignment",	
                 type : "select",
                 options : {
@@ -83,68 +80,10 @@ class Legend {
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
-                id : "chartLegend[legend][bgcolor]",
-                title : "Background Color",
-                type : "color", 
-                value : this.options().legend.bgcolor,
-                disabled: ! this.options().showlegend ? true : false,
-                hint: "Sets the legend background color. Defaults to `layout.paper_bgcolor`."
-              },
-              {
-                id : "chartLegend[legend][bordercolor]",
-                title : "Border Color",
-                type : "color", 
-                value : this.options().legend.bordercolor,
-                disabled: ! this.options().showlegend ? true : false,
-                hint: "Sets the color of the border enclosing the legend."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "chartLegend[legend][font][family]",
-                title : "Font Family",	
-                type : "select",
-                options : fontFamily(),
-                value : this.options().legend.font.family,
-                disabled: ! this.options().showlegend ? true : false,
-                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "chartLegend[legend][font][size]", 
-                title : "Font Size", 
-                type : "number",
-                min : 1,
-                max : 100,
-                step : 0.5,
-                value : this.options().legend.font.size,
-                disabled: ! this.options().showlegend ? true : false,
-                hint : "number greater than or equal to 1"
-              },
-              {
-                id : "chartLegend[legend][font][color]",
-                title : "Font Color",
-                type : "color", 
-                value : this.options().legend.font.color,
-                disabled: ! this.options().showlegend ? true : false,
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "chartLegend[legend][borderwidth]",
+                id : "layout[legend][borderwidth]",
                 title : "Border Width",	
                 type : "number",
                 min : 0,
@@ -155,7 +94,52 @@ class Legend {
                 hint: "Sets the width (in px) of the border enclosing the legend."
               },
               {
-                id : "chartLegend[legend][orientation]",
+                id : "layout[legend][bordercolor]",
+                title : "Border Color",
+                type : "color", 
+                value : this.options().legend.bordercolor,
+                disabled: ! this.options().showlegend  || ! this.options().legend.borderwidth ? true : false,
+                hint: "Sets the color of the border enclosing the legend."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "sixty-forty"],
+            inputFields: [
+              {
+                id : "layout[legend][font][family]",
+                title : "Font Family",	
+                type : "select",
+                options : fontFamily(),
+                value : this.options().legend.font.family,
+                disabled: ! this.options().showlegend ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : "layout[legend][font][size]", 
+                title : "Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : this.options().legend.font.size,
+                disabled: ! this.options().showlegend ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : "layout[legend][font][color]",
+                title : "Font Color",
+                type : "color", 
+                value : this.options().legend.font.color,
+                disabled: ! this.options().showlegend ? true : false,
+              },
+              {
+                id : "layout[legend][orientation]",
                 title : "Orientation",	
                 type : "select",
                 options : {
@@ -172,7 +156,7 @@ class Legend {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "chartLegend[legend][itemsizing]",
+                id : "layout[legend][itemsizing]",
                 title : "Item Sizing",	
                 type : "select",
                 options : {
@@ -184,7 +168,7 @@ class Legend {
                 hint: "Determines if the legend items symbols scale with their corresponding 'trace' attributes or remain 'constant' independent of the symbol size on the graph."
               },
               {
-                id : "chartLegend[legend][itemwidth]",
+                id : "layout[legend][itemwidth]",
                 title : "Item Width",	
                 type : "number",
                 min : 30,
@@ -192,7 +176,7 @@ class Legend {
                 step : 1,
                 value : this.options().legend.itemwidth,
                 disabled: ! this.options().showlegend ? true : false,
-                hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text)."
+                hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text). Number greater than or equal to 30.  Default: 30."
               },
             ],
           },
@@ -200,7 +184,7 @@ class Legend {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "chartLegend[legend][itemclick]",
+                id : "layout[legend][itemclick]",
                 title : "Item Click Behaviour",	
                 type : "select",
                 options : {
@@ -213,7 +197,7 @@ class Legend {
                 hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
               },
               {
-                id : "chartLegend[legend][itemdoubleclick]",
+                id : "layout[legend][itemdoubleclick]",
                 title : "Item Double Click Behaviour",	
                 type : "select",
                 options : {
@@ -231,7 +215,7 @@ class Legend {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "chartLegend[legend][x]",
+                id : "layout[legend][x]",
                 title : "Horizontal Position",	
                 type : "number",
                 min : -2,
@@ -242,7 +226,7 @@ class Legend {
                 hint: "Sets the x position (in normalized coordinates) of the legend. Defaults to '1.02' for vertical legends and defaults to '0' for horizontal legends."
               },
               {
-                id : "chartLegend[legend][y]",
+                id : "layout[legend][y]",
                 title : "Vertical Position",	
                 type : "number",
                 min : -2,
@@ -255,18 +239,63 @@ class Legend {
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
-                id : "chartLegend[legend][title][text]",
+                id : "layout[legend][bgcolor]",
+                title : "Background Color",
+                type : "color", 
+                value : this.options().legend.bgcolor,
+                disabled: ! this.options().showlegend ? true : false,
+                hint: "Sets the legend background color. Defaults to `layout.paper_bgcolor`."
+              },
+              {
+                id : "layout[legend][title][text]",
                 title : "Legend Title",
                 type : "text", 
                 value : this.options().legend.title.text,
                 disabled: ! this.options().showlegend ? true : false,
                 hint: "Sets the title of the legend."
               },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
               {
-                id : "chartLegend[legend][title][side]",
+                id : "layout[legend][title][font][family]",
+                title : "Legend Title Font",	
+                type : "select",
+                options : fontFamily(),
+                value : this.options().legend.title.font.family,
+              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : "layout[legend][title][font][size]", 
+                title : "Legend Title Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : this.options().legend.title.font.size,
+              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : "layout[legend][title][font][color]",
+                title : "Legend Title Font Color",
+                type : "color", 
+                value : this.options().legend.title.font.color,
+              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
+              },
+              {
+                id : "layout[legend][title][side]",
                 title : "Legend Title Side ",
                 type : "select",
                 options : {
@@ -280,43 +309,6 @@ class Legend {
               }
             ],
           },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "chartLegend[legend][title][font][family]",
-                title : "Legend Title Font",	
-                type : "select",
-                options : fontFamily(),
-                value : this.options().legend.title.font.family,
-              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
-                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : "chartLegend[legend][title][font][size]", 
-                title : "Legend Title Font Size", 
-                type : "number",
-                min : 1,
-                max : 100,
-                step : 0.5,
-                value : this.options().legend.title.font.size,
-              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
-                hint : "number greater than or equal to 1"
-              },
-              {
-                id : "chartLegend[legend][title][font][color]",
-                title : "Legend Title Font Color",
-                type : "color", 
-                value : this.options().legend.title.font.color,
-              disabled: ( ! this.options().showlegend || ! this.options().legend.title.text ) ? true : false,
-              },
-            ],
-          }
         ]  
       },
      

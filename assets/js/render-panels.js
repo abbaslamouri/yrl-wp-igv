@@ -17,27 +17,36 @@ import { displayAdminMessage, createPanel, createPanelSections } from "./utiliti
 const renderPanels = ( chart, spreadsheet, prefix ) => {
 
   // Render layout basic options panel
-  let sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` )
-  sectionsContainer.innerHTML = ""
+  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ).innerHTML = ""
   const layoutInstance = new BasicOptions( chart.layout)
   chart.layout = {...chart.layout, ...layoutInstance.options()}
-  createPanelSections( layoutInstance.sections(), sectionsContainer, "layout", prefix )
+  createPanelSections( layoutInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ), "layout", prefix )
+
+   // Render layout title panel
+   document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ).innerHTML = ""
+   const titleInstance = new Title( chart.layout)
+   chart.layout = {...chart.layout, ...titleInstance.options()}
+   createPanelSections( titleInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ), "title", prefix )
+
+   // Render layout legend panel
+   document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ).innerHTML = ""
+   const legendInstance = new Legend( chart.layout)
+   chart.layout = {...chart.layout, ...legendInstance.options()}
+   createPanelSections( legendInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ), "legend", prefix )
 
 
   // Render layout xaxis panel
-  sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` )
-  sectionsContainer.innerHTML = ""
+  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ).innerHTML = ""
   const xAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "xaxis" )
   chart.layout.xaxis = xAxisInstance.options()
-  createPanelSections( xAxisInstance.sections(), sectionsContainer, "xaxis", prefix )
+  createPanelSections( xAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
   new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
 
   // Render layout yaxis panel
-  sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` )
-  sectionsContainer.innerHTML = ""
+  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ).innerHTML = ""
   const yAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "yaxis" )
-  chart.layout.xaxis = yAxisInstance.options()
-  createPanelSections( yAxisInstance.sections(), sectionsContainer, "yaxis", prefix )
+  chart.layout.yaxis = yAxisInstance.options()
+  createPanelSections( yAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
   new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
   
 
@@ -143,7 +152,7 @@ if ( spreadsheet ) {
     document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${index-1}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
   
-    sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${index-1}__Accordion`)
+    const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${index-1}__Accordion`)
 
     chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
     const traceInstance = new Trace( chart.traces[index-1], spreadsheet, index, chart.fileUpload.sheetId, chart.fileUpload.chartType )
@@ -153,15 +162,12 @@ if ( spreadsheet ) {
 
     index++
 
-    console.log("LLLLLLLL", chart)
-
 
   }
 
   if (chart.layout.annotations.length) {
     console.log(chart.layout.annotations)
   }
-  console.log("LLLLLLLL")
 
   
 
