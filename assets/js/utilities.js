@@ -25,7 +25,7 @@ const colors = () => {
 
   return [
 
-    "3366cc", "dc3912", "ff9900", "109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
+    "#3366cc", "#dc3912", "#ff9900", "#109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
 
   ]
 }
@@ -45,8 +45,8 @@ const chartTypes = () => {
 }
 
 
-const displayAdminMessage = (message, status, iwpgvObj) => {
-  const messageDiv = document.querySelector(`.${iwpgvObj.prefix}__admin .admin-messages`)
+const displayAdminMessage = (message, status, prefix) => {
+  const messageDiv = document.querySelector(`.${prefix}__admin .admin-messages`)
   if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
 }
 

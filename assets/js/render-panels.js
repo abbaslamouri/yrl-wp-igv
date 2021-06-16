@@ -16,63 +16,111 @@ import { displayAdminMessage, createPanel, createPanelSections } from "./utiliti
 
 const renderPanels = ( chart, spreadsheet, prefix ) => {
 
-  // Render layout basic options panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ).innerHTML = ""
-  const layoutInstance = new BasicOptions( chart.layout)
-  chart.layout = {...chart.layout, ...layoutInstance.options()}
-  createPanelSections( layoutInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ), "layout", prefix )
+  console.log("PPPPP", chart)
 
-  // Render layout title panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ).innerHTML = ""
-  const titleInstance = new Title( chart.layout)
-  chart.layout.title = titleInstance.options().title
-  createPanelSections( titleInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ), "title", prefix )
+  try {
 
-  // Render layout legend panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ).innerHTML = ""
-  const legendInstance = new Legend( chart.layout)
-  chart.layout.showlegend = legendInstance.options().showlegend
-  chart.layout.legend = legendInstance.options().legend
-  createPanelSections( legendInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ), "legend", prefix )
+    // Bail if there are no chart traces, a file or a sheet id
+    if (! spreadsheet ) throw new Error(  `S[preadsheet missing]` )
 
-  // Render layout hoverlabel panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ).innerHTML = ""
-  const hoverlabelInstance = new Hoverlabel( chart.layout)
-  chart.layout.hovermode = hoverlabelInstance.options().hovermode
-  chart.layout.hoverlabel = hoverlabelInstance.options().hoverlabel
-  createPanelSections( hoverlabelInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ), "hoverlabel", prefix )
+    const tracesAccordionDiv = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
+    tracesAccordionDiv.innerHTML = ""
 
-  // Render modebar panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ).innerHTML = ""
-  const modebarInstance = new Modebar( chart.layout, chart.config)
-  chart.config.displayModeBar = modebarInstance.options().displayModeBar
-  chart.config.displaylogo = modebarInstance.options().displaylogo
-  chart.layout.modebar = modebarInstance.options().modebar
-  createPanelSections( modebarInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix )
+    for (let i = 0;  i < chart.traces.length; i++) {
+
+       // Create a trace panel and add it to traces accordion
+      tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, `` ) )
+
+      // Create level3 accordion inside new trace panel
+      const level3AccordionDiv = document.createElement("div")
+      level3AccordionDiv.classList.add("accordion", "accordion__level-3", `traces${i}__Accordion`)
+      document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+    
+      const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
+
+      // chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
+      const traceInstance = new Trace( chart.traces[i], i )
+      // chart.traces[index-1] = traceInstance.options()
+      createPanelSections( traceInstance.sections(), sectionsContainer, `traces${i}`, prefix )
+      new Accordion( `.${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
+
+    }
+
+     // Load accordion
+    new Accordion( tracesAccordionDiv, { duration: 400 } )
+    
+
+   
+
+  } catch (error) {
+
+    displayAdminMessage(error.message, "error",  prefix)
+    console.log("CAUGHT ERROR", error)
+
+  } finally {
+    
+     // Hide warning and show spinner
+    //  toggleElementById( `${iwpgvObj.prefix}__spinner` );
+    //  showElementById( `${iwpgvObj.prefix}__warning`);
+
+  }
+
+  // // Render layout basic options panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ).innerHTML = ""
+  // const layoutInstance = new BasicOptions( chart.layout)
+  // chart.layout = {...chart.layout, ...layoutInstance.options()}
+  // createPanelSections( layoutInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .layoutAc .ac-panel` ), "layout", prefix )
+
+  // // Render layout title panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ).innerHTML = ""
+  // const titleInstance = new Title( chart.layout)
+  // chart.layout.title = titleInstance.options().title
+  // createPanelSections( titleInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ), "title", prefix )
+
+  // // Render layout legend panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ).innerHTML = ""
+  // const legendInstance = new Legend( chart.layout)
+  // chart.layout.showlegend = legendInstance.options().showlegend
+  // chart.layout.legend = legendInstance.options().legend
+  // createPanelSections( legendInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ), "legend", prefix )
+
+  // // Render layout hoverlabel panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ).innerHTML = ""
+  // const hoverlabelInstance = new Hoverlabel( chart.layout)
+  // chart.layout.hovermode = hoverlabelInstance.options().hovermode
+  // chart.layout.hoverlabel = hoverlabelInstance.options().hoverlabel
+  // createPanelSections( hoverlabelInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ), "hoverlabel", prefix )
+
+  // // Render modebar panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ).innerHTML = ""
+  // const modebarInstance = new Modebar( chart.layout, chart.config)
+  // chart.config.displayModeBar = modebarInstance.options().displayModeBar
+  // chart.config.displaylogo = modebarInstance.options().displaylogo
+  // chart.layout.modebar = modebarInstance.options().modebar
+  // createPanelSections( modebarInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix )
 
 
-  // Render layout xaxis panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ).innerHTML = ""
-  const xAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "xaxis", "bottom", null, null, false )
-  chart.layout.xaxis = xAxisInstance.options()
-  createPanelSections( xAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
-  new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
+  // // Render layout xaxis panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ).innerHTML = ""
+  // const xAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "xaxis", "bottom", null, null, false )
+  // chart.layout.xaxis = xAxisInstance.options()
+  // createPanelSections( xAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+  // new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
 
-  // Render layout xaxise panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ).innerHTML = ""
-  const xAxis2Instance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "xaxis2", "top", "x", "x", false )
-  chart.layout.xaxis2 = xAxis2Instance.options()
-  createPanelSections( xAxis2Instance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
-  new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
+  // // Render layout xaxise panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ).innerHTML = ""
+  // const xAxis2Instance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "xaxis2", "top", "x", "x", false )
+  // chart.layout.xaxis2 = xAxis2Instance.options()
+  // createPanelSections( xAxis2Instance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+  // new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
 
-  // Render layout yaxis panel
-  document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ).innerHTML = ""
-  const yAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "yaxis", "left", null, null, false )
-  chart.layout.yaxis = yAxisInstance.options()
-  createPanelSections( yAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
-  new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
-
-  console.log("LLLLLLLLLL",chart.layout)
+  // // Render layout yaxis panel
+  // document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ).innerHTML = ""
+  // const yAxisInstance = new ChartAxis( chart.layout, chart.fileUpload.chartType, "yaxis", "left", null, null, false )
+  // chart.layout.yaxis = yAxisInstance.options()
+  // createPanelSections( yAxisInstance.sections(), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+  // new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
   
 
 
@@ -157,6 +205,9 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
   // createPanelSections( xAxisInstance.sections(), sectionsContainer, optionId, prefix )
   // new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
 
+  console.log("MMMMMM", chart)
+  return
+
 // Assemble chart traces chart and and render chart traces panel
 if ( spreadsheet ) {
 
@@ -191,9 +242,9 @@ if ( spreadsheet ) {
   }
 
 
-  if (chart.layout.annotations.length) {
-    console.log(chart.layout.annotations)
-  }
+  // if (chart.layout.annotations.length) {
+  //   console.log(chart.layout.annotations)
+  // }
 
   
 

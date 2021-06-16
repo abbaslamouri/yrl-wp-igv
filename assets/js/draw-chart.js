@@ -25,8 +25,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
   // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
 
-  // Render panels
-  renderPanels( chart, spreadsheet, prefix )
+  
 
   console.log("CHART", chart)
 
@@ -53,6 +52,11 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   
   // Render chart
   await renderChart( chart, spreadsheet, prefix )
+
+  // Render panels
+  renderPanels( chart, spreadsheet, prefix )
+
+
 
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .layoutAc`).classList.remove( "hidden" )
   // document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .configAc`).classList.remove( "hidden" )
@@ -165,8 +169,8 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
               break
 
             case "text":
-              value = "" === value ? [] : value.toString().split(",").map( ( item ) => { return item } )
-              chart.traces[traceNumber][optionKey] = value
+              // value = value.toString().split(",").map( ( item ) => { return item } )
+              // chart.traces[traceNumber][optionKey] = value
               // Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
               console.log("VAL", value)
             break
@@ -177,6 +181,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           }
 
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
+          console.log(chart.traces)
           break
 
           // case "config":
@@ -210,9 +215,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     // document.getElementsByName(`${prefix}__layout[legend][valign]`)[0].disabled = ! chart.layout.showlegend ? true : false
 
     // xaxis
-    document.getElementsByName(`${prefix}__layout[xaxis][type]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
-    document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
-    document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][type]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
 
     // modebar
     // document.getElementsByName(`${prefix}__config[displaylogo]`)[0].disabled = ! chart.config.displayModeBar  ? true : false
