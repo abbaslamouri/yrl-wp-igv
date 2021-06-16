@@ -3,13 +3,17 @@ import { fontFamily } from "./utilities"
 
 class ChartAxis  {
 
-  constructor( layout, chartType, axisId) {
+  constructor( layout, chartType, axisId, axisSide, axisOverlaying, axisMatches, rangesliderVisible) {
 
     this.layout = layout
     this.axisId = axisId
-    // this.prefix = prefix
+    this.axisSide = axisSide
+    this.axisOverlaying = axisOverlaying
+    this.axisMatches = axisMatches
+    this.rangesliderVisible = rangesliderVisible
+
     this.axisSideOptions = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
-    this.axisSideDefault = ( axisId === "bottomAxis" || axisId === "topAxis" ) ? "bottom" : "left"
+    
 
     switch (chartType) {
       case "LineChart":
@@ -74,9 +78,10 @@ class ChartAxis  {
       zeroline : ( this.layout.xaxis === undefined || this.layout.xaxis.zeroline === undefined ) ? true : this.layout.xaxis.zeroline,
       zerolinecolor : ( this.layout.xaxis === undefined || this.layout.xaxis.zerolinecolor === undefined ) ? "#000a12" : this.layout.xaxis.zerolinecolor,
       zerolinewidth : ( this.layout.xaxis === undefined || this.layout.xaxis.zerolinewidth === undefined ) ? 1 : this.layout.xaxis.zerolinewidth,
-      side : ( this.layout.xaxis === undefined || this.layout.xaxis.side === undefined ) ? this.axisSideDefault : this.layout.xaxis.side,
-      // anchor : ( this.layout.xaxis === undefined || this.layout.xaxis.anchor === undefined ) ? "free": this.layout.xaxis.anchor,
-      overlaying : ( this.layout.xaxis === undefined || this.layout.xaxis.overlaying === undefined ) ? false : this.layout.xaxis.overlaying,
+      side : ( this.layout.xaxis === undefined || this.layout.xaxis.side === undefined ) ? this.axisSide : this.layout.xaxis.side,
+      anchor : ( this.layout.xaxis === undefined || this.layout.xaxis.anchor === undefined ) ? null: this.layout.xaxis.anchor,
+      matches : ( this.layout.xaxis === undefined || this.layout.xaxis.matches === undefined ) ? this.axisMatches: this.layout.xaxis.matches,
+      overlaying : ( this.layout.xaxis === undefined || this.layout.xaxis.overlaying === undefined ) ? null : this.layout.xaxis.axisOverlaying,
       position : ( this.layout.xaxis === undefined || this.layout.xaxis.position === undefined ) ? 0 : this.layout.xaxis.position,
       tickfont: {
         family: ( this.layout.xaxis === undefined || this.layout.xaxis.tickfont === undefined || this.layout.xaxis.tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.layout.xaxis.tickfont.family,
@@ -92,8 +97,8 @@ class ChartAxis  {
         },
         standoff : ( this.layout.xaxis === undefined || this.layout.xaxis.title === undefined || this.layout.xaxis.title.standoff === undefined ) ? 10 : this.layout.xaxis.title.standoff ,
       },
-      rangeslider : {
-        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.visible,
+      rangeslider : this.axisId === "left" || this.axisId === "right" ? null : {
+        visible : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.visible === undefined ) ? false : this.layout.xaxis.rangeslider.rangesliderVisible,
         thickness : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.thickness === undefined ) ?  0.12 : this.layout.xaxis.rangeslider.thickness,
         bgcolor : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.bgcolor === undefined ) ? "#e6ffff" : this.layout.xaxis.rangeslider.bgcolor,
         borderwidth : ( this.layout.xaxis === undefined || this.layout.xaxis.rangeslider === undefined || this.layout.xaxis.rangeslider.borderwidth === undefined ) ? 1 : this.layout.xaxis.rangeslider.borderwidth,
@@ -922,7 +927,7 @@ class ChartAxis  {
         
       },
 
-      rangeslider : {
+      rangeslider : this.axisId === "left" || this.axisId === "right" ? null : {
         intro : "Here you can modify the plot x-axis range slider",
         // id : `${this.prefix}__${this.axisId}RangesliderSubPanel`,
         // cssClasses:[`${this.axisId}`, "subPanel"],

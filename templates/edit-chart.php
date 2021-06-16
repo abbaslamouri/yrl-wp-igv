@@ -82,6 +82,11 @@
             <div class="ac-panel"></div>
           </div>
 
+          <div class="ac hoverlabelAc">
+            <h2 class="ac-header"><div class="ac-trigger">Hover Label</div></h2>
+            <div class="ac-panel"></div>
+          </div>
+
 
           <!-- <div class="ac configPanel hidden">
             <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
@@ -106,10 +111,7 @@
             </div>
           </div>
 
-          <div class="ac hoverlabelAc hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Hoverlabel</div></h2>
-            <div class="ac-panel"></div>
-          </div>
+          
 
           <div class="ac modebarAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
@@ -126,7 +128,10 @@
 
           <div class="ac xaxis2Ac">
             <h2 class="ac-header"><div class="ac-trigger">Top Axis</div></h2>
-            <div class="ac-panel"></div>
+            <div class="ac-panel">
+              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <div class="accordion accordion__level-3 xaxis2__Accordion"></div>
+            </div>
           </div>
 
           <div class="ac yaxisAc">

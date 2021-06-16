@@ -147,23 +147,23 @@ if (!class_exists('Dashboard')) {
 		}
 
 
-		public function min_max_avg_table_options() {
+		// public function min_max_avg_table_options() {
 
-			return [
-				"visible" => true,
-				"type" => "table",
-				"rounding" => null,
-				"header" => [],
-				"cells" => [],
-				"layout" => [
-					"height" => 150,
-					// "width" => 400,
-					"margin" => ["l" => 20, "r" => 20, "t" => 20, "b" => 20, "pad" => 0, "autoexpand" => true],
-				],
-				"config" => ["responsive" => true, "displayModeBar" => true, "displaylogo" => true]
-			];
+		// 	return [
+		// 		"visible" => true,
+		// 		"type" => "table",
+		// 		"rounding" => null,
+		// 		"header" => [],
+		// 		"cells" => [],
+		// 		"layout" => [
+		// 			"height" => 150,
+		// 			// "width" => 400,
+		// 			"margin" => ["l" => 20, "r" => 20, "t" => 20, "b" => 20, "pad" => 0, "autoexpand" => true],
+		// 		],
+		// 		"config" => ["responsive" => true, "displayModeBar" => true, "displaylogo" => true]
+		// 	];
 
-		}
+		// }
 
 
 

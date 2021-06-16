@@ -12,7 +12,7 @@ class Legend {
 
     return {
 
-      showlegend : ( this.layout.showlegend === undefined ) ? false : this.layout.showlegend,
+      showlegend : ( this.layout.showlegend === undefined ) ? true : this.layout.showlegend,
       legend : {
         bgcolor : ( this.layout.legend === undefined || this.layout.legend.bgcolor === undefined ) ? '#FFFFFF' : this.layout.legend.bgcolor,
         bordercolor : ( this.layout.legend=== undefined || this.layout.legend.bordercolor === undefined ) ? '#444444' : this.layout.legend.bordercolor,

@@ -1,10 +1,10 @@
 
 class Modebar {
 
-  constructor(inputOptions, prefix ) {
+  constructor(layout, config) {
 
-    this.inputOptions = inputOptions
-    this.prefix = prefix
+    this.layout = layout
+    this.config = config
 
   }
 
@@ -12,14 +12,14 @@ class Modebar {
 
     return {
  
-      // displayModeBar : ( this.inputOptions.displayModeBar  === undefined ) ? false :this.inputOptions.displayModeBar,
-      // displaylogo : ( this.inputOptions.displaylogo  === undefined ) ? true : this.inputOptions.displaylogo,
-      // modebar : {
-      //   orientation : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.orientation === undefined ) ? "h" : this.inputOptions.modebar.orientation,
-      //   bgcolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.bgcolor === undefined ) ? "#eeeeee" : this.inputOptions.modebar.bgcolor,
-      //   color : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.color === undefined ) ? "#000a12" : this.inputOptions.modebar.color,
-      //   activecolor : ( this.inputOptions.modebar === undefined || this.inputOptions.modebar.activecolor === undefined ) ? "#b0bec5" : this.inputOptions.modebar.activecolor,
-      // },
+      displayModeBar : ( this.config.displayModeBar  === undefined ) ? true :this.config.displayModeBar,
+      displaylogo : ( this.config.displaylogo  === undefined ) ? true : this.config.displaylogo,
+      modebar : {
+        orientation : ( this.layout.modebar === undefined || this.layout.modebar.orientation === undefined ) ? "h" : this.layout.modebar.orientation,
+        bgcolor : ( this.layout.modebar === undefined || this.layout.modebar.bgcolor === undefined ) ? "#eeeeee" : this.layout.modebar.bgcolor,
+        color : ( this.layout.modebar === undefined || this.layout.modebar.color === undefined ) ? "#000a12" : this.layout.modebar.color,
+        activecolor : ( this.layout.modebar === undefined || this.layout.modebar.activecolor === undefined ) ? "#b0bec5" : this.layout.modebar.activecolor,
+      },
     
     }
      
@@ -32,22 +32,20 @@ class Modebar {
     
       hoverLabel : {
         intro : "Here you can modify the plot modbar options",
-        // id : `${this.prefix}__modeBarSubPanel`,
-        // cssClasses:["modeBar", "subPanel"],
         title : "",
         fieldGroups : [
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modebar[displayModeBar]",
+                id : "config[displayModeBar]",
                 title : "Display ModeBar ?",
                 type : "checkbox", 
                 value : this.options().displayModeBar,
                 hint: ""
               },
               {
-                id : "modebar[displaylogo]",
+                id : "config[displaylogo]",
                 title : "Display Plotly Logo ?",
                 type : "checkbox", 
                 value : this.options().displaylogo,
@@ -60,7 +58,7 @@ class Modebar {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modebar[modebar][bgcolor]",
+                id : "layout[modebar][bgcolor]",
                 title : "Background Color",
                 type : "color", 
                 value : this.options().modebar.bgcolor,
@@ -68,7 +66,7 @@ class Modebar {
                 hint: "Sets the background color of the modebar."
               },
               {
-                id: "modebar[modebar][orientation]",
+                id: "layout[modebar][orientation]",
                 title:"Modebar Orientation",
                 type : "select",
                 options : {
@@ -85,7 +83,7 @@ class Modebar {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "modebar[modebar][color]",
+                id : "layout[modebar][color]",
                 title : "Icon Color",
                 type : "color", 
                 value : this.options().modebar.color,
@@ -93,7 +91,7 @@ class Modebar {
                 hint: "Sets the color of the icons in the modebar."
               },
               {
-                id : "modebar[modebar][activecolor]",
+                id : "layout[modebar][activecolor]",
                 title : "Active Icon Color",
                 type : "color", 
                 value : this.options().modebar.activecolor,
