@@ -19,9 +19,35 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
       chart.traces.push( 
         {
           type: "scatter",
-          connectgaps: false,
-          mode: "lines+markers+text",
           visible: true,
+          showlegend: true,
+          mode: "lines+markers",
+          name: Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1],
+          x: spreadsheet[chart.fileUpload.sheetId].data[0],
+          xaxis: "x",
+          y: spreadsheet[chart.fileUpload.sheetId].data[i+1],
+          yaxis: "y",
+          connectgaps: false,
+          opacity: 1,
+
+          marker: {
+            symbol: 0,
+            size:6,
+            opacity:1,
+            color:colors()[i],
+            line: {
+              color: "#444444",
+              width: 0
+            },
+            gradient: {
+              type: "none",
+              color: "#444444"
+            },
+            masdisplayed: 0
+          },
+
+
+         
           text: "Hello",
           textfont: {
             family: "Raleway",
@@ -29,19 +55,12 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
             size: 12,
           },
           textposition: "top center",
-          opacity: 1,
-          showlegend: true,
-          x: spreadsheet[chart.fileUpload.sheetId].data[0],
-          xaxis: "x",
-          y: spreadsheet[chart.fileUpload.sheetId].data[i+1],
-          yaxis: "y",
-          name: Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1],
+         
+         
           line: {
             color: colors()[i]
           },
-          marker: {
-            color :colors()[i]
-          },
+         
           error_y: {
             visible: true,
             type: "data",

@@ -156,8 +156,14 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           Plotly.relayout( `${prefix}__plotlyChart`, update)
           console.log("Layout", chart)
           break
+
+
+
+
+
           
         case "traces":
+
           const keyArr = key.split(".")
           const traceNumber = keyArr.shift()
           const optionKey = keyArr.join(".")
@@ -169,10 +175,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
               break
 
             case "text":
-              // value = value.toString().split(",").map( ( item ) => { return item } )
-              // chart.traces[traceNumber][optionKey] = value
-              // Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
-              console.log("VAL", value)
+              if (value.includes(",")) {
+                value = [value.toString().split(",").map( ( item ) => { return item } )]
+              }
             break
 
             default:
@@ -181,7 +186,31 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           }
 
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
-          console.log(chart.traces)
+
+          const trace =chart.traces[traceNumber]
+
+          console.log("AAAAAA", parseInt(trace.marker.line.width) === 0)
+
+          // Basic Options
+          document.getElementById(`${prefix}__traces[${traceNumber}][showlegend]`).disabled = false === trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][mode]`).disabled =  false === trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][name]`).disabled =  false === trace.visible || ! trace.showlegend  ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][xaxis]`).disabled =  false === trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][yaxis]`).disabled =  false === trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][opacity]`).disabled =  false === trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][connectgaps]`).disabled =  false === trace.visible ? true : false
+
+          // Markers
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][symbol]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][size]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][opacity]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][color]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][line][width]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][line][color]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ||  parseInt(trace.marker.line.width) === 0 ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][gradient][type]`).disabled = false === trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][gradient][color]`).disabled = false === chart.traces.visible || ! trace.mode.includes( "markers" ) || trace.marker.gradient.type === "none" ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][marker][maxdisplayed]`).disabled = true !== trace.visible || ! trace.mode.includes( "markers" ) ? true : false
+
           break
 
           // case "config":

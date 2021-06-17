@@ -288,52 +288,52 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
             // const trace = chart.traces[traceNumber]
             // const traceInputIdPrefix = `${prefix}__chartTraces[${traceNumber}]`           
 
-            // document.getElementById(`${traceInputIdPrefix}[xaxis]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[yaxis]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[mode]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[name]`).disabled = ( true !== trace.visible || trace.showlegend ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[opacity]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[showlegend]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][symbol]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][size]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][opacity]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][color]`).disabled = (true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][maxdisplayed]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][gradient][type]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[marker][gradient][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "markers" )  ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][dash]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[text]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[textposition]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[textfont][family]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[textfont][color]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[textfont][size]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hovertext]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverinfo]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][bgcolor]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][bordercolor]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][align]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][namelength]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][family]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][size]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[hoverlabel][font][color]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][visible]`).disabled = ( true !== trace.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][type]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][symmetric]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible  ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][value]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][valueminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][array]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][arrayminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][color]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][thickness]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[error_y][width]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
-            // document.getElementById(`${traceInputIdPrefix}[connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][xaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][yaxis]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][mode]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][name]`).disabled = ( true !== trace.visible || trace.showlegend ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][opacity]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][showlegend]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][marker][symbol]`).disabled = ( true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][size]`).disabled = (true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][opacity]`).disabled = (true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][color]`).disabled = (true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][maxdisplayed]`).disabled = ( true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][line][width]`).disabled = ( true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" )  ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][line][color]`).disabled = ( true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" )  ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][gradient][type]`).disabled = ( true !== chart.traces[traceNumber].visible || ! chart.traces[traceNumber].mode.includes( "markers" )  ) ? true : false
+            // document.getElementById(`${prefix}__chartchart.traces[traceNumber]s[${chart.traces[traceNumber]Number}][marker][gradient][color]`).disabled = ( true !== chart.traces[traceNumber].visible || ! trace.mode.includes( "markers" )  ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][width]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][color]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][dash]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][text]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][textposition]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][textfont][family]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][textfont][color]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][textfont][size]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hovertext]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverinfo]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][bgcolor]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][bordercolor]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][align]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][namelength]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][font][family]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][font][size]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][hoverlabel][font][color]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][visible]`).disabled = ( true !== trace.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][type]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][symmetric]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible  ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][value]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][valueminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][array]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][arrayminus]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][color]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][thickness]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][error_y][width]`).disabled = ( true !== trace.visible  || ! trace.error_y.visible ) ? true : false
+            // document.getElementById(`${prefix}__chartTraces[${traceNumber}][connectgaps]`).disabled = ( true !== trace.visible  ) ? true : false
 
             break
                    

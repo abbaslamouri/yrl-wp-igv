@@ -94,41 +94,6 @@ class Trace {
         title : "Basic Options",
         fieldGroups : [
           {
-            cssClasses : ["field-group"],     
-            inputFields : [
-              {
-                id : `traces[${this.index}][mode]`, 
-                title : "Mode", 	
-                type : "select", 
-                options : {
-                  none : "None",
-                  lines : "Lines",
-                  markers : "Markers",
-                  text: "text",
-                  "lines+markers" : "Lines & Markers",
-                  "markers+text" : "Markers & Text",
-                  "lines+markers+text" : "Lines, Markers & Text"
-                },
-                value : this.trace.mode === undefined ? null :this.trace.mode,
-                disabled: false === this.trace.visible  ? true : false,
-                hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
-              },
-            ]
-          },
-          {
-            cssClasses : ["field-group"],
-            inputFields: [
-              {
-                id : `traces[${this.index}][name]`,  
-                title : "Label in Legend",  
-                type : "text",
-                value : this.trace.name === undefined ? null :this.trace.name,
-                disabled: false == this.trace.visible  ? true : false,
-                hint : "The trace name appear as the legend item and on hover."
-              },
-            ],
-          },
-          {
             cssClasses : ["field-group", "sixty-forty"],     
             inputFields : [
               {
@@ -148,10 +113,45 @@ class Trace {
                 title : "Show In Legend", 	
                 type : "checkbox",
                 value : this.trace.showlegend === undefined ? null : this.trace.showlegend,
-                disabled: false == this.trace.visible  ? true : false,
+                disabled: false === this.trace.visible  ? true : false,
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
             ]
+          },
+          {
+            cssClasses : ["field-group"],     
+            inputFields : [
+              {
+                id : `traces[${this.index}][mode]`, 
+                title : "Mode", 	
+                type : "select", 
+                options : {
+                  none : "None",
+                  lines : "Lines",
+                  markers : "Markers",
+                  text: "text",
+                  "lines+markers" : "Lines & Markers",
+                  "markers+text" : "Markers & Text",
+                  "lines+markers+text" : "Lines, Markers & Text"
+                },
+                value : this.trace.mode === undefined ? null :this.trace.mode,
+                disabled: true !== this.trace.visible  ? true : false,
+                hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
+              },
+            ]
+          },
+          {
+            cssClasses : ["field-group"],
+            inputFields: [
+              {
+                id : `traces[${this.index}][name]`,  
+                title : "Name",  
+                type : "text",
+                value : this.trace.name === undefined ? null :this.trace.name,
+                disabled: false === this.trace.visible  ? true : false,
+                hint : "The trace name appear as the legend item and on hover."
+              },
+            ],
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],
@@ -165,7 +165,7 @@ class Trace {
                   x2 : "Top",
                 },
                 value : this.trace.xaxis === undefined ? null : this.trace.xaxis,
-                disabled: false === this.trace.visible  ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.showlegend  ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
               {
@@ -177,7 +177,7 @@ class Trace {
                   y2 : "Right",
                 },
                 value : this.trace.yaxis === undefined ? null: this.trace.yaxis,
-                disabled: false === this.trace.visible  ? true : false,
+                disabled: true !== this.trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
             ]
@@ -201,7 +201,7 @@ class Trace {
                 max : 1,
                 step : 0.02,
                 value : this.trace.opacity === undefined ? null : this.trace.opacity,
-                disabled: false === this.trace.visible  ? true : false,
+                disabled: true !== this.trace.visible  ? true : false,
                 hint : "Sets the opacity of the trace."
               },
             ]
@@ -218,82 +218,82 @@ class Trace {
             inputFields: [
               {
                 id : `traces[${this.index}][marker][symbol]`, 
-                title : "Marker Symbol", 	
+                title : "Symbol", 	
                 type : "number",
                 min : 1,
                 max : 300,
                 step : 1,
-                value :  this.trace.marker === undefined || this.trace.marker.symbol === undefined ? 1 : this.trace.marker.symbol,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
+                value :  this.trace.marker === undefined || this.trace.marker.symbol === undefined ? null : this.trace.marker.symbol,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
               },
               {
                 id : `traces[${this.index}][marker][size]`, 
-                title : "Marker Size", 	
+                title : "Size", 	
                 type : "number",
                 min : 1,
                 max : 2000,
                 step : 1,
-                value : this.trace.marker === undefined || this.trace.marker.size === undefined ? 6 : this.trace.marker.size,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
+                value : this.trace.marker === undefined || this.trace.marker.size === undefined ? null : this.trace.marker.size,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker size (in px).  Number or array of numbers greater than or equal to 0"
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
                 id : `traces[${this.index}][marker][opacity]`, 
-                title : "Marker Opacity", 	
+                title : "Opacity", 	
                 type : "number",
                 min : 0,
                 max : 1,
                 step : .01,
-                value : this.trace.marker === undefined || this.trace.marker.opacity === undefined ? 1 : this.trace.marker.opacity,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                value : this.trace.marker === undefined || this.trace.marker.opacity === undefined ? null : this.trace.marker.opacity,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
                 hint : "Sets the marker's opacity."
               },
               {
                 id : `traces[${this.index}][marker][color]`,  
-                title : "Marker Color",  
+                title : "Color",  
                 type : "color",
                 value : this.trace.marker === undefined || this.trace.marker.color === undefined ? null : this.trace.marker.color,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
                 hint : ""
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
                 id : `traces[${this.index}][marker][line][color]`, 
-                title : "Marker Line Color", 	
+                title : "Line Color", 	
                 type : "color",
                 value : this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.color === undefined ?  null : this.trace.marker.line.color,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) || this.trace.marker.line.width === 0  ? true : false,
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
                 id : `traces[${this.index}][marker][line][width]`, 
-                title : "Marker Line Width", 	
+                title : "Line Width", 	
                 type : "number",
                 min : 0,
                 max : 100,
                 step : 1,
                 value : this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.width === undefined ? null : this.trace.marker.line.width,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
                 hint : "Sets the width (in px) of the lines bounding the marker points.   Number or array of numbers greater than or equal to 0"
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
                 id : `traces[${this.index}][marker][gradient][type]`, 
-                title : "Marker Gradient Type", 	
+                title : "Gradient Type", 	
                 type : "select",
                 options : {
                   none : "None",
@@ -301,32 +301,32 @@ class Trace {
                   horizontal : "Horizontal",
                   vertical: "Vertical"
                 },
-                value : this.trace.marker === undefined || this.trace.marker.gradient === undefined || this.trace.marker.gradient.type === undefined ? "none" : this.trace.marker.gradient.type,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )? true : false,
+                value : this.trace.marker === undefined || this.trace.marker.gradient === undefined || this.trace.marker.gradient.type === undefined ? null : this.trace.marker.gradient.type,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the type of gradient used to fill the markers"
               },
               {
                 id : `traces[${this.index}][marker][gradient][color]`, 
-                title : "Marker gradient Color", 	
+                title : "Gradient Color", 	
                 type : "color",
                 value :  this.trace.marker === undefined || this.trace.marker.gradient === undefined || this.trace.marker.gradient.color === undefined ? null : this.trace.marker.gradient.color,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) || this.trace.marker.gradient.type === "none" ? true : false,
                 hint : "Sets the final color of the gradient fill: the center color for radial, the right for horizontal, or the bottom for vertical."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group"],
             inputFields: [
               {
                 id : `traces[${this.index}][marker][maxdisplayed]`, 
-                title : "Marker Max Displayed", 	
+                title : "Maximum Displayed", 	
                 type : "number",
                 min : 0,
                 max : 20000,
                 step : 1,
-                value : this.trace.marker === undefined || this.trace.marker.maxdisplayed === undefined ? 0 : this.trace.marker.maxdisplayed,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                value : this.trace.marker === undefined || this.trace.marker.maxdisplayed === undefined ? null : this.trace.marker.maxdisplayed,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
                 hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
               },
             ],
@@ -354,7 +354,7 @@ class Trace {
                   vhv: "Vertical/Horizontal/Vertical"
                 },
                 value : this.trace.line === undefined || this.trace.line.shape === undefined ? "linear" : this.trace.line.shape,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
               },
               {
@@ -365,7 +365,7 @@ class Trace {
                 max : 2000,
                 step : 1,
                 value : this.trace.line === undefined || this.trace.line.width === undefined ? 2 : this.trace.line.width,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Sets the width of the trace line."
               },
             ],
@@ -378,7 +378,7 @@ class Trace {
                 title : "Line Type", 	
                 type : "text",
                 value : this.trace.line === undefined || this.trace.line.dash === undefined ? "solid" : this.trace.line.dash,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
               },
               {
@@ -386,7 +386,7 @@ class Trace {
                 title : "Line Color",  
                 type : "color",
                 value : this.trace.line === undefined || this.trace.line.color === undefined ? null : this.trace.line.color,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Sets the color of the trace line"
               },
             ],
@@ -410,7 +410,7 @@ class Trace {
                 title : "line Simplify", 	
                 type : "checkbox",
                 value : this.trace.line === undefined || this.trace.line.simplify === undefined ? true : this.trace.line.simplify,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" )  ? true : false,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" )  ? true : false,
                 hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
               },
             ],
