@@ -211,6 +211,14 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           document.getElementById(`${prefix}__traces[${traceNumber}][marker][gradient][color]`).disabled = false === chart.traces.visible || ! trace.mode.includes( "markers" ) || trace.marker.gradient.type === "none" ? true : false
           document.getElementById(`${prefix}__traces[${traceNumber}][marker][maxdisplayed]`).disabled = true !== trace.visible || ! trace.mode.includes( "markers" ) ? true : false
 
+          // Lines
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][width]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][color]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][dash]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+
           break
 
           // case "config":

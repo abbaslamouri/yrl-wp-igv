@@ -21,7 +21,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
           type: "scatter",
           visible: true,
           showlegend: true,
-          mode: "lines+markers",
+          mode: "lines+markers+text",
           name: Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1],
           x: spreadsheet[chart.fileUpload.sheetId].data[0],
           xaxis: "x",
@@ -32,7 +32,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
           marker: {
             symbol: 0,
-            size:6,
+            size: 6,
             opacity:1,
             color:colors()[i],
             line: {
@@ -46,6 +46,15 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
             masdisplayed: 0
           },
 
+          line: {
+            dash: "solid",
+            shape: "linear",
+            width: 2,
+            color: colors()[i],
+            smoothing: 1,
+            simplify: true
+          },
+
 
          
           text: "Hello",
@@ -57,9 +66,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
           textposition: "top center",
          
          
-          line: {
-            color: colors()[i]
-          },
+         
          
           error_y: {
             visible: true,

@@ -251,7 +251,7 @@ class Trace {
                 max : 1,
                 step : .01,
                 value : this.trace.marker === undefined || this.trace.marker.opacity === undefined ? null : this.trace.marker.opacity,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" )  ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker's opacity."
               },
               {
@@ -272,7 +272,7 @@ class Trace {
                 title : "Line Color", 	
                 type : "color",
                 value : this.trace.marker === undefined || this.trace.marker.line === undefined || this.trace.marker.line.color === undefined ?  null : this.trace.marker.line.color,
-                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) || this.trace.marker.line.width === 0  ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "marker" ) || parseInt(this.trace.marker.line.width) === 0  ? true : false,
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
@@ -342,8 +342,16 @@ class Trace {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
+                id : `traces[${this.index}][line][dash]`, 
+                title : "Type", 	
+                type : "text",
+                value : this.trace.line === undefined || this.trace.line.dash === undefined ? null : this.trace.line.dash,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
+              },
+              {
                 id : `traces[${this.index}][line][shape]`,  
-                title : "Line Shape",  
+                title : "Shape",  
                 type : "select",
                 options : {
                   linear : "Linear",
@@ -353,66 +361,58 @@ class Trace {
                   hvh: "Horizontal/Vertical/Horizontal",
                   vhv: "Vertical/Horizontal/Vertical"
                 },
-                value : this.trace.line === undefined || this.trace.line.shape === undefined ? "linear" : this.trace.line.shape,
+                value : this.trace.line === undefined || this.trace.line.shape === undefined ? null : this.trace.line.shape,
                 disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
-              },
-              {
-                id : `traces[${this.index}][line][width]`, 
-                title : "Line Width", 	
-                type : "number",
-                min : 1,
-                max : 2000,
-                step : 1,
-                value : this.trace.line === undefined || this.trace.line.width === undefined ? 2 : this.trace.line.width,
-                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
-                hint : "Sets the width of the trace line."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
-                id : `traces[${this.index}][line][dash]`, 
-                title : "Line Type", 	
-                type : "text",
-                value : this.trace.line === undefined || this.trace.line.dash === undefined ? "solid" : this.trace.line.dash,
-                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
-                hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
+                id : `traces[${this.index}][line][width]`, 
+                title : "Width", 	
+                type : "number",
+                min : 0,
+                max : 2000,
+                step : 1,
+                value : this.trace.line === undefined || this.trace.line.width === undefined ? null : this.trace.line.width,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                hint : "Sets the width of the trace line."
               },
               {
                 id : `traces[${this.index}][line][color]`,  
-                title : "Line Color",  
+                title : "Color",  
                 type : "color",
                 value : this.trace.line === undefined || this.trace.line.color === undefined ? null : this.trace.line.color,
-                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                disabled: false === this.trace.visible || ! this.trace.mode.includes( "lines" ) || parseInt(this.trace.line.width) === 0 ? true : false,
                 hint : "Sets the color of the trace line"
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
+                id : `traces[${this.index}][line][simplify]`, 
+                title : "Simplify", 	
+                type : "checkbox",
+                value : this.trace.line === undefined || this.trace.line.simplify === undefined ? null : this.trace.line.simplify,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" )  ? true : false,
+                hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
+              },
+              {
                 id : `traces[${this.index}][line][smoothing]`, 
-                title : "line Smoothing", 	
+                title : "Smoothing", 	
                 type : "number",
                 min : 0,
                 max : 1.3,
                 step : 0.01,
-                value : this.trace.line === undefined || this.trace.line.smoothing === undefined ? 1 : this.trace.line.smoothing,
-                disabled: false == this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
+                value : this.trace.line === undefined || this.trace.line.smoothing === undefined ? null : this.trace.line.smoothing,
+                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" ) ? true : false,
                 hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape). Number between or equal to 0 and 1.3."
               }, 
-              {
-                id : `traces[${this.index}][line][simplify]`, 
-                title : "line Simplify", 	
-                type : "checkbox",
-                value : this.trace.line === undefined || this.trace.line.simplify === undefined ? true : this.trace.line.simplify,
-                disabled: true !== this.trace.visible || ! this.trace.mode.includes( "lines" )  ? true : false,
-                hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
-              },
             ],
           },
         ]
@@ -423,7 +423,7 @@ class Trace {
         title : "Text",
         fieldGroups : [
           {        
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group"],
             inputFields: [
               {
                 id : `traces[${this.index}][text]`, 
@@ -436,8 +436,40 @@ class Trace {
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
+              {
+                id : `traces[${this.index}][textfont][family]`,
+                title : "Text Font",	
+                type : "select",
+                options : fontFamily(),
+                value : this.trace.textfont === undefined || this.trace.textfont.family === undefined ? null : this.trace.textfont.family,
+                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : `traces[${this.index}][textfont][size]`, 
+                title : "Text Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : this.trace.textfont === undefined || this.trace.textfont.size === undefined ? null : this.trace.textfont.size,
+                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${this.index}][textfont][color]`,
+                title : "Text Font Color",
+                type : "color", 
+                value : this.trace.textfont === undefined || this.trace.textfont.color === undefined ? null : this.trace.textfont.color,
+                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
+              }, 
               {
                 id : `traces[${this.index}][textposition]`, 
                 title : "Text Position", 	
@@ -456,38 +488,6 @@ class Trace {
                 value : this.trace.textposition === undefined ? null : this.trace.textposition,
                 disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
                 hint : "Sets the positions of the `text` elements with respects to the (x,y) coordinates."
-              },
-              {
-                id : `traces[${this.index}][textfont][family]`,
-                title : "Text Font",	
-                type : "select",
-                options : fontFamily(),
-                value : this.trace.textfont === undefined || this.trace.textfont.family === undefined ? null : this.trace.textfont.family,
-                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
-                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `traces[${this.index}][textfont][color]`,
-                title : "Text Font Color",
-                type : "color", 
-                value : this.trace.textfont === undefined || this.trace.textfont.color === undefined ? null : this.trace.textfont.color,
-                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
-              }, 
-              {
-                id : `traces[${this.index}][textfont][size]`, 
-                title : "Text Font Size", 
-                type : "number",
-                min : 1,
-                max : 100,
-                step : 0.5,
-                value : this.trace.textfont === undefined || this.trace.textfont.size === undefined ? null : this.trace.textfont.size,
-                disabled: true !== this.trace.visible || ! this.trace.text || ! this.trace.mode.includes( "text" ) ? true : false,
-                hint : "number greater than or equal to 1"
               },
             ],
           },
