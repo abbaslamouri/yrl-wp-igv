@@ -494,48 +494,31 @@ class Trace {
         ]
       },
 
-      hovertext: {
+      // hovertext: {
+      //   intro : `Here you can modify the other of trace "${this.trace.name}`,
+      //   title : "Hover Text",
+      //   fieldGroups : [
+          
+      //   ]
+      // },
+
+      hoverlabel: {
         intro : `Here you can modify the other of trace "${this.trace.name}`,
-        title : "Hover Text",
+        title : "Hover Text & Label",
         fieldGroups : [
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group"],
             inputFields: [
               {
                 id : `traces[${this.index}][hovertext]`, 
                 title : "Hover Text", 	
                 type : "text",
-                value :  this.trace.hovertext === undefined ? "" : Array.isArray( this.trace.hovertext ) ? this.trace.hovertext.join() : this.trace.hovertext,
+                value : this.trace.hovertext === undefined ? null : Array.isArray( this.trace.hovertext ) ? this.trace.hovertext.join() : this.trace.hovertext,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
               },
-              {
-                id : `traces[${this.index}][hoverinfo]`, 
-                title : "Hover Info.", 	
-                type : "select",
-                options : {
-                  all: "All",
-                  x : "X",
-                  y : "Y",
-                  text : "Text",
-                  name : "Name",
-                  "name+text": "Name & Text",
-                  none : "None",
-                  skip: "Skip",
-                },
-                value : this.trace.hoverinfo === undefined ? "all" : this.trace.hoverinfo,
-                disabled: true !== this.trace.visible  ? true : false,
-                hint : "Any combination of 'x', 'y', 'z', 'text', 'name' joined with a '+' OR 'all' or 'none' or 'skip'. Examples: 'x', 'y', 'x+y', 'x+y+z', 'all'.  Determines which trace information appear on hover. If `none` or `skip` are set, no information is displayed upon hovering. But, if `none` is set, click and hover events are still fired.  Default: 'all'"
-              },
             ],
           },
-        ]
-      },
-
-      hoverlabel: {
-        intro : `Here you can modify the other of trace "${this.trace.name}`,
-        title : "Hover Label",
-        fieldGroups : [
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
@@ -548,7 +531,7 @@ class Trace {
                   left : "Left",
                   right : "Right",
                 },
-                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.align === undefined ? "auto" : this.trace.hoverlabel.align,
+                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.align === undefined ? null : this.trace.hoverlabel.align,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint : "Type: enumerated or array of enumerateds , one of ( 'left' | 'right' | 'auto' ).  Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines.  Default: 'auto'"
               },
@@ -559,14 +542,14 @@ class Trace {
                 min : -1,
                 max : 1000,
                 step : 1,
-                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.namelength === undefined ? 15 : this.trace.hoverlabel.namelength,
+                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.namelength === undefined ? null : this.trace.hoverlabel.namelength,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint : "Sets the default length (in number of characters) of the trace name in the hover labels for all traces. -1 shows the whole name regardless of length. 0-3 shows the first 0-3 characters, and an integer >3 will show the whole name if it is less than that many characters, but if it is longer, will truncate to `namelength - 3` characters and add an ellipsis."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
                 id : `traces[${this.index}][hoverlabel][font][family]`,
@@ -576,6 +559,26 @@ class Trace {
                 value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.family === undefined ? null : this.trace.hoverlabel.font.family,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : `traces[${this.index}][hoverlabel][font][color]`,
+                title : "Hover Label Font Color",
+                type : "color", 
+                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.color === undefined ? null : this.trace.hoverlabel.font.color,
+                disabled: true !== this.trace.visible  ? true : false,
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${this.index}][hoverlabel][bgcolor]`,
+                title : "Hover label Bg. Color",
+                type : "color", 
+                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.bgcolor === undefined ? null : this.trace.hoverlabel.bgcolor,
+                disabled: true !== this.trace.visible  ? true : false,
+                hint: "Sets the background color of the hover labels for this trace"
               },
               {
                 id : `traces[${this.index}][hoverlabel][font][size]`, 
@@ -591,33 +594,31 @@ class Trace {
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
-                id : `traces[${this.index}][hoverlabel][font][color]`,
-                title : "Hover Label Font Color",
-                type : "color", 
-                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.color === undefined ? null : this.trace.hoverlabel.font.color,
+                id : `traces[${this.index}][hoverinfo]`, 
+                title : "Hover Info.", 	
+                type : "select",
+                options : {
+                  all: "All",
+                  x : "X",
+                  y : "Y",
+                  text : "Text",
+                  name : "Name",
+                  "name+text": "Name & Text",
+                  none : "None",
+                  skip: "Skip",
+                },
+                value : this.trace.hoverinfo === undefined ? null : this.trace.hoverinfo,
                 disabled: true !== this.trace.visible  ? true : false,
+                hint : "Any combination of 'x', 'y', 'z', 'text', 'name' joined with a '+' OR 'all' or 'none' or 'skip'. Examples: 'x', 'y', 'x+y', 'x+y+z', 'all'.  Determines which trace information appear on hover. If `none` or `skip` are set, no information is displayed upon hovering. But, if `none` is set, click and hover events are still fired.  Default: 'all'"
               },
-              {
-                id : `traces[${this.index}][hoverlabel][bgcolor]`,
-                title : "Hover label Bg. Color",
-                type : "color", 
-                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.bgcolor === undefined ? 20 : this.trace.hoverlabel.font.bgcolor,
-                disabled: true !== this.trace.visible  ? true : false,
-                hint: "Sets the background color of the hover labels for this trace"
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
               {
                 id : `traces[${this.index}][hoverlabel][bordercolor]`,
                 title : "Hover label Border Color",
                 type : "color", 
-                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.bordercolor === undefined ? 20 : this.trace.hoverlabel.font.bordercolor,
+                value : this.trace.hoverlabel === undefined || this.trace.hoverlabel.font === undefined || this.trace.hoverlabel.font.bordercolor === undefined ? null : this.trace.hoverlabel.font.bordercolor,
                 disabled: true !== this.trace.visible  ? true : false,
                 hint: "Sets the border color of the hover labels for this trace."
               },

@@ -219,6 +219,13 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           document.getElementById(`${prefix}__traces[${traceNumber}][line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
           document.getElementById(`${prefix}__traces[${traceNumber}][line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
 
+          // Text
+          document.getElementById(`${prefix}__traces[${traceNumber}][text]`).disabled = ( true !== trace.visible ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textposition]`).disabled = ( true !== trace.visible || ! trace.text ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][family]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][color]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][size]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
+
           break
 
           // case "config":

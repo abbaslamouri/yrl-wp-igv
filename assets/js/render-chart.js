@@ -34,7 +34,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
             symbol: 0,
             size: 6,
             opacity:1,
-            color:colors()[i],
+            color: colors()[i],
             line: {
               color: "#444444",
               width: 0
@@ -64,6 +64,20 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
             size: 12,
           },
           textposition: "top center",
+
+          hovertext: "",
+          hoverinfo: "all",
+          hoverlabel: {
+            align: "auto",
+            namelength: 15,
+            font: {
+              family: "Raleway",
+              color: "#FFFFFF",
+              size: 12,
+            },
+            bgcolor: colors()[i],
+            bordercolor : "#000000",
+          },
          
          
          
@@ -71,7 +85,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
           error_y: {
             visible: true,
             type: "data",
-            color :colors()[i],
+            color: colors()[i],
             symmetric: true
           }
         }
