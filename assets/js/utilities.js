@@ -594,14 +594,6 @@ const createPanel = ( acCssClass, targetTitle, intro ) => {
    const ac = document.createElement( "div" )
    ac.classList.add( "ac", acCssClass )
 
-   // Create intro p
-   const introDiv = document.createElement( "div" )
-   introDiv.classList.add( "ac-text", "intro" )
-
-   // Create intro text and add to intro div
-   const introText = document.createTextNode(intro)
-   introDiv.appendChild(introText)
-
    // Create ac header
    const acHeader = document.createElement( "h2" )
    acHeader.classList.add( "ac-header" )
@@ -624,8 +616,19 @@ const createPanel = ( acCssClass, targetTitle, intro ) => {
    const acPanel = document.createElement( "div" )
    acPanel.classList.add( "ac-panel" )
 
-  // Add p tag to content
-  acPanel.appendChild(introDiv)
+   if (intro) {
+    // Create intro p
+    const introDiv = document.createElement( "div" )
+    introDiv.classList.add( "ac-text", "intro" )
+
+    // Create intro text and add to intro div
+    const introText = document.createTextNode(intro)
+    introDiv.appendChild(introText)
+
+    // Add p tag to content
+    acPanel.appendChild(introDiv)
+    
+   }
 
    // Add content to ac
    ac.appendChild(acPanel)
@@ -751,54 +754,54 @@ const fetchformGroup = (field, prefix) => {
 }
 
 
-const createPanelSectionsOld = ( sections, prefix, level2AccordionDivCssClass, level2AcDivCssClass, level3AccordionDiv, level3AcDivCssClass ) => {
+// const createPanelSectionsOld = ( sections, prefix, level2AccordionDivCssClass, level2AcDivCssClass, level3AccordionDiv, level3AcDivCssClass ) => {
 
-  for ( const section in sections ) {
+//   for ( const section in sections ) {
 
-    // const level3AcDivCssClass = `traces${index-1}${section}Ac`
+//     // const level3AcDivCssClass = `traces${index-1}${section}Ac`
 
-    // Add trace panel to accordion
-    level3AccordionDiv.appendChild( createPanel(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
+//     // Add trace panel to accordion
+//     level3AccordionDiv.appendChild( createPanel(  `${level3AcDivCssClass}`, sections[section].title, sections[section].intro ) )
 
-    const acPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
+//     const acPanel = document.querySelector( `${level2AccordionDivCssClass} .${level2AcDivCssClass} .ac-panel .${level3AcDivCssClass} .ac-panel`)
 
 
-    for (const fieldRow in sections[section].fieldGroups) {
+//     for (const fieldRow in sections[section].fieldGroups) {
         
-      const row = sections[section].fieldGroups[fieldRow];
+//       const row = sections[section].fieldGroups[fieldRow];
 
-      //Create field group and add apprpriate css classes
-      const fieldGroup = document.createElement( "div" )
-      if (row.cssClasses) {
-        for (const cssClass in row.cssClasses) {
-          fieldGroup.classList.add(row.cssClasses[cssClass])
-        }
-      }
+//       //Create field group and add apprpriate css classes
+//       const fieldGroup = document.createElement( "div" )
+//       if (row.cssClasses) {
+//         for (const cssClass in row.cssClasses) {
+//           fieldGroup.classList.add(row.cssClasses[cssClass])
+//         }
+//       }
       
-      // Loop through fields
-      for (const el in row.inputFields) {
+//       // Loop through fields
+//       for (const el in row.inputFields) {
 
-        const formGroup = fetchformGroup( row.inputFields[el], prefix )
+//         const formGroup = fetchformGroup( row.inputFields[el], prefix )
         
-        fieldGroup.appendChild( formGroup )
-        // console.log(fieldGroup)
+//         fieldGroup.appendChild( formGroup )
+//         // console.log(fieldGroup)
 
-        // Add field group to content
-        // if (Object.keys(panelSections).length > 1) {
-          acPanel.appendChild( fieldGroup )
-        // } else {
-          // panelContent.appendChild( fieldGroup )
-        // }
+//         // Add field group to content
+//         // if (Object.keys(panelSections).length > 1) {
+//           acPanel.appendChild( fieldGroup )
+//         // } else {
+//           // panelContent.appendChild( fieldGroup )
+//         // }
 
-      }
+//       }
 
-    }
+//     }
 
-    // return acPanel
+//     // return acPanel
 
-  }
+//   }
 
-}
+// }
 
 
 

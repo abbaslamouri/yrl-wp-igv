@@ -96,7 +96,7 @@
           <div class="ac tracesAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
             <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <p class="ac-text intro">Trace options go here. </p>
               <div class="accordion accordion__level-2 traces__Accordion"></div>
             </div>
           </div>
@@ -121,7 +121,7 @@
           <div class="ac xaxisAc">
             <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
             <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <p class="ac-text intro">Bottom Axis Options go here. </p>
               <div class="accordion accordion__level-3 xaxis__Accordion"></div>
             </div>
           </div>

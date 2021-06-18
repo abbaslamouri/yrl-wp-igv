@@ -18,7 +18,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {} } 
+  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {}, layout: {},traces: [] } 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
@@ -254,6 +254,9 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       } else {
         mainAccordion.open(0)
       }
+
+      // new Accordion( tracesAccordionDiv, { duration: 400 } )
+
 
       // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .legend__Accordion`, { duration: 400 })

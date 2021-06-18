@@ -1,110 +1,94 @@
 import Plotly from 'plotly.js-dist'
 import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
+import Trace from "./Trace"
+import ChartAxis from "./ChartAxis"
+
+
 import Annotation from "./Annotation"
 
-import { displayAdminMessage, showElementById, fetchMinMaxAvgTableChartData, chartOptionKey, getMinMaxAvgData, createPanel, createPanelSections, colors } from "./utilities"
+import { displayAdminMessage, chartOptionKey, createPanel, createPanelSections, colors } from "./utilities"
 
 
 const renderChart =  async( chart, spreadsheet, prefix ) => {
 
   try {
 
-    // Render chart
     if ( ! spreadsheet ) throw new Error(  `Spreadsheet missing` )
 
-    chart.traces = []
+
+    /************************************************************************
+    ******************* Create traces options and panel *********************
+    *************************************************************************/
+
+    const tracesAccordionDiv = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
+    tracesAccordionDiv.innerHTML = ""
     
     for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
-      chart.traces.push( 
-        {
-          type: "scatter",
-          visible: true,
-          showlegend: true,
-          mode: "lines+markers+text",
-          name: Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1],
-          x: spreadsheet[chart.fileUpload.sheetId].data[0],
-          xaxis: "x",
-          y: spreadsheet[chart.fileUpload.sheetId].data[i+1],
-          yaxis: "y",
-          connectgaps: false,
-          opacity: 1,
 
-          marker: {
-            symbol: 0,
-            size: 6,
-            opacity:1,
-            color: colors()[i],
-            line: {
-              color: "#444444",
-              width: 0
-            },
-            gradient: {
-              type: "none",
-              color: "#444444"
-            },
-            masdisplayed: 0
-          },
+      // Traces options
+      chart.traces[i] = Trace.defaultOptions( i )
+      chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
+      chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
+      chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
 
-          line: {
-            dash: "solid",
-            shape: "linear",
-            width: 2,
-            color: colors()[i],
-            smoothing: 1,
-            simplify: true
-          },
+      // Create a trace panel and add it to traces accordion
+      tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
 
+      // Create level3 accordion inside new trace panel
+      const level3AccordionDiv = document.createElement("div")
+      level3AccordionDiv.classList.add("accordion", "accordion__level-3", `traces${i}__Accordion`)
+      document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-         
-          text: "Hello",
-          textfont: {
-            family: "Raleway",
-            color: colors()[i],
-            size: 12,
-          },
-          textposition: "top center",
+      // Create a section container
+      const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
 
-          hovertext: "",
-          hoverinfo: "all",
-          hoverlabel: {
-            align: "auto",
-            namelength: 15,
-            font: {
-              family: "Raleway",
-              color: "#FFFFFF",
-              size: 12,
-            },
-            bgcolor: colors()[i],
-            bordercolor : "#000000",
-          },
-         
-         
-         
-         
-          error_y: {
-            visible: true,
-            type: "data",
-            color: colors()[i],
-            symmetric: true
-          }
-        }
-      ) 
+      // Create panel sections
+      createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
+
+      // Create section accordion
+      new Accordion( `.${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
+      
     }
 
-    chart.config ={
-      displayModeBar: false,
-      displaylogo: false
-    }
-    
-    await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, {}, chart.config )
+    // Create traces accordion
+    new Accordion( tracesAccordionDiv, { duration: 400 } )
 
-    const plotlyData = document.getElementById(`${prefix}__plotlyChart`)
 
-    chart.layout = plotlyData.layout
+
+
+
+    /************************************************************************
+    ******************* Create xaxis options and panel *********************
+    *************************************************************************/
+    // Xaxis Options
+    chart.layout.xaxis = ChartAxis.defaultOptions( "bottom", null )
+    chart.layout.xaxis2 = ChartAxis.defaultOptions( "top", "x" )
+    await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
 
     console.log("Chart", chart)
 
+
+
+    createPanelSections( ChartAxis.sections( chart.layout, "xaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "xaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+
+
+
+
+
+    // chart.config =  {
+    //   displayModeBar: false,
+    //   displaylogo: false
+    // }
+    
+   
+
+    // const plotlyData = document.getElementById(`${prefix}__plotlyChart`)
+
+    // chart.layout = plotlyData.layout
+
+    
 
     // console.log("DATA", plotlyData.data)
     // console.log("LAYOUT", plotlyData.layout)

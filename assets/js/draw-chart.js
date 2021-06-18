@@ -24,11 +24,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // // Hide Min/Max/Avg accordion toggle and content
   // document.querySelector( `.accordion__toggle.minMaxAvgTableChart.panel` ).classList.add("hidden")
   // document.querySelector( `.accordion__content.minMaxAvgTableChart.panel` ).classList.add("hidden")
-
-  
-
-  console.log("CHART", chart)
-
   
 
   // // Create mainaccordion and open first panel
@@ -52,9 +47,10 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   
   // Render chart
   await renderChart( chart, spreadsheet, prefix )
+  
 
   // Render panels
-  renderPanels( chart, spreadsheet, prefix )
+  // renderPanels( chart, spreadsheet, prefix )
 
 
 
@@ -175,8 +171,16 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
               break
 
             case "text":
+            case "hovertext":
               if (value.includes(",")) {
                 value = [value.toString().split(",").map( ( item ) => { return item } )]
+              }
+            break
+            case "error_y.array":
+            case "error_y.arrayminus":
+              if (value.includes(",")) {
+                value = [value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )]
+                console.log(value)
               }
             break
 
@@ -188,8 +192,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
 
           const trace =chart.traces[traceNumber]
-
-          console.log("AAAAAA", parseInt(trace.marker.line.width) === 0)
 
           // Basic Options
           document.getElementById(`${prefix}__traces[${traceNumber}][showlegend]`).disabled = false === trace.visible ? true : false
@@ -212,19 +214,42 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           document.getElementById(`${prefix}__traces[${traceNumber}][marker][maxdisplayed]`).disabled = true !== trace.visible || ! trace.mode.includes( "markers" ) ? true : false
 
           // Lines
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][shape]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][width]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][color]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][dash]`).disabled = ( false === trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][smoothing]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][line][simplify]`).disabled = ( true !== trace.visible || ! trace.mode.includes( "lines" ) ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][shape]`).disabled = true !== trace.visible || ! trace.mode.includes( "lines" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][width]`).disabled = false === trace.visible || ! trace.mode.includes( "lines" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][color]`).disabled = false === trace.visible || ! trace.mode.includes( "lines" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][dash]`).disabled = false === trace.visible || ! trace.mode.includes( "lines" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][smoothing]`).disabled = true !== trace.visible || ! trace.mode.includes( "lines" ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][line][simplify]`).disabled = true !== trace.visible || ! trace.mode.includes( "lines" ) ? true : false
 
           // Text
-          document.getElementById(`${prefix}__traces[${traceNumber}][text]`).disabled = ( true !== trace.visible ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][textposition]`).disabled = ( true !== trace.visible || ! trace.text ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][family]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][color]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
-          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][size]`).disabled = ( true !== trace.visible|| ! trace.text ) ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][text]`).disabled = true !== trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textposition]`).disabled = true !== trace.visible || ! trace.text ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][family]`).disabled = true !== trace.visible|| ! trace.text ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][color]`).disabled = true !== trace.visible|| ! trace.text ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][textfont][size]`).disabled = true !== trace.visible|| ! trace.text ? true : false
+
+          // Hoverlabel
+          document.getElementById(`${prefix}__traces[${traceNumber}][hovertext]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverinfo]`).disabled = true !== trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][bgcolor]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][bordercolor]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][align]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][namelength]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][font][family]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][font][size]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][hoverlabel][font][color]`).disabled = true !== trace.visible || "skip" === trace.hoverinfo || "none" === trace.hoverinfo ? true : false
+
+          // Error_y
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][visible]`).disabled = true !== trace.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][type]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][symmetric]`).disabled = true !== trace.visible  || ! trace.error_y.visible  ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][value]`).disabled = true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][valueminus]`).disabled = true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type === "data" || trace.error_y.symmetric ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][array]`).disabled = true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data" ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][arrayminus]`).disabled = true !== trace.visible  || ! trace.error_y.visible || trace.error_y.type !== "data"  || trace.error_y.symmetric ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][color]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][thickness]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
+          document.getElementById(`${prefix}__traces[${traceNumber}][error_y][width]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
 
           break
 

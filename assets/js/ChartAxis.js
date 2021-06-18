@@ -27,19 +27,35 @@ class ChartAxis  {
    
   }
 
-  options() {
+  static defaultOptions( axisSide, axisOverlaying ) {
 
     return {
 
-      // visible : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].visible === undefined ) ? true :  this.layout[this.axisId].visible,
-      // type : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].type === undefined ) ? this.type : this.layout[this.axisId].type,
+      visible : true,
+      type : "-",
+      side: axisSide,
+      autotypenumbers : "convert types",
+      autorange : true,
+      fixedrange : true,
+      rangemode : "normal",
+      range : [],
+      mirror: true,
+      automargin : true,
+
+      
+      // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout[this.axisId].range,
+
+
+
       // // color : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].color === undefined ) ? "#000a12" : this.layout[this.axisId].color,
-      // autotypenumbers : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].autotypenumbers === undefined ) ? "convert types" : this.layout[this.axisId].autotypenumbers,
-      // autorange : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].autorange === undefined ) ? true : this.layout[this.axisId].autorange === "false" ? false : this.layout[this.axisId].autorange === "true" ? true : this.layout[this.axisId].autorange,
+
+      // // anchor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].anchor === undefined ) ? null: this.layout[this.axisId].anchor,
+      // // matches : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].matches === undefined ) ? this.axisMatches: this.layout[this.axisId].matches,
+      overlaying: axisOverlaying,
       // rangemode : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].rangemode === undefined ) ? "normal" : this.layout[this.axisId].rangemode,
       // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [] : this.layout[this.axisId].range,
       // // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout[this.axisId].range,
-      // fixedrange : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].fixedrange === undefined ) ? true : this.layout[this.axisId].fixedrange,
+     
       // // scaleanchor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].scaleanchor === undefined ) ? null : this.layout[this.axisId].scaleanchor,
       // ticks : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].ticks === undefined ) ? "outside" : this.layout[this.axisId].ticks,
       // tickmode : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].tickmode === undefined ) ? "auto" : this.layout[this.axisId].tickmode,
@@ -54,7 +70,7 @@ class ChartAxis  {
       // tickwidth : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].tickwidth === undefined ) ? 2 : this.layout[this.axisId].tickwidth,
       // tickcolor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].tickcolor === undefined ) ? "#263238" : this.layout[this.axisId].tickcolor,
       // showticklabels : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].showticklabels === undefined ) ? true : this.layout[this.axisId].showticklabels,
-      // automargin : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].automargin === undefined ) ? true : this.layout[this.axisId].automargin,
+     
       // showspikes : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].showspikes === undefined ) ? true : this.layout[this.axisId].showspikes,
       // spikecolor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].spikecolor === undefined ) ? "#000a12" : this.layout[this.axisId].spikecolor,
       // spikethickness : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].spikethickness === undefined ) ? 2 : this.layout[this.axisId].spikethickness,
@@ -78,10 +94,10 @@ class ChartAxis  {
       // zeroline : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zeroline === undefined ) ? true : this.layout[this.axisId].zeroline,
       // zerolinecolor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zerolinecolor === undefined ) ? "#000a12" : this.layout[this.axisId].zerolinecolor,
       // zerolinewidth : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zerolinewidth === undefined ) ? 1 : this.layout[this.axisId].zerolinewidth,
-      side : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].side === undefined ) ? this.axisSide : this.layout[this.axisId].side,
+      side: axisSide,
       // // anchor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].anchor === undefined ) ? null: this.layout[this.axisId].anchor,
       // // matches : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].matches === undefined ) ? this.axisMatches: this.layout[this.axisId].matches,
-      overlaying : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].overlaying === undefined ) ?  this.axisOverlaying : this.layout[this.axisId].axisOverlaying,
+      overlaying: axisOverlaying,
       // position : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].position === undefined ) ? 0 : this.layout[this.axisId].position,
       // tickfont: {
       //   family: ( this.layout[this.axisId] === undefined || this.layout[this.axisId].tickfont === undefined || this.layout[this.axisId].tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.layout[this.axisId].tickfont.family,
@@ -110,172 +126,167 @@ class ChartAxis  {
   }
 
 
-  sections() {
+  static sections(layout, axisId) {
+
+    const axisSideOptions = ( axisId === "xaxis" || axisId === "xaxis2" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
 
     return {
 
-      // basicOptions: {
-      //   intro : "Here you can modify the bottom x-axis general",
-      //   // id : `${this.prefix}__${this.axisId}BasicOptionsSubPanel`,
-      //   // cssClasses:[`${this.axisId}`, "subPanel"],
-      //   title : "Basic Options",
-      //   fieldGroups : [
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         {
-      //           id : `layout[${this.axisId}][visible]`,
-      //           title : "Show",	
-      //           type : "checkbox",
-      //           value : this.options().visible,
-      //           hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
-      //         },
-      //         {
-      //           id : `layout[${this.axisId}][type]`,
-      //           title : "Type",	
-      //           type : "select",
-      //           options : {
-      //             // "-": "Default",
-      //             linear: "Linear",
-      //             log: "Log",
-      //             date: "Date",
-      //             category: "Category",
-      //             multicategory:"Multi category"
-      //           },
-      //           value : this.options().type,
-      //           disabled: ! this.options().visible  ? true : false,
-      //           hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question."
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         // {
-      //         //   id : `layout[${this.axisId}][color]`,
-      //         //   title : "Colr",	
-      //         //   type : "color",
-      //         //   value : this.options().color,
-      //         //   hint: "Sets default for all colors associated with this axis all at once: line, font, tick, and grid colors. Grid color is lightened by blending this with the plot background Individual pieces can override this."
-      //         // },
-      //         {
-      //           id : `layout[${this.axisId}][side]`, 
-      //           title : "Side", 
-      //           type : "select",
-      //           options : this.axisSideOptions,
-      //           value : this.options().side,
-      //           disabled: ! this.options().visible  ? true : false,
-      //           hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         {
-      //           id : `layout[${this.axisId}][autotypenumbers]`,
-      //           title : "Auto Type Numbers",	
-      //           type : "select",
-      //           options : {
-      //             "convert types": "Convert Types",
-      //             strict: "Strict",
-      //           },
-      //           value : this.options().autotypenumbers,
-      //           disabled: ! this.options().visible  ? true : false,
-      //           hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
-      //         },
-      //         {
-      //           id : `layout[${this.axisId}][autorange]`,
-      //           title : "Auto Range",	
-      //           type : "select",
-      //           options : {
-      //             true: "Normal",
-      //             false: "Disabled",
-      //             reversed: "Reversed"
-      //           },
-      //           value : this.options().autorange,
-      //           disabled: ( ! this.options().visible || this.options().type !== "linear"  )  ? true : false,
-      //           hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         {
-      //           id : `layout[${this.axisId}][fixedrange]`,
-      //           title : "Fixed Range",	
-      //           type : "checkbox",
-      //           value : this.options().fixedrange,
-      //           disabled: ! this.options().visible  ? true : false,
-      //           hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
-      //         },
-      //         {
-      //           id : `layout[${this.axisId}][rangemode]`,
-      //           title : "Range Mode",	
-      //           type : "select",
-      //           options : {
-      //             normal: "Normal",
-      //             tozero: "To Zero",
-      //             nonnegative: "Non Negative"
-      //           },
-      //           value : this.options().rangemode,
-      //           disabled: ( ! this.options().visible || ! this.options().autorange )  ? true : false,
-      //           hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         {
-      //           id : `layout[${this.axisId}][range]`,
-      //           title : "Range",	
-      //           type : "text",
-      //           value : this.options().range.join(),
-      //           // disabled: ( ! this.options().visible  || this.options().autorange ) ? true : false,
-      //           hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
-      //         },
-      //         // {
-      //         //   id : `layout[${this.axisId}][scaleanchor]`,
-      //         //   title : "Scale Anchor",	
-      //         //   type : "text",
-      //         //   value : this.options().scaleanchor,
-      //         //   disabled: ! this.options().visible  ? true : false,
-      //         //   hint: "If set to another axis id (e.g. `x2`, `y`), the range of this axis changes together with the range of the corresponding axis such that the scale of pixels per unit is in a constant ratio. Both axes are still zoomable, but when you zoom one, the other will zoom the same amount, keeping a fixed midpoint. `constrain` and `constraintoward` determine how we enforce the constraint. You can chain these, ie `yaxis: {scaleanchor: 'x'}, xaxis2: {scaleanchor: 'y'}` but you can only link axes of the same `type`. The linked axis can have the opposite letter (to constrain the aspect ratio) or the same letter (to match scales across subplots). Loops (`yaxis: {scaleanchor: 'x'}, xaxis: {scaleanchor: 'y'}` or longer) are redundant and the last constraint encountered will be ignored to avoid possible inconsistent constraints via `scaleratio`. Note that setting axes simultaneously in both a `scaleanchor` and a `matches` constraint is currently forbidden."
-      //         // },
-      //       ],
-      //     },
-      //     {
-      //       cssClasses : ["field-group", "fifty-fifty"],
-      //       inputFields: [
-      //         {
-      //           id : `layout[${this.axisId}][mirror]`,
-      //           title : "Mirror",	
-      //           type : "select",
-      //           options : {
-      //             true: "Enabled",
-      //             ticks: "Ticks",
-      //             false: "Disabled",
-      //             all: "All",
-      //             allticks: "All Ticks",
-      //           },
-      //           value : this.options().mirror,
-      //           disabled:! this.options().visible  ? true : false,
-      //           hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
-      //         },
-      //         {
-      //           id : `layout[${this.axisId}][automargin]`,
-      //           title : "Auto Margin",	
-      //           type : "checkbox",
-      //           value : this.options().automargin,
-      //           disabled:! this.options().visible  ? true : false,
-      //           hint: "Determines whether long tick labels automatically grow the figure margins."
-      //         },
-      //       ],
-      //     }
-      //   ],
-      // },
+      basicOptions: {
+        intro : "Here you can modify the bottom x-axis general",
+        // id : `${this.prefix}__${axisId}BasicOptionsSubPanel`,
+        // cssClasses:[`${axisId}`, "subPanel"],
+        title : "Basic Options",
+        fieldGroups : [
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][visible]`,
+                title : "Show",	
+                type : "checkbox",
+                value : layout[axisId].visible,
+                hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
+              },
+              {
+                id : `layout[${axisId}][type]`,
+                title : "Type",	
+                type : "select",
+                options : {
+                  "-": "Default",
+                  linear: "Linear",
+                  log: "Log",
+                  date: "Date",
+                  category: "Category",
+                  multicategory:"Multi category"
+                },
+                value : layout[axisId].type,
+                disabled: ! layout[axisId].visible  ? true : false,
+                hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question.  Default: '-'"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][side]`, 
+                title : "Side", 
+                type : "select",
+                options : axisSideOptions,
+                value : layout[axisId].side,
+                disabled: ! layout[axisId].visible  ? true : false,
+                hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][autotypenumbers]`,
+                title : "Auto Type Numbers",	
+                type : "select",
+                options : {
+                  "convert types": "Convert Types",
+                  strict: "Strict",
+                },
+                value : layout[axisId].autotypenumbers,
+                disabled: ! layout[axisId].visible  ? true : false,
+                hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
+              },
+              {
+                id : `layout[${axisId}][autorange]`,
+                title : "Auto Range",	
+                type : "select",
+                options : {
+                  true: "Normal",
+                  false: "Disabled",
+                  reversed: "Reversed"
+                },
+                value : layout[axisId].autorange,
+                disabled: ( ! layout[axisId].visible || layout[axisId].type !== "linear"  )  ? true : false,
+                hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][fixedrange]`,
+                title : "Fixed Range",	
+                type : "checkbox",
+                value : layout[axisId].fixedrange,
+                disabled: ! layout[axisId].visible  ? true : false,
+                hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
+              },
+              {
+                id : `layout[${axisId}][rangemode]`,
+                title : "Range Mode",	
+                type : "select",
+                options : {
+                  normal: "Normal",
+                  tozero: "To Zero",
+                  nonnegative: "Non Negative"
+                },
+                value : layout[axisId].rangemode,
+                disabled: ( ! layout[axisId].visible || ! layout[axisId].autorange )  ? true : false,
+                hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][range]`,
+                title : "Range",	
+                type : "text",
+                value : undefined !== layout[axisId].range ? layout[axisId].range.join() : null,
+                // disabled: ( ! layout[axisId].visible  || layout[axisId].autorange ) ? true : false,
+                hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
+              },
+              // {
+              //   id : `layout[${axisId}][scaleanchor]`,
+              //   title : "Scale Anchor",	
+              //   type : "text",
+              //   value : layout[axisId].scaleanchor,
+              //   disabled: ! layout[axisId].visible  ? true : false,
+              //   hint: "If set to another axis id (e.g. `x2`, `y`), the range of this axis changes together with the range of the corresponding axis such that the scale of pixels per unit is in a constant ratio. Both axes are still zoomable, but when you zoom one, the other will zoom the same amount, keeping a fixed midpoint. `constrain` and `constraintoward` determine how we enforce the constraint. You can chain these, ie `yaxis: {scaleanchor: 'x'}, xaxis2: {scaleanchor: 'y'}` but you can only link axes of the same `type`. The linked axis can have the opposite letter (to constrain the aspect ratio) or the same letter (to match scales across subplots). Loops (`yaxis: {scaleanchor: 'x'}, xaxis: {scaleanchor: 'y'}` or longer) are redundant and the last constraint encountered will be ignored to avoid possible inconsistent constraints via `scaleratio`. Note that setting axes simultaneously in both a `scaleanchor` and a `matches` constraint is currently forbidden."
+              // },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "sixty-forty"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][mirror]`,
+                title : "Mirror",	
+                type : "select",
+                options : {
+                  true: "Enabled",
+                  ticks: "Ticks",
+                  false: "Disabled",
+                  all: "All",
+                  allticks: "All Ticks",
+                },
+                value : layout[axisId].mirror,
+                disabled:! layout[axisId].visible  ? true : false,
+                hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
+              },
+              {
+                id : `layout[${axisId}][automargin]`,
+                title : "Auto Margin",	
+                type : "checkbox",
+                value : layout[axisId].automargin,
+                disabled:! layout[axisId].visible  ? true : false,
+                hint: "Determines whether long tick labels automatically grow the figure margins."
+              },
+            ],
+          }
+        ],
+      },
 
       // title: {
       //   intro : "Here you can modify the bottom x-axis title",

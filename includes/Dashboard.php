@@ -129,6 +129,84 @@ if (!class_exists('Dashboard')) {
     }
 
 
+		
+		protected function chart_trace() {
+
+			// return [
+
+			// 	"type" => "scatter",
+			// 	"visible" => true,
+			// 	"showlegend" => true,
+			// 	"mode" => "lines+markers+text",
+			// 	"name" => null,
+			// 	"x" => NULL,
+			// 	"xaxis" => "x",
+			// 	"y" => null,
+			// 	"yaxis" => "y",
+			// 	"connectgaps" => false,
+			// 	"opacity" => 1,
+			// 	"marker" => [
+			// 		"symbol" => 0,
+			// 		"size" => 6,
+			// 		"opacity" =>1,
+			// 		"color" => null,
+			// 		"line" => [
+			// 			"color" => "#444444",
+			// 			"width" => 0
+			// 		],
+			// 		"gradient" => [
+			// 			"type" => "none",
+			// 			"color" => "#444444"
+			// 		],
+			// 		"masdisplayed" => 0
+			// 	],
+			// 	"line" => [
+			// 		"dash" => "solid",
+			// 		"shape" => "linear",
+			// 		"width" => 2,
+			// 		"color" => null,
+			// 		"smoothing" => 1,
+			// 		"simplify" => true
+			// 	],
+			// 	"text" => "Hello",
+			// 	"textfont" => [
+			// 		"family" => "Raleway",
+			// 		"color" => null,
+			// 		"size" => 12,
+			// 	],
+			// 	"textposition" => "top center",
+			// 	"hovertext" => "",
+			// 	"hoverinfo" => "all",
+			// 	"hoverlabel" => [
+			// 		"align" => "auto",
+			// 		"namelength" => 15,
+			// 		"font" => [
+			// 			"family" => "Raleway",
+			// 			"color" => "#FFFFFF",
+			// 			"size" => 12,
+			// 		],
+			// 		"bgcolor" =>null,
+			// 		"bordercolor"  => "#000000",
+			// 	],
+			// 	"error_y" => [
+			// 		"visible" => false,
+			// 		"type" => "percent",
+			// 		"value" => 20,
+			// 		"valueminus" => 10,
+			// 		"array" => [],
+			// 		"arrayminus" => [],
+			// 		"color" =>null,
+			// 		"symmetric" => false,
+			// 		"thickness" => 2,
+			// 		"width" => 4
+			// 	]
+
+			// ];
+
+		}
+
+
+
 
 
 		public function chart_axis($title_text, $side, $overlaying, $matches, $rangesliderVisible ) {
@@ -145,6 +223,10 @@ if (!class_exists('Dashboard')) {
 			];
 
 		}
+
+
+
+
 
 
 		// public function min_max_avg_table_options() {
@@ -809,7 +891,7 @@ if (!class_exists('Dashboard')) {
 
 
           // Set response
-          $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet ];
+          $response = [ 'status' => "success", "action" => $action, "chart" => $chart, "spreadsheet" => $spreadsheet ];
           // $response = [ 'status' => "success", 'action' => $action, "chart" => $chart, 'spreadsheet' => $spreadsheet, "fontFamily" => $this->font_family, "colors" => $this->colors ];
 
         } catch (\Exception $e) {

@@ -29,7 +29,7 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
     for (let i = 0;  i < chart.traces.length; i++) {
 
        // Create a trace panel and add it to traces accordion
-      tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, `` ) )
+      tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
 
       // Create level3 accordion inside new trace panel
       const level3AccordionDiv = document.createElement("div")
@@ -40,9 +40,9 @@ const renderPanels = ( chart, spreadsheet, prefix ) => {
       const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
 
       // chart.traces[index-1] = ( chart.traces[index-1] !== undefined )? chart.traces[index-1] : {}
-      const traceInstance = new Trace( chart.traces[i], i )
+      // const traceInstance = new Trace( chart.traces[i], i )
       // chart.traces[index-1] = traceInstance.options()
-      createPanelSections( traceInstance.sections(), sectionsContainer, `traces${i}`, prefix )
+      createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
       new Accordion( `.${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
 
     }
