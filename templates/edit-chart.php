@@ -106,7 +106,7 @@
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
               <div class="accordion accordion__level-2 annotations__Accordion">
-              <button class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}____addAnnotation"; ?>" >Add New</button>
+              <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}__addAnnotation"; ?>" >Add New</a>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@
           <div class="ac xaxisAc">
             <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
             <div class="ac-panel">
-              <p class="ac-text intro">Bottom Axis Options go here. </p>
+              <p class="ac-text intro">Bottom Axis Options go here.</p>
               <div class="accordion accordion__level-3 xaxis__Accordion"></div>
             </div>
           </div>
@@ -129,7 +129,7 @@
           <div class="ac xaxis2Ac">
             <h2 class="ac-header"><div class="ac-trigger">Top Axis</div></h2>
             <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <p class="ac-text intro">Top Axis Options go here.</p>
               <div class="accordion accordion__level-3 xaxis2__Accordion"></div>
             </div>
           </div>
@@ -137,14 +137,16 @@
           <div class="ac yaxisAc">
             <h2 class="ac-header"><div class="ac-trigger">Left Axis</div></h2>
             <div class="ac-panel">
-              <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+              <p class="ac-text intro">Left Axis Options go here.</p>
               <div class="accordion accordion__level-3 yaxis__Accordion"></div>
             </div>
           </div>
 
           <div class="ac yaxis2Ac">
             <h2 class="ac-header"><div class="ac-trigger">Right Axis</div></h2>
-            <div class="ac-panel"></div>
+            <div class="ac-panel">
+              <p class="ac-text intro">Right Axis Options go here.</p>
+              <div class="accordion accordion__level-3 yaxis2__Accordion"></div></div>
           </div>
 
           <div class="ac minMaxAvgTableAc hidden">

@@ -64,6 +64,8 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     // Xaxis Options
     chart.layout.xaxis = ChartAxis.defaultOptions( "bottom", null )
     chart.layout.xaxis2 = ChartAxis.defaultOptions( "top", "x" )
+    chart.layout.yaxis = ChartAxis.defaultOptions( "left", null )
+    chart.layout.yaxis2 = ChartAxis.defaultOptions( "right", "y" )
     await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
 
     console.log("Chart", chart)
@@ -72,6 +74,8 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
     createPanelSections( ChartAxis.sections( chart.layout, "xaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
     createPanelSections( ChartAxis.sections( chart.layout, "xaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "yaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "yaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
 
 
 
@@ -220,6 +224,11 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
   document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm #${prefix}__addAnnotation`).addEventListener("click", function (event) {
 
     event.preventDefault()
+
+    console.log(event.target.id)
+
+    // Bail if no file, sheet Id or chart type
+    if( ! event.target.id ===  `${prefix}__addAnnotation` ) return
     Plotly.purge(`${prefix}__plotlyChart`)
 
 
@@ -259,56 +268,50 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
 
     document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
-    console.log(document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .${prefix}__deleteAnnotation`))
-
-    // document.querySelectorAll(`.${prefix}__admin #${prefix}__chartOptionsForm .${prefix}__deleteAnnotation`).forEach( (el) => {
     
-      deletebutton.addEventListener("click", function (event) {
+    deletebutton.addEventListener("click", function (event) {
 
-        event.preventDefault()
-
-
-        Plotly.purge(`${prefix}__plotlyChart`)
+      event.preventDefault()
 
 
-        const control = chartOptionKey(event.target.id).control
-        const key = chartOptionKey(event.target.id).key
-        const keyParts = key.split(".")
+      Plotly.purge(`${prefix}__plotlyChart`)
 
-        console.log("Control", control)
-        console.log("key", key)
-        console.log("keyParts", keyParts)
 
-        chart.layout.annotations[keyParts[1]] = null
-        Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+      const control = chartOptionKey(event.target.id).control
+      const key = chartOptionKey(event.target.id).key
+      const keyParts = key.split(".")
 
-        console.log("CT", chart)
+      console.log("Control", control)
+      console.log("key", key)
+      console.log("keyParts", keyParts)
 
-        swal({
-          title: "Are you sure?",
-          text: "You will not be able to recover this annotation",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            console.log("PPPPP", event.target.parentNode.parentNode)
-            event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
-            swal(`Annotation has been deleted!`, {
-              icon: "success",
-            });
-          } 
-          // else {
-          //   swal("Your imaginary file is safe!");
-          // }
-        })
-    
-    
+      chart.layout.annotations[keyParts[1]] = null
+      Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+
+      console.log("CT", chart)
+
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this annotation",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          console.log("PPPPP", event.target.parentNode.parentNode)
+          event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
+          swal(`Annotation has been deleted!`, {
+            icon: "success",
+          });
+        }
       })
 
-    // })
+      return false
+  
+    })
 
+    return false
 
   })
 

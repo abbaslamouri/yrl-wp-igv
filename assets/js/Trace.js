@@ -18,11 +18,8 @@ class Trace {
       type: "scatter",
       visible: true,
       showlegend: true,
-      mode: "lines+markers+text",
-      // name: Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1],
-      // x: spreadsheet[chart.fileUpload.sheetId].data[0],
+      mode: "lines+markers",
       xaxis: "x",
-      // y: spreadsheet[chart.fileUpload.sheetId].data[i+1],
       yaxis: "y",
       connectgaps: false,
       opacity: 1,
@@ -50,7 +47,7 @@ class Trace {
         smoothing: 1,
         simplify: true
       },
-      text: "Hello",
+      text: null,
       textfont: {
         family: "Raleway",
         color: colors()[index],

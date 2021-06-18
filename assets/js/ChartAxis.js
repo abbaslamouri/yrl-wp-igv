@@ -42,6 +42,13 @@ class ChartAxis  {
       mirror: true,
       automargin : true,
 
+
+
+
+
+      overlaying: axisOverlaying,
+
+
       
       // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout[this.axisId].range,
 
@@ -51,7 +58,6 @@ class ChartAxis  {
 
       // // anchor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].anchor === undefined ) ? null: this.layout[this.axisId].anchor,
       // // matches : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].matches === undefined ) ? this.axisMatches: this.layout[this.axisId].matches,
-      overlaying: axisOverlaying,
       // rangemode : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].rangemode === undefined ) ? "normal" : this.layout[this.axisId].rangemode,
       // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [] : this.layout[this.axisId].range,
       // // range : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].range === undefined ) ? [Math.min(...this.xAxisData), Math.max(...this.xAxisData)] : this.layout[this.axisId].range,
@@ -94,10 +100,8 @@ class ChartAxis  {
       // zeroline : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zeroline === undefined ) ? true : this.layout[this.axisId].zeroline,
       // zerolinecolor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zerolinecolor === undefined ) ? "#000a12" : this.layout[this.axisId].zerolinecolor,
       // zerolinewidth : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].zerolinewidth === undefined ) ? 1 : this.layout[this.axisId].zerolinewidth,
-      side: axisSide,
       // // anchor : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].anchor === undefined ) ? null: this.layout[this.axisId].anchor,
       // // matches : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].matches === undefined ) ? this.axisMatches: this.layout[this.axisId].matches,
-      overlaying: axisOverlaying,
       // position : ( this.layout[this.axisId] === undefined || this.layout[this.axisId].position === undefined ) ? 0 : this.layout[this.axisId].position,
       // tickfont: {
       //   family: ( this.layout[this.axisId] === undefined || this.layout[this.axisId].tickfont === undefined || this.layout[this.axisId].tickfont.family === undefined  ) ?  Object.keys(fontFamily())[1] : this.layout[this.axisId].tickfont.family,
@@ -205,7 +209,7 @@ class ChartAxis  {
                   reversed: "Reversed"
                 },
                 value : layout[axisId].autorange,
-                disabled: ( ! layout[axisId].visible || layout[axisId].type !== "linear"  )  ? true : false,
+                disabled: ! layout[axisId].visible || layout[axisId].type !== "linear" ? true : false,
                 hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
               },
             ],
@@ -231,7 +235,7 @@ class ChartAxis  {
                   nonnegative: "Non Negative"
                 },
                 value : layout[axisId].rangemode,
-                disabled: ( ! layout[axisId].visible || ! layout[axisId].autorange )  ? true : false,
+                disabled: ! layout[axisId].visible || ! layout[axisId].autorange ? true : false,
                 hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
               },
             ],
@@ -244,6 +248,7 @@ class ChartAxis  {
                 title : "Range",	
                 type : "text",
                 value : undefined !== layout[axisId].range ? layout[axisId].range.join() : null,
+                disabled: ! layout[axisId].visible ? true : false,
                 // disabled: ( ! layout[axisId].visible  || layout[axisId].autorange ) ? true : false,
                 hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
               },
