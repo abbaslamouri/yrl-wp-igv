@@ -71,7 +71,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
 
 
-  document.addEventListener("input", async function (event) {
+  document.addEventListener("change", async function (event) {
   
     event.preventDefault()
 
@@ -144,21 +144,50 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
               break
 
-            case "xaxis.range":
-              // value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-              // update = { ["xaxis.range"]: value}
-              // Plotly.relayout( `${prefix}__plotlyChart`, update)
-
-              console.log("MMMMMM",chart.layout.xaxis.autorange, chart.layout.xaxis.range)
-             
+            case "xaxis.range":             
               if (value) {
                 value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-                update = { ["xaxis.range"]: value}
+                if ( Array.isArray( value ) ) {
+                  update = { ["xaxis.range"]: value}
+                  Plotly.relayout( `${prefix}__plotlyChart`, update)
+                }
               } else {
                 update = { ["xaxis.range"]: null, "xaxis.autorange": true}
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
               }
-              Plotly.relayout( `${prefix}__plotlyChart`, update)
               document.getElementById(`${prefix}__layout[xaxis][autorange]`).value = true === chart.layout.xaxis.autorange ? "true" : false === chart.layout.xaxis.autorange ? "false" : chart.layout.xaxis.autorange 
+              break
+
+            case "xaxis.tickvals":             
+              value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
+              if ( isNaN( value[value.length-1] ) ) value.pop()
+              // if ( Array.isArray( value ) ) {
+                update = { ["xaxis.tickvals"]: value}
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
+              // }
+              document.getElementById(`${prefix}__layout[xaxis][tickvals]`).value = value.join()
+              break
+
+            case "xaxis.ticktext":
+              value = value.split(",").map( ( item ) => { return item  } )
+              if ( ! value[value.length-1]  ) value.pop()
+              // if ( Array.isArray( value ) ) {
+                update = { ["xaxis.ticktext"]: value}
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
+              // }
+              document.getElementById(`${prefix}__layout[xaxis][ticktext]`).value = value.join()
+              break
+
+            case "xaxis.tickmode":             
+              if ( value === "linear" ) {
+                update = { ["xaxis.tickmode"]: value , ["xaxis.tick0"]: chart.layout.xaxis.range[0],["xaxis.dtick"]: (chart.layout.xaxis.range[1]-chart.layout.xaxis.range[0])/5 }
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
+                document.getElementById(`${prefix}__layout[xaxis][tick0]`).value = chart.layout.xaxis.tick0
+                document.getElementById(`${prefix}__layout[xaxis][dtick]`).value = chart.layout.xaxis.dtick
+              } else {
+                update = { ["xaxis.tickmode"]: value }
+                Plotly.relayout( `${prefix}__plotlyChart`, update)
+              }
               break
 
             // case "title.y":
@@ -181,48 +210,57 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
           }
 
           // Plotly.relayout( `${prefix}__plotlyChart`, update)
-          console.log("Layout", chart)
+          console.log("value", value)
 
-          // aaxis
-          document.getElementById(`${prefix}__layout[xaxis][type]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][side]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][autotypenumbers]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][autorange]`).disabled = ( ! chart.layout.xaxis.visible )  ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][fixedrange]`).disabled = ! chart.layout.xaxis.visible  ? true : false
+          // xaxis
+          document.getElementById(`${prefix}__layout[xaxis][type]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][side]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][autotypenumbers]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][autorange]`).disabled = ( ! chart.layout.xaxis.visible ) ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][fixedrange]`).disabled = ! chart.layout.xaxis.visible ? true : false
           document.getElementById(`${prefix}__layout[xaxis][rangemode]`).disabled = ( ! chart.layout.xaxis.visible || false === chart.layout.xaxis.autorange || chart.layout.xaxis.type !== "linear" )  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][range]`).disabled = ( ! chart.layout.xaxis.visible || true === chart.layout.xaxis.autorange ) ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][mirror]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          document.getElementById(`${prefix}__layout[xaxis][automargin]`).disabled = ! chart.layout.xaxis.visible  ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][mirror]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][automargin]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][title][text]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][title][font][family]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.title.text ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][title][font][size]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.title.text  ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][title][font][color]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.title.text ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][title][standoff]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.title.text ? true : false
 
-          // // document.getElementById(`${prefix}__layout[xaxis][scaleanchor]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][ticks]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickmode]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" ) ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][nticks]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "auto" )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tick0]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === ""|| chart.layout.xaxis.tickmode !== "linear"  )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][dtick]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === ""|| chart.layout.xaxis.tickmode !== "linear"  )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickvals]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "array"  )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][ticktext]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "array"  )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][ticklabelposition]`).disabled = ( ! chart.layout.xaxis.visible|| ! chart.layout.xaxis.showticklabels )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][ticklen]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickwidth]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickcolor]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" )  ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][ticks]`).disabled = ! chart.layout.xaxis.visible ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][tickmode]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][nticks]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "auto" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][tick0]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === ""|| chart.layout.xaxis.tickmode !== "linear" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][dtick]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === ""|| chart.layout.xaxis.tickmode !== "linear" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][tickvals]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "array" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][ticktext]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" || chart.layout.xaxis.tickmode !== "array" || ! chart.layout.xaxis.tickvals.length ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][ticklen]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][tickwidth]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" ? true : false
+          document.getElementById(`${prefix}__layout[xaxis][tickcolor]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.ticks === "" ? true : false
+
+          // document.getElementById(`${prefix}__layout[xaxis][ticklabelposition]`).disabled = ! chart.layout.xaxis.visible|| ! chart.layout.xaxis.showticklabels ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][scaleanchor]`).disabled = ! chart.layout.xaxis.visible  ? true : false
+
+
+
           // document.getElementById(`${prefix}__layout[xaxis][showticklabels]`).disabled = ! chart.layout.xaxis.visible  ? true : false
           // // document.getElementById(`${prefix}__layout[xaxis][showspikes]`).disabled = ! chart.layout.xaxis.visible  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][spikecolor]`).disabled = ! chart.layout.xaxis.showspikes  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][spikethickness]`).disabled = ! chart.layout.xaxis.showspikes  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][spikedash]`).disabled = ! chart.layout.xaxis.showspikes  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][spikemode]`).disabled = ! chart.layout.xaxis.showspikes  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickangle]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][tickprefix]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showtickprefix === "none" )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][showtickprefix]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][ticksuffix]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showticksuffix === "none" )  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][showticksuffix]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels ) ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][tickangle]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][tickprefix]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showtickprefix === "none" ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][showtickprefix]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][ticksuffix]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showticksuffix === "none" ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][showticksuffix]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][showexponent]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][exponentformat]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][minexponent]`).disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][exponentformat]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][minexponent]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][separatethousands]`).disabled = ! chart.layout.xaxis.visible  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][showline]`).disabled = ! chart.layout.xaxis.visible  ? true : false
-          // document.getElementById(`${prefix}__layout[xaxis][linecolor]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showline ) ? true : false
+          // document.getElementById(`${prefix}__layout[xaxis][linecolor]`).disabled = ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showline ) ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][linewidth]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showline ) ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][showgrid]`).disabled = ! chart.layout.xaxis.visible  ? true : false
           // document.getElementById(`${prefix}__layout[xaxis][gridcolor]`).disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showgrid )  ? true : false
@@ -351,37 +389,37 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     }
 
     // Legend
-    // document.getElementsByName(`${prefix}__layout[legend][bgcolor]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][bordercolor]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][borderwidth]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][font][family]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][font][size]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][font][color]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][title][text]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][title][font][family]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][title][font][size]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][title][font][color]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][title][side]`)[0].disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][orientation]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][itemsizing]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][itemwidth]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][itemclick]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][itemdoubleclick]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][x]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][y]`)[0].disabled = ! chart.layout.showlegend ? true : false
-    // document.getElementsByName(`${prefix}__layout[legend][valign]`)[0].disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][bgcolor]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][bordercolor]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][borderwidth]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][font][family]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][font][size]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][font][color]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][title][text]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][title][font][family]`).disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][title][font][size]`).disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][title][font][color]`).disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][title][side]`).disabled = ( ! chart.layout.showlegend || ! chart.layout.legend.title.text ) ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][orientation]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][itemsizing]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][itemwidth]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][itemclick]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][itemdoubleclick]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][x]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][y]`).disabled = ! chart.layout.showlegend ? true : false
+    // document.getElementsByName(`${prefix}__layout[legend][valign]`).disabled = ! chart.layout.showlegend ? true : false
 
     // xaxis
-    // document.getElementsByName(`${prefix}__layout[xaxis][type]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
-    // document.getElementsByName(`${prefix}__layout[xaxis][range]`)[0].disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
-    // document.getElementsByName(`${prefix}__layout[xaxis][autorange]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][type]`).disabled = ! chart.layout.xaxis.visible  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][range]`).disabled = ! chart.layout.xaxis.visible || chart.layout.xaxis.autorange  ? true : false
+    // document.getElementsByName(`${prefix}__layout[xaxis][autorange]`).disabled = ! chart.layout.xaxis.visible  ? true : false
 
     // modebar
-    // document.getElementsByName(`${prefix}__config[displaylogo]`)[0].disabled = ! chart.config.displayModeBar  ? true : false
-    // document.getElementsByName(`${prefix}__layout[modebar][bgcolor]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
-    // document.getElementsByName(`${prefix}__layout[modebar][orientation]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
-    // document.getElementsByName(`${prefix}__layout[modebar][color]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
-    // document.getElementsByName(`${prefix}__layout[modebar][activecolor]`)[0].disabled = ! chart.config.displayModeBar   ? true : false
+    // document.getElementsByName(`${prefix}__config[displaylogo]`).disabled = ! chart.config.displayModeBar  ? true : false
+    // document.getElementsByName(`${prefix}__layout[modebar][bgcolor]`).disabled = ! chart.config.displayModeBar   ? true : false
+    // document.getElementsByName(`${prefix}__layout[modebar][orientation]`).disabled = ! chart.config.displayModeBar   ? true : false
+    // document.getElementsByName(`${prefix}__layout[modebar][color]`).disabled = ! chart.config.displayModeBar   ? true : false
+    // document.getElementsByName(`${prefix}__layout[modebar][activecolor]`).disabled = ! chart.config.displayModeBar   ? true : false
 
     console.log(chart)
 

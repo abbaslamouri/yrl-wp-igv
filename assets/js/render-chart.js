@@ -62,10 +62,10 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     ******************* Create xaxis options and panel *********************
     *************************************************************************/
     // Xaxis Options
-    chart.layout.xaxis = ChartAxis.defaultOptions( "bottom", null )
-    chart.layout.xaxis2 = ChartAxis.defaultOptions( "top", "x" )
-    chart.layout.yaxis = ChartAxis.defaultOptions( "left", null )
-    chart.layout.yaxis2 = ChartAxis.defaultOptions( "right", "y" )
+    chart.layout.xaxis = ChartAxis.defaultOptions( "bottom", null, "Wavelength ( &#181;m " )
+    chart.layout.xaxis2 = ChartAxis.defaultOptions( "top", "x", "Wavelength ( &#181;m )" )
+    chart.layout.yaxis = ChartAxis.defaultOptions( "left", null, "Transmittance ( % )" )
+    chart.layout.yaxis2 = ChartAxis.defaultOptions( "right", "y", "Reflectance ( % )" )
     await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
 
     console.log("Chart", chart)
@@ -73,9 +73,19 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
 
     createPanelSections( ChartAxis.sections( chart.layout, "xaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+    new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
+
     createPanelSections( ChartAxis.sections( chart.layout, "xaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+    new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
+
     createPanelSections( ChartAxis.sections( chart.layout, "yaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+    new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
+
     createPanelSections( ChartAxis.sections( chart.layout, "yaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
+    new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
+
+
+
 
 
 
