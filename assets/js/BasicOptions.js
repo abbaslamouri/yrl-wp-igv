@@ -2,43 +2,33 @@
 
 class BasicOPtions {
 
-  constructor( layout ) {
+  constructor(  ) {}
 
-    this.layout = layout
-    // this.prefix = prefix
-   
-  }
-
-  options() {
+  static defaultOptions() {
 
     return {
       
-      responsive : ( this.layout.responsive  === undefined ) ? true : this.layout.responsive,
-      staticPlot : ( this.layout.staticPlot  === undefined ) ? false : this.layout.staticPlot,
-      width : ( this.layout.width === undefined ) ? null : this.layout.width,
-      height : ( this.layout.height === undefined ) ? 300 : this.layout.height,
-      // font : {
-      //   family : (  this.layout.font === undefined || this.layout.font.family === undefined ) ? Object.keys(fontFamily())[13] : this.layout.font.family,
-      //   size : (  this.layout.font === undefined || this.layout.font.size === undefined ) ? 14 : this.layout.font.size,
-      //   color : (  this.layout.font === undefined || this.layout.font.color === undefined ) ? "#000a12" : this.layout.font.color,
-      // },
+      responsive: true,
+      staticPlot:false,
+      width: null,
+      height: 450,
       margin: {
-        l : ( this.layout.margin === undefined || this.layout.margin.l === undefined ) ? 80 : this.layout.margin.l,
-        r : ( this.layout.margin === undefined || this.layout.margin.r === undefined ) ? 80 : this.layout.margin.r,
-        t : ( this.layout.margin === undefined || this.layout.margin.t === undefined ) ? 100 : this.layout.margin.t,
-        b : ( this.layout.margin === undefined || this.layout.margin.b === undefined ) ? 80 : this.layout.margin.b,
-        pad: ( this.layout.margin === undefined || this.layout.margin.pad === undefined ) ? 100 : this.layout.margin.pad,
-        autoexpand: ( this.layout.margin === undefined || this.layout.margin.autoexpand === undefined ) ? true : this.layout.margin.autoexpand,
+        l: 80,
+        r: 80,
+        t: 100,
+        b: 80,
+        pad: 0,
+        autoexpand: true,
       },
-      paper_bgcolor : ( this.layout.paper_bgcolor === undefined ) ? "#FFFFFF" :  this.layout.paper_bgcolor,
-      plot_bgcolor : ( this.layout.plot_bgcolor === undefined ) ? "#FFFFFF" : this.layout.plot_bgcolor,
-      autosize : ( this.layout.autosize === undefined ) ? true : this.layout.autosize,
+      paper_bgcolor: "#FFFFFF",
+      plot_bgcolor: "#FFFFFF",
+      autosize: true,
     }
 
   }
 
 
-  sections() {
+  static sections(layout, config) {
 
     return {
       
@@ -56,7 +46,7 @@ class BasicOPtions {
                 min : 10,
                 max : 2000,
                 step : 10,
-                value : this.options().width,
+                value : layout.width,
                 hint : "Sets the plot's width (in px).  Number greater than or equal to 10.  Default: 700."
               },
               {
@@ -66,60 +56,26 @@ class BasicOPtions {
                 min : 10,
                 max : 2000,
                 step : 10,
-                value : this.options().height,
+                value : layout.height,
                 hint : "Sets the plot's height (in px). Number greater than or equal to 10.  Default: 450."
               },
             ]
           },
-          // {
-          //   cssClasses : ["field-group", "fifty-fifty"],
-          //   inputFields: [
-          //     {
-          //       id : "layout[font][family]",
-          //       title : "Font Family",	
-          //       type : "select",
-          //       options : fontFamily(),
-          //       value : this.options().font.family,
-          //       hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-          //     },
-          //     {
-          //       id : "layout[font][size]", 
-          //       title : "Font Size", 
-          //       type : "number",
-          //       min : 1,
-          //       max : 100,
-          //       step : 0.5,
-          //       value : this.options().font.size,
-          //       hint : "number greater than or equal to 1"
-          //     },
-          //   ]
-          // },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              // {
-              //   id : "layout[font][color]",
-              //   title : "Font Color",
-              //   type : "color", 
-              //   value : this.options().font.color,
-              // },
-            ]
-          },
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
               {
-                id : "layout[responsive]",
+                id : "config[responsive]",
                 title : "Responsive",
                 type : "checkbox", 
-                value : this.options().responsive,
+                value : config.responsive === undefined ? false : config.responsive,
                 hint: ""
               },
               {
-                id : "layout[staticPlot]",
+                id : "config[staticPlot]",
                 title : "Static",
                 type : "checkbox", 
-                value : this.options().staticPlot,
+                value : config.staticPlot === undefined ? false : config.staticPlot,
                 hint: ""
               },
              
@@ -132,14 +88,14 @@ class BasicOPtions {
                 id : "layout[paper_bgcolor]",
                 title : "Paper Background Color",
                 type : "color", 
-                value : this.options().paper_bgcolor,
+                value : layout.paper_bgcolor,
                 hint : "Sets the background color of the paper where the graph is drawn.  Default: #FFFFFF"
               },
               {
                 id : "layout[plot_bgcolor]",
                 title : "Plot Background Color",
                 type : "color", 
-                value : this.options().plot_bgcolor,
+                value : layout.plot_bgcolor,
                 hint : "Sets the background color of the plotting area in-between x and y axes.  Default: #FFFFFF"
               },
             ]
@@ -154,7 +110,7 @@ class BasicOPtions {
                 min : 0,
                 max : 2000,
                 step : 1,
-                value : this.options().margin.pad,
+                value : layout.margin.pad,
                 hint : "Sets the amount of padding (in px) between the plotting area and the axis lines.  Number greater than or equal to 0.  Default: 0"
               },
             ]
@@ -169,7 +125,7 @@ class BasicOPtions {
                 min : 0,
                 max : 2000,
                 step : 1,
-                value : this.options().margin.l,
+                value : layout.margin.l,
                 hint : "Sets the left margin (in px). Number greater than or equal to 0.  Default: 80"
               },
               {
@@ -179,7 +135,7 @@ class BasicOPtions {
                 min : 0,
                 max : 2000,
                 step : 1,
-                value : this.options().margin.r,
+                value : layout.margin.r,
                 hint : "Sets the right margin (in px). Number greater than or equal to 0.  Default: 80"
               },
             ]
@@ -194,7 +150,7 @@ class BasicOPtions {
                 min : 0,
                 max : 2000,
                 step : 1,
-                value : this.options().margin.t,
+                value : layout.margin.t,
                 hint : "Sets the top margin (in px).Number greater than or equal to 0.  Default: 100"
               },
               {
@@ -204,7 +160,7 @@ class BasicOPtions {
                 min : 0,
                 max : 2000,
                 step : 10,
-                value : this.options().margin.b,
+                value : layout.margin.b,
                 hint : "Sets the bottom margin (in px). Number greater than or equal to 0.  Default: 80"
               },
             ]
@@ -216,14 +172,14 @@ class BasicOPtions {
                 id : "layout[margin][autoexpand]", 
                 title : "Margin Auto Expand", 
                 type : "checkbox",
-                value : this.options().margin.autoexpand,
+                value : layout.margin === undefined && layout.margin.autoexpand === undefined ? false : layout.margin.autoexpand,
                 hint : "Turns on/off margin expansion computations. Legends, colorbars, updatemenus, sliders, axis rangeselector and rangeslider are allowed to push the margins by defaults.  Default: true"
               },
               {
                 id : "layout[autosize]", 
                 title : "Auto Size on Relayout", 
                 type : "checkbox",
-                value : this.options().autosize,
+                value : layout.autosize === undefined ? false : layout.autosize,
                 hint : "Determines whether or not a layout width or height that has been left undefined by the user is initialized on each relayout. Note that, regardless of this attribute, an undefined layout width or height is always initialized on the first call to plot.  Default: true"
               },
             ]

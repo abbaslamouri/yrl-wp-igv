@@ -475,11 +475,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
         // document.getElementsByName(`${prefix}__bottomAxis[spikethickness]`)[0].disabled = ! chart.layout.xaxis.showspikes  ? true : false
         // document.getElementsByName(`${prefix}__bottomAxis[spikedash]`)[0].disabled = ! chart.layout.xaxis.showspikes  ? true : false
         // document.getElementsByName(`${prefix}__bottomAxis[spikemode]`)[0].disabled = ! chart.layout.xaxis.showspikes  ? true : false
-        // document.getElementsByName(`${prefix}__bottomAxis[tickangle]`)[0].disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels )  ? true : false
-        // document.getElementsByName(`${prefix}__bottomAxis[tickprefix]`)[0].disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showtickprefix === "none" )  ? true : false
-        // document.getElementsByName(`${prefix}__bottomAxis[showtickprefix]`)[0].disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels )  ? true : false
-        // document.getElementsByName(`${prefix}__bottomAxis[ticksuffix]`)[0].disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels || chart.layout.xaxis.showticksuffix === "none" )  ? true : false
-        // document.getElementsByName(`${prefix}__bottomAxis[showticksuffix]`)[0].disabled = ( ! chart.layout.xaxis.visible || ! chart.layout.xaxis.showticklabels ) ? true : false
+       
         // document.getElementsByName(`${prefix}__bottomAxis[showexponent]`)[0].disabled = ! chart.layout.xaxis.visible  ? true : false
         // document.getElementsByName(`${prefix}__bottomAxis[exponentformat]`)[0].disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false
         // document.getElementsByName(`${prefix}__bottomAxis[minexponent]`)[0].disabled = ( ! chart.layout.xaxis.visible || chart.layout.xaxis.showexponent === "none" )   ? true : false

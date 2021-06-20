@@ -65,14 +65,14 @@
             </div>
           </div>
 
-          <div class="ac layoutAc">
+          <div class="ac basicOptionsAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
             <div class="ac-panel">
               <?php //require "{$this->path}templates/basic-options.php"; ?>
             </div>
           </div>
 
-          <div class="ac titleAc">
+          <div class="ac titleAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
             <div class="ac-panel"></div>
           </div>
@@ -82,16 +82,15 @@
             <div class="ac-panel"></div>
           </div>
 
-          <div class="ac hoverlabelAc">
+          <div class="ac hoverlabelAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Hover Label</div></h2>
             <div class="ac-panel"></div>
           </div>
 
-
-          <!-- <div class="ac configPanel hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Chart Config.</div></h2>
-            <div class="ac-panel"><?php //require "{$this->path}templates/chart-config.php"; ?></div>
-          </div> -->
+          <div class="ac modebarAc hidden">
+            <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
+            <div class="ac-panel"></div>
+          </div>
 
           <div class="ac tracesAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Traces</div></h2>
@@ -101,7 +100,7 @@
             </div>
           </div>
 
-          <div class="ac annotationsAc">
+          <div class="ac annotationsAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
@@ -113,12 +112,9 @@
 
           
 
-          <div class="ac modebarAc hidden">
-            <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
-            <div class="ac-panel"><?php //require "{$this->path}templates/modebar.php"; ?></div>
-          </div>
+          
 
-          <div class="ac xaxisAc">
+          <div class="ac xaxisAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Bottom Axis Options go here.</p>
@@ -126,7 +122,7 @@
             </div>
           </div>
 
-          <div class="ac xaxis2Ac">
+          <div class="ac xaxis2Ac hidden">
             <h2 class="ac-header"><div class="ac-trigger">Top Axis</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Top Axis Options go here.</p>
@@ -134,7 +130,7 @@
             </div>
           </div>
 
-          <div class="ac yaxisAc">
+          <div class="ac yaxisAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Left Axis</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Left Axis Options go here.</p>
@@ -142,7 +138,7 @@
             </div>
           </div>
 
-          <div class="ac yaxis2Ac">
+          <div class="ac yaxis2Ac hidden">
             <h2 class="ac-header"><div class="ac-trigger">Right Axis</div></h2>
             <div class="ac-panel">
               <p class="ac-text intro">Right Axis Options go here.</p>

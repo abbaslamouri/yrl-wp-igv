@@ -110,7 +110,7 @@ class Trace {
                 id : `traces[${index}][showlegend]`, 
                 title : "Show In Legend", 	
                 type : "checkbox",
-                value : trace.showlegend === undefined ? null : trace.showlegend,
+                value : trace.showlegend === undefined ? false : trace.showlegend,
                 disabled: false === trace.visible  ? true : false,
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
@@ -187,7 +187,7 @@ class Trace {
                 id : `traces[${index}][connectgaps]`, 
                 title : "Connect Gaps", 
                 type : "checkbox",
-                value : trace.connectgaps === undefined ?  null : trace.connectgaps,
+                value : trace.connectgaps === undefined ?  false : trace.connectgaps,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Determines whether or not gaps (i.e. {nan} or missing values) in the provided data arrays are connected."
               },
@@ -396,7 +396,7 @@ class Trace {
                 id : `traces[${index}][line][simplify]`, 
                 title : "Simplify", 	
                 type : "checkbox",
-                value : trace.line === undefined || trace.line.simplify === undefined ? null : trace.line.simplify,
+                value : trace.line === undefined && trace.line.simplify === undefined ? false : trace.line.simplify,
                 disabled: true !== trace.visible || ! trace.mode.includes( "lines" )  ? true : false,
                 hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
               },
@@ -628,7 +628,7 @@ class Trace {
                 id : `traces[${index}][error_y][visible]`,
                 title : "Show Error",	
                 type : "checkbox",
-                value : trace.error_y === undefined || trace.error_y.visible === undefined ? null : trace.error_y.visible,
+                value : trace.error_y === undefined && trace.error_y.visible === undefined ? false : trace.error_y.visible,
                 disabled: true !== trace.visible  ? true : false,
                 hint: "Determines whether or not this set of error bars is visible."
               },
@@ -721,7 +721,7 @@ class Trace {
                 id : `traces[${index}][error_y][symmetric]`,
                 title : "Symmetric ?",
                 type : "checkbox", 
-                value : trace.error_y === undefined || trace.error_y.symmetric === undefined ? null : trace.error_y.symmetric,
+                value : trace.error_y === undefined && trace.error_y.symmetric === undefined ? false : trace.error_y.symmetric,
                 disabled: ( ! trace.error_y.visible || true !== trace.visible ) ? true : false,
                 hint: "Determines whether or not the error bars have the same length in both direction (top/bottom for vertical bars, left/right for horizontal bars."
               },
