@@ -300,7 +300,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
     if ( chart.layout.annotations === undefined) {
       index = 0
-      chart.layout.annotations = {}
+      chart.layout.annotations = []
     } else {
       index = chart.layout.annotations ? chart.layout.annotations.length : 0
     }
@@ -327,18 +327,19 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
     const sectionsContainer = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .ac-panel .${optionId}__Accordion`)
 
-    chart.layout.annotations[index] = ( chart.layout.annotations !== undefined && chart.layout.annotations[index] !== undefined )? chart.layout.annotations[index] : {}
-    const annotationInstance = new Annotation( chart.layout.annotations[index], index )
-    chart.layout.annotations[index] = annotationInstance.options()
-    createPanelSections( annotationInstance.sections(), sectionsContainer, optionId, prefix )
+    chart.layout.annotations[index] = ( chart.layout.annotations[index] !== undefined )? chart.layout.annotations[index] : {}
+    // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
+    chart.layout.annotations[index] = Annotation.defaultOptions()
+
+    createPanelSections( Annotation.sections(chart.layout.annotations[index], index, chart.layout.annotations[index].text ), sectionsContainer, optionId, prefix )
     new Accordion( `.${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+
+    Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+    document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
 
     console.log("XT", chart)
 
-
-    Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
-
-    document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
     
     deletebutton.addEventListener("click", function (event) {
 
