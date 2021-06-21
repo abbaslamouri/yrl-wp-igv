@@ -21,7 +21,7 @@ class ChartAxis  {
 
     const axisOptions = {
 
-      visible : true,
+      visible : false,
       type : "-",
       side: axisSide,
       autotypenumbers : "convert types",
@@ -90,10 +90,7 @@ class ChartAxis  {
 
     if ( axisId === "xaxis" || axisId === "xaxis2" ) return { ...axisOptions, ...rangeslider }
     return axisOptions
-
-
-
-      
+  
   }
 
 
@@ -114,7 +111,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][visible]`,
                 title : "Show",	
                 type : "checkbox",
-                value : layout[axisId].visible === undefined ? false : layout[axisId].visible,
+                value : layout[axisId].visible !== undefined ? layout[axisId].visible : false,
                 hint: "A single toggle to hide the axis while preserving interaction like dragging. Default is true when a cheater plot is present on the axis, otherwise false"
               },
               {
@@ -129,7 +126,7 @@ class ChartAxis  {
                   category: "Category",
                   multicategory:"Multi category"
                 },
-                value : layout[axisId].type,
+                value : layout[axisId].type !== undefined ? layout[axisId].type : this.defaultOptions().type,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint: "Sets the axis type. By default, plotly attempts to determined the axis type by looking into the data of the traces that referenced the axis in question.  Default: '-'"
               },
@@ -143,7 +140,7 @@ class ChartAxis  {
                 title : "Side", 
                 type : "select",
                 options : axisSideOptions,
-                value : layout[axisId].side,
+                value : layout[axisId].side !== undefined ? layout[axisId].side : this.defaultOptions().side,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint : "Determines whether a x (y) axis is positioned at the 'bottom' ('left') or 'top' ('right') of the plotting area."
               },
@@ -160,7 +157,7 @@ class ChartAxis  {
                   "convert types": "Convert Types",
                   strict: "Strict",
                 },
-                value : layout[axisId].autotypenumbers,
+                value : layout[axisId].autotypenumbers !== undefined ? layout[axisId].autotypenumbers : this.defaultOptions().autotypenumbers,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint: "Using 'strict' a numeric string in trace data is not converted to a number. Using 'convert types' a numeric string in trace data may be treated as a number during automatic axis `type` detection. Defaults to layout.autotypenumbers."
               },
@@ -173,7 +170,7 @@ class ChartAxis  {
                   false: "Disabled",
                   reversed: "Reversed"
                 },
-                value : layout[axisId].autorange,
+                value : layout[axisId].autorange !== undefined ? layout[axisId].autorange : this.defaultOptions().autorange,
                 disabled: ! layout[axisId].visible || layout[axisId].type !== "linear" ? true : false,
                 hint: "Determines whether or not the range of this axis is computed in relation to the input data. See `rangemode` for more info. If `range` is provided, then `autorange` is set to 'false'."
               },
@@ -186,7 +183,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][fixedrange]`,
                 title : "Fixed Range",	
                 type : "checkbox",
-                value : layout[axisId].fixedrange === undefined ? false : layout[axisId].fixedrange,
+                value : layout[axisId].fixedrange !== undefined ? layout[axisId].fixedrange: false,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint: "Determines whether or not this axis is zoom-able. If true, then zoom is disabled."
               },
@@ -199,7 +196,7 @@ class ChartAxis  {
                   tozero: "To Zero",
                   nonnegative: "Non Negative"
                 },
-                value : layout[axisId].rangemode,
+                value : layout[axisId].rangemode !== undefined ? layout[axisId].rangemode : this.defaultOptions().rangemode,
                 disabled: ! layout[axisId].visible || ! layout[axisId].autorange ? true : false,
                 hint: "If 'normal', the range is computed in relation to the extrema of the input data. If 'tozero'`, the range extends to 0, regardless of the input data If 'nonnegative', the range is non-negative, regardless of the input data. Applies only to linear axes."
               },
@@ -212,7 +209,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][range]`,
                 title : "Range",	
                 type : "text",
-                value : undefined !== layout[axisId].range ? layout[axisId].range.join() : null,
+                value : layout[axisId].range !== undefined ? layout[axisId].range.join() : null,
                 disabled: ! layout[axisId].visible ? true : false,
                 // disabled: ( ! layout[axisId].visible  || layout[axisId].autorange ) ? true : false,
                 hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."
@@ -233,7 +230,7 @@ class ChartAxis  {
                   all: "All",
                   allticks: "All Ticks",
                 },
-                value : layout[axisId].mirror,
+                value : layout[axisId].mirror !== undefined ? layout[axisId].mirror : this.defaultOptions().mirror,
                 disabled: ! layout[axisId].visible ? true : false,
                 hint: "Determines if the axis lines and/or ticks are mirrored to the opposite side of the plotting area. If 'true', the axis lines are mirrored. If 'ticks', the axis lines and ticks are mirrored. If 'false', mirroring is disable. If 'all', axis lines are mirrored on all shared-axes subplots. If 'allticks', axis lines and ticks are mirrored on all shared-axes subplots."
               },
@@ -241,7 +238,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][automargin]`,
                 title : "Auto Margin",	
                 type : "checkbox",
-                value : layout[axisId].automargin === undefined ? false : layout[axisId].automargin,
+                value : layout[axisId].automargin !== undefined ? layout[axisId].automargin : false,
                 disabled: ! layout[axisId].visible ? true : false,
                 hint: "Determines whether long tick labels automatically grow the figure margins."
               },
@@ -254,7 +251,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][anchor]`, 
                 title : "Axis Anchor", 
                 type : "text",
-                value : layout[axisId].anchor,
+                value : layout[axisId].anchor !== undefined ? layout[axisId].anchor : this.defaultOptions().anchor,
                 hint : "If set to an opposite-letter axis id (e.g. `x2`, `y`), this axis is bound to the corresponding opposite-letter axis. If set to 'free', this axis' position is determined by `position`.  Set anchor and position to null to ignore both"
               },
               {
@@ -264,12 +261,10 @@ class ChartAxis  {
                 min : 0,
                 max : 1,
                 step : 0.05,
-                value : layout[axisId].position,
+                value : layout[axisId].position !== undefined ? layout[axisId].position : this.defaultOptions().position,
                 disabled: ! layout[axisId].visible ? true : false,
                 hint : "Sets the position of this axis in the plotting space (in normalized coordinates). Only has an effect if `anchor` is set to 'free'. Set anchor and position to null to ignore both"
-              }, 
-              
-                     
+              },       
             ],
           },
           {
@@ -279,14 +274,14 @@ class ChartAxis  {
                 id : `layout[${axisId}][overlaying]`, 
                 title : "Overlaying", 
                 type : "text",
-                value : layout[axisId].overlaying,
+                value : layout[axisId].overlaying !== undefined ? layout[axisId].overlaying : this.defaultOptions().overlaying,
                 hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
               },
               {
                 id : `layout[${axisId}][matches]`, 
                 title : "Matches", 
                 type : "text",
-                value : layout[axisId].matches,
+                value : layout[axisId].matches !== undefined ? layout[axisId].matches : this.defaultOptions().matches,
                 hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
               },
             ]
@@ -305,7 +300,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][title][text]`,
                 title : "Title",
                 type : "text", 
-                value : layout[axisId].title.text,
+                value : layout[axisId].title !== undefined && layout[axisId].title.text !== undefined ? layout[axisId].title.text : this.defaultOptions().title.text,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint: "Sets the title of the y-axis."
               },
@@ -319,7 +314,7 @@ class ChartAxis  {
                 title : "Font",	
                 type : "select",
                 options : fontFamily(),
-                value : layout[axisId].title.font.family,
+                value : layout[axisId].title !== undefined && layout[axisId].title.font !== undefined  && layout[axisId].title.font.family !== undefined ? layout[axisId].title.font.family : this.defaultOptions().title.font.family,
                 disabled: ! layout[axisId].visible || ! layout[axisId].title.text ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
@@ -330,7 +325,7 @@ class ChartAxis  {
                 min : 1,
                 max : 100,
                 step : 0.5,
-                value : layout[axisId].title.font.size,
+                value : layout[axisId].title !== undefined && layout[axisId].title.font !== undefined && layout[axisId].title.font.size !== undefined ? layout[axisId].title.font.size : this.defaultOptions().title.font.size,
                 disabled: ! layout[axisId].visible || ! layout[axisId].title.text ? true : false,
                 hint : "number greater than or equal to 1"
               },
@@ -343,7 +338,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][title][font][color]`,
                 title : "Color",
                 type : "color", 
-                value : layout[axisId].title.font.color,
+                value : layout[axisId].title !== undefined && layout[axisId].title.font !== undefined && layout[axisId].title.font.color !== undefined ? layout[axisId].title.font.color  : this.defaultOptions().title.font.color ,
                 disabled: ! layout[axisId].visible || ! layout[axisId].title.text ? true : false,
               },
               {
@@ -353,7 +348,7 @@ class ChartAxis  {
                 min : 0,
                 max : 2000,
                 step : 0.5,
-                value : layout[axisId].title.standoff,
+                value : layout[axisId].title !== undefined && layout[axisId].title.standoff !== undefined ? layout[axisId].title.standoff : this.defaultOptions().title.standoff,
                 disabled: ! layout[axisId].visible || ! layout[axisId].title.text ? true : false,
                 hint: "Sets the standoff distance (in px) between the axis labels and the title text The default value is a function of the axis tick labels, the title `font.size` and the axis `linewidth`. Note that the axis title position is always constrained within the margins, so the actual standoff distance is always less than the set or default value. By setting `standoff` and turning on `automargin`, plotly.js will push the margins to fit the axis title at given standoff distance."
               }
@@ -649,7 +644,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][showline]`, 
                 title : "Show Axis Line", 
                 type : "checkbox",
-                value : layout[axisId].showline === undefined ? false : layout[axisId].showline,
+                value : layout[axisId].showline !== undefined ? layout[axisId].showline : false,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint : "Determines whether or not a line bounding this axis is drawn."
               },
@@ -686,7 +681,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][showgrid]`, 
                 title : "Show Grid", 
                 type : "checkbox",
-                value : layout[axisId].showgrid === undefined ? false : layout[axisId].showgrid,
+                value : layout[axisId].showgrid !== undefined ? layout[axisId].showgrid : false,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint : "Determines whether or not grid lines are drawn. If 'true', the grid lines are drawn at every tick mark.Determines whether or not a line bounding this axis is drawn."
               },
@@ -723,7 +718,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][zeroline]`, 
                 title : "Show Zero Line", 
                 type : "checkbox",
-                value : layout[axisId].zeroline === undefined ? false : layout[axisId].zeroline,
+                value : layout[axisId].zeroline !== undefined ? layout[axisId].zeroline : false,
                 disabled: ! layout[axisId].visible  ? true : false,
                 hint : "Determines whether or not a line is drawn at along the 0 value of this axis. If 'true', the zero line is drawn on top of the grid lines."
               },
@@ -768,7 +763,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][showspikes]`,
                 title : "Show Spikes",	
                 type : "checkbox",
-                value : layout[axisId].showspikes,
+                value : layout[axisId].showspikes !== undefined ? layout[axisId].showspikes : false,
                 hint: "Determines whether or not spikes (aka droplines) are drawn for this axis. Note: This only takes affect when hovermode = closest"
               },
               {
@@ -897,7 +892,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][separatethousands]`, 
                 title : "Seperate Thousands", 
                 type : "checkbox",
-                value : layout[axisId].separatethousands === undefined ? false :  layout[axisId].visible,
+                value : layout[axisId].separatethousands !== undefined ? layout[axisId].visible : false,
                 disabled: ! layout[axisId].visible ? true : false,
                 hint : "If 'true', even 4-digit integers are separated"
               },
@@ -921,7 +916,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][rangeslider][visible]`,
                 title : "Show Range Slider",
                 type : "checkbox", 
-                value : layout[axisId].rangeslider === undefined || layout[axisId].rangeslider.visible === undefined ? false : layout[axisId].rangeslider.visible,
+                value : layout[axisId].rangeslider !== undefined && layout[axisId].rangeslider.visible !== undefined ? layout[axisId].rangeslider.visible : false,
                 hint: "Determines whether or not the range slider will be visible. If visible, perpendicular axes will be set to `fixedrange`"
               },
             ],

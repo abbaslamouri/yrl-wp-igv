@@ -8,7 +8,7 @@ class Hoverlabel {
 
     return {
 
-      hovermode: "x",
+      hovermode: false,
       hoverlabel: {
         bgcolor: "#FFFFFF",
         bordercolor: "#000a12",
@@ -56,27 +56,10 @@ class Hoverlabel {
                 id : "layout[hoverlabel][bgcolor]",
                 title : "Background Color",
                 type : "color", 
-                value : layout.hoverlabel.bgcolor,
+                value : layout.hoverlabel !== undefined && layout.hoverlabel.bgcolor !== undefined ? layout.hoverlabel.bgcolor : this.defaultOptions().hoverlabel.bgcolor,
                 disabled: false === layout.hovermode ? true : false,
                 hint: "Sets the background color of all hover labels on graph"
               },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-             
-              // {
-              //   id : "layout[hoverlabel][namelength]", 
-              //   title : "Hover Label Length", 
-              //   type : "number",
-              //   min : -1,
-              //   max : 2000,
-              //   step : 1,
-              //   value : layout.hoverlabel.namelength,
-              //   disabled: false === layout.hovermode ? true : false,
-              //   hint : "Sets the default length (in number of characters) of the trace name in the hover labels for all traces. -1 shows the whole name regardless of length. 0-3 shows the first 0-3 characters, and an integer >3 will show the whole name if it is less than that many characters, but if it is longer, will truncate to `namelength - 3` characters and add an ellipsis.  Integer greater than or equal to -1.  Default: 15"
-              // },
             ],
           },
           {
@@ -87,7 +70,7 @@ class Hoverlabel {
                 title : "Font",	
                 type : "select",
                 options : fontFamily(),
-                value : layout.hoverlabel.font.family,
+                value : layout.hoverlabel !== undefined && layout.hoverlabel.font !== undefined && layout.hoverlabel.font.family !== undefined ? layout.hoverlabel.font.family : this.defaultOptions().hoverlabel.font.family,
                 disabled: false === layout.hovermode ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
@@ -95,7 +78,7 @@ class Hoverlabel {
                 id : "layout[hoverlabel][font][color]",
                 title : "Font Color",
                 type : "color", 
-                value : layout.hoverlabel.font.color,
+                value : layout.hoverlabel !== undefined && layout.hoverlabel.font !== undefined && layout.hoverlabel.font.color !== undefined ? layout.hoverlabel.font.color : this.defaultOptions().hoverlabel.font.color,
                 disabled: false === layout.hovermode ? true : false,
               },
             ],
@@ -110,7 +93,7 @@ class Hoverlabel {
                 min : 1,
                 max : 100,
                 step : 0.5,
-                value : layout.hoverlabel.font.size,
+                value : layout.hoverlabel !== undefined && layout.hoverlabel.font !== undefined && layout.hoverlabel.font.size !== undefined ? layout.hoverlabel.font.size : this.defaultOptions().hoverlabel.font.size,
                 disabled: false === layout.hovermode ? true : false,
                 hint : "Number greater than or equal to 1"
               },
@@ -118,23 +101,10 @@ class Hoverlabel {
                 id : "layout[hoverlabel][bordercolor]",
                 title : "Border Color",
                 type : "color", 
-                value : layout.hoverlabel.bordercolor,
+                value : layout.hoverlabel !== undefined && layout.hoverlabel.bordercolor !== undefined ? layout.hoverlabel.bordercolor : this.defaultOptions().hoverlabel.bordercolor,
                 disabled: false === layout.hovermode ? true : false,
                 hint: "Sets the border color of all hover labels on graph."
               },
-              // {
-              //   id : "layout[hoverlabel][align]",
-              //   title : "Hover label Alignmentr",	
-              //   type : "select",
-              //   options : {
-              //     left: "Left",
-              //     right: "Right",
-              //     auto: "Auto"
-              //   },
-              //   value : layout.hoverlabel.align,
-              //   disabled: false === layout.hovermode ? true : false,
-              //   hint: "Sets the horizontal alignment of the text content within hover label box. Has an effect only if the hover label text spans more two or more lines.  Default: auto"
-              // },
             ],
           },
         ]  

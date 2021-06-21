@@ -987,7 +987,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      wp_send_json($_POST);
+      // wp_send_json($_POST);
 
 			try {
 				
@@ -1028,6 +1028,8 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["traces"] = ( isset( $_POST["{$this->prefix}__traces"] ) ) ?  $_POST["{$this->prefix}__traces"] : [];
 				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
 				$charts[$chart_id]["minMaxAvgTable"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTable"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTable"] : [];
+
+        $charts[$chart_id]["layout"]["hovermode"] = $charts[$chart_id]["layout"]["hovermode"] === "true" ? true : $charts[$chart_id]["layout"]["hovermode"] === "false" ? false : $charts[$chart_id]["layout"]["hovermode"]; 
 
 
 				// Convert xaxis array type fields to array
