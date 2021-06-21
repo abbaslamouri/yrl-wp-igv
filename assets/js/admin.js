@@ -2,8 +2,13 @@ import Plotly from 'plotly.js-dist'
 import selectFile from './select-file'
 import saveChart from './save-chart'
 import Accordion from 'accordion-js'
-import Annotation from './Annotation'
 import 'accordion-js/dist/accordion.min.css'
+import BasicOptions from './BasicOptions'
+import Title from "./Title"
+import Legend from "./Legend"
+import Hoverlabel from "./Hoverlabel"
+import Modebar from "./Modebar"
+import ChartAxis from "./ChartAxis"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections } from "./utilities"
@@ -18,7 +23,8 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
-  let chart = null !== iwpgvCharts.chart ? iwpgvCharts.chart  : { fileUpload: {}, layout: {}, config: {}, traces: [] } 
+  // let chart = {}
+  let chart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
   let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet =  undefined !== iwpgvCharts.spreadsheet ?  iwpgvCharts.spreadsheet : []
@@ -29,7 +35,9 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
   console.log("iwpgvObj", {...iwpgvObj})
   console.log("iwpgvCharts", {...iwpgvCharts})
 
+
   try {
+
 
     // throw new Error( "iwpgvObj && iwpgvCharts missing")
 
@@ -46,6 +54,35 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
     // Add new chart or edit an existing chart
     if ( iwpgvCharts.action === "editChart" ) {
+
+      if ( null !== iwpgvCharts.chart ) {
+        chart = iwpgvCharts.chart
+        chart.config.responsive = chart.layout.responsive !== undefined ? chart.layout.responsive : false 
+        chart.config.staticPlot = chart.layout.staticPlot !== undefined ? chart.layout.staticPlot : false
+    
+      }  else {
+        
+        chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
+        chart.config.responsive = chart.layout.responsive
+        chart.config.staticPlot = chart.layout.staticPlot
+    
+        chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
+        chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
+        chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
+    
+        chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
+        chart.config.displayModeBar = chart.layout.displayModeBar
+        chart.config.displaylogo = chart.layout.displaylogo
+        
+        chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
+        chart.layout.xaxis2 = ChartAxis.defaultOptions( "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x" )
+        chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
+        chart.layout.yaxis2 = ChartAxis.defaultOptions( "yaxis2", "right", "y", "Reflectance ( % )", "y" )
+        
+      }
+
+      console.log("CCHH",chart)
+
 
       // chart.fileUpload = {...chart.fileUpload}
       // chart.traces = {...chart.traces}
@@ -279,7 +316,7 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
 
   } catch (error) {
 
-    displayAdminMessage(error.message, "error",  iwpgvObj)
+    displayAdminMessage(error.message, "error",  prefix)
     console.log("CAUGHT ERROR", error)
 
   }

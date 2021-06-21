@@ -35,28 +35,28 @@ if (!class_exists('Dashboard')) {
 			"xlsx", "Xlsx", "xls", "Xls", "csv", "Csv", "xlsm", "Xlsm"
 		];
 
-		protected $font_family = [
-			// "" => "Select Font Family",
-			"arial" => "Arial",
-			"balto" => "Balto",
-			"Times New Roman" => "Times New Roman",
-			"Courier New" => "Courier New",
-			"Droid Sans" => "Droid Sans",
-			"Droid Serif" => "Droid Serif",
-			"Droid Sans Mono" => "Droid Sans Mono",
-			"Gravitas One" => "Gravitas One",
-			"Old Standard TT" => " Old Standard TT",
-			"Open Sans" => "Open Sans",
-			"overpass" => "Overpass",
-			"PT Sans Narrow" => "PT Sans Narrow",
-			"raleway" => "Raleway"
-		];
+		// protected $font_family = [
+		// 	// "" => "Select Font Family",
+		// 	"arial" => "Arial",
+		// 	"balto" => "Balto",
+		// 	"Times New Roman" => "Times New Roman",
+		// 	"Courier New" => "Courier New",
+		// 	"Droid Sans" => "Droid Sans",
+		// 	"Droid Serif" => "Droid Serif",
+		// 	"Droid Sans Mono" => "Droid Sans Mono",
+		// 	"Gravitas One" => "Gravitas One",
+		// 	"Old Standard TT" => " Old Standard TT",
+		// 	"Open Sans" => "Open Sans",
+		// 	"overpass" => "Overpass",
+		// 	"PT Sans Narrow" => "PT Sans Narrow",
+		// 	"raleway" => "Raleway"
+		// ];
 
-		protected $colors = [
+		// protected $colors = [
 
-			"3366cc", "dc3912", "ff9900", "109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
+		// 	"3366cc", "dc3912", "ff9900", "109618", "0099c6", "dd4477", "66aa00", "b82e2e", "316395", "#b71c1c", "#0d47a1", "#7B1FA2", "#e65100", "#581845", "#795548", "#0097A7", "#558B2F", "#1976D2", "#212121", "#00796B", "#455A64", "#263238", "#303F9F", "#33691E", "#EF6C00", "#FFA000", "#004d40"
 			
-		];
+		// ];
 
 
 		/**
@@ -130,7 +130,7 @@ if (!class_exists('Dashboard')) {
 
 
 		
-		protected function chart_trace() {
+		// protected function chart_trace() {
 
 			// return [
 
@@ -203,26 +203,26 @@ if (!class_exists('Dashboard')) {
 
 			// ];
 
-		}
+		// }
 
 
 
 
 
-		public function chart_axis($title_text, $side, $overlaying, $matches, $rangesliderVisible ) {
+		// public function chart_axis($title_text, $side, $overlaying, $matches, $rangesliderVisible ) {
       
-			return [
-				"visible" => true,
-				"side" => $side,
-				"autorange" => true,
-				"overlaying" => $overlaying,
-				"matches" => $matches,
-				// "rangemode" => "normal",
-				"title" => ["text" => $title_text],
-				"rangeslider" => ["visible" => $rangesliderVisible],
-			];
+		// 	return [
+		// 		"visible" => true,
+		// 		"side" => $side,
+		// 		"autorange" => true,
+		// 		"overlaying" => $overlaying,
+		// 		"matches" => $matches,
+		// 		// "rangemode" => "normal",
+		// 		"title" => ["text" => $title_text],
+		// 		"rangeslider" => ["visible" => $rangesliderVisible],
+		// 	];
 
-		}
+		// }
 
 
 
@@ -310,102 +310,102 @@ if (!class_exists('Dashboard')) {
 
 
 
-    public function default_chart () {
+    // public function default_chart () {
 
 			
-      return [
+    //   return [
         
-				"fileUpload" => [], 
-        "layout" => [
-					"width" => null,
-					"height" => 300,
-					"autosize" => true,
-          "paper_bgcolor" => "#ffffff",
-          "plot_bgcolor" => "#ffffff",
-          "showlegend" => true,
-          "legend" => [
-            "valign" => "middle",
-            "borderwidth" =>1,
-            "orientation" => "v",
-            "bgcolor" => "#ffffff",
-            "bordercolor" => "#ffffff",
-            "font" => ["family" => "raleway", "size" => 14, "color" => "#222222"],
-            "itemsizing" => "trace",
-            "itemwidth" => 30,
-            "itemclick" => false,
-            "itemdoubleclick" => "toggle",
-            "x" => 1.02,
-            "y"=> 1,
-						"title" =>[
-							"text" => "",
-							"side" => "top",
-							"font" => [
-								"family" => "balto",
-								"size" => 14,
-								"color" => "#666666"
-							]
-            ],
-          ],
-          "hovermode" => "x",
-          // "hoverlabel" => [
-          //   "bgcolor" => "red"
-          // ],
-					"title" => ["text" => "Ge AR/AR 8.0 - 12.0 &#181;m", "x" => 0.5, "y" => "auto", "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"]],
-          "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),
-          "xaxis2" => $this->chart_axis(  "Wavelength ( &#181;m )", "top", "x", "x", false ),
-          "yaxis" => $this->chart_axis( "Transmittance ( % )", "left", null, null, false ),
-					"yaxis2" => $this->chart_axis( "Reflectance ( % )", "right", "y", "y",false ),
-          "modebar" => ["bgcolor" => "#cccccc", "orientation" => "h", "color" => "#ffffff", "activecolor" => "#ffffff"],
-					"margin" => ["l" => 80, "r" => 80, "t" => 100, "b" => 80, "pad" => 0,"autoexpand" => true],
-					"annotations" =>[
-            // [
-            //   "visible" => true,
-            //   "text" => 'Annotation A',
-            //   "textangle" => 0,
-            //   "font" => [
-            //     "family" => "balto",
-            //     "size" => 14,
-            //     "color" => "#666666"
-            //   ],
-            //   "width" => null,
-            //   "height" => null,
-            //   "opacity" => 1,
-            //   "align" => "center",
-            //   "valign" => "middle",
-            //   "bgcolor" => "#ffffff",
-            //   "bordercolor" => "#000000",
-            //   "borderpad" => 1,
-            //   "borderwidth" => 1,
-            //   "showarrow" => true,
-            //   "arrowcolor" => "#000000",
-            //   "arrowhead" => 1,
-            //   "startarrowhead" => 1,
-            //   "arrowside" => "end",
-            //   "arrowsize" => 1,
-            //   "startarrowsize" => 1,
-            //   "arrowwidth" => null,
-            //   "standoff" => 0,
-            //   "startstandoff" => 0,
-            //   "axref" => 'pixel',
-            //   "ayref" => 'pixel',
-            //   "ax" => -30,
-            //   "ay" => -40,
-            //   "xref" => 'x',
-            //   "x" => 2150,
-            //   "xshift" => 0,
-            //   "yref" => 'y',
-            //   "y" => 20,
-            //   "yshift" => 0
-            // ]
-					]
-				],
-        "config" => ["responsive" => true, "displayModeBar" => false, "displaylogo" => true, "staticPlot" => false],
-        "traces" => [],
-        "minMaxAvgTable" => $this->min_max_avg_table_options()
+		// 		"fileUpload" => [], 
+    //     "layout" => [
+		// 			"width" => null,
+		// 			"height" => 300,
+		// 			"autosize" => true,
+    //       "paper_bgcolor" => "#ffffff",
+    //       "plot_bgcolor" => "#ffffff",
+    //       "showlegend" => true,
+    //       "legend" => [
+    //         "valign" => "middle",
+    //         "borderwidth" =>1,
+    //         "orientation" => "v",
+    //         "bgcolor" => "#ffffff",
+    //         "bordercolor" => "#ffffff",
+    //         "font" => ["family" => "raleway", "size" => 14, "color" => "#222222"],
+    //         "itemsizing" => "trace",
+    //         "itemwidth" => 30,
+    //         "itemclick" => false,
+    //         "itemdoubleclick" => "toggle",
+    //         "x" => 1.02,
+    //         "y"=> 1,
+		// 				"title" =>[
+		// 					"text" => "",
+		// 					"side" => "top",
+		// 					"font" => [
+		// 						"family" => "balto",
+		// 						"size" => 14,
+		// 						"color" => "#666666"
+		// 					]
+    //         ],
+    //       ],
+    //       "hovermode" => "x",
+    //       // "hoverlabel" => [
+    //       //   "bgcolor" => "red"
+    //       // ],
+		// 			"title" => ["text" => "Ge AR/AR 8.0 - 12.0 &#181;m", "x" => 0.5, "y" => "auto", "font" => ["family" => "raleway", "size" => 14, "color" => "#666666"]],
+    //       "xaxis" => $this->chart_axis(  "Wavelength ( &#181;m )" , "bottom", null, null, true),
+    //       "xaxis2" => $this->chart_axis(  "Wavelength ( &#181;m )", "top", "x", "x", false ),
+    //       "yaxis" => $this->chart_axis( "Transmittance ( % )", "left", null, null, false ),
+		// 			"yaxis2" => $this->chart_axis( "Reflectance ( % )", "right", "y", "y",false ),
+    //       "modebar" => ["bgcolor" => "#cccccc", "orientation" => "h", "color" => "#ffffff", "activecolor" => "#ffffff"],
+		// 			"margin" => ["l" => 80, "r" => 80, "t" => 100, "b" => 80, "pad" => 0,"autoexpand" => true],
+		// 			"annotations" =>[
+    //         // [
+    //         //   "visible" => true,
+    //         //   "text" => 'Annotation A',
+    //         //   "textangle" => 0,
+    //         //   "font" => [
+    //         //     "family" => "balto",
+    //         //     "size" => 14,
+    //         //     "color" => "#666666"
+    //         //   ],
+    //         //   "width" => null,
+    //         //   "height" => null,
+    //         //   "opacity" => 1,
+    //         //   "align" => "center",
+    //         //   "valign" => "middle",
+    //         //   "bgcolor" => "#ffffff",
+    //         //   "bordercolor" => "#000000",
+    //         //   "borderpad" => 1,
+    //         //   "borderwidth" => 1,
+    //         //   "showarrow" => true,
+    //         //   "arrowcolor" => "#000000",
+    //         //   "arrowhead" => 1,
+    //         //   "startarrowhead" => 1,
+    //         //   "arrowside" => "end",
+    //         //   "arrowsize" => 1,
+    //         //   "startarrowsize" => 1,
+    //         //   "arrowwidth" => null,
+    //         //   "standoff" => 0,
+    //         //   "startstandoff" => 0,
+    //         //   "axref" => 'pixel',
+    //         //   "ayref" => 'pixel',
+    //         //   "ax" => -30,
+    //         //   "ay" => -40,
+    //         //   "xref" => 'x',
+    //         //   "x" => 2150,
+    //         //   "xshift" => 0,
+    //         //   "yref" => 'y',
+    //         //   "y" => 20,
+    //         //   "yshift" => 0
+    //         // ]
+		// 			]
+		// 		],
+    //     "config" => ["responsive" => true, "displayModeBar" => false, "displaylogo" => true, "staticPlot" => false],
+    //     "traces" => [],
+    //     "minMaxAvgTable" => $this->min_max_avg_table_options()
 
-      ];
+    //   ];
 
-    }
+    // }
 
 
 
@@ -902,7 +902,7 @@ if (!class_exists('Dashboard')) {
         }
 
         // Set payload
-        $payload = ["chart" => $chart, "fontFamily" => $this->font_family ];
+        $payload = ["chart" => $chart];
 
 				
 			}
@@ -987,7 +987,7 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function save_chart() {
       
-      // wp_send_json($_POST);
+      wp_send_json($_POST);
 
 			try {
 				
@@ -1004,12 +1004,6 @@ if (!class_exists('Dashboard')) {
 				if ( ! isset($_POST["{$this->prefix}__traces"]) && ! empty( $_POST["{$this->prefix}__traces"] ) ) { 
           throw new \Exception (__("Chart Traces missing.", $this->plugin));
 				}
-
-				// Verify if the axes are set
-				// if ( $_POST["{$this->prefix}__fileUpload"]["chartType"] !== 'PieChart' && (! isset($_POST["{$this->prefix}__horAxisOptions"]) ||! isset ($_POST["{$this->prefix}__leftAxisOptions"]))) { 
-        //   throw new \Exception (__("Axis options missing.", $this->plugin));
-				// }
-       	// wp_send_json($_POST);
 
 				// Fetch all charts
 				$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
@@ -1046,6 +1040,31 @@ if (!class_exists('Dashboard')) {
 					}
 					$charts[$chart_id]["layout"]["xaxis"]["range"] = $xaxis_range_arr;
 				}
+
+				// Convert xaxis array type fields to array
+				if ( ! $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) {
+					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = [];
+				} else {
+					$xaxis_tickvals_arr = [];
+					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["tickvals"] ) as $value) {
+						array_push($xaxis_tickvals_arr, floatval($value));
+					}
+					$charts[$chart_id]["layout"]["xaxis"]["tickvals"] = $xaxis_tickvals_arr;
+				}
+
+				// Convert xaxis array type fields to array
+				if ( ! $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) {
+					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = [];
+				} else {
+					$xaxis_ticktext_arr = [];
+					foreach (explode( ",", $charts[$chart_id]["layout"]["xaxis"]["ticktext"] ) as $value) {
+						array_push($xaxis_ticktext_arr, $value);
+					}
+					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
+				}
+
+				// wp_send_json($charts[$chart_id]);
+
 
 
 
@@ -1105,19 +1124,19 @@ if (!class_exists('Dashboard')) {
 
 
         // add undefined checkbox values
-        $charts[$chart_id]["layout"]["xaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["xaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["autorange"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["xaxis"]["rangeslider"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["rangeslider"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["xaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["autorange"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["xaxis2"]["rangeslider"][visible] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["rangeslider"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["yaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["yaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["autorange"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["yaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["visible"] ) ?  true : false;
-        $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["autorange"] ) ?  true : false;
-        $charts[$chart_id]["config"]["displayModeBar"] = isset( $_POST["{$this->prefix}__config"]["displayModeBar"] ) ?  true : false;
-        $charts[$chart_id]["config"]["displaylogo"] = isset( $_POST["{$this->prefix}__config"]["displaylogo"] ) ?  true : false;
-        $charts[$chart_id]["minMaxAvgTable"]["visible"] = isset( $_POST["{$this->prefix}minMaxAvgTable"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["autorange"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis"]["rangeslider"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis"]["rangeslider"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["autorange"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["xaxis2"]["rangeslider"][visible] = isset( $_POST["{$this->prefix}__layout"]["xaxis2"]["rangeslider"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["yaxis"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["yaxis"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis"]["autorange"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["yaxis2"]["visible"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["visible"] ) ?  true : false;
+        // $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = isset( $_POST["{$this->prefix}__layout"]["yaxis2"]["autorange"] ) ?  true : false;
+        // $charts[$chart_id]["config"]["displayModeBar"] = isset( $_POST["{$this->prefix}__config"]["displayModeBar"] ) ?  true : false;
+        // $charts[$chart_id]["config"]["displaylogo"] = isset( $_POST["{$this->prefix}__config"]["displaylogo"] ) ?  true : false;
+        // $charts[$chart_id]["minMaxAvgTable"]["visible"] = isset( $_POST["{$this->prefix}minMaxAvgTable"]["visible"] ) ?  true : false;
 
 
 

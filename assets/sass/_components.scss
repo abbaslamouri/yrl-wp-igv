@@ -144,7 +144,7 @@
       display:block;
       width:100%;
 
-      &:disabled {
+      &:readonly {
         background-color:rgba( $color_danger, .1);;
       }
 

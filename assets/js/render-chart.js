@@ -61,23 +61,23 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     /************************************************************************
     ******************* Create xaxis options and panel *********************
     *************************************************************************/
-    // Xaxis Options
-    chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
-    chart.config.responsive = chart.layout.responsive
-    chart.config.staticPlot = chart.layout.staticPlot
-
-    chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
-    chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
-    chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
-
-    chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
-    chart.config.displayModeBar = chart.layout.displayModeBar
-    chart.config.displaylogo = chart.layout.displaylogo
     
-    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
-    chart.layout.xaxis2 = ChartAxis.defaultOptions( "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x" )
-    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
-    chart.layout.yaxis2 = ChartAxis.defaultOptions( "yaxis2", "right", "y", "Reflectance ( % )", "y" )
+    // chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
+    // chart.config.responsive = chart.layout.responsive
+    // chart.config.staticPlot = chart.layout.staticPlot
+
+    // chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
+    // chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
+    // chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
+
+    // chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
+    // chart.config.displayModeBar = chart.layout.displayModeBar
+    // chart.config.displaylogo = chart.layout.displaylogo
+    
+    // chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
+    // chart.layout.xaxis2 = ChartAxis.defaultOptions( "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x" )
+    // chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
+    // chart.layout.yaxis2 = ChartAxis.defaultOptions( "yaxis2", "right", "y", "Reflectance ( % )", "y" )
 
     await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
 
@@ -312,7 +312,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
      annotationsAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, "New Annotation", `Here you can modify the options for New Annotation` ) )
 
     // Create Delete annotation button
-    const deletebutton = document.createElement("button")
+    const deletebutton = document.createElement("div")
     deletebutton.classList.add(`.${prefix}__deleteAnnotation`, "button", "btn", "btn-danger")
     deletebutton.id = `.${prefix}__layout[annotations][${index}]`
     const buttonText = document.createTextNode( "Delete Annotation" )
@@ -338,29 +338,9 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
     document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
 
-    console.log("XT", chart)
-
-    
     deletebutton.addEventListener("click", function (event) {
 
       event.preventDefault()
-
-
-      Plotly.purge(`${prefix}__plotlyChart`)
-
-
-      const control = chartOptionKey(event.target.id).control
-      const key = chartOptionKey(event.target.id).key
-      const keyParts = key.split(".")
-
-      console.log("Control", control)
-      console.log("key", key)
-      console.log("keyParts", keyParts)
-
-      chart.layout.annotations[keyParts[1]] = null
-      Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
-
-      console.log("CT", chart)
 
       swal({
         title: "Are you sure?",
@@ -371,7 +351,14 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
       })
       .then((willDelete) => {
         if (willDelete) {
-          console.log("PPPPP", event.target.parentNode.parentNode)
+
+          const key = chartOptionKey(event.target.id).key
+          const keyParts = key.split(".")
+          chart.layout.annotations[keyParts[1]] = null
+
+          Plotly.purge(`${prefix}__plotlyChart`)
+          Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+
           event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
           swal(`Annotation has been deleted!`, {
             icon: "success",

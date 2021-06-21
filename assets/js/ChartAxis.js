@@ -10,7 +10,7 @@ class ChartAxis  {
     const rangeslider =  {
 
       rangeslider: {
-        visible: true,
+        visible: false,
         thickness: 0.12,
         bgcolor: "#FFFFFF",
         borderwidth: 1,

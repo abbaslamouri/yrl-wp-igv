@@ -38,7 +38,7 @@ const saveChart = async function (chart, iwpgvObj) {
     // toggleInputField(`${iwpgvObj.prefix}__fileUpload[chartId]`)
 
     // Success handler
-    if (jsonRes.status && ( jsonRes.status === "success" || jsonRes.status === "unchanged" ) ) displayAdminMessage(jsonRes.message, "success",  iwpgvObj)
+    if (jsonRes.status && ( jsonRes.status === "success" || jsonRes.status === "unchanged" ) ) displayAdminMessage(jsonRes.message, "success",  iwpgvObj.prefix)
 
 
   } catch (error) {

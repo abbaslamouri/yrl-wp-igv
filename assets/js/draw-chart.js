@@ -179,22 +179,28 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
             case "xaxis.tickvals":             
               value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-              if ( isNaN( value[value.length-1] ) ) value.pop()
+              console.log(value)
+
+              // if ( isNaN( value[value.length-1] ) ) value.pop()
               // if ( Array.isArray( value ) ) {
                 update = { ["xaxis.tickvals"]: value}
                 Plotly.relayout( `${prefix}__plotlyChart`, update)
               // }
-              document.getElementById(`${prefix}__layout[xaxis][tickvals]`).value = value.join()
+              // document.getElementById(`${prefix}__layout[xaxis][tickvals]`).value = value.join()
             break
 
             case "xaxis.ticktext":
-              value = value.split(",").map( ( item ) => { return item  } )
-              if ( ! value[value.length-1]  ) value.pop()
+              value = value.split(",").map( ( item ) => { return item === "" ? null : item  } )
+              console.log(value)
+
+              // if ( ! value[value.length-1]  ) value.pop()
               // if ( Array.isArray( value ) ) {
+                // if ( value.length > chart.layout.xaxis.tickvals.length  ) value.pop()
                 update = { ["xaxis.ticktext"]: value}
                 Plotly.relayout( `${prefix}__plotlyChart`, update)
               // }
-              document.getElementById(`${prefix}__layout[xaxis][ticktext]`).value = value.join()
+              // document.getElementById(`${prefix}__layout[xaxis][ticktext]`).value = value.join()
+
             break
 
             case "xaxis.tickmode":             

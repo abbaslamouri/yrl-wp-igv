@@ -18,8 +18,8 @@ const listCharts = async function ( charts, prefix) {
         
         chart.traces[i].showlegend = false
         chart.layout.hovermode = false
-        chart.layout.height = 200
-        chart.layout.margin = { autoexpand: true, t:40, b:30, l:60, r:60, pad:0 }
+        chart.layout.height = 300
+        // chart.layout.margin = { autoexpand: true, t:80, b:80, l:60, r:60, pad:0 }
         // chart.layout.title.font.size = undefined !== chart.layout.title && undefined !== chart.layout.title.font && undefined !== chart.layout.title.font.size ? 12 : null
         // chart.layout.title.x = .15
         // el.layout.title.y = .95

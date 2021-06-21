@@ -60,7 +60,7 @@ class Annotation {
         title : "Basic Options",
         fieldGroups : [
           {
-            cssClasses : ["field-group", "forty-sixty"],     
+            cssClasses : ["field-group", "twentyFive-seventyFive"],     
             inputFields : [
               {
                 id : `layout[annotations][${index}][visible]`,  
@@ -69,17 +69,12 @@ class Annotation {
                 value : annotation.visible === undefined ? false : annotation.visible,
                 hint : "Determines whether or not this annotation is visible."
               },
-            ]
-          },
-          {
-            cssClasses : ["field-group"],     
-            inputFields : [
               {
                 id : `layout[annotations][${index}][text]`,  
                 title : "Text",  
                 type : "text",
                 value : annotation.text,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible? true : false,
                 hint : "Sets the text associated with this annotation. Plotly uses a subset of HTML tags to do things like newline (<br>), bold (<b></b>), italics (<i></i>), hyperlinks (<a href='...'></a>). Tags <em>, <sup>, <sub> <span> are also supported."
               },
             ]
@@ -95,7 +90,7 @@ class Annotation {
                 max : 3000,
                 step : 1,
                 value : annotation.width,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "number greater than or equal to 1.  Sets an explicit width for the text box. null (default) lets the text set the box width. Wider text will be clipped. There is no automatic wrapping; use <br> to start a new line."
               },
               {
@@ -106,7 +101,7 @@ class Annotation {
                 max : 3000,
                 step : 1,
                 value : annotation.height,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "number greater than or equal to 1.  Sets an explicit height for the text box. null (default) lets the text set the box height. Taller text will be clipped."
               },
             ]
@@ -124,7 +119,7 @@ class Annotation {
                   right : "Right"
                 },
                 value : annotation.align,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
               {
@@ -137,7 +132,7 @@ class Annotation {
                   bottom : "Bottom"
                 },
                 value : annotation.valign,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
             ]
@@ -153,7 +148,7 @@ class Annotation {
                 max : 1,
                 step : .02,
                 value : annotation.opacity,
-                disabled: true !== annotation.visible  ? true : false,
+                disabled: true !== annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
               {
@@ -164,25 +159,14 @@ class Annotation {
                 max : 180,
                 step : 1,
                 value : annotation.textangle,
-                disabled: false == annotation.visible  ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text ? true : false,
                 hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
-              {
-                id : `layout[annotations][${index}][borderpad]`, 
-                title : "Border Padding", 	
-                type : "number",
-                min : 1,
-                max : 2000,
-                step : 1,
-                value : annotation.borderpad,
-                disabled: false == annotation.visible ? true : false,
-                hint : "Sets the marker size (in px)."
-              },
               {
                 id : `layout[annotations][${index}][borderwidth]`, 
                 title : "Border Width", 	
@@ -191,50 +175,40 @@ class Annotation {
                 max : 100,
                 step : 1,
                 value : annotation.borderwidth,
-                disabled: false == annotation.visible? true : false,
+                disabled: false == annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets the marker's opacity."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `layout[annotations][${index}][bgcolor]`, 
-                title : "Background Color", 	
-                type : "color",
-                value :  annotation.bgcolor,
-                disabled: false === annotation.visible  ? true : false,
-                hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
                 id : `layout[annotations][${index}][bordercolor]`, 
                 title : "Border Color", 	
                 type : "color",
                 value :  annotation.bordercolor,
-                disabled: false == annotation.visible  ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
-                id : `layout[annotations][${index}][xref]`,  
-                title : "X Reference",  
-                type : "text",
-                value : annotation.xref,
-                disabled: true !== annotation.visible ? true : false,
-                hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
+                id : `layout[annotations][${index}][bgcolor]`, 
+                title : "Background Color", 	
+                type : "color",
+                value :  annotation.bgcolor,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
+                hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
               {
-                id : `layout[annotations][${index}][yref]`,  
-                title : "Y Reference",  
-                type : "text",
-                value : annotation.yref,
-                disabled: true !== annotation.visible ? true : false,
-                hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
+                id : `layout[annotations][${index}][borderpad]`, 
+                title : "Border Padding", 	
+                type : "number",
+                min : 1,
+                max : 2000,
+                step : 1,
+                value : annotation.borderpad,
+                disabled: false == annotation.visible || "" === annotation.text ? true : false,
+                hint : "Sets the marker size (in px)."
               },
             ],
           },
@@ -249,7 +223,7 @@ class Annotation {
                 // mx : 2000,
                 // step : 1,
                 value :  annotation.x,
-                disabled: false === annotation.visible ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets the width of the trace line."
               },
               {
@@ -260,7 +234,7 @@ class Annotation {
                 // may : 2000,
                 // step : 1,
                 value :  annotation.y,
-                disabled: false === annotation.visible ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets the width of the trace line."
               },
             ],
@@ -276,7 +250,7 @@ class Annotation {
                 max : 2000,
                 step : 1,
                 value :  annotation.xshift,
-                disabled: true !== annotation.visible ? true : false,
+                disabled: true !== annotation.visible || "" === annotation.text ? true : false,
                 hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
               }, 
               {
@@ -287,9 +261,30 @@ class Annotation {
                 max : 2000,
                 step : 1,
                 value :  annotation.yshift,
-                disabled: true !== annotation.visible ? true : false,
+                disabled: true !== annotation.visible || "" === annotation.text ? true : false,
                 hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape)."
               }, 
+            ],
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : `layout[annotations][${index}][xref]`,  
+                title : "X Reference",  
+                type : "text",
+                value : annotation.xref,
+                disabled: true !== annotation.visible || "" === annotation.text ? true : false,
+                hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
+              },
+              {
+                id : `layout[annotations][${index}][yref]`,  
+                title : "Y Reference",  
+                type : "text",
+                value : annotation.yref,
+                disabled: true !== annotation.visible || "" === annotation.text ? true : false,
+                hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
+              },
             ],
           },
         ],
@@ -300,14 +295,14 @@ class Annotation {
         title : "Arrows",
         fieldGroups : [
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
                 id : `layout[annotations][${index}][showarrow]`, 
                 title : "show Arrow", 	
                 type : "checkbox",
                 value : annotation.showarrow === undefined ? false : annotation.showarrow,
-                disabled: false == annotation.visible ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text ? true : false,
                 hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
               },
               {
@@ -321,21 +316,31 @@ class Annotation {
                   none: "None",
                 },
                 value : annotation.arrowside,
-                disabled: false === annotation.visible  ? true : false,
+                disabled: false === annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the annotation arrow head position."
               },
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
-              
+              {
+                id : `layout[annotations][${index}][arrowwidth]`, 
+                title : "Arrow Width", 	
+                type : "number",
+                min : 0,
+                max : 100,
+                step : .1,
+                value : annotation.arrowwidth,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
+                hint : "Sets the type of gradient used to fill the markers"
+              },
               {
                 id : `layout[annotations][${index}][arrowcolor]`,  
                 title : "Arrow Color",  
                 type : "color",
                 value : annotation.arrowcolor,
-                disabled: false == annotation.visible ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : ""
               },
             ],
@@ -351,7 +356,7 @@ class Annotation {
                 max : 8,
                 step : 1,
                 value : annotation.arrowhead,
-                disabled: false == annotation.visible? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the marker's opacity. Integer between or equal to 0 and 8"
               },
               {
@@ -362,7 +367,7 @@ class Annotation {
                 max : 100,
                 step : 1,
                 value : annotation.startarrowhead,
-                disabled: false == annotation.visible? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Integer between or equal to 0 and 8.  Integer between or equal to 0 and 8"
               },
             ],
@@ -378,7 +383,7 @@ class Annotation {
                 max : 100,
                 step : 1,
                 value : annotation.arrowsize,
-                disabled: false == annotation.visible? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the marker's opacity."
               },
               {
@@ -389,26 +394,14 @@ class Annotation {
                 max : 100,
                 step : 1,
                 value : annotation.startarrowsize,
-                disabled: false == annotation.visible? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the marker's opacity."
               },
             ],
           },
-          
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
-              {
-                id : `layout[annotations][${index}][arrowwidth]`, 
-                title : "Arrow Width", 	
-                type : "number",
-                min : 0,
-                max : 100,
-                step : .1,
-                value : annotation.arrowwidth,
-                disabled: false == annotation.visible ? true : false,
-                hint : "Sets the type of gradient used to fill the markers"
-              },
               {
                 id : `layout[annotations][${index}][standoff]`, 
                 title : "Standoff", 	
@@ -417,14 +410,9 @@ class Annotation {
                 max : 1000,
                 step : 1,
                 value : annotation.standoff,
-                disabled: false == annotation.visible ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the type of gradient used to fill the markers"
               },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
               {
                 id : `layout[annotations][${index}][startstandoff]`, 
                 title : "Start Standoff", 	
@@ -433,8 +421,35 @@ class Annotation {
                 max : 1000,
                 step : 1,
                 value : annotation.startstandoff,
-                disabled: false == annotation.visible ? true : false,
+                disabled: false == annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Sets the type of gradient used to fill the markers"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : `layout[annotations][${index}][ax]`, 
+                title : "Arrow X Position", 	
+                type : "number",
+                // min : 1,
+                // max : 2000,
+                // step : 1,
+                value :  annotation.ax,
+                disabled: false === annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
+                hint : "Sets the width of the trace line."
+              },
+              {
+                id : `layout[annotations][${index}][ay]`, 
+                title : "Arrow Y Position", 	
+                type : "number",
+                // min : 1,
+                // may : 2000,
+                // step : 1,
+                value :  annotation.ay,
+                disabled: false === annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
+                hint : "Sets the width of the trace line."
               },
             ],
           },
@@ -446,7 +461,7 @@ class Annotation {
                 title : "Arrow X Reference",  
                 type : "text",
                 value : annotation.axref,
-                disabled: true !== annotation.visible ? true : false,
+                disabled: true !== annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
               },
               {
@@ -454,35 +469,8 @@ class Annotation {
                 title : "Arrow Y Reference",  
                 type : "text",
                 value : annotation.ayref,
-                disabled: true !== annotation.visible ? true : false,
+                disabled: true !== annotation.visible || "" === annotation.text || false === annotation.showarrow ? true : false,
                 hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `layout[annotations][${index}][ax]`, 
-                title : "Arrow X", 	
-                type : "number",
-                // min : 1,
-                // max : 2000,
-                // step : 1,
-                value :  annotation.ax,
-                disabled: false === annotation.visible ? true : false,
-                hint : "Sets the width of the trace line."
-              },
-              {
-                id : `layout[annotations][${index}][ay]`, 
-                title : "Arrow Y", 	
-                type : "number",
-                // min : 1,
-                // may : 2000,
-                // step : 1,
-                value :  annotation.ay,
-                disabled: false === annotation.visible ? true : false,
-                hint : "Sets the width of the trace line."
               },
             ],
           },
