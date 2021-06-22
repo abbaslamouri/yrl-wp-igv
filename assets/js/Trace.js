@@ -16,7 +16,7 @@ class Trace {
     return {
 
       type: "scatter",
-      visible: true,
+      visible: false,
       showlegend: true,
       mode: "lines+markers",
       xaxis: "x",
@@ -103,7 +103,7 @@ class Trace {
                   false : "Hidden",
                   legendonly : "Legend Only",
                 },
-                value : trace.visible === undefined ? null : true === trace.visible ? "true" : false === trace.visible ? "false" : trace.visible,
+                value : trace.visible === undefined ? this.defaultOptions(index).visible : true === trace.visible ? "true" : false === trace.visible ? "false" : trace.visible,
                 hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible). Default: visible"
               },
               {
@@ -132,7 +132,7 @@ class Trace {
                   "markers+text" : "Markers & Text",
                   "lines+markers+text" : "Lines, Markers & Text"
                 },
-                value : trace.mode === undefined ? null :trace.mode,
+                value : trace.mode === undefined ? this.defaultOptions(index).mode :trace.mode,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
               },
@@ -145,7 +145,7 @@ class Trace {
                 id : `traces[${index}][name]`,  
                 title : "Name",  
                 type : "text",
-                value : trace.name === undefined ? null :trace.name,
+                value : trace.name === undefined ? this.defaultOptions(index).name :trace.name,
                 disabled: false === trace.visible  ? true : false,
                 hint : "The trace name appear as the legend item and on hover."
               },
@@ -162,7 +162,7 @@ class Trace {
                   x : "Bottom",
                   x2 : "Top",
                 },
-                value : trace.xaxis === undefined ? null : trace.xaxis,
+                value : trace.xaxis === undefined ? this.defaultOptions(index).xaxis : trace.xaxis,
                 disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
               },
@@ -174,7 +174,7 @@ class Trace {
                   y : "Left",
                   y2 : "Right",
                 },
-                value : trace.yaxis === undefined ? null: trace.yaxis,
+                value : trace.yaxis === undefined ? this.defaultOptions(index).yaxis: trace.yaxis,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
               },
@@ -198,7 +198,7 @@ class Trace {
                 min : 0,
                 max : 1,
                 step : 0.02,
-                value : trace.opacity === undefined ? null : trace.opacity,
+                value : trace.opacity === undefined ? this.defaultOptions(index).opacity : trace.opacity,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Sets the opacity of the trace."
               },
@@ -221,7 +221,7 @@ class Trace {
                 min : 1,
                 max : 300,
                 step : 1,
-                value :  trace.marker === undefined || trace.marker.symbol === undefined ? null : trace.marker.symbol,
+                value :  trace.marker === undefined || trace.marker.symbol === undefined ? this.defaultOptions(index).marker.symbol : trace.marker.symbol,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
               },
@@ -232,7 +232,7 @@ class Trace {
                 min : 1,
                 max : 2000,
                 step : 1,
-                value : trace.marker === undefined || trace.marker.size === undefined ? null : trace.marker.size,
+                value : trace.marker === undefined || trace.marker.size === undefined ? this.defaultOptions(index).marker.size : trace.marker.size,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker size (in px).  Number or array of numbers greater than or equal to 0"
               },
@@ -248,7 +248,7 @@ class Trace {
                 min : 0,
                 max : 1,
                 step : .01,
-                value : trace.marker === undefined || trace.marker.opacity === undefined ? null : trace.marker.opacity,
+                value : trace.marker === undefined || trace.marker.opacity === undefined ? this.defaultOptions(index).marker.opacity : trace.marker.opacity,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the marker's opacity."
               },
@@ -256,7 +256,7 @@ class Trace {
                 id : `traces[${index}][marker][color]`,  
                 title : "Color",  
                 type : "color",
-                value : trace.marker === undefined || trace.marker.color === undefined ? null : trace.marker.color,
+                value : trace.marker === undefined || trace.marker.color === undefined ? this.defaultOptions(index).marker.color : trace.marker.color,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) ? true : false,
                 hint : ""
               },
@@ -269,7 +269,7 @@ class Trace {
                 id : `traces[${index}][marker][line][color]`, 
                 title : "Line Color", 	
                 type : "color",
-                value : trace.marker === undefined || trace.marker.line === undefined || trace.marker.line.color === undefined ?  null : trace.marker.line.color,
+                value : trace.marker === undefined || trace.marker.line === undefined || trace.marker.line.color === undefined ?  this.defaultOptions(index).marker.line.color : trace.marker.line.color,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) || parseInt(trace.marker.line.width) === 0  ? true : false,
                 hint : "Sets themarker.linecolor. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.line.cmin` and `marker.line.cmax` if set."
               },
@@ -280,7 +280,7 @@ class Trace {
                 min : 0,
                 max : 100,
                 step : 1,
-                value : trace.marker === undefined || trace.marker.line === undefined || trace.marker.line.width === undefined ? null : trace.marker.line.width,
+                value : trace.marker === undefined || trace.marker.line === undefined || trace.marker.line.width === undefined ? this.defaultOptions(index).marker.line.width : trace.marker.line.width,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" )  ? true : false,
                 hint : "Sets the width (in px) of the lines bounding the marker points.   Number or array of numbers greater than or equal to 0"
               },
@@ -299,7 +299,7 @@ class Trace {
                   horizontal : "Horizontal",
                   vertical: "Vertical"
                 },
-                value : trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.type === undefined ? null : trace.marker.gradient.type,
+                value : trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.type === undefined ? this.defaultOptions(index).marker.gradient.type : trace.marker.gradient.type,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) ? true : false,
                 hint : "Sets the type of gradient used to fill the markers"
               },
@@ -307,7 +307,7 @@ class Trace {
                 id : `traces[${index}][marker][gradient][color]`, 
                 title : "Gradient Color", 	
                 type : "color",
-                value :  trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.color === undefined ? null : trace.marker.gradient.color,
+                value :  trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.color === undefined ? this.defaultOptions(index).marker.gradient.color : trace.marker.gradient.color,
                 disabled: false === trace.visible || ! trace.mode.includes( "marker" ) || trace.marker.gradient.type === "none" ? true : false,
                 hint : "Sets the final color of the gradient fill: the center color for radial, the right for horizontal, or the bottom for vertical."
               },
@@ -323,7 +323,7 @@ class Trace {
                 min : 0,
                 max : 20000,
                 step : 1,
-                value : trace.marker === undefined || trace.marker.maxdisplayed === undefined ? null : trace.marker.maxdisplayed,
+                value : trace.marker === undefined || trace.marker.maxdisplayed === undefined ? this.defaultOptions(index).marker.maxdisplayed : trace.marker.maxdisplayed,
                 disabled: true !== trace.visible || ! trace.mode.includes( "marker" )  ? true : false,
                 hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
               },

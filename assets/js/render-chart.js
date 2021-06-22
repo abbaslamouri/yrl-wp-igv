@@ -96,22 +96,22 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )
     document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.remove( "hidden" )
 
-    createPanelSections( ChartAxis.sections( chart.layout, "xaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
     document.getElementById(`${prefix}__layout[xaxis][type]`).value = chart.layout.xaxis.type
     document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.remove( "hidden" )
     new Accordion( `.${prefix}__admin .xaxis__Accordion`, { duration: 400 })
 
-    createPanelSections( ChartAxis.sections( chart.layout, "xaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x"  ), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
     document.getElementById(`${prefix}__layout[xaxis2][type]`).value = chart.layout.xaxis2.type
     document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.remove( "hidden" )
     new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
 
-    createPanelSections( ChartAxis.sections( chart.layout, "yaxis"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "yaxis", "left", null, "Transmittance ( % )", null ), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
     document.getElementById(`${prefix}__layout[yaxis][type]`).value = chart.layout.yaxis.type
     document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.remove( "hidden" )
     new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
 
-    createPanelSections( ChartAxis.sections( chart.layout, "yaxis2"), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
+    createPanelSections( ChartAxis.sections( chart.layout, "yaxis2", "right", "y", "Reflectance ( % )", "y"  ), document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
     document.getElementById(`${prefix}__layout[yaxis2][type]`).value = chart.layout.yaxis2.type
     document.querySelector(`.${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.remove( "hidden" )
     new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
