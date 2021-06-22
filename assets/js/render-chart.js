@@ -26,14 +26,17 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
 
     const tracesAccordionDiv = document.querySelector( `.${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
     tracesAccordionDiv.innerHTML = ""
+
     
     for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
 
       // Traces options
-      chart.traces[i] = Trace.defaultOptions( i )
-      chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-      chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-      chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+      if (chart.traces[i] === undefined) {
+        chart.traces[i] = Trace.defaultOptions( i )
+        chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
+        chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
+        chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+      }
 
       // Create a trace panel and add it to traces accordion
       tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )

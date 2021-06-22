@@ -26,7 +26,8 @@ const saveChart = async function (chart, iwpgvObj) {
     // formData.append("chart",  JSON.stringify( chart ) )
 
     //send ajax resquest
-    const jsonRes = await fetchData( formData )
+    // const jsonRes = await fetchData( formData )
+    const jsonRes = await fetchData( JSON.stringify( {age: 32} ) )
 
     console.log("JSONRES-SAVE", jsonRes)
 

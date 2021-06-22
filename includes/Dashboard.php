@@ -986,6 +986,8 @@ if (!class_exists('Dashboard')) {
 		 * @return void
 		 */
 		public function save_chart() {
+			echo ($_POST);
+			die;
       
       // wp_send_json($_POST);
 
@@ -1029,7 +1031,26 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
 				$charts[$chart_id]["minMaxAvgTable"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTable"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTable"] : [];
 
-        $charts[$chart_id]["layout"]["hovermode"] = $charts[$chart_id]["layout"]["hovermode"] === "true" ? true : $charts[$chart_id]["layout"]["hovermode"] === "false" ? false : $charts[$chart_id]["layout"]["hovermode"]; 
+        ( $charts[$chart_id]["layout"]["hovermode"] = $charts[$chart_id]["layout"]["hovermode"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["hovermode"] === "false" ) ? false : $charts[$chart_id]["layout"]["hovermode"];
+
+				( $charts[$chart_id]["layout"]["xaxis"]["autorange"] = $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["xaxis"]["autorange"];
+
+				( $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["xaxis2"]["autorange"];
+
+				( $charts[$chart_id]["layout"]["yaxis"]["autorange"] = $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["yaxis"]["autorange"];
+
+				( $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["yaxis2"]["autorange"];
+
+
+				$charts[$chart_id]["config"]["responsive"] = isset($charts[$chart_id]["config"]["responsive"] ) ?  true : false;
+        $charts[$chart_id]["config"]["staticPlot"] = isset($charts[$chart_id]["config"]["staticPlot"] ) ?  true : false;
+				$charts[$chart_id]["config"]["displayModeBar"] = isset($charts[$chart_id]["config"]["displayModeBar"] ) ?  true : false;
+        $charts[$chart_id]["config"]["displaylogo"] = isset($charts[$chart_id]["config"]["displaylogo"] ) ?  true : false;
+        
+				
+				$charts[$chart_id]["layout"]["autoexpand"] = isset($charts[$chart_id]["layout"]["autoexpand"] ) ?  true : false;
+				$charts[$chart_id]["layout"]["autosize"] = isset($charts[$chart_id]["layout"]["autosize"] ) ?  true : false;
+       
 
 
 				// Convert xaxis array type fields to array
@@ -1065,7 +1086,7 @@ if (!class_exists('Dashboard')) {
 					$charts[$chart_id]["layout"]["xaxis"]["ticktext"] = $xaxis_ticktext_arr;
 				}
 
-				// wp_send_json($charts[$chart_id]);
+				wp_send_json($charts[$chart_id]);
 
 
 
