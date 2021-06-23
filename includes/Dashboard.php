@@ -28,8 +28,12 @@ if (!class_exists('Dashboard')) {
 	
 		
     public $plugin_options = [        // This plugin options
-			"version" => "1.0.0"
+			"version" => "1.0.0",
+			"rest_version" => "1"
 		];
+
+		public $rest_namespace; // Rest API namespace
+		public $rest_base; // Rest API base name
 		
 		protected $file_types = [        	// Possible file types
 			"xlsx", "Xlsx", "xls", "Xls", "csv", "Csv", "xlsm", "Xlsm"
@@ -64,6 +68,9 @@ if (!class_exists('Dashboard')) {
 		*/
 		public function __construct() {
 
+			$this->rest_namespace = "{$this->plugin}/v{$this->plugin_options['rest_version']}";
+      $this->rest_base = 'charts';
+
 			// Declare upload directory
 			$this->upload_path = wp_upload_dir()['path']."/";
 
@@ -91,8 +98,8 @@ if (!class_exists('Dashboard')) {
 			add_action( "wp_ajax_nopriv_{$this->prefix}_file_select_action", [$this, 'file_select'] );
       
       // Add ajax chart sheet selection capability
-			add_action( "wp_ajax_{$this->prefix}_save_chart_action", [$this, 'save_chart' ] );
-      add_action( "wp_ajax_nopriv_{$this->prefix}_save_chart_action", [$this, 'save_chart'] );
+			// add_action( "wp_ajax_{$this->prefix}_save_chart_action", [$this, 'save_chart' ] );
+      // add_action( "wp_ajax_nopriv_{$this->prefix}_save_chart_action", [$this, 'save_chart'] );
 
 			// Add ajax chart delete
 			add_action( "wp_ajax_{$this->prefix}_delete_chart_action", [$this, 'delete_chart'] );
@@ -117,6 +124,10 @@ if (!class_exists('Dashboard')) {
       });
 
 			add_shortcode( "yrl_wp_igv__plotlyChart", [$this, 'render_shortcode'] );
+
+
+			// Rest API Settings
+			add_action('rest_api_init', array($this, "register_rest_api_routes"));
       
 
     } // END __construct
@@ -127,6 +138,38 @@ if (!class_exists('Dashboard')) {
     public function default_attributes() {
       return ['id' => null];
     }
+
+
+
+		public function register_rest_api_routes() {
+
+					// *************************** Dashboard
+					register_rest_route( "{$this->rest_namespace}/{$this->rest_base}/","chart",
+						array(
+							'methods' => \WP_REST_SERVER::CREATABLE,
+							'callback' => function ($data) {
+								$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+								// $charts["677888"] = $data["chart"];
+								// update_option( "{$this->prefix}_charts", $charts );
+								return "PPPPPPPPP";
+
+							},
+							'args' => array(),
+							'permission_callback' => array($this, "permissions_check"),
+						)
+					);
+
+		}
+
+		public function permissions_check() {
+
+			if ( ! current_user_can( 'manage_options' ) ) 
+			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this content.', $this->plugin), array('status' => 401));
+			
+			return true;
+
+		} // END 	public function permissions_check() {
+
 
 
 		
@@ -642,6 +685,7 @@ if (!class_exists('Dashboard')) {
           "save_chart_nonce"  => wp_create_nonce("{$this->prefix}__save_chart_nonce" ),
 					"delete_chart_action"   => "{$this->prefix}_delete_chart_action",
           "delete_chart_nonce"  => wp_create_nonce("{$this->prefix}__delete_chart_nonce" ),
+          "rest_api_nonce"  => wp_create_nonce("wp_rest" ),
 				)
       );
       
@@ -810,6 +854,8 @@ if (!class_exists('Dashboard')) {
 
 			// Fetch all chartss
 			$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+
+			var_dump($charts);
 
 			if ( ! isset($_GET['action']) ) { // If action is not set, display all charts
 
@@ -1031,15 +1077,15 @@ if (!class_exists('Dashboard')) {
 				$charts[$chart_id]["config"] = ( isset( $_POST["{$this->prefix}__config"] ) ) ?  $_POST["{$this->prefix}__config"] : [];
 				$charts[$chart_id]["minMaxAvgTable"] = ( isset( $_POST["{$this->prefix}__minMaxAvgTable"] ) ) ? $_POST["{$this->prefix}__minMaxAvgTable"] : [];
 
-        ( $charts[$chart_id]["layout"]["hovermode"] = $charts[$chart_id]["layout"]["hovermode"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["hovermode"] === "false" ) ? false : $charts[$chart_id]["layout"]["hovermode"];
+        $charts[$chart_id]["layout"]["hovermode"] = $charts[$chart_id]["layout"]["hovermode"] === "true"  ? true : ( $charts[$chart_id]["layout"]["hovermode"] === "false" ? false : $charts[$chart_id]["layout"]["hovermode"] );
 
-				( $charts[$chart_id]["layout"]["xaxis"]["autorange"] = $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["xaxis"]["autorange"];
+				$charts[$chart_id]["layout"]["xaxis"]["autorange"] = $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "true"  ? true : ( $charts[$chart_id]["layout"]["xaxis"]["autorange"] === "false" ? false : $charts[$chart_id]["layout"]["xaxis"]["autorange"] );
 
-				( $charts[$chart_id]["layout"]["xaxis2"]["autorange"] = $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["xaxis2"]["autorange"];
+				$charts[$chart_id]["layout"]["xaxis2"]["autorange"] = $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "true" ? true : ( $charts[$chart_id]["layout"]["xaxis2"]["autorange"] === "false" ? false : $charts[$chart_id]["layout"]["xaxis2"]["autorange"] );
 
-				( $charts[$chart_id]["layout"]["yaxis"]["autorange"] = $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["yaxis"]["autorange"];
+				$charts[$chart_id]["layout"]["yaxis"]["autorange"] = $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "true" ? true : ( $charts[$chart_id]["layout"]["yaxis"]["autorange"] === "false" ? false : $charts[$chart_id]["layout"]["yaxis"]["autorange"] );
 
-				( $charts[$chart_id]["layout"]["yaxis2"]["autorange"] = $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "true" ) ? true : ( $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "false" ) ? false : $charts[$chart_id]["layout"]["yaxis2"]["autorange"];
+				$charts[$chart_id]["layout"]["yaxis2"]["autorange"] = $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "true"  ? true : ( $charts[$chart_id]["layout"]["yaxis2"]["autorange"] === "false" ? false : $charts[$chart_id]["layout"]["yaxis2"]["autorange"] );
 
 
 				$charts[$chart_id]["config"]["responsive"] = isset($charts[$chart_id]["config"]["responsive"] ) ?  true : false;

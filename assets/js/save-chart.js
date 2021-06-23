@@ -4,7 +4,7 @@ import { displayAdminMessage, showElementById, toggleInputField } from "./utilit
 
 // let jsonRes = {} // Server response
 
-const saveChart = async function (chart, iwpgvObj) {
+const saveChart = async function (ajaxUrl, chart, iwpgvObj) {
 
   try {
 
@@ -27,7 +27,17 @@ const saveChart = async function (chart, iwpgvObj) {
 
     //send ajax resquest
     // const jsonRes = await fetchData( formData )
-    const jsonRes = await fetchData( JSON.stringify( {age: 32} ) )
+    // const jsonRes = await fetchData( formData )
+    // const jsonRes = await fetchData( ajaxUrl, chart )
+    const response = await fetch(ajaxUrl, {
+      method: "POST",
+      body: {chart: chart},
+      headers: {'X-WP-Nonce': iwpgvObj.rest_api_nonce }
+    });
+  
+    // Convert response to json
+    const jsonRes = await response;
+    // return jsonRes;
 
     console.log("JSONRES-SAVE", jsonRes)
 
@@ -44,7 +54,7 @@ const saveChart = async function (chart, iwpgvObj) {
 
   } catch (error) {
 
-    displayAdminMessage(error.message, "error",  iwpgvObj)
+    displayAdminMessage(error.message, "error",  iwpgvObj.prefix)
     console.log("CAUGHT ERROR", error)
 
   } finally {

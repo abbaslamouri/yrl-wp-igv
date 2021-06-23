@@ -226,8 +226,8 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       // Add click event listener to the Save Chart button
       document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
         event.preventDefault()
-        saveChart(chart, iwpgvObj)
-        return false
+        saveChart( `http://sandbox/wp-json/${iwpgvObj.plugin}/v1/charts/chart`, chart, iwpgvObj )
+        // return false
       })
 
       // Add change event listener to all input fields
@@ -301,16 +301,24 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
       // new Accordion( `.${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .yaxis__Accordion`, { duration: 400 })
       // new Accordion( `.${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
-
-
-      
-    
-
-      
      
 
-
     }
+
+    // console.log(document.querySelector(`.${prefix}__admin #rest-api`))
+
+    // document.querySelector(`.${prefix}__admin #rest-api`).addEventListener("click", async function (event) {  
+    //   event.preventDefault()
+      
+    //   const response = await fetch(`http://sandbox/wp-json/${iwpgvObj.plugin}/v1/charts/charts`, {
+    //     method: "GET",
+    //     headers: {'X-WP-Nonce': iwpgvObj.rest_api_nonce }
+    //   })
+
+    //   // Convert response to json
+    //   const jsonRes = await response.json();
+    //   console.log(jsonRes)
+    // })
 
 
 
