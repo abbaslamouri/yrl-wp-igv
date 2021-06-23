@@ -991,7 +991,7 @@ if (!class_exists('Dashboard')) {
 
 			try {
 				
-				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_save_chart_action" || !wp_verify_nonce($_POST["nonce"], "{$this->prefix}__save_chart_nonce")) {
+				if ( ! isset($_POST["action"]) || $_POST["action"] !== "{$this->prefix}_save_chart_action" || ! wp_verify_nonce($_POST["nonce"], "{$this->prefix}__save_chart_nonce")) {
 					throw new \Exception(  __(wp_kses_post("Invalid request"), $this->plugin));
         }
         
