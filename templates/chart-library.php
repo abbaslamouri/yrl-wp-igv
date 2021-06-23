@@ -7,6 +7,10 @@
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "edit-chart"), admin_url('admin.php')); ?>" >
       <?php esc_attr_e( 'Add New Chart' ); ?>
     </a>
+
+    <a id="rest-api" class="button-secondary btn" href="#" >
+      <?php esc_attr_e( 'rest API' ); ?>
+    </a>
   </h2>
 
   <?php //var_dump($payload);die; ?>
