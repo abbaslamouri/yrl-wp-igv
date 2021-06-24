@@ -31,12 +31,12 @@ const saveChart = async function (ajaxUrl, chart, iwpgvObj) {
     // const jsonRes = await fetchData( ajaxUrl, chart )
     const response = await fetch(ajaxUrl, {
       method: "POST",
-      body: {chart: chart},
+      body: JSON.stringify(chart),
       headers: {'X-WP-Nonce': iwpgvObj.rest_api_nonce }
     });
   
     // Convert response to json
-    const jsonRes = await response;
+    const jsonRes = await response.json();
     // return jsonRes;
 
     console.log("JSONRES-SAVE", jsonRes)

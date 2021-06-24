@@ -223,10 +223,13 @@ if ( "undefined" !== typeof yrl_wp_igv_charts ) {
         mediaUploader.open()      
       })
 
+
+
       // Add click event listener to the Save Chart button
       document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
         event.preventDefault()
-        saveChart( `http://sandbox/wp-json/${iwpgvObj.plugin}/v1/charts/chart`, chart, iwpgvObj )
+        // saveChart( `http://sandbox/wp-json/${iwpgvObj.plugin}/v1/charts/chart`, chart, iwpgvObj )
+        saveChart( `http://wp-sandbox:8888/wp-json/${iwpgvObj.plugin}/v1/charts/chart`, chart, iwpgvObj )
         // return false
       })
 

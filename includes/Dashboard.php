@@ -147,19 +147,39 @@ if (!class_exists('Dashboard')) {
 					register_rest_route( "{$this->rest_namespace}/{$this->rest_base}/","chart",
 						array(
 							'methods' => \WP_REST_SERVER::CREATABLE,
-							'callback' => function ($data) {
-								$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-								// $charts["677888"] = $data["chart"];
-								// update_option( "{$this->prefix}_charts", $charts );
-								return "PPPPPPPPP";
-
-							},
+							'callback' => [$this, "save_chart_1"],
 							'args' => array(),
 							'permission_callback' => array($this, "permissions_check"),
 						)
 					);
 
 		}
+
+    public function save_chart_1( $request ) {
+      // return $request->get_body()["fileUpload"];
+      // return json_decode($request->get_body());
+      // return $request->get_params();
+
+      $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+      $chart = json_decode($request->get_body(), true);
+      
+      // There is a chart Id (edit)
+      if ( isset($chart["fileUpload"]["chartId"]) ) {
+        $chart_id = $chart["fileUpload"]["chartId"];
+
+      // New chart
+      } else {
+        $last_chart = end( $charts );
+        $chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
+      }
+
+      $chart["fileUpload"]["chartId"] = $chart_id;
+
+      array_push ($charts, $chart);
+      return update_option( "{$this->prefix}_charts", $charts );
+      // return "PPPPPPPPP";
+
+    }
 
 		public function permissions_check() {
 
