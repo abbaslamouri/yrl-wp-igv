@@ -1,4 +1,4 @@
-.yrl_wp_igv__admin {
+#yrl_wp_igv__admin {
 
   margin:0;
   padding:1rem;
@@ -15,45 +15,53 @@
     margin: 1rem 0;
   }
 
+
   .chart-library {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1rem;
-    grid-column: 1 / span 2;
-    padding:2rem;
-    border: 1px solid grey;
-    margin-top: 2rem;
 
-    .no-charts {
-      font-size: 1rem;
-      font-weight: 700;
-      color: rgba($color_danger, 1);
-      line-height: 2rem;
+    .chart-library__content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 1rem;
+      grid-column: 1 / span 2;
+      padding:2rem;
+      border: 1px solid grey;
+      margin-top: 2rem;
+
+      .no-charts {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgba($color_danger, 1);
+        line-height: 2rem;
+      }
+
+      // .file-missing {
+      //   font-size: 1.2rem;
+      //   display:flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   padding:3rem .5rem;
+      //   color:$color-danger;
+      // }
+
     }
-
-    // .file-missing {
-    //   font-size: 1.2rem;
-    //   display:flex;
-    //   justify-content: center;
-    //   align-items: center;
-    //   padding:3rem .5rem;
-    //   color:$color-danger;
-    // }
-
-   }
+    
+  }
 
   .edit-chart {
 
-    height:78vh;
-    width:100%;
-    display:grid;
-    grid-template-columns: 1fr minmax(400px,25%);
-    grid-gap: 1rem;
-    border-radius: 3px;
-    border: 1px solid rgba($color_p_dark, 1);
-    padding:1rem;
+    &__content {
 
-    .chart-view {
+      height:78vh;
+      width:100%;
+      display:grid;
+      grid-template-columns: 1fr minmax(400px,25%);
+      grid-gap: 1rem;
+      border-radius: 3px;
+      border: 1px solid rgba($color_p_dark, 1);
+      padding:1rem;
+    }
+
+    &__chart-view {
 
       display: flex;
       flex-direction: column;
@@ -104,7 +112,7 @@
 
     }
 
-    .chart-options {
+    &__chart-options {
     
       overflow-y: scroll;
       border: 1px solid rgba($color_p_dark, 1);

@@ -1,15 +1,11 @@
 <!-- Create a plugin wraper in the default WordPress 'wrap' container -->
-<div class="<?php echo"{$this->prefix}__admin"; ?> wrap" >
+<div class="chart-library">
 
   <!-- Show plugin title -->
   <h2 class="page-title">
     <?php echo esc_html(get_admin_page_title()) ?>
     <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "edit-chart"), admin_url('admin.php')); ?>" >
       <?php esc_attr_e( 'Add New Chart' ); ?>
-    </a>
-
-    <a id="rest-api" class="button-secondary btn" href="#" >
-      <?php esc_attr_e( 'rest API' ); ?>
     </a>
   </h2>
 
@@ -18,11 +14,7 @@
   <!-- Admin messages -->
   <div class="admin-messages"></div>
   
-  <!-- <div class="content-wrapper"> -->
-
-    
-
-  <div class="chart-library content-wrapper">
+  <div class="chart-library__content">
     <!-- <form id="<?php // echo "{$this->prefix}__listChartsForm" ?>" class="form" action="#"> -->
       <?php
       if (!empty($payload)) :

@@ -1,22 +1,5 @@
 <!-- Create a header in the default WordPress 'wrap' container -->
-<?php 
-  // $layout = $payload["chart"]["layout"];
-  // $__layout = "{$this->prefix}__layout";
-
-  // $config = $payload["chart"]["config"];
-  // $__config = "{$this->prefix}__config";
-
-  // $min_max_avg_table = $payload["chart"]["minMaxAvgTable"];
-  // $__min_max_avg_table = "{$this->prefix}__minMaxAvgTable";
-  // print_r($payload)
-//  print_r($layout)
-
-
-?>
-
-<div class="<?php echo "{$this->prefix}__admin"; ?> wrap">
-
- <?php //var_dump($payload) ?>
+<div class="edit-chart">
  
   <!-- Show module title -->
     <h2 class="page-title">
@@ -29,9 +12,9 @@
   <div class="hint-popup"></div>
 
   <!-- Content wrapper -->
-  <div class="edit-chart content-wrapper">
+  <div class="edit-chart__content">
 
-    <div class="chart-view">
+    <div class="edit-chart__chart-view">
 
       <!-- Loading spinner -->
       <!-- <img class="spinner" src="<?php //echo "{$this->url}assets/img/loading-spinner.svg" ?>" alt="Loading Spinner"> -->
@@ -51,7 +34,7 @@
 
     </div>
 
-    <div class="chart-options">
+    <div class="edit-chart__chart-options">
 
       <!-- Create the form that will be used to render our options -->
       <form id="<?php echo "{$this->prefix}__chartOptionsForm" ?>" name="<?php echo "{$this->prefix}__chartOptionsForm" ?>" novalidate action="javascript:void(0);">
@@ -147,7 +130,7 @@
 
           <div class="ac minMaxAvgTableAc hidden">
             <h2 class="ac-header"><div class="ac-trigger">Min/Max/Avg Table</div></h2>
-            <div class="ac-panel"><?php //require "{$this->path}templates/min-max-avg-table.php"; ?></div>
+            <div class="ac-panel"></div>
           </div>
 
         </div>

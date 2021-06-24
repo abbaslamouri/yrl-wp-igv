@@ -147,7 +147,7 @@ if (!class_exists('Dashboard')) {
 					register_rest_route( "{$this->rest_namespace}/{$this->rest_base}/","chart",
 						array(
 							'methods' => \WP_REST_SERVER::CREATABLE,
-							'callback' => [$this, "save_chart_1"],
+							'callback' => [$this, "save_chart"],
 							'args' => array(),
 							'permission_callback' => array($this, "permissions_check"),
 						)
@@ -155,13 +155,13 @@ if (!class_exists('Dashboard')) {
 
 		}
 
-    public function save_chart_1( $request ) {
+    public function save_chart( $request ) {
       // return $request->get_body()["fileUpload"];
       // return json_decode($request->get_body());
       // return $request->get_params();
 
-      $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
-      $chart = json_decode($request->get_body(), true);
+      $charts = get_option( "{$this->prefix}_charts") ? get_option("{$this->prefix}_charts" ) : [];
+      $chart = json_decode( $request->get_body(), true );
       
       // There is a chart Id (edit)
       if ( isset($chart["fileUpload"]["chartId"]) ) {
@@ -173,10 +173,11 @@ if (!class_exists('Dashboard')) {
         $chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
       }
 
+
       $chart["fileUpload"]["chartId"] = $chart_id;
 
       array_push ($charts, $chart);
-      return update_option( "{$this->prefix}_charts", $charts );
+      update_option( "{$this->prefix}_charts", $charts );
       // return "PPPPPPPPP";
 
     }
@@ -988,6 +989,42 @@ if (!class_exists('Dashboard')) {
 
 
 
+		public function chart_admin() {
+
+		
+			$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+
+			// var_dump($charts);
+
+			$template = "chart-admin";
+
+      // Initialize payload
+      $payload = [];
+
+			// Assemble payload
+			foreach ($charts as $chart_id => $chart) {
+
+				// Set payload by chart Id
+				$payload[$chart_id] = $chart;
+
+				// Fetch spreadsheet
+				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
+
+				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+				// if (  ! is_wp_error( $spreadsheet ) ) {
+					// Fetch sheet
+				$payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
+
+			}
+
+			echo $this->get_template_html($template, $payload);
+
+
+		}
+
+
+
+
 
 
 
@@ -1051,7 +1088,7 @@ if (!class_exists('Dashboard')) {
 		 *
 		 * @return void
 		 */
-		public function save_chart() {
+		public function save_chart_1() {
 			echo ($_POST);
 			die;
       
@@ -1442,7 +1479,7 @@ if (!class_exists('Dashboard')) {
 					'menu_title' => __('Chart Library', $this->plugin), 
 					'caps' => 'administrator', 
 					'id' => $this->prefix,
-					'callback' => array($this, 'chart_library')
+					'callback' => array($this, 'chart_admin')
 				),
 
 				
