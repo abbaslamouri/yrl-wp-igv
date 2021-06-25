@@ -20,7 +20,8 @@ const selectFile = async function ( attachment, wpRestUrl, wpRestNonce, prefix )
        headers: {'X-WP-Nonce': wpRestNonce }
      })
      const spreadsheet = await response.json();
-     console.log("JSONRES-UPLOAD", spreadsheet)
+
+    //  console.log("JSONRES-UPLOAD", spreadsheet)
 
      if ( spreadsheet.message ) displayAdminMessage(spreadsheet.message, "error",  prefix)
 

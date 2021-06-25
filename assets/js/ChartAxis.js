@@ -21,7 +21,7 @@ class ChartAxis  {
 
     const axisOptions = {
 
-      visible : false,
+      visible : true,
       type : "-",
       side: axisSide,
       autotypenumbers : "convert types",
@@ -95,8 +95,6 @@ class ChartAxis  {
 
 
   static sections( layout, axisId, axisSide, axisOverlaying, axisTitleText, axisMatches ) {
-
-    console.log("XXXXXX", this.defaultOptions(axisId))
 
     const axisSideOptions = ( axisId === "xaxis" || axisId === "xaxis2" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
 

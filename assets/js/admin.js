@@ -12,7 +12,9 @@ import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, createTraces } from "./utilities"
+import createTraces from "./create-traces"
+import layoutPanels from "./create-layout-panels"
+import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections } from "./utilities"
 import { fileUploadFields } from "./event-listeners"
 import "../sass/admin.scss"
 
@@ -64,114 +66,7 @@ if ( yrl_wp_igv_obj ) {
     // Create mainaccordion and open first panel
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
 
-    // Initialize the media uploader
-    if (mediaUploader) mediaUploader.open()
-      
-    mediaUploader = wp.media.frames.file_frame = wp.media({
-      // title: "Select File",
-      // button: {
-      //   text: "Select File",
-      // },
-      multiple: false,
-    });
-
-     // Add click event listener to the media uploader button
-     document.getElementById(`${prefix}__fileUpload[mediaUploadBtn]`).addEventListener("click", async function (event) {
-      event.preventDefault()
-      mediaUploader.open()      
-    })
-
-    // Add media uploader event handler
-    mediaUploader.on("select", async function () {
-      // Hide chart and table charts
-      Plotly.purge(`${prefix}__plotlyChart`)
-      Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-      const attachment = mediaUploader.state().get("selection").first().toJSON()
-      spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
-
-      console.log("SSSS",spreadsheet)
-
-      // Add change event listener to all input fields
-      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
-
-        fileUploadFields( event, chart, spreadsheet, prefix )
-
-        createTraces( chart, Trace, Accordion, spreadsheet, prefix )
-
-        // /************************************************************************
-        // ******************* Create traces options and panel *********************
-        // *************************************************************************/
-
-        // const tracesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
-        // tracesAccordionDiv.innerHTML = ""
-
-        
-        // for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
-
-        //   // Traces options
-        //   if (chart.traces[i] === undefined) {
-        //     chart.traces[i] = Trace.defaultOptions( i )
-        //     chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-        //     chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-        //     chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
-        //   }
-
-        //   // Create a trace panel and add it to traces accordion
-        //   tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
-
-        //   // Create level3 accordion inside new trace panel
-        //   const level3AccordionDiv = document.createElement("div")
-        //   level3AccordionDiv.classList.add("accordion", "accordion__level-3", `traces${i}__Accordion`)
-        //   document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
-
-        //   // Create a section container
-        //   const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
-
-        //   // Create panel sections
-        //   createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
-
-        //   // Create section accordion
-        //   new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
-          
-        // }
-
-        // // Create traces accordion
-        // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.remove( "hidden" )
-        // new Accordion( tracesAccordionDiv, { duration: 400 } )
-
-
-        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
-
-
-
-
-        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
-
-
-
-
-
-
-
-
-        console.log("LLLL", chart)
-
-        // Render input fields and set chart options
-        // drawChart( chart, spreadsheet, prefix )
-
-        
     
-        // mainAccordion.closeAll()
-    
-      })
-
-
-    })
-   
-
-
-
-
     // Add click event listener to the Add New Chart button
     document.getElementById(`${prefix}__addNewChart`).addEventListener("click", async function (event) {
 
@@ -179,7 +74,14 @@ if ( yrl_wp_igv_obj ) {
 
       // Unhide chart
       document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
-      mainAccordion.open(0)
+
+      // Create mainaccordion and open first panel
+      // const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
+      if (chart.fileUpload.chartId) {
+        mainAccordion.closeAll()
+      } else {
+        mainAccordion.open(0)
+      }
 
       // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
       
@@ -217,6 +119,68 @@ if ( yrl_wp_igv_obj ) {
       event.preventDefault()
       document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
     })
+
+    // Initialize the media uploader
+    if (mediaUploader) mediaUploader.open()
+      
+    mediaUploader = wp.media.frames.file_frame = wp.media({
+      // title: "Select File",
+      // button: {
+      //   text: "Select File",
+      // },
+      multiple: false,
+    });
+
+     // Add click event listener to the media uploader button
+     document.getElementById(`${prefix}__fileUpload[mediaUploadBtn]`).addEventListener("click", async function (event) {
+      event.preventDefault()
+      mediaUploader.open()      
+    })
+
+    // Add media uploader event handler
+    mediaUploader.on("select", async function () {
+      // Hide chart and table charts
+      Plotly.purge(`${prefix}__plotlyChart`)
+      Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+      const attachment = mediaUploader.state().get("selection").first().toJSON()
+      spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
+
+      // Add change event listener to all input fields
+      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
+
+        fileUploadFields( event, chart, spreadsheet, prefix )
+
+        createTraces( chart, spreadsheet, prefix )
+
+
+        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+
+        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+        layoutPanels( chart, prefix )
+
+        mainAccordion.closeAll()
+
+        // Enable save button  // Add click event listener to the chart params panel inoput fields
+        document.getElementById( `${prefix}__saveChart` ).disabled = false
+        document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
+    
+      })
+
+
+    })
+
+
+      // Add click event listener to the Save Chart button
+      document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
+        event.preventDefault()
+        saveChart( chart, wpRestUrl, wpRestNonce, prefix )
+      })
+   
+
+
+
+
 
       
 
@@ -400,11 +364,7 @@ if ( yrl_wp_igv_obj ) {
 
 
 
-    //   // Add click event listener to the Save Chart button
-    //   document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
-    //     event.preventDefault()
-    //     saveChart( wpRestUrl, chart, iwpgvObj )
-    //   })
+    
 
     //   // Add change event listener to all input fields
     //   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", function (event) {
@@ -460,13 +420,7 @@ if ( yrl_wp_igv_obj ) {
 
     //   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
 
-    //   // Create mainaccordion and open first panel
-    //   const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
-    //   if (chart.fileUpload.chartId) {
-    //     mainAccordion.closeAll()
-    //   } else {
-    //     mainAccordion.open(0)
-    //   }
+    
 
     //   // new Accordion( tracesAccordionDiv, { duration: 400 } )
 

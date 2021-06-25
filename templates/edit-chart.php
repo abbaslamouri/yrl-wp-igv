@@ -54,14 +54,14 @@
               </div>
             </div>
 
-            <div class="ac basicOptionsAc">
+            <div class="ac basicOptionsAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Basic Options</div></h2>
               <div class="ac-panel">
                 <?php //require "{$this->path}templates/basic-options.php"; ?>
               </div>
             </div>
 
-            <div class="ac titleAc">
+            <div class="ac titleAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Title</div></h2>
               <div class="ac-panel"></div>
             </div>
@@ -150,9 +150,9 @@
 
     </div>
 
-    <div class="edit-chart__footer">
+    <!-- <div class="edit-chart__footer">
       footer
-    </div>
+    </div> -->
 
   </div> <!-- // END <div class="edit-chart__content"> -->
 

@@ -179,10 +179,10 @@ if (!class_exists('Dashboard')) {
       // *************************** Dashboard
 					register_rest_route( $this->rest_namespace, "/{$this->rest_base}/(?P<id>\d+)",
           array(
-            'methods' => \WP_REST_SERVER::READABLE,
+            'methods' => "GET",
             'callback' => [$this, "fetch_chart_spreadsheet"],
             'args' => array(),
-            'permission_callback' => array($this, "permissions_check"),
+            'permission_callback' => array($this, "select_file_permissions_check"),
           )
         );
 
@@ -190,10 +190,10 @@ if (!class_exists('Dashboard')) {
 					// *************************** Dashboard
 					register_rest_route( $this->rest_namespace, "/{$this->rest_base}",
 						array(
-							'methods' => \WP_REST_SERVER::CREATABLE,
+							'methods' => "POST",
 							'callback' => [$this, "save_chart"],
 							'args' => array(),
-							'permission_callback' => array($this, "permissions_check"),
+							'permission_callback' => array($this, "create_chart_permissions_check"),
 						)
 					);
 
@@ -202,42 +202,8 @@ if (!class_exists('Dashboard')) {
 
 
     public function fetch_chart_spreadsheet( $request ) {
-      // return $request->get_body();
-      // return json_decode($request->get_body());
-      // return $request->get_params()["id"];
-
-      // wp_send_json($_POST);
-
-			// try{
-
-				// Fetch spreadsheet
-				return $this->fetch_spreadsheet( $request->get_params()["id"] );
-
-      //   // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-      //   if (  is_wp_error( $spreadsheet ) ) {
-      //     return $spreadsheet;
-      //     $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
-      //     throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
-      //   } 
-
-			// 	// Compose response
-			// 	$response = array(
-			// 		"status" => "success",
-			// 		"spreadsheet" => $spreadsheet,
-      //     "message" => null,
-      //   );
-			
-			// } catch (\Exception $e) {
-
-			// 	$response = [
-			// 		"status"  => "error",
-      //     "message" => $e->getMessage(),
-			// 	];
-				
-			// }
-
-			// return ajax data
-			// return $response;
+      
+			return $this->fetch_spreadsheet( $request->get_params()["id"] );
 
     }
 
@@ -246,19 +212,14 @@ if (!class_exists('Dashboard')) {
 
 
     public function save_chart( $request ) {
-      // return $request->get_body()["fileUpload"];
-      // return json_decode($request->get_body());
-      // return $request->get_params();
 
       $charts = get_option( "{$this->prefix}_charts") ? get_option("{$this->prefix}_charts" ) : [];
       $chart = json_decode( $request->get_body(), true );
       
-      // There is a chart Id (edit)
-      if ( isset($chart["fileUpload"]["chartId"]) ) {
+      if ( isset($chart["fileUpload"]["chartId"]) ) { // There is a chart Id (edit)
         $chart_id = $chart["fileUpload"]["chartId"];
 
-      // New chart
-      } else {
+      } else { // New chart
         $last_chart = end( $charts );
         $chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
       }
@@ -267,15 +228,31 @@ if (!class_exists('Dashboard')) {
       $chart["fileUpload"]["chartId"] = $chart_id;
 
       array_push ($charts, $chart);
+
       update_option( "{$this->prefix}_charts", $charts );
-      // return "PPPPPPPPP";
+      
+			return $chart_id;
 
     }
 
-		public function permissions_check() {
+
+
+
+		public function select_file_permissions_check() {
 
 			if ( ! current_user_can( 'manage_options' ) ) 
 			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this content.', $this->plugin), array('status' => 401));
+			
+			return true;
+
+		} // END 	public function permissions_check() {
+
+
+
+		public function create_chart_permissions_check() {
+
+			if ( ! current_user_can( 'manage_options' ) ) 
+			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to save charts.', $this->plugin), array('status' => 401));
 			
 			return true;
 

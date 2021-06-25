@@ -48,6 +48,15 @@
   **************************************************/
   .accordion {
 
+    .ac {
+      margin-top: .1rem !important;
+    }
+
+    .ac-trigger {
+      width: auto !important;
+    }
+
+
     &__level-2 {
       margin: .5rem 0;
 

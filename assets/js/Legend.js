@@ -8,7 +8,7 @@ class Legend {
 
     return {
 
-      showlegend: false,
+      showlegend: true,
       legend: {
         bgcolor: "#FFFFFF",
         bordercolor: "#444444",
