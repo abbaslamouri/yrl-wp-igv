@@ -3,6 +3,7 @@ import selectFile from './select-file'
 import saveChart from './save-chart'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
+import Trace from './Trace'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
@@ -11,7 +12,8 @@ import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections } from "./utilities"
+import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, createTraces } from "./utilities"
+import { fileUploadFields } from "./event-listeners"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
@@ -59,6 +61,8 @@ if ( yrl_wp_igv_obj ) {
     // List all charts
     listCharts( iwpgvObj.charts, prefix)
 
+    // Create mainaccordion and open first panel
+    const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
@@ -71,98 +75,99 @@ if ( yrl_wp_igv_obj ) {
       multiple: false,
     });
 
-    // Add media uploader event handler
-    mediaUploader.on("select", async function () {
-
-      // toggleElementByClass( `#${prefix}__admin .spinner` )
-      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-      document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
-
-      // Hide chart and table charts
-      Plotly.purge(`${prefix}__plotlyChart`)
-      Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .configAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
-
-      // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.add( "hidden" )
-
-
-      // Hide min/max inputs if visible
-      // hideElementById( `${prefix}__plotMinMax` )
-
-      document.getElementById(`${prefix}__saveChart`).disabled = true
-
-      // Get attachment
-      const attachment = mediaUploader.state().get("selection").first().toJSON()
-
-      // Bail if attachment can't be found
-      if ( ! attachment ||  ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
-
-      // Update selected file and file Id
-      document.getElementById(`${prefix}__fileUpload[fileName]`).value = attachment.filename
-      document.getElementById(`${prefix}__fileUpload[fileId]`).value = attachment.id
-
-      // Fetch response
-      // jsonRes = await selectFile( attachment, iwpgvObj )
-      const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
-        method: "GET",
-        headers: {'X-WP-Nonce': wpRestNonce }
-      })
-      spreadsheet = await response.json();
-      console.log("JSONRES-UPLOAD", spreadsheet)
-
-
-      if ( spreadsheet.message ) {
-        displayAdminMessage(spreadsheet.message, "error",  prefix)
-        return
-      }
-
-      chart.fileUpload = {}
-
-
-      // Set sheet Id select field options, update sheet Id select field values
-      const sheetIdInput = document.getElementById( `${prefix}__fileUpload[sheetId]` )
-      setSheetIdOptions (spreadsheet, sheetIdInput )
-      sheetIdInput.selectedIndex = sheetIdInput.options.length == 2 ? 1 : ""
-
-      // Set chart type value
-      document.getElementById( `${prefix}__fileUpload[chartType]` ).value = ""
-
-      // Unhide sheet Id and chart type select fields
-      document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
-      document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
-      document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.remove( "hidden" )
-
-      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
-
-
-      // toggleElementByClass( `#${prefix}__admin .spinner` )
-      document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
-
-
-    })
-
-    // Add click event listener to the media uploader button
-    document.getElementById(`${prefix}__fileUpload[mediaUploadBtn]`).addEventListener("click", async function (event) {
+     // Add click event listener to the media uploader button
+     document.getElementById(`${prefix}__fileUpload[mediaUploadBtn]`).addEventListener("click", async function (event) {
       event.preventDefault()
       mediaUploader.open()      
     })
 
+    // Add media uploader event handler
+    mediaUploader.on("select", async function () {
+      // Hide chart and table charts
+      Plotly.purge(`${prefix}__plotlyChart`)
+      Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+      const attachment = mediaUploader.state().get("selection").first().toJSON()
+      spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
+
+      console.log("SSSS",spreadsheet)
+
+      // Add change event listener to all input fields
+      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
+
+        fileUploadFields( event, chart, spreadsheet, prefix )
+
+        createTraces( chart, Trace, Accordion, spreadsheet, prefix )
+
+        // /************************************************************************
+        // ******************* Create traces options and panel *********************
+        // *************************************************************************/
+
+        // const tracesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
+        // tracesAccordionDiv.innerHTML = ""
+
+        
+        // for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
+
+        //   // Traces options
+        //   if (chart.traces[i] === undefined) {
+        //     chart.traces[i] = Trace.defaultOptions( i )
+        //     chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
+        //     chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
+        //     chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+        //   }
+
+        //   // Create a trace panel and add it to traces accordion
+        //   tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
+
+        //   // Create level3 accordion inside new trace panel
+        //   const level3AccordionDiv = document.createElement("div")
+        //   level3AccordionDiv.classList.add("accordion", "accordion__level-3", `traces${i}__Accordion`)
+        //   document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+        //   // Create a section container
+        //   const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
+
+        //   // Create panel sections
+        //   createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
+
+        //   // Create section accordion
+        //   new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
+          
+        // }
+
+        // // Create traces accordion
+        // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.remove( "hidden" )
+        // new Accordion( tracesAccordionDiv, { duration: 400 } )
+
+
+        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
 
 
 
 
+        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+
+
+
+
+
+
+
+        console.log("LLLL", chart)
+
+        // Render input fields and set chart options
+        // drawChart( chart, spreadsheet, prefix )
+
+        
+    
+        // mainAccordion.closeAll()
+    
+      })
+
+
+    })
+   
 
 
 
@@ -174,6 +179,8 @@ if ( yrl_wp_igv_obj ) {
 
       // Unhide chart
       document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+      mainAccordion.open(0)
+
       // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
       
       // Retreive new chart options
@@ -199,17 +206,23 @@ if ( yrl_wp_igv_obj ) {
 
       console.log("CHART", chart)
 
-      // Create mainaccordion and open first panel
-      const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
-      mainAccordion.open(0)
+      // // Create mainaccordion and open first panel
+      // const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
+      // mainAccordion.open(0)
 
     })
 
     // Add click event listener to the Cancel Chart button
     document.getElementById(`${prefix}__cancelChart`).addEventListener("click", async function (event) {
-    event.preventDefault()
-    document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")   
-  })
+      event.preventDefault()
+      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+    })
+
+      
+
+
+
+
 
 
     // throw new Error( " Hi there" )

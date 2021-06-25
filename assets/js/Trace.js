@@ -16,7 +16,7 @@ class Trace {
     return {
 
       type: "scatter",
-      visible: false,
+      visible: true,
       showlegend: true,
       mode: "lines+markers",
       xaxis: "x",
