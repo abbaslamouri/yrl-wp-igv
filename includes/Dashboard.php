@@ -74,6 +74,8 @@ if (!class_exists('Dashboard')) {
 			// Declare upload directory
 			$this->upload_path = wp_upload_dir()['path']."/";
 
+      // $this->charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+
 			// Add plugin settings link
 			add_filter("plugin_action_links_" . $this->base, function ($links) {
 				$settings_link = "<a href='admin.php?page=" . "{$this->prefix}" . "'>" . __("Settings") . "</a>";
@@ -141,10 +143,52 @@ if (!class_exists('Dashboard')) {
 
 
 
+    public function fetch_payload() {
+
+
+      $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+
+
+      // Initialize payload
+      $payload = [];
+
+			// Assemble payload
+			foreach ($charts as $chart_id => $chart) {
+
+				// Set payload by chart Id
+				$payload[$chart_id] = $chart;
+
+				// Fetch spreadsheet
+				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
+
+				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+				// if (  ! is_wp_error( $spreadsheet ) ) {
+					// Fetch sheet
+				$payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
+
+			}
+
+      return $payload;
+
+    }
+
+
+
 		public function register_rest_api_routes() {
 
+      // *************************** Dashboard
+					register_rest_route( $this->rest_namespace, "/{$this->rest_base}/(?P<id>\d+)",
+          array(
+            'methods' => \WP_REST_SERVER::READABLE,
+            'callback' => [$this, "fetch_chart_spreadsheet"],
+            'args' => array(),
+            'permission_callback' => array($this, "permissions_check"),
+          )
+        );
+
+
 					// *************************** Dashboard
-					register_rest_route( "{$this->rest_namespace}/{$this->rest_base}/","chart",
+					register_rest_route( $this->rest_namespace, "/{$this->rest_base}",
 						array(
 							'methods' => \WP_REST_SERVER::CREATABLE,
 							'callback' => [$this, "save_chart"],
@@ -154,6 +198,52 @@ if (!class_exists('Dashboard')) {
 					);
 
 		}
+
+
+
+    public function fetch_chart_spreadsheet( $request ) {
+      // return $request->get_body();
+      // return json_decode($request->get_body());
+      // return $request->get_params()["id"];
+
+      // wp_send_json($_POST);
+
+			// try{
+
+				// Fetch spreadsheet
+				return $this->fetch_spreadsheet( $request->get_params()["id"] );
+
+      //   // Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+      //   if (  is_wp_error( $spreadsheet ) ) {
+      //     return $spreadsheet;
+      //     $message = array_combine($spreadsheet->get_error_codes(), $spreadsheet->get_error_messages())["error"];
+      //     throw new \Exception(  __(wp_kses_post( $message, $this->plugin ) ) );
+      //   } 
+
+			// 	// Compose response
+			// 	$response = array(
+			// 		"status" => "success",
+			// 		"spreadsheet" => $spreadsheet,
+      //     "message" => null,
+      //   );
+			
+			// } catch (\Exception $e) {
+
+			// 	$response = [
+			// 		"status"  => "error",
+      //     "message" => $e->getMessage(),
+			// 	];
+				
+			// }
+
+			// return ajax data
+			// return $response;
+
+    }
+
+
+
+
 
     public function save_chart( $request ) {
       // return $request->get_body()["fileUpload"];
@@ -706,7 +796,9 @@ if (!class_exists('Dashboard')) {
           "save_chart_nonce"  => wp_create_nonce("{$this->prefix}__save_chart_nonce" ),
 					"delete_chart_action"   => "{$this->prefix}_delete_chart_action",
           "delete_chart_nonce"  => wp_create_nonce("{$this->prefix}__delete_chart_nonce" ),
-          "rest_api_nonce"  => wp_create_nonce("wp_rest" ),
+          "wp_rest_nonce"  => wp_create_nonce("wp_rest" ),
+          "wp_rest_url" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
+          "charts" => $this->fetch_payload()
 				)
       );
       
@@ -728,7 +820,7 @@ if (!class_exists('Dashboard')) {
 
       // Check if a file Id is submitted
 			if ( ! $file_id ) {
-				return new \WP_Error ( 'error', __( wp_kses_post ( "A file ID is required." ), $this->plugin));
+				return new \WP_Error ( 'file_id_missing', __( wp_kses_post ( "A file ID is required." ), $this->plugin ), ["status" => 404] );
 			}
 
       // Get file path from file Id
@@ -736,7 +828,7 @@ if (!class_exists('Dashboard')) {
 
       // Check if a file with the supplie Id exsts
 			if ( ! $file_path ) {
-				return new \WP_Error ( 'error', __( wp_kses_post ( "We cannot find a file with this ID <strong>{$file_id}</strong>." ), $this->plugin));
+				return new \WP_Error ( 'file_by_id_missing', __( wp_kses_post ( "We cannot find a file with this ID <strong>{$file_id}</strong>." ), $this->plugin ), ["status" => 404] );
 			}
 
 			// Initialize spreadsheet
@@ -744,13 +836,14 @@ if (!class_exists('Dashboard')) {
 
 			// Check if the file is already in the upload directory
 			if ( ! file_exists ($file_path)) {
-				return new \WP_Error ( 'error', __( wp_kses_post ( "File <.>$file_path</.> does not exist." ), $this->plugin));
+				return new \WP_Error ( 'file_missing', __( wp_kses_post ( "File <.>$file_path</.> does not exist." ), $this->plugin ), ["status" => 404] );
 			}
 
       // Check file type
       if ( ! in_array(wp_check_filetype(wp_basename($file_path))["ext"], $this->file_types )) {
-        throw new \Exception(  __(wp_kses_post("Invalid file type, <strong>".wp_basename($file_path)."</strong> is not a valid file type.  Only excel and csv spreadsheets are allowed"), $this->plugin));
+        return new \WP_Error  (  'invalid_file_type', __(wp_kses_post("Invalid file type, <strong>".wp_basename($file_path)."</strong> is not a valid file type.  Only excel and csv spreadsheets are allowed"), $this->plugin ), ["status" => 406] );
       }
+
 			
 			// Identify input file type
 			$file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_path);
@@ -992,32 +1085,32 @@ if (!class_exists('Dashboard')) {
 		public function chart_admin() {
 
 		
-			$charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+			// $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
 
-			// var_dump($charts);
+			// // var_dump($charts);
 
-			$template = "chart-admin";
+			// $template = "chart-admin";
 
-      // Initialize payload
-      $payload = [];
+      // // Initialize payload
+      // $payload = [];
 
-			// Assemble payload
-			foreach ($charts as $chart_id => $chart) {
+			// // Assemble payload
+			// foreach ($charts as $chart_id => $chart) {
 
-				// Set payload by chart Id
-				$payload[$chart_id] = $chart;
+			// 	// Set payload by chart Id
+			// 	$payload[$chart_id] = $chart;
 
-				// Fetch spreadsheet
-				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
+			// 	// Fetch spreadsheet
+			// 	$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
 
-				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
-				// if (  ! is_wp_error( $spreadsheet ) ) {
-					// Fetch sheet
-				$payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
+			// 	// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
+			// 	// if (  ! is_wp_error( $spreadsheet ) ) {
+			// 		// Fetch sheet
+			// 	$payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
 
-			}
+			// }
 
-			echo $this->get_template_html($template, $payload);
+			echo $this->get_template_html("chart-admin", $this->fetch_payload());
 
 
 		}

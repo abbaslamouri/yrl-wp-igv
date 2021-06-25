@@ -45,8 +45,8 @@ const chartTypes = () => {
 }
 
 
-const displayAdminMessage = (message, status, prefix) => {
-  const messageDiv = document.querySelector(`.${prefix}__admin .admin-messages`)
+const displayAdminMessage = ( message, status, prefix ) => {
+  const messageDiv = document.querySelector(`#${prefix}__admin .edit-chart__admin-messages`)
   if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
 }
 

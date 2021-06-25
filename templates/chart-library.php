@@ -4,7 +4,7 @@
   <!-- Show plugin title -->
   <h2 class="page-title">
     <?php echo esc_html(get_admin_page_title()) ?>
-    <a class="button-secondary btn" href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "edit-chart"), admin_url('admin.php')); ?>" >
+    <a class="button-secondary btn" id="<?php echo"{$this->prefix}__addNewChart"; ?>" href="<?php echo add_query_arg(array("page" => $this->prefix, "action" => "edit-chart"), admin_url('admin.php')); ?>" >
       <?php esc_attr_e( 'Add New Chart' ); ?>
     </a>
   </h2>
@@ -12,7 +12,7 @@
   <?php //var_dump($payload);die; ?>
 
   <!-- Admin messages -->
-  <div class="admin-messages"></div>
+  <!-- <div class="admin-messages"></div> -->
   
   <div class="chart-library__content">
     <!-- <form id="<?php // echo "{$this->prefix}__listChartsForm" ?>" class="form" action="#"> -->

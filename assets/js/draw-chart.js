@@ -47,6 +47,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   
   // Render chart
   await renderChart( chart, spreadsheet, prefix )
+  return
   
 
   // Render panels
