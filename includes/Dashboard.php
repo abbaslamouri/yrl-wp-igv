@@ -168,6 +168,7 @@ if (!class_exists('Dashboard')) {
 
 			}
 
+      // return array_reverse( $payload );
       return $payload;
 
     }
@@ -1089,7 +1090,7 @@ if (!class_exists('Dashboard')) {
 
 			// }
 
-			echo $this->get_template_html("chart-admin", $this->fetch_payload());
+			echo $this->get_template_html("chart-admin");
 
 
 		}

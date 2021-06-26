@@ -47,7 +47,7 @@ const chartTypes = () => {
 
 const displayAdminMessage = ( message, status, prefix ) => {
   const messageDiv = document.querySelector(`#${prefix}__admin .edit-chart__admin-messages`)
-  if ( messageDiv ) messageDiv.innerHTML = `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>`
+  if ( messageDiv ) messageDiv.innerHTML = message ? `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>` : null
 }
 
 
@@ -888,37 +888,153 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
 
 const hideOptions = (prefix) => {
+
   document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
-    document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
-    document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
+  document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
+  document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
 
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
-    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.add( "hidden" )
 
-    document.getElementById(`${prefix}__saveChart`).disabled = true
-    document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
+  document.getElementById(`${prefix}__saveChart`).disabled = true
+  document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
 
-    document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .legendAc .ac-panel`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .hoverlabelAc .ac-panel`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .modebarAc .ac-panel `).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
-    document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .legendAc .ac-panel`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .hoverlabelAc .ac-panel`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .modebarAc .ac-panel `).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
     
+}
+
+
+
+const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
+
+  // Create card
+  const card = document.createElement( "div" )
+  card.classList.add( "card")
+  card.id = `${prefix}__chart__${chart.fileUpload.chartId}__card`
+  document.querySelector(parentContainer).prepend(card)
+
+  // Create heading
+  const heading = document.createElement( "h2" )
+  heading.classList.add( "card__heading")
+  const headingText = document.createTextNode( chart.fileUpload.fileName )
+  heading.appendChild( headingText )
+  card.appendChild( heading )
+
+  // create card content
+  const cardContent = document.createElement( "div" )
+  cardContent.classList.add( "card__content")
+  card.appendChild( cardContent )
+
+  // create chart container
+  const chartContainer = document.createElement( "div" )
+  chartContainer.classList.add( "chart-container")
+  cardContent.appendChild( chartContainer )
+
+  // create plotly chart div
+  const plotlyChart = document.createElement( "div" )
+  plotlyChart.classList.add( "chart" )
+  plotlyChart.id = `${prefix}__chart__${chart.fileUpload.chartId}`
+  chartContainer.appendChild( plotlyChart )
+
+  // // create loading spinner
+  // const loadingSpinner = document.createElement( "img" )
+  // loadingSpinner.classList.add( `loading-spinner` )
+  // loadingSpinner.src = `${pluginUrl}assets/img/loading-spinner.svg`
+  // chartContainer.appendChild( loadingSpinner )
+
+  // create card content
+  const cardFooter = document.createElement( "div" )
+  cardFooter.classList.add( "card__footer")
+  card.appendChild( cardFooter )
+
+  // create card content
+  const shortcode = document.createElement( "div" )
+  shortcode.classList.add( "shortcode")
+  const shortcodeText = document.createTextNode( `[${prefix}__chart id=${chart.fileUpload.chartId}]` )
+  shortcode.appendChild( shortcodeText )
+  cardFooter.appendChild( shortcode )
+
+  // create actions div
+  const actions = document.createElement( "div" )
+  actions.classList.add( "actions")
+  cardFooter.appendChild( actions )
+
+  // create clone chart ancher tag
+  const cloneAnchor = document.createElement( "a" )
+  cloneAnchor.classList.add( "card__clone-chart" )
+  cloneAnchor.href = "#"
+  cloneAnchor.dataset.chartId = chart.fileUpload.chartId
+  actions.appendChild( cloneAnchor )
+
+  // create edit chart ancher tag
+  const editAnchor = document.createElement( "a" )
+  editAnchor.classList.add( "card__edit-chart" )
+  editAnchor.href = "#"
+  editAnchor.dataset.chartId = chart.fileUpload.chartId
+  actions.appendChild( editAnchor )
+
+  // create delete chart ancher tag
+  const deleteAnchor = document.createElement( "a" )
+  deleteAnchor.classList.add( "card__delete-chart")
+  deleteAnchor.href = "#"
+  deleteAnchor.dataset.chartId = chart.fileUpload.chartId
+  actions.appendChild( deleteAnchor )
+
+  // Create clone svg icon and add it to clone anchor tag
+  let svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), useElem = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+  useElem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${pluginUrl}assets/img/icons.svg#icon-file_copy`)
+  svgElem.classList.add( "clone-chart-svg")
+  svgElem.appendChild(useElem)
+  cloneAnchor.appendChild(svgElem)
+
+  // Create pencil svg icon and add it to edit anchor tag
+  svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), useElem = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+  useElem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${pluginUrl}assets/img/icons.svg#icon-pencil`)
+  svgElem.classList.add( "edit-chart-svg")
+  svgElem.appendChild(useElem)
+  editAnchor.appendChild(svgElem)
+
+  // Create bin svg icon and add it to delet anchor tag
+  svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), useElem = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+  useElem.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${pluginUrl}assets/img/icons.svg#icon-bin`)
+  svgElem.classList.add( "delete-chart-svg")
+  svgElem.appendChild(useElem)
+  deleteAnchor.appendChild(svgElem)
+
+  chart.layout.showlegend = false
+  chart.layout.hovermode = false
+  chart.layout.height = 300
+  chart.config.displayModeBar = false 
+
+}
+
+
+const chartsListDefaultLayout = (chart) => {  
+
+  chart.layout.showlegend = false
+  chart.layout.hovermode = false
+  chart.layout.height = 300
+  chart.config.displayModeBar = false
+
 }
 
 
@@ -938,7 +1054,7 @@ const hideOptions = (prefix) => {
 
 
 // Get chart option key from feld Id
-function chartOptionKey(fieldId) {
+const chartOptionKey = (fieldId) => {
   if (!fieldId) return;
   const parts = fieldId.split("[");
   if (parts.length == 0) return;
@@ -1006,6 +1122,8 @@ module.exports = {
   getMinMaxAvgData,
   chartOptionKey,
   fetchformGroup,
-  hideOptions
+  hideOptions,
+  createChartCard,
+  chartsListDefaultLayout
   
 };

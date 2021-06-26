@@ -116,28 +116,33 @@
     }
 
     &__chart-view {
+      position: relative;
 
       display: flex;
       flex-direction: column;
-      // justify-content: center;
       padding: 1rem;
       background-color: $color-grey-light;
       border-radius: 3px;
       border: 1px solid rgba($color_p_dark, 1);
 
       .warning {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         font-size: 1rem;
         font-weight: 700;
         color: rgba($color_danger, 1);
-        justify-self: center;
-        align-self: center;
         line-height: 2rem;
       }
 
       .loading {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         font-size: 3rem;
         font-family:inherit;
-        align-self: center;
       }
 
       .plotly {
@@ -146,8 +151,6 @@
           // display: flex;
           justify-content: center;
           padding:1rem;
-          // min-height: 500px;
-          // background-color: rgba($color-grey-dark, .3);
       
           .inputs {
             display:flex;

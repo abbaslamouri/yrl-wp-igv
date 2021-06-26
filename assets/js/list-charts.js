@@ -1,13 +1,22 @@
 import Plotly from 'plotly.js-dist'
-import swal from 'sweetalert';
+import swal from 'sweetalert'
 import deleteChart from "./delete-chart"
+import resetChart from './reset-chart'
 
+import addNewChartBtnHandler from "./add-new-chart-handler"
 
-const listCharts = async function ( charts, prefix) {
+import { createChartCard, chartsListDefaultLayout } from "./utilities"
 
-  Object.values(charts).forEach( async(chart) => {
-    
-    const config = undefined !== chart.config ? chart.config : {}
+const listCharts = async function ( charts, pluginUrl, wpRestUrl, wpRestNonce, prefix) {
+
+  if ( ! charts.length ) {
+    document.querySelector( `#${prefix}__admin .chart-library__content` ).innerHTML = "<div class='no-charts'> There are no charts to display</div>"
+    return
+  }
+
+  charts.forEach( async(chart) => {
+
+    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
     if (chart.sheet) {
 
@@ -16,19 +25,11 @@ const listCharts = async function ( charts, prefix) {
         chart.traces[i].x = chart.sheet.data[0]
         chart.traces[i].y = chart.sheet.data[i+1]
         
-        chart.traces[i].showlegend = false
-        chart.layout.hovermode = false
-        chart.layout.height = 300
-        // chart.layout.margin = { autoexpand: true, t:80, b:80, l:60, r:60, pad:0 }
-        // chart.layout.title.font.size = undefined !== chart.layout.title && undefined !== chart.layout.title.font && undefined !== chart.layout.title.font.size ? 12 : null
-        // chart.layout.title.x = .15
-        // el.layout.title.y = .95
-        // el.layout.font.size = 12
-        // el.layout.xaxis = { rangeslider: { visible: false} }
-        config.displayModeBar = false 
       }
 
-      await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, chart.traces, chart.layout, config)
+      chartsListDefaultLayout(chart)
+
+      await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, chart.traces, chart.layout, chart.config)
 
     } else {
       document.getElementById( `${prefix}__chart__${chart.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${chart.fileUpload.fileUpload} cannot be found</div>`
@@ -37,10 +38,13 @@ const listCharts = async function ( charts, prefix) {
   })
 
 
-  document.querySelectorAll( `.${prefix}__admin .delete-chart`).forEach( ( element ) => {
+  document.querySelectorAll( `#${prefix}__admin .card__delete-chart`).forEach( ( element ) => {
 
-    element.addEventListener("click", function (event) {  
+    element.addEventListener("click", async function (event) {  
       event.preventDefault()
+
+      // Get chart Id
+      const chartId = event.target.closest(".card__delete-chart").dataset.chartId
 
       swal({
         title: "Are you sure?",
@@ -49,21 +53,37 @@ const listCharts = async function ( charts, prefix) {
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
+      .then(async (willDelete) => {
         if (willDelete) {
-          const jsonRes = deleteChart(event.target.closest(".delete-chart").dataset.chartId, prefix)
-          console.log("RESPONSE-DELETE", jsonRes)
-          if (jsonRes.status && jsonRes.status === "success") displayAdminMessage(jsonRes.message, "success", prefix)
-          const card = document.getElementById(`${prefix}__chart__${event.target.closest(".delete-chart").dataset.chartId}__card`)
-          document.querySelector(`.${prefix}__admin .chart-library`).removeChild(card)
-          swal(`Chart (ID=${event.target.closest(".delete-chart").dataset.chartId}) has been deleted!`, {
+          charts = await deleteChart(chartId, charts, wpRestUrl, wpRestNonce, prefix)
+          console.log("CH", charts)
+          swal(`Chart with ( ID=${chartId} ) has been deleted!`, {
             icon: "success",
           });
         } 
-        // else {
-        //   swal("Your imaginary file is safe!");
-        // }
       })
+
+    })
+
+  })
+
+
+  document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+
+    element.addEventListener("click", async function (event) {  
+      event.preventDefault()
+
+      // Get chart Id
+      const chartId = event.target.closest(".card__edit-chart").dataset.chartId
+      const chart = charts.filter(chart => chart.fileUpload.chartId == chartId)[0]
+
+      // mainAccordion.close(0)
+      resetChart(chart, prefix)
+      // addNewChartBtnHandler( chart, prefix )
+      document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+
+
+      console.log(chart)
 
     })
 
