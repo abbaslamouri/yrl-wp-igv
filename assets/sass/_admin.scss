@@ -1,3 +1,8 @@
+.swal-overlay  
+{
+    z-index: 999999 !important;    
+}
+
 #yrl_wp_igv__admin {
 
   margin:0;
@@ -89,7 +94,7 @@
       // align-items: center;
       margin: .5rem 3rem;
 
-      .title {
+      .page-title {
         display:flex;
         // justify-content: space-between;
         align-content: center;
@@ -98,6 +103,7 @@
         a {
           align-self: center;
           margin-left:3rem;
+          cursor: pointer;
         }
       }
     }

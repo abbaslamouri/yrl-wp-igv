@@ -1,8 +1,11 @@
 import Plotly from 'plotly.js-dist'
-import selectFile from './select-file'
-import saveChart from './save-chart'
+import swal from 'sweetalert'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
+
+import selectFile from './select-file'
+import saveChart from './save-chart'
+
 import Trace from './Trace'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
@@ -14,7 +17,7 @@ import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import createTraces from "./create-traces"
 import layoutPanels from "./create-layout-panels"
-import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections } from "./utilities"
+import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, hideOptions } from "./utilities"
 import { fileUploadFields } from "./event-listeners"
 import "../sass/admin.scss"
 
@@ -24,26 +27,27 @@ import "../sass/admin.scss"
 if ( yrl_wp_igv_obj ) {
 
   // let iwpgvCharts = typeof yrl_wp_igv_charts !== undefined ?  yrl_wp_igv_charts : {}
-  let iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
+  const iwpgvObj = typeof yrl_wp_igv_obj !== undefined ? yrl_wp_igv_obj : {}
   let mediaUploader
   let jsonRes = {}
   // let chart = {}
   let chart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
-  // let charts = undefined !== iwpgvCharts.charts ? iwpgvCharts.charts : {}
+  // const chart = {...emptyChart}
   // let traceSeed = undefined !== iwpgvCharts.traceSeed  ?  iwpgvCharts.traceSeed : {}
   let spreadsheet = []
   // let fontFamily = iwpgvCharts.fontFamily
   // let colors = iwpgvCharts.colors
-  let prefix = iwpgvObj.prefix
+  const prefix = iwpgvObj.prefix
 
-  let wpRestUrl = iwpgvObj.wp_rest_url
-  let wpRestNonce= iwpgvObj.wp_rest_nonce
+  const wpRestUrl = iwpgvObj.wp_rest_url
+  const wpRestNonce= iwpgvObj.wp_rest_nonce
 
-  // const wpRestUrl = `http://sandbox/wp-json/${iwpgvObj.plugin}/v1/charts/chart`
-  // const wpRestUrl = `http://wp-sandbox:8888/wp-json/${iwpgvObj.plugin}/v1/charts`
+  const charts = iwpgvObj.charts
+
+  console.log("CHARTS", charts)
 
   console.log("iwpgvObj", {...iwpgvObj})
-  // console.log("iwpgvCharts", {...iwpgvCharts})
+  
 
 
   try {
@@ -61,7 +65,7 @@ if ( yrl_wp_igv_obj ) {
     // if (! iwpgvCharts.action && iwpgvCharts.action !== "listCharts" && iwpgvCharts.action !== "editChart" ) throw new Error( "Invalid action" )
 
     // List all charts
-    listCharts( iwpgvObj.charts, prefix)
+    listCharts( charts, prefix)
 
     // Create mainaccordion and open first panel
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -74,6 +78,8 @@ if ( yrl_wp_igv_obj ) {
 
       // Unhide chart
       document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+
+      // const chart = emptyChart
 
       // Create mainaccordion and open first panel
       // const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -106,7 +112,6 @@ if ( yrl_wp_igv_obj ) {
       // Render input fields and set chart options
       // drawChart( chart, spreadsheet, prefix )
 
-      console.log("CHART", chart)
 
       // // Create mainaccordion and open first panel
       // const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -117,7 +122,36 @@ if ( yrl_wp_igv_obj ) {
     // Add click event listener to the Cancel Chart button
     document.getElementById(`${prefix}__cancelChart`).addEventListener("click", async function (event) {
       event.preventDefault()
-      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+      
+      if ( !chart.traces.length ) {
+        document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+        return
+      }
+
+      swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this chart",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+          Plotly.purge(`${prefix}__plotlyChart`)
+          Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+          document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
+          hideOptions(prefix)
+          // swal(`Chart (ID=${event.target.closest(".delete-chart").dataset.chartId}) has been deleted!`, {
+          //   icon: "success",
+          // });
+
+          chart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
+        } 
+      })
+
+
+      
     })
 
     // Initialize the media uploader
@@ -142,40 +176,55 @@ if ( yrl_wp_igv_obj ) {
       // Hide chart and table charts
       Plotly.purge(`${prefix}__plotlyChart`)
       Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
       const attachment = mediaUploader.state().get("selection").first().toJSON()
       spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
 
-      // Add change event listener to all input fields
-      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
+    } )
 
-        fileUploadFields( event, chart, spreadsheet, prefix )
+     // Add change event listener to all input fields
+     document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
 
-        createTraces( chart, spreadsheet, prefix )
+      event.preventDefault()
 
+      // Update chart params options
+      chart.fileUpload.fileName = document.getElementById( `${prefix}__fileUpload[fileName]` ).value
+      chart.fileUpload.fileId = document.getElementById( `${prefix}__fileUpload[fileId]` ).value
+      chart.fileUpload.sheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).value
+      chart.fileUpload.chartType = document.getElementById( `${prefix}__fileUpload[chartType]` ).value
 
-        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+      // Bail if no file, sheet Id or chart type
+      if( ! event.target.classList.contains(`fileUpload`) || ! chart.fileUpload.fileName ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
 
-        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
-
-        layoutPanels( chart, prefix )
-
-        mainAccordion.closeAll()
-
-        // Enable save button  // Add click event listener to the chart params panel inoput fields
-        document.getElementById( `${prefix}__saveChart` ).disabled = false
-        document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
-    
-      })
+      // Hide warning and unhide loading
+      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+      document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
 
 
+      // fileUploadFields( event, chart, spreadsheet, prefix )
+
+      createTraces( chart, spreadsheet, prefix )
+
+      document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+
+      await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+      layoutPanels( chart, prefix )
+
+      mainAccordion.closeAll()
+
+      // Enable save button  // Add click event listener to the chart params panel inoput fields
+      document.getElementById( `${prefix}__saveChart` ).disabled = false
+      document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
+  
+    } )
+
+
+    // Add click event listener to the Save Chart button
+    document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
+      event.preventDefault()
+      saveChart( chart, charts, wpRestUrl, wpRestNonce, prefix )
     })
-
-
-      // Add click event listener to the Save Chart button
-      document.getElementById(`${prefix}__saveChart`).addEventListener("click", function (event) {  
-        event.preventDefault()
-        saveChart( chart, wpRestUrl, wpRestNonce, prefix )
-      })
    
 
 

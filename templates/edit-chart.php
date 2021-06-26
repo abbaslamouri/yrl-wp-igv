@@ -9,7 +9,7 @@
 
     <!-- Show module title -->
     <div class="edit-chart__header">
-      <div class="title">
+      <div class="page-title">
         <h2><?php echo esc_html(get_admin_page_title()) ?></h2>
         <a class="button-secondary btn" id="<?php echo"{$this->prefix}__cancelChart"; ?>" href="<?php echo add_query_arg(array("page" => $this->prefix), admin_url('admin.php')); ?>" title="<?php esc_attr_e( 'Go Back' ); ?>"><?php esc_attr_e( 'Cancel' ); ?></a>
       </div>
@@ -93,15 +93,12 @@
               <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
               <div class="ac-panel">
                 <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                <div class="accordion accordion__level-2 annotations__Accordion">
                 <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}__addAnnotation"; ?>" >Add New</a>
+                <div class="accordion accordion__level-2 annotations__Accordion">
+                
                 </div>
               </div>
             </div>
-
-            
-
-            
 
             <div class="ac xaxisAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>

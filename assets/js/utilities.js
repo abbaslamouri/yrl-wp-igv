@@ -887,6 +887,40 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 // }
 
 
+const hideOptions = (prefix) => {
+  document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
+    document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
+    document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
+
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
+    document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.add( "hidden" )
+
+    document.getElementById(`${prefix}__saveChart`).disabled = true
+    document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
+
+    document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .legendAc .ac-panel`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .hoverlabelAc .ac-panel`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .modebarAc .ac-panel `).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
+    document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
+    
+}
+
 
 
 
@@ -972,5 +1006,6 @@ module.exports = {
   getMinMaxAvgData,
   chartOptionKey,
   fetchformGroup,
+  hideOptions
   
 };

@@ -213,25 +213,27 @@ if (!class_exists('Dashboard')) {
 
     public function save_chart( $request ) {
 
-      $charts = get_option( "{$this->prefix}_charts") ? get_option("{$this->prefix}_charts" ) : [];
-      $chart = json_decode( $request->get_body(), true );
+      // return json_decode( $request->get_body(), true );
+
+      // $charts = get_option( "{$this->prefix}_charts") ? get_option("{$this->prefix}_charts" ) : [];
+      // $chart = json_decode( $request->get_body(), true );
       
-      if ( isset($chart["fileUpload"]["chartId"]) ) { // There is a chart Id (edit)
-        $chart_id = $chart["fileUpload"]["chartId"];
+      // if ( isset($chart["fileUpload"]["chartId"]) ) { // There is a chart Id (edit)
+      //   $chart_id = $chart["fileUpload"]["chartId"];
 
-      } else { // New chart
-        $last_chart = end( $charts );
-        $chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
-      }
+      // } else { // New chart
+      //   $last_chart = end( $charts );
+      //   $chart_id = (  ! empty($charts) && isset( $last_chart ) ) ? $last_chart["fileUpload"]["chartId"] + 1 : 16327;
+      // }
 
 
-      $chart["fileUpload"]["chartId"] = $chart_id;
+      // $chart["fileUpload"]["chartId"] = $chart_id;
 
-      array_push ($charts, $chart);
+      // array_push ($charts, $chart);
 
-      update_option( "{$this->prefix}_charts", $charts );
+      return update_option( "{$this->prefix}_charts", json_decode( $request->get_body(), true ) );
       
-			return $chart_id;
+			// return $chart_id;
 
     }
 
