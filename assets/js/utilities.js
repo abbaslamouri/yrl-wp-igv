@@ -889,10 +889,12 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
 const hideOptions = (prefix) => {
 
+  // Hide file uploag fields
   document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
   document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
   document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
 
+  // Hide all panels
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.add( "hidden" )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.add( "hidden" )
@@ -905,9 +907,11 @@ const hideOptions = (prefix) => {
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.add( "hidden" )
 
+  // Disable save buttons
   document.getElementById(`${prefix}__saveChart`).disabled = true
   document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
 
+  // Reset panels inner html
   document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
   document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
   document.querySelector(`#${prefix}__admin .legendAc .ac-panel`).innerHTML = ""

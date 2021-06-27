@@ -1,3 +1,4 @@
+import fetchData from "./fetch-data";
 import { setSheetIdOptions, displayAdminMessage, hideOptions } from "./utilities";
 
 const selectFile = async function ( attachment, wpRestUrl, wpRestNonce, prefix ) {
@@ -40,12 +41,14 @@ const selectFile = async function ( attachment, wpRestUrl, wpRestNonce, prefix )
      document.getElementById(`${prefix}__fileUpload[fileName]`).value = attachment.filename
      document.getElementById(`${prefix}__fileUpload[fileId]`).value = attachment.id
 
+     const spreadsheet = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
+
      // Fetch response
-     const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
-       method: "GET",
-       headers: {'X-WP-Nonce': wpRestNonce }
-     })
-     const spreadsheet = await response.json();
+    //  const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
+    //    method: "GET",
+    //    headers: {'X-WP-Nonce': wpRestNonce }
+    //  })
+    //  const spreadsheet = await response.json();
 
     //  console.log("JSONRES-UPLOAD", spreadsheet)
 

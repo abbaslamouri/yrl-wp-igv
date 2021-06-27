@@ -1,14 +1,12 @@
-const fetchData = async function (formData) {
-  // Submit request
+const fetchData = async function (url, method, wpRestNonce, body = null) {
 
-  const response = await fetch(yrl_wp_igv_obj.ajax_url, {
-    method: "POST",
-    body: formData
-  });
+  const response = await fetch(url, {
+    method: method,
+    headers: {'X-WP-Nonce': wpRestNonce }
+  })
 
-  // Convert response to json
-  const jsonRes = await response.json();
-  return jsonRes;
-};
+  return response.json()
 
-export default fetchData;
+}
+
+export default fetchData

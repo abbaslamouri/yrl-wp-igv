@@ -2,12 +2,16 @@ import Plotly from 'plotly.js-dist'
 import swal from 'sweetalert'
 import deleteChart from "./delete-chart"
 import resetChart from './reset-chart'
+import panels from "./panels"
+import fetchData from "./fetch-data";
+
+
 
 import addNewChartBtnHandler from "./add-new-chart-handler"
 
 import { createChartCard, chartsListDefaultLayout } from "./utilities"
 
-const listCharts = async function ( charts, pluginUrl, wpRestUrl, wpRestNonce, prefix) {
+const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix) {
 
   if ( ! charts.length ) {
     document.querySelector( `#${prefix}__admin .chart-library__content` ).innerHTML = "<div class='no-charts'> There are no charts to display</div>"
@@ -18,12 +22,12 @@ const listCharts = async function ( charts, pluginUrl, wpRestUrl, wpRestNonce, p
 
     createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-    if (chart.sheet) {
+    if (sheets[chart.fileUpload.chartId]) {
 
       for ( let i=0; i < chart.traces.length; i++) {
 
-        chart.traces[i].x = chart.sheet.data[0]
-        chart.traces[i].y = chart.sheet.data[i+1]
+        chart.traces[i].x = sheets[chart.fileUpload.chartId].data[0]
+        chart.traces[i].y = sheets[chart.fileUpload.chartId].data[i+1]
         
       }
 
@@ -35,6 +39,33 @@ const listCharts = async function ( charts, pluginUrl, wpRestUrl, wpRestNonce, p
       document.getElementById( `${prefix}__chart__${chart.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${chart.fileUpload.fileUpload} cannot be found</div>`
     }
   
+  })
+
+
+  document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+
+    element.addEventListener("click", async function (event) {  
+      event.preventDefault()
+
+      // Get chart Id
+      const chartId = event.target.closest(".card__edit-chart").dataset.chartId
+      const chart = charts.filter(chart => chart.fileUpload.chartId == chartId)[0]
+
+      // mainAccordion.close(0)
+      resetChart(chart, prefix)
+      // addNewChartBtnHandler( chart, prefix )
+      document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+
+      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+
+      await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+      const spreadsheet = await fetchData(`${wpRestUrl}/${chart.fileUpload.fileId}`, "GET", wpRestNonce )
+
+      panels( chart, spreadsheet, prefix )
+
+    })
+
   })
 
 
@@ -68,26 +99,7 @@ const listCharts = async function ( charts, pluginUrl, wpRestUrl, wpRestNonce, p
   })
 
 
-  document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
-
-    element.addEventListener("click", async function (event) {  
-      event.preventDefault()
-
-      // Get chart Id
-      const chartId = event.target.closest(".card__edit-chart").dataset.chartId
-      const chart = charts.filter(chart => chart.fileUpload.chartId == chartId)[0]
-
-      // mainAccordion.close(0)
-      resetChart(chart, prefix)
-      // addNewChartBtnHandler( chart, prefix )
-      document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
-
-
-      console.log(chart)
-
-    })
-
-  })
+  
 
 }
 

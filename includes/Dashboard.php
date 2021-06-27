@@ -147,29 +147,37 @@ if (!class_exists('Dashboard')) {
 
 
       $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
+      $sheets = [];
 
 
       // Initialize payload
-      $payload = [];
+      // $payload = [];
 
 			// Assemble payload
 			foreach ($charts as $chart_id => $chart) {
 
 				// Set payload by chart Id
-				$payload[$chart_id] = $chart;
+				// $payload[$chart_id] = $chart;
 
 				// Fetch spreadsheet
 				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
+        $sheets[$chart['fileUpload']['chartId']] = $spreadsheet[$chart['fileUpload']['sheetId']];
 
 				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
 				// if (  ! is_wp_error( $spreadsheet ) ) {
 					// Fetch sheet
-				$payload[$chart_id]['sheet'] = $spreadsheet[$chart['fileUpload']['sheetId']];
+        
+				// $payload[]['charts'] = $chart;
+				// $payload[]['sheets'] = $sheets[$chart_id];
 
 			}
+      // echo "<pre>";
+      // var_dump($payload);
+      // echo "</pre>";
+      // die;
 
       // return array_reverse( $payload );
-      return $payload;
+      return ["sheets" => $sheets, "charts" => $charts];
 
     }
 
@@ -197,6 +205,7 @@ if (!class_exists('Dashboard')) {
 							'permission_callback' => array($this, "create_chart_permissions_check"),
 						)
 					);
+          
 
 		}
 
@@ -778,7 +787,8 @@ if (!class_exists('Dashboard')) {
           "delete_chart_nonce"  => wp_create_nonce("{$this->prefix}__delete_chart_nonce" ),
           "wp_rest_nonce"  => wp_create_nonce("wp_rest" ),
           "wp_rest_url" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
-          "charts" => $this->fetch_payload()
+          "charts" => $this->fetch_payload()["charts"],
+          "sheets" => $this->fetch_payload()["sheets"]
 				)
       );
       

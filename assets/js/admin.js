@@ -7,6 +7,7 @@ import 'accordion-js/dist/accordion.min.css'
 import selectFile from './select-file'
 import saveChart from './save-chart'
 import resetChart from './reset-chart'
+import fetchNewChartOptions from './options'
 
 import Trace from './Trace'
 import BasicOptions from './BasicOptions'
@@ -18,7 +19,7 @@ import ChartAxis from "./ChartAxis"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import createTraces from "./create-traces"
-import layoutPanels from "./create-layout-panels"
+import panels from "./panels"
 import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, hideOptions, createChartCard, chartsListDefaultLayout } from "./utilities"
 import addNewChartBtnHandler from "./add-new-chart-handler"
 import cancelChartBtnHandler from "./cancel-chart-handler"
@@ -30,6 +31,7 @@ if ( yrl_wp_igv_obj ) {
 
   const iwpgvObj = yrl_wp_igv_obj
   const charts = iwpgvObj.charts
+  const sheets = iwpgvObj.sheets
   let mediaUploader
   let jsonRes = {}
   let emptyChart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
@@ -49,7 +51,7 @@ if ( yrl_wp_igv_obj ) {
     if ( iwpgvObj.charts === undefined ) throw new Error( " can't find charts" )
 
     // List all charts
-    listCharts( charts, pluginUrl, wpRestUrl, wpRestNonce, prefix)
+    listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix)
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -72,11 +74,14 @@ if ( yrl_wp_igv_obj ) {
       switch ( event.target.id ) {
 
         case `${prefix}__addNewChart`:
+          // Unhide chart  and open first accordion panel 
+          document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
           mainAccordion.close(0)
           resetChart(chart, prefix)
           chart = cloneDeep(emptyChart)
-          addNewChartBtnHandler( chart, prefix )
+          // addNewChartBtnHandler( chart, prefix )
           mainAccordion.open(0)
+          // chart.fileUpload = {}
           break
 
         case `${prefix}__cancelChart`:
@@ -134,16 +139,13 @@ if ( yrl_wp_igv_obj ) {
       document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
       document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
 
-
-      // fileUploadFields( event, chart, spreadsheet, prefix )
-
-      createTraces( chart, spreadsheet, prefix )
+      chart = fetchNewChartOptions(chart, spreadsheet)
 
       document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
 
       await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
 
-      layoutPanels( chart, prefix )
+      panels( chart, spreadsheet, prefix )
 
       mainAccordion.closeAll()
 
@@ -151,7 +153,7 @@ if ( yrl_wp_igv_obj ) {
       document.getElementById( `${prefix}__saveChart` ).disabled = false
       document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
 
-      console.log(chart)
+      console.log("CHART",chart)
   
     } )
 

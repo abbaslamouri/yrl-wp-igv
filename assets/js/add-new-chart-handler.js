@@ -9,8 +9,7 @@ import ChartAxis from "./ChartAxis"
 
 const addNewChartBtnHandler = ( chart, prefix  ) => {
 
-  // Unhide chart  and open first accordion panel 
-  document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+  
 
   
   
