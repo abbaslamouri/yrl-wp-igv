@@ -41,18 +41,24 @@ const selectFile = async function ( attachment, wpRestUrl, wpRestNonce, prefix )
      document.getElementById(`${prefix}__fileUpload[fileName]`).value = attachment.filename
      document.getElementById(`${prefix}__fileUpload[fileId]`).value = attachment.id
 
-     const spreadsheet = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
+     const response = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
 
      // Fetch response
     //  const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
     //    method: "GET",
     //    headers: {'X-WP-Nonce': wpRestNonce }
     //  })
-    //  const spreadsheet = await response.json();
+    //  const response = await response.json();
 
-    //  console.log("JSONRES-UPLOAD", spreadsheet)
+    //  console.log("JSONRES-UPLOAD", response)
+    // Bail is server response status = error
+    if (response.status !== 200 ) throw new Error(  response.json().message )
 
-     if ( spreadsheet.message ) displayAdminMessage(spreadsheet.message, "error",  prefix)
+    const spreadsheet = await response.json()
+
+    console.log(spreadsheet)
+
+    //  if ( response.message ) displayAdminMessage(response.message, "error",  prefix)
 
      // Set sheet Id select field options, update sheet Id select field values
      setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )

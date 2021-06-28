@@ -172,7 +172,7 @@ if (!class_exists('Dashboard')) {
 
 			}
       // echo "<pre>";
-      // var_dump($payload);
+      // var_dump($charts);
       // echo "</pre>";
       // die;
 

@@ -1,11 +1,25 @@
-const fetchData = async function (url, method, wpRestNonce, body = null) {
+const fetchData = async function ( url, method, wpRestNonce, body = null ) {
 
-  const response = await fetch(url, {
+  let response
+
+  if ( body ) {
+
+    response = await fetch( url, {
+      method: method,
+      body: body,
+      headers: {'X-WP-Nonce': wpRestNonce }
+    } )
+
+  } else {
+
+  response = await fetch( url, {
     method: method,
     headers: {'X-WP-Nonce': wpRestNonce }
-  })
+  } )
 
-  return response.json()
+}
+
+  return response
 
 }
 

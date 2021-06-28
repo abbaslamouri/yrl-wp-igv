@@ -1024,20 +1024,20 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   svgElem.appendChild(useElem)
   deleteAnchor.appendChild(svgElem)
 
-  chart.layout.showlegend = false
-  chart.layout.hovermode = false
-  chart.layout.height = 300
-  chart.config.displayModeBar = false 
+  // chart.layout.showlegend = false
+  // chart.layout.hovermode = false
+  // chart.layout.height = 300
+  // chart.config.displayModeBar = false 
 
 }
 
 
 const chartsListDefaultLayout = (chart) => {  
 
-  chart.layout.showlegend = false
-  chart.layout.hovermode = false
-  chart.layout.height = 300
-  chart.config.displayModeBar = false
+  // chart.layout.showlegend = false
+  // chart.layout.hovermode = false
+  // chart.layout.height = 300
+  // chart.config.displayModeBar = false
 
 }
 

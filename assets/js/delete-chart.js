@@ -11,15 +11,14 @@ const deleteChart = async function (chartId, charts, wpRestUrl, wpRestNonce, pre
     
     const newCharts = charts.filter(chart => chart.fileUpload.chartId != chartId)
 
-    // charts = cloneDeep( newCharts )
+    const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(newCharts) ) 
 
-    console.log("NEW", newCharts)
     
-    const response = await fetch(wpRestUrl, {
-      method: "POST",
-      body: JSON.stringify(newCharts),
-      headers: {'X-WP-Nonce': wpRestNonce }
-    });
+    // const response = await fetch(wpRestUrl, {
+    //   method: "POST",
+    //   body: JSON.stringify(newCharts),
+    //   headers: {'X-WP-Nonce': wpRestNonce }
+    // });
   
     // Convert response to json
     const jsonRes = await response.json();
@@ -30,7 +29,7 @@ const deleteChart = async function (chartId, charts, wpRestUrl, wpRestNonce, pre
     if (response.status !== 200 ) throw new Error(  jsonRes.message )
 
     const card = document.getElementById(`${prefix}__chart__${chartId}__card`)
-    document.querySelector(`#${prefix}__admin .chart-library__content`).removeChild(card)
+    document.querySelector(`#${prefix}__admin .chart-library__content`).removeChild( card ) 
 
     // Success handler
     displayAdminMessage("Chart deleted successfully", "success",  prefix)

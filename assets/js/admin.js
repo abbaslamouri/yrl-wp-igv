@@ -7,7 +7,6 @@ import 'accordion-js/dist/accordion.min.css'
 import selectFile from './select-file'
 import saveChart from './save-chart'
 import resetChart from './reset-chart'
-import fetchNewChartOptions from './options'
 
 import Trace from './Trace'
 import BasicOptions from './BasicOptions'
@@ -19,10 +18,10 @@ import ChartAxis from "./ChartAxis"
 import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
 import createTraces from "./create-traces"
-import panels from "./panels"
 import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, hideOptions, createChartCard, chartsListDefaultLayout } from "./utilities"
 import addNewChartBtnHandler from "./add-new-chart-handler"
 import cancelChartBtnHandler from "./cancel-chart-handler"
+import fileParamsHandler from "./fileparams-handler"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
@@ -78,15 +77,18 @@ if ( yrl_wp_igv_obj ) {
           document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
           mainAccordion.close(0)
           resetChart(chart, prefix)
+          // if ( ! chart.fileUpload.chartId ) 
           chart = cloneDeep(emptyChart)
+          // console.log("NMNM", chart)
           // addNewChartBtnHandler( chart, prefix )
           mainAccordion.open(0)
           // chart.fileUpload = {}
           break
 
-        case `${prefix}__cancelChart`:
-          cancelChartBtnHandler( chart, prefix )
-          break
+        // case `${prefix}__cancelChart`:
+        //   console.log("NBBBBB", chart)
+        //   cancelChartBtnHandler( chart, prefix )
+        //   break
 
         case `${prefix}__fileUpload[mediaUploadBtn]`:
           mediaUploader.open() 
@@ -101,9 +103,16 @@ if ( yrl_wp_igv_obj ) {
 
           createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-          chartsListDefaultLayout(chart)
+          // chartsListDefaultLayout(chart)
 
-          await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, chart.traces, chart.layout, chart.config)
+          const newChart = cloneDeep( chart )
+      
+          newChart.layout.showlegend = false
+          newChart.layout.hovermode = false
+          newChart.layout.height = 300
+          newChart.config.displayModeBar = false
+
+          await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)
           
           break
       }
@@ -118,44 +127,18 @@ if ( yrl_wp_igv_obj ) {
 
       const attachment = mediaUploader.state().get("selection").first().toJSON()
       spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
+       
+      // Add change event listener to all input fields
+      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
+        event.preventDefault()
+
+        if( event.target.classList.contains(`fileUpload`) ) fileParamsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        
+      } )
 
     } )
 
-     // Add change event listener to all input fields
-     document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
-
-      event.preventDefault()
-
-      // Update chart params options
-      chart.fileUpload.fileName = document.getElementById( `${prefix}__fileUpload[fileName]` ).value
-      chart.fileUpload.fileId = document.getElementById( `${prefix}__fileUpload[fileId]` ).value
-      chart.fileUpload.sheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).value
-      chart.fileUpload.chartType = document.getElementById( `${prefix}__fileUpload[chartType]` ).value
-
-      // Bail if no file, sheet Id or chart type
-      if( ! event.target.classList.contains(`fileUpload`) || ! chart.fileUpload.fileName ||  ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType   ) return
-
-      // Hide warning and unhide loading
-      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-      document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
-
-      chart = fetchNewChartOptions(chart, spreadsheet)
-
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
-
-      await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
-
-      panels( chart, spreadsheet, prefix )
-
-      mainAccordion.closeAll()
-
-      // Enable save button  // Add click event listener to the chart params panel inoput fields
-      document.getElementById( `${prefix}__saveChart` ).disabled = false
-      document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
-
-      console.log("CHART",chart)
-  
-    } )
+   
 
 
     
