@@ -9,6 +9,10 @@ import ChartAxis from "./ChartAxis"
 
 const newChartOptions = ( chart, spreadsheet  ) => {
 
+  console.log(chart)
+  console.log(spreadsheet)
+
+
   
   // Remove extra traces if new spreasheet contains less columns than old spreasheet
   if ( chart.traces.length ) {

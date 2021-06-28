@@ -4,9 +4,12 @@ import swal from 'sweetalert'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
 
-import selectFile from './select-file'
+import setFileUploadFields from './set-fileupload-fields'
 import saveChart from './save-chart'
 import resetChart from './reset-chart'
+
+import fetchData from "./fetch-data";
+
 
 import Trace from './Trace'
 import BasicOptions from './BasicOptions'
@@ -124,9 +127,76 @@ if ( yrl_wp_igv_obj ) {
       // Hide chart and table charts
       Plotly.purge(`${prefix}__plotlyChart`)
       Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+      document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
 
-      const attachment = mediaUploader.state().get("selection").first().toJSON()
-      spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
+      hideOptions(prefix)
+
+      try {
+
+
+        const attachment = mediaUploader.state().get("selection").first().toJSON()
+        // Bail if attachment can't be found
+        if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
+
+        const fileName = attachment.filename
+        const fileId =attachment.id
+        const chartType = ""
+
+
+        const response = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
+
+        if (response.status !== 200 ) throw new Error(  response.json().message )
+
+        spreadsheet = await response.json()
+
+        setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
+
+        const selectedSheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : ""
+        
+        setFileUploadFields( fileName, fileId, selectedSheetId, chartType, prefix ) 
+
+        
+
+          // Fetch response
+        //  const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
+        //    method: "GET",
+        //    headers: {'X-WP-Nonce': wpRestNonce }
+        //  })
+        //  const response = await response.json();
+
+        //  console.log("JSONRES-UPLOAD", response)
+        // Bail is server response status = error
+       
+        //  if ( response.message ) displayAdminMessage(response.message, "error",  prefix)
+
+          // Set sheet Id select field options, update sheet Id select field values
+         
+
+          // Unhide sheet Id and chart type select fields
+         
+
+        //  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
+
+        // toggleElementByClass( `#${prefix}__admin .spinner` )
+        document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
+        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+
+        console.log(spreadsheet)
+
+
+      } catch (error) {
+
+        displayAdminMessage(error.message, "error",  prefix)
+        console.log("CAUGHT ERROR", error)
+    
+      } 
+
+
+
+
+
+      // spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
        
       // Add change event listener to all input fields
       document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
