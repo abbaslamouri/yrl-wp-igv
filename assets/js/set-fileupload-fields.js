@@ -1,16 +1,17 @@
 import fetchData from "./fetch-data";
 import { setSheetIdOptions, displayAdminMessage, hideOptions } from "./utilities";
 
-const setFileUploadFields = async function ( fileName, fileId, selectedSheetId, chartType, prefix ) {
+const setFileUploadFields = async function ( fileName, fileId, selectedSheetId, chartType, chartId, prefix ) {
 
    // Update selected file and file Id
    document.getElementById(`${prefix}__fileUpload[fileName]`).value = fileName
    document.getElementById(`${prefix}__fileUpload[fileId]`).value = fileId
+   document.getElementById(`${prefix}__fileUpload[chartId]`).value = chartId
 
    document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
 
    
-   document.getElementById( `${prefix}__fileUpload[sheetId]` ).selectedIndex = selectedSheetId
+   document.getElementById( `${prefix}__fileUpload[sheetId]` ).value = selectedSheetId
    document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
 
 

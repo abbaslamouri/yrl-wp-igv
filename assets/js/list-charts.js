@@ -6,15 +6,13 @@ import resetChart from './reset-chart'
 import panels from "./panels"
 import fetchData from "./fetch-data";
 import cancelChartBtnHandler from "./cancel-chart-handler"
-
-
-
-
 import addNewChartBtnHandler from "./add-new-chart-handler"
-
-import { createChartCard, chartsListDefaultLayout } from "./utilities"
+import setFileUploadFields from './set-fileupload-fields'
+import { displayAdminMessage, setSheetIdOptions, createChartCard, chartsListDefaultLayout, hideOptions } from "./utilities"
 
 const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix) {
+
+  let spreadsheet = []
 
   if ( ! charts.length ) {
     document.querySelector( `#${prefix}__admin .chart-library__content` ).innerHTML = "<div class='no-charts'> There are no charts to display</div>"
@@ -67,28 +65,57 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
     element.addEventListener("click", async function (event) {  
       event.preventDefault()
 
+      document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+
+
+      
+
+
       try {
 
         // Get chart Id
         const chartId = event.target.closest(".card__edit-chart").dataset.chartId
         const chart = charts.filter(chart => chart.fileUpload.chartId == chartId)[0]
 
-        // mainAccordion.close(0)
-        resetChart(chart, prefix)
-        // addNewChartBtnHandler( chart, prefix )
-        document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
-
-        document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-
-        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+        console.log("CHART", chart)
 
         const response = await fetchData(`${wpRestUrl}/${chart.fileUpload.fileId}`, "GET", wpRestNonce )
 
-        const jsonRes = await response.json()
+        spreadsheet = await response.json()
 
-        if (response.status !== 200 ) throw new Error(  jsonRes.message )
+       if (response.status !== 200 ) throw new Error(  response.json().message )
 
-        panels( chart, jsonRes, prefix )
+
+
+        Plotly.purge(`${prefix}__plotlyChart`)
+        Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+        document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+        document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+        hideOptions(prefix)
+        displayAdminMessage (null, null, prefix)
+
+
+
+        setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
+        
+        setFileUploadFields( chart.fileUpload.fileName, chart.fileUpload.fileId, chart.fileUpload.sheetId, chart.fileUpload.chartType, chart.fileUpload.chartId, prefix ) 
+
+      
+
+        // toggleElementByClass( `#${prefix}__admin .spinner` )
+        document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
+        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+
+       
+    
+       
+
+
+        await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+       
+
+        panels( chart, spreadsheet, prefix )
 
         
 
@@ -99,7 +126,6 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
           switch ( event.target.id ) {
 
             case `${prefix}__cancelChart`:
-              console.log("NBBBBB", chart)
               cancelChartBtnHandler( chart, prefix )
               break
 

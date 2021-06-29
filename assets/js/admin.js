@@ -125,12 +125,8 @@ if ( yrl_wp_igv_obj ) {
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
       // Hide chart and table charts
-      Plotly.purge(`${prefix}__plotlyChart`)
-      Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-      document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-      document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+     
 
-      hideOptions(prefix)
 
       try {
 
@@ -150,39 +146,27 @@ if ( yrl_wp_igv_obj ) {
 
         spreadsheet = await response.json()
 
+        Plotly.purge(`${prefix}__plotlyChart`)
+        Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+        document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+        document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+        hideOptions(prefix)
+        displayAdminMessage (null, null, prefix)
+
+
+
         setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
 
-        const selectedSheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : ""
+        // const selectedSheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : ""
         
-        setFileUploadFields( fileName, fileId, selectedSheetId, chartType, prefix ) 
+        setFileUploadFields( fileName, fileId, document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : "", chartType, null, prefix ) 
 
-        
-
-          // Fetch response
-        //  const response = await fetch(`${wpRestUrl}/${attachment.id}`, {
-        //    method: "GET",
-        //    headers: {'X-WP-Nonce': wpRestNonce }
-        //  })
-        //  const response = await response.json();
-
-        //  console.log("JSONRES-UPLOAD", response)
-        // Bail is server response status = error
-       
-        //  if ( response.message ) displayAdminMessage(response.message, "error",  prefix)
-
-          // Set sheet Id select field options, update sheet Id select field values
-         
-
-          // Unhide sheet Id and chart type select fields
-         
-
-        //  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .fileUploadAc .ac-panel`).classList.remove( "hidden" )
+      
 
         // toggleElementByClass( `#${prefix}__admin .spinner` )
         document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
         document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
 
-        console.log(spreadsheet)
 
 
       } catch (error) {

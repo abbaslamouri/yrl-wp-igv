@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div class="field-group hidden">
+<div class="field-group">
   <div class="form-group">
     <input type="text" class="form-group__input fileUpload no-hint" id="<?php echo "{$this->prefix}__fileUpload[chartId]"; ?>" name="<?php echo "{$this->prefix}__fileUpload[chartId]"; ?>" placeholder="Chart Id"  readonly>
     <label for="" class="form-group__label">Chart Id</label>
@@ -43,9 +43,9 @@
   </div>
 </div>
 
-<div class="field-group hidden">
+<div class="field-group">
   <div class="form-group">
-    <input type="hidden" id="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
+    <input type="text" id="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" name="<?php echo "{$this->prefix}__fileUpload[fileId]"; ?>" >
     <label for="" class="form-group__label">File Id</label>
   </div>
 </div>
