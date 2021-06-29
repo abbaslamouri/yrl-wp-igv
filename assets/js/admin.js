@@ -43,6 +43,7 @@ if ( yrl_wp_igv_obj ) {
   const wpRestUrl = iwpgvObj.wp_rest_url
   const wpRestNonce= iwpgvObj.wp_rest_nonce
   const pluginUrl =iwpgvObj.url
+  let chartUpdated = false
 
   console.log("iwpgvObj", {...iwpgvObj})
   
@@ -86,12 +87,24 @@ if ( yrl_wp_igv_obj ) {
           // addNewChartBtnHandler( chart, prefix )
           mainAccordion.open(0)
           // chart.fileUpload = {}
+
+          // document.getElementById(`${prefix}__cancelChart`).addEventListener("click", async function (event) {
+          //   console.log("LLLLLLL")
+          //   document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+          // }, {once: true})
+          chartUpdated = false
+
           break
 
-        // case `${prefix}__cancelChart`:
-        //   console.log("NBBBBB", chart)
-        //   cancelChartBtnHandler( chart, prefix )
-        //   break
+        case `${prefix}__cancelChart`:
+
+        console.log("UPDATED", chartUpdated)
+          if (chartUpdated) {
+            cancelChartBtnHandler( chart, prefix )
+          } else {
+            document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+          }
+          break
 
         case `${prefix}__fileUpload[mediaUploadBtn]`:
           mediaUploader.open() 
@@ -126,6 +139,7 @@ if ( yrl_wp_igv_obj ) {
     mediaUploader.on("select", async function () {
       // Hide chart and table charts
      
+      mainAccordion.close(0)
 
 
       try {
@@ -146,6 +160,8 @@ if ( yrl_wp_igv_obj ) {
 
         spreadsheet = await response.json()
 
+        console.log(spreadsheet)
+
         Plotly.purge(`${prefix}__plotlyChart`)
         Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
         document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
@@ -159,13 +175,18 @@ if ( yrl_wp_igv_obj ) {
 
         // const selectedSheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : ""
         
-        setFileUploadFields( fileName, fileId, document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : "", chartType, null, prefix ) 
+        setFileUploadFields( fileName, fileId, spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: "", chartType, null, prefix ) 
 
       
 
         // toggleElementByClass( `#${prefix}__admin .spinner` )
         document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
         document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+
+        chartUpdated = true
+
+        mainAccordion.open(0)
+
 
 
 

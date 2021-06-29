@@ -1,7 +1,7 @@
 import fetchData from "./fetch-data";
 import { setSheetIdOptions, displayAdminMessage, hideOptions } from "./utilities";
 
-const setFileUploadFields = async function ( fileName, fileId, selectedSheetId, chartType, chartId, prefix ) {
+const setFileUploadFields = async function ( fileName, fileId, sheetId, chartType, chartId, prefix ) {
 
    // Update selected file and file Id
    document.getElementById(`${prefix}__fileUpload[fileName]`).value = fileName
@@ -11,7 +11,7 @@ const setFileUploadFields = async function ( fileName, fileId, selectedSheetId, 
    document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
 
    
-   document.getElementById( `${prefix}__fileUpload[sheetId]` ).value = selectedSheetId
+   document.getElementById( `${prefix}__fileUpload[sheetId]` ).value = sheetId
    document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
 
 

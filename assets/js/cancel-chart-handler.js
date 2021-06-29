@@ -5,10 +5,10 @@ import { hideOptions } from "./utilities"
 
 const cancelChartBtnHandler = ( chart, prefix  ) => {
 
-  if ( ! chart.traces.length ) {
-    document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-    return
-  }
+  // if ( ! chart.traces.length ) {
+  //   document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+  //   return
+  // }
 
   swal({
     title: "Are you sure?",

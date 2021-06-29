@@ -68,9 +68,6 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
       document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
 
 
-      
-
-
       try {
 
         // Get chart Id
