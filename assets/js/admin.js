@@ -50,14 +50,17 @@ if ( yrl_wp_igv_obj ) {
   try {
 
     // Check that the necessary parameters are present
-    if ( iwpgvObj.wp_rest_nonce === undefined  || iwpgvObj.wp_rest_url === undefined ) throw new Error( " can't go anywhere from here" )
+    if ( iwpgvObj.wp_rest_nonce === undefined  || iwpgvObj.wp_rest_url === undefined ) throw new Error( "Don't know where to go from here" )
     if ( iwpgvObj.charts === undefined ) throw new Error( " can't find charts" )
-
-    // List all charts
-    listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix)
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
+    // throw new Error( " can't find charts" )
+
+    // List all charts
+    listCharts( chartsx, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix)
+
+    
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
@@ -137,58 +140,38 @@ if ( yrl_wp_igv_obj ) {
 
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
-      // Hide chart and table charts
-     
-      mainAccordion.close(0)
-
 
       try {
 
-
         const attachment = mediaUploader.state().get("selection").first().toJSON()
+
         // Bail if attachment can't be found
         if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
+        // Set filename, file ID and chart type
         const fileName = attachment.filename
         const fileId =attachment.id
         const chartType = ""
 
-
+        // Fetch spreadsheet
         const response = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
-
         if (response.status !== 200 ) throw new Error(  response.json().message )
-
         spreadsheet = await response.json()
 
-        console.log(spreadsheet)
-
+        mainAccordion.close(0)
         Plotly.purge(`${prefix}__plotlyChart`)
         Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
         document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
         document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
         hideOptions(prefix)
         displayAdminMessage (null, null, prefix)
-
-
-
         setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
-
-        // const selectedSheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).options.length == 2 ? 1 : ""
-        
         setFileUploadFields( fileName, fileId, spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: "", chartType, null, prefix ) 
-
-      
-
-        // toggleElementByClass( `#${prefix}__admin .spinner` )
         document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
         document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
-
-        chartUpdated = true
-
         mainAccordion.open(0)
 
-
-
+        chartUpdated = true
 
       } catch (error) {
 
