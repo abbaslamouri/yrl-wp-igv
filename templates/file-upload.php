@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div class="field-group hidden">
+<div class="field-group">
   <div class="form-group">
     <input type="text" class="form-group__input fileUpload no-hint" id="<?php echo "{$this->prefix}__fileUpload[fileName]"; ?>" name="<?php echo "{$this->prefix}__fileUpload[fileName]"; ?>" placeholder="Selected File" readonly>
     <label for="" class="form-group__label">Selected File</label>

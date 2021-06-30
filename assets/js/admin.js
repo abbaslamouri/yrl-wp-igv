@@ -1,30 +1,13 @@
 import Plotly from 'plotly.js-dist'
 import cloneDeep from 'lodash.clonedeep'
-import swal from 'sweetalert'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
-
-import setFileUploadFields from './set-fileupload-fields'
+import setParamsFields from './set-params-fields'
 import saveChart from './save-chart'
-import resetChart from './reset-chart'
-
-import fetchData from "./fetch-data";
-
-
-import Trace from './Trace'
-import BasicOptions from './BasicOptions'
-import Title from "./Title"
-import Legend from "./Legend"
-import Hoverlabel from "./Hoverlabel"
-import Modebar from "./Modebar"
-import ChartAxis from "./ChartAxis"
-import drawChart from "./draw-chart"
 import listCharts from "./list-charts"
-import createTraces from "./create-traces"
-import { displayAdminMessage, setSheetIdOptions, createPanel, createPanelSections, hideOptions, createChartCard, chartsListDefaultLayout } from "./utilities"
-import addNewChartBtnHandler from "./add-new-chart-handler"
+import { displayAdminMessage, createChartCard, hideOptions } from "./utilities"
 import cancelChartBtnHandler from "./cancel-chart-handler"
-import fileParamsHandler from "./fileparams-handler"
+import paramsChangeHandler from "./params-change-handler"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
@@ -34,8 +17,6 @@ if ( yrl_wp_igv_obj ) {
   const iwpgvObj = yrl_wp_igv_obj
   const charts = iwpgvObj.charts
   const sheets = iwpgvObj.sheets
-  let mediaUploader
-  let jsonRes = {}
   let emptyChart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
   let chart = {}
   let spreadsheet = []
@@ -55,23 +36,15 @@ if ( yrl_wp_igv_obj ) {
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
-    // throw new Error( " can't find charts" )
 
     // List all charts
-    listCharts( chartsx, sheets, pluginUrl, wpRestUrl, wpRestNonce, prefix)
-
-    
+    listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+    // throw new Error( " can't find charts" )
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
       
-    mediaUploader = wp.media.frames.file_frame = wp.media({
-      // title: "Select File",
-      // button: {
-      //   text: "Select File",
-      // },
-      multiple: false,
-    });
+    let mediaUploader = wp.media.frames.file_frame = wp.media( { multiple: false } );
 
     // Add click event listener to the Add New Chart button
     document.addEventListener("click", async function (event) {
@@ -80,21 +53,15 @@ if ( yrl_wp_igv_obj ) {
       switch ( event.target.id ) {
 
         case `${prefix}__addNewChart`:
+          Plotly.purge(`${prefix}__plotlyChart`)
+          Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
           // Unhide chart  and open first accordion panel 
           document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
           mainAccordion.close(0)
-          resetChart(chart, prefix)
-          // if ( ! chart.fileUpload.chartId ) 
           chart = cloneDeep(emptyChart)
-          // console.log("NMNM", chart)
-          // addNewChartBtnHandler( chart, prefix )
+          hideOptions(prefix)
           mainAccordion.open(0)
-          // chart.fileUpload = {}
-
-          // document.getElementById(`${prefix}__cancelChart`).addEventListener("click", async function (event) {
-          //   console.log("LLLLLLL")
-          //   document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-          // }, {once: true})
           chartUpdated = false
 
           break
@@ -122,8 +89,6 @@ if ( yrl_wp_igv_obj ) {
 
           createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-          // chartsListDefaultLayout(chart)
-
           const newChart = cloneDeep( chart )
       
           newChart.layout.showlegend = false
@@ -148,28 +113,9 @@ if ( yrl_wp_igv_obj ) {
         // Bail if attachment can't be found
         if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
-        // Set filename, file ID and chart type
-        const fileName = attachment.filename
-        const fileId =attachment.id
-        const chartType = ""
+        const chartId = chart.fileUpload !== undefined && chart.fileUpload.chartId !== undefined ? chart.fileUpload.chartId : null
 
-        // Fetch spreadsheet
-        const response = await fetchData(`${wpRestUrl}/${attachment.id}`, "GET", wpRestNonce )
-        if (response.status !== 200 ) throw new Error(  response.json().message )
-        spreadsheet = await response.json()
-
-        mainAccordion.close(0)
-        Plotly.purge(`${prefix}__plotlyChart`)
-        Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-        document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-        document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
-        hideOptions(prefix)
-        displayAdminMessage (null, null, prefix)
-        setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
-        setFileUploadFields( fileName, fileId, spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: "", chartType, null, prefix ) 
-        document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
-        document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
-        mainAccordion.open(0)
+        spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
         chartUpdated = true
 
@@ -179,18 +125,12 @@ if ( yrl_wp_igv_obj ) {
         console.log("CAUGHT ERROR", error)
     
       } 
-
-
-
-
-
-      // spreadsheet = await selectFile( attachment, wpRestUrl, wpRestNonce, prefix )
        
       // Add change event listener to all input fields
       document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
         event.preventDefault()
 
-        if( event.target.classList.contains(`fileUpload`) ) fileParamsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        if( event.target.classList.contains(`fileUpload`) ) paramsChangeHandler( chart, spreadsheet, mainAccordion, prefix  )
         
       } )
 

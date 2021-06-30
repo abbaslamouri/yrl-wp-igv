@@ -890,6 +890,7 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 const hideOptions = (prefix) => {
 
   // Hide file uploag fields
+
   document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
   document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
   document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
