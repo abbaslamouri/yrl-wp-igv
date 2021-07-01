@@ -87,9 +87,9 @@
         color: rgba( $color_p_light,1 );
         font-size: 0.9rem;
 
-        &:focus {
-          // color: rgba( $color-s-dark , 1 );
-        }
+        // &:focus {
+        //   color: rgba( $color-s-dark , 1 );
+        // }
         
       }
 
@@ -300,6 +300,7 @@
     padding: 1rem 2rem;
     border: 1px solid rgba( $color-s-dark, .8 );
     margin:1rem;
+    // min-width:400px;
     
     .chart-container {
       position: relative;

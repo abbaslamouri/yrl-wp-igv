@@ -33,6 +33,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
       newChart.layout.showlegend = false
       newChart.layout.hovermode = false
       newChart.layout.height = 300
+      // newChart.layout.width = 400
       newChart.config.displayModeBar = false
 
       await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)

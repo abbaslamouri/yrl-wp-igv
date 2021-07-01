@@ -5,14 +5,17 @@ import 'accordion-js/dist/accordion.min.css'
 import setParamsFields from './set-params-fields'
 import saveChart from './save-chart'
 import listCharts from "./list-charts"
-import { displayAdminMessage, createChartCard, hideOptions } from "./utilities"
+import { displayAdminMessage, createChartCard, hideOptions, chartOptionKey } from "./utilities"
 import cancelChartBtnHandler from "./cancel-chart-handler"
-import paramsChangeHandler from "./params-change-handler"
+import paramsHandler from "./params-handler"
+import configHandler from "./config-handler"
+import layoutHandler from "./layout-handler"
+import traceHandler from "./trace-handler"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
 
-if ( yrl_wp_igv_obj ) {
+if (  yrl_wp_igv_obj ) {
 
   const iwpgvObj = yrl_wp_igv_obj
   const charts = iwpgvObj.charts
@@ -37,22 +40,28 @@ if ( yrl_wp_igv_obj ) {
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
 
+
     // List all charts
     listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
     // throw new Error( " can't find charts" )
+
+
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
       
     let mediaUploader = wp.media.frames.file_frame = wp.media( { multiple: false } );
 
+    // throw new Error( " can't find charts" )
+
+
     // Add click event listener to the Add New Chart button
     document.addEventListener("click", async function (event) {
-      event.preventDefault()
 
       switch ( event.target.id ) {
 
         case `${prefix}__addNewChart`:
+          event.preventDefault()
           Plotly.purge(`${prefix}__plotlyChart`)
           Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
@@ -67,6 +76,7 @@ if ( yrl_wp_igv_obj ) {
           break
 
         case `${prefix}__cancelChart`:
+          event.preventDefault()
 
         console.log("UPDATED", chartUpdated)
           if (chartUpdated) {
@@ -77,10 +87,14 @@ if ( yrl_wp_igv_obj ) {
           break
 
         case `${prefix}__fileUpload[mediaUploadBtn]`:
+          event.preventDefault()
+
           mediaUploader.open() 
           break
 
         case `${prefix}__saveChart`:
+          event.preventDefault()
+
           await saveChart( chart, charts, wpRestUrl, wpRestNonce, prefix )
           document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
 
@@ -127,10 +141,44 @@ if ( yrl_wp_igv_obj ) {
       } 
        
       // Add change event listener to all input fields
-      document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm`).addEventListener( "change", async function (event) {
-        event.preventDefault()
+      document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
+        event.preventDefault( )
 
-        if( event.target.classList.contains(`fileUpload`) ) paramsChangeHandler( chart, spreadsheet, mainAccordion, prefix  )
+        if( event.target.id.includes( `fileUpload` ) ) {
+
+          paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+
+        } else {
+
+          const control = chartOptionKey(event.target.name).control
+          const key = chartOptionKey(event.target.name).key
+          const keyParts = key.split(".")
+          let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
+          console.group()
+          console.log("Control", control)
+          console.log("key", key)
+          console.log("keyParts", keyParts)
+          console.log("value", value)
+          console.groupEnd()
+
+          switch ( control ) {
+
+            case "config":
+              configHandler( chart, key, value, prefix )
+              break
+
+            case "layout":
+              layoutHandler( chart, key, value, prefix )
+              break
+
+              case "traces":
+              traceHandler( chart, key, value, prefix )
+              break
+
+          }
+
+
+        }
         
       } )
 

@@ -702,8 +702,8 @@ const fetchformGroup = (field, prefix) => {
   // Add form group box to form group
   formGroup.appendChild(inputField)
 
-    // Create label
-    if (field.type !== "hidden") {
+  // Create label
+  if (field.type !== "hidden") {
     const labelElem = document.createElement( "label" )
     labelElem.classList.add("form-group__label");
     labelElem.htmlFor = `${prefix}__${field.id}`
