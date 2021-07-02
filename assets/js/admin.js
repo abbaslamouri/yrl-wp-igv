@@ -6,11 +6,12 @@ import setParamsFields from './set-params-fields'
 import saveChart from './save-chart'
 import listCharts from "./list-charts"
 import { displayAdminMessage, createChartCard, hideOptions, chartOptionKey } from "./utilities"
-import cancelChartBtnHandler from "./cancel-chart-handler"
+import cancelChart from "./cancel-chart"
 import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
 import traceHandler from "./trace-handler"
+import addRemoveAnnotations from "./annotations"
 import "../sass/admin.scss"
 
 // console.log("iwpgvObj", {...yrl_wp_igv_obj})
@@ -80,7 +81,7 @@ if (  yrl_wp_igv_obj ) {
 
         console.log("UPDATED", chartUpdated)
           if (chartUpdated) {
-            cancelChartBtnHandler( chart, prefix )
+            cancelChart( chart, prefix )
           } else {
             document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
           }
@@ -113,12 +114,22 @@ if (  yrl_wp_igv_obj ) {
           await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)
           
           break
+
+        case `${prefix}__addAnnotation`:
+          event.preventDefault()
+          addRemoveAnnotations( chart, prefix )
+          break
+
       }
       
     })
 
+
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
+
+      document.querySelector( `#${prefix}__admin .warning` ).classList.add( `${prefix}__hidden` )
+      document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `${prefix}__hidden` )
 
       try {
 
@@ -138,7 +149,10 @@ if (  yrl_wp_igv_obj ) {
         displayAdminMessage(error.message, "error",  prefix)
         console.log("CAUGHT ERROR", error)
     
-      } 
+      }
+
+      document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `${prefix}__hidden` )
+      document.querySelector( `#${prefix}__admin .loading` ).classList.add( `${prefix}__hidden` )
        
       // Add change event listener to all input fields
       document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
@@ -154,12 +168,12 @@ if (  yrl_wp_igv_obj ) {
           const key = chartOptionKey(event.target.name).key
           const keyParts = key.split(".")
           let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-          console.group()
-          console.log("Control", control)
-          console.log("key", key)
-          console.log("keyParts", keyParts)
-          console.log("value", value)
-          console.groupEnd()
+          // console.group()
+          // console.log("Control", control)
+          // console.log("key", key)
+          // console.log("keyParts", keyParts)
+          // console.log("value", value)
+          // console.groupEnd()
 
           switch ( control ) {
 
@@ -176,7 +190,6 @@ if (  yrl_wp_igv_obj ) {
               break
 
           }
-
 
         }
         
@@ -280,7 +293,7 @@ if (  yrl_wp_igv_obj ) {
 
     //     // toggleElementByClass( `#${prefix}__admin .spinner` )
     //     document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-    //     document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+    //     document.querySelector( `#${prefix}__admin .loading` ).classList.remove(`${prefix}__hidden`)
 
     //     // Hide all but chart params panels
     //     // hidePanels()
@@ -392,7 +405,7 @@ if (  yrl_wp_igv_obj ) {
 
     //     // Hide warning and unhide loading
     //     document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-    //     document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+    //     document.querySelector( `#${prefix}__admin .loading` ).classList.remove(`${prefix}__hidden`)
 
     //     // Remove extra traces if new spreasheet contains less columns than old spreasheet
     //     if (chart.traces) {

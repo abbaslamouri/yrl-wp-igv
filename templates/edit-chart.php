@@ -24,7 +24,7 @@
 
         <!-- Loading spinner -->
         <!-- <img class="spinner" src="<?php //echo "{$this->url}assets/img/loading-spinner.svg" ?>" alt="Loading Spinner"> -->
-        <div class="loading hidden">Loading...</div> 
+        <div class="loading">Loading...</div> 
 
         <!-- Warning heading -->
         <div class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</div>

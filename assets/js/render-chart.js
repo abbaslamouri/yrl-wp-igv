@@ -298,7 +298,7 @@ const renderChart =  async( chart, spreadsheet, prefix ) => {
     let index;
 
     // Bail if no file, sheet Id or chart type
-    if( ! event.target.id ===  `${prefix}__addAnnotation` ) return
+    if( ! event.target.id === `${prefix}__addAnnotation` ) return
     Plotly.purge(`${prefix}__plotlyChart`)
 
     if ( chart.layout.annotations === undefined) {

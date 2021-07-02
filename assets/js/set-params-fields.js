@@ -24,8 +24,8 @@ const setParamsFields = async function ( fileName, fileId, sheetId, chartType, c
   mainAccordion.close(0)
   Plotly.purge(`${prefix}__plotlyChart`)
   Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-  document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
-  document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
+  // document.querySelector( `#${prefix}__admin .warning` ).classList.add("hidden")
+  // document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
   hideOptions(prefix)
   displayAdminMessage (null, null, prefix)
   setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
@@ -38,8 +38,7 @@ const setParamsFields = async function ( fileName, fileId, sheetId, chartType, c
   document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
   document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
   document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.remove( "hidden" )
-  document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
-  document.querySelector( `#${prefix}__admin .loading` ).classList.add("hidden")
+ 
   if ( ! chartId ) mainAccordion.open(0)
 
   return await spreadsheet
