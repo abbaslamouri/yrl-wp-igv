@@ -1,40 +1,51 @@
-import cloneDeep from 'lodash.clonedeep'
+import swal from 'sweetalert'
 import fetchData from "./fetch-data"
 import { displayAdminMessage } from "./utilities"
 
-const deleteChart = async function (chartId, charts, wpRestUrl, wpRestNonce, prefix) {
+const deleteChart = async function (charts, chartId, wpRestUrl, wpRestNonce, prefix) {
 
   try {
 
-     // Bail if there are no chart tr
-     if ( ! chartId ) throw new Error(  `Chart ID is required` )
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this chart",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then(async (willDelete) => {
+      if (willDelete) {
+
+        // Bail if there are no chart tr
+        if ( ! chartId ) throw new Error(  `Chart ID is required` )
+            
+        const newCharts = charts.filter(chart => chart.fileUpload.chartId != chartId)
+
+        const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(newCharts) ) 
+
+        // Convert response to json
+        const jsonRes = await response.json();
+
+        console.log("JSONRES-DELETE", jsonRes)
+
+        // Bail is server response status = error
+        if (response.status !== 200 ) throw new Error(  jsonRes.message )
+
+        const card = document.getElementById(`${prefix}__chart__${chartId}__card`)
+        document.querySelector(`#${prefix}__admin .chart-library__content`).removeChild( card ) 
+
+        // Success handler
+        displayAdminMessage("Chart deleted successfully", "success",  prefix)
+
+        swal(`Chart with ( ID=${chartId} ) has been deleted!`, {
+          icon: "success",
+        })
+
+      } 
+      
+    })
+
     
-    const newCharts = charts.filter(chart => chart.fileUpload.chartId != chartId)
-
-    const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(newCharts) ) 
-
-    
-    // const response = await fetch(wpRestUrl, {
-    //   method: "POST",
-    //   body: JSON.stringify(newCharts),
-    //   headers: {'X-WP-Nonce': wpRestNonce }
-    // });
-  
-    // Convert response to json
-    const jsonRes = await response.json();
-
-    console.log("JSONRES-DELETE", jsonRes)
-
-    // Bail is server response status = error
-    if (response.status !== 200 ) throw new Error(  jsonRes.message )
-
-    const card = document.getElementById(`${prefix}__chart__${chartId}__card`)
-    document.querySelector(`#${prefix}__admin .chart-library__content`).removeChild( card ) 
-
-    // Success handler
-    displayAdminMessage("Chart deleted successfully", "success",  prefix)
-
-    return newCharts
 
   } catch (error) {
 

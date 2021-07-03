@@ -2,20 +2,13 @@ import { fontFamily, colors } from "./utilities"
 
 class Trace {
 
-  constructor( ) {
+  constructor( ) { }
 
-    // trace = trace;
-    // index = index;
-
-    //  console.log(trace)
-
-  }
-
-  static defaultOptions( index ) {
+  static defaultOptions( index, chartType ) {
 
     return {
 
-      type: "scatter",
+      type: chartType,
       visible: true,
       showlegend: true,
       mode: "lines+markers",

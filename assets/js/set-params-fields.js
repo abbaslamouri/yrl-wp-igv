@@ -16,6 +16,8 @@ const setParamsFields = async function ( fileName, fileId, sheetId, chartType, c
   if (response.status !== 200 ) throw new Error(  response.json().message )
   const spreadsheet = await response.json()
 
+  
+
   if ( ! sheetId ) {
       sheetId = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
   }

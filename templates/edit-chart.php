@@ -24,7 +24,7 @@
 
         <!-- Loading spinner -->
         <!-- <img class="spinner" src="<?php //echo "{$this->url}assets/img/loading-spinner.svg" ?>" alt="Loading Spinner"> -->
-        <div class="loading">Loading...</div> 
+        <div class="loading hidden">Loading...</div> 
 
         <!-- Warning heading -->
         <div class="warning">To view a chart, you must select/upload a file, select a sheet, and chart type</div>
@@ -48,9 +48,9 @@
           <div class="accordion accordion__level-1 main__Accordion">
             
             <div class="ac fileUploadAc">
-              <h2 class="ac-header"><div class="ac-trigger">File Upload</div></h2>
+              <h2 class="ac-header"><div class="ac-trigger">Chart Params</div></h2>
               <div class="ac-panel">
-                <?php require "{$this->path}templates/file-upload.php"; ?>
+                <?php require "{$this->path}templates/params.php"; ?>
               </div>
             </div>
 

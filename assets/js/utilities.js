@@ -974,7 +974,7 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   // create card content
   const shortcode = document.createElement( "div" )
   shortcode.classList.add( "shortcode")
-  const shortcodeText = document.createTextNode( `[${prefix}__chart id=${chart.fileUpload.chartId}]` )
+  const shortcodeText = document.createTextNode( `[${prefix} id=${chart.fileUpload.chartId}]` )
   shortcode.appendChild( shortcodeText )
   cardFooter.appendChild( shortcode )
 

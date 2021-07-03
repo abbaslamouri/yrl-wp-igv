@@ -2,7 +2,7 @@
     z-index: 999999 !important;    
 }
 
-#yrl_wp_igv__admin {
+#yrl_wp_plotly_charts__admin {
 
   margin:0;
   padding:1rem;
@@ -26,7 +26,8 @@
     position:relative;
     display: grid;
     // grid-template-columns: repeat(3, 1fr);
-    grid-template-columns: repeat(auto-fill, minmax(350px, 450px));
+    grid-template-columns: repeat(auto-fill, minmax(450px, 600px));
+    justify-content: center;
     grid-gap: 1rem;
     grid-column: 1 / span 2;
     padding:2rem;
@@ -141,7 +142,7 @@
         font-weight: 700;
         color: rgba($color_danger, 1);
         line-height: 2rem;
-        z-index: 99999999999;
+        z-index: 99999;
       }
 
       .loading {
@@ -151,7 +152,7 @@
         transform: translate(-50%, -50%);
         font-size: 3rem;
         font-family:inherit;
-        z-index: 9999999999999;
+        z-index: 99999;
 
       }
 

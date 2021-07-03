@@ -1,8 +1,12 @@
+import Plotly from 'plotly.js-dist'
+import cloneDeep from 'lodash.clonedeep'
 import fetchData from "./fetch-data"
-import { displayAdminMessage } from "./utilities"
+import editChart from "./edit-chart"
+import deleteChart from "./delete-chart"
+import { displayAdminMessage, createChartCard } from "./utilities"
 
 
-const saveChart = async function ( chart, charts, wpRestUrl, wpRestNonce, prefix ) {
+const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
 
   try {
 
@@ -17,12 +21,6 @@ const saveChart = async function ( chart, charts, wpRestUrl, wpRestNonce, prefix
     }
 
     const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
-      
-    // const response = await fetch(wpRestUrl, {
-    //   method: "POST",
-    //   body: JSON.stringify(charts),
-    //   headers: {'X-WP-Nonce': wpRestNonce }
-    // });
   
     // Convert response to json
     const jsonRes = await response.json();
@@ -32,8 +30,62 @@ const saveChart = async function ( chart, charts, wpRestUrl, wpRestNonce, prefix
     // Bail is server response status = error
     if (response.status !== 200 ) throw new Error( jsonRes.message )
 
+
+
+
+
+    // await saveChart( chart, charts, wpRestUrl, wpRestNonce, prefix )
+    document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+
+    const noChartsContaine = document.querySelector(`#${prefix}__admin .no-charts`)
+    if ( noChartsContaine ) noChartsContaine.remove()
+
+    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+
+    const newChart = cloneDeep( chart )
+
+    newChart.layout.showlegend = false
+    newChart.layout.hovermode = false
+    newChart.layout.height = 300
+    newChart.config.displayModeBar = false
+
+    await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)
+
+
+
+
     // Success handler
     displayAdminMessage("Chart saved successfully", "success",  prefix)
+
+
+    document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+
+      element.addEventListener("click", async function (event) {  
+        event.preventDefault()
+  
+        // Get chart Id
+        // const chartId = event.target.closest(".card__edit-chart").dataset.chartId
+        editChart( charts, chart.fileUpload.chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+  
+      })
+  
+    })
+  
+  
+    document.querySelectorAll( `#${prefix}__admin .card__delete-chart`).forEach( ( element ) => {
+  
+      element.addEventListener("click", async function (event) {  
+        event.preventDefault()
+  
+        // Get chart Id
+        // const chartId = event.target.closest(".card__delete-chart").dataset.chartId
+        deleteChart(charts, chart.fileUpload.chartId, wpRestUrl, wpRestNonce, prefix)
+  
+      })
+  
+    })
+
+
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)
