@@ -21,7 +21,7 @@ if (  yrl_wp_plotly_charts_obj ) {
   const yrlPlotlyChartsObj = yrl_wp_plotly_charts_obj
   const charts = yrlPlotlyChartsObj.charts
   const sheets = yrlPlotlyChartsObj.sheets
-  let emptyChart = { fileUpload: {}, layout: {}, config: {}, traces: [] } 
+  let emptyChart = { params: {}, layout: {}, config: {}, traces: [] } 
   let chart = {}
   let spreadsheet = []
   const prefix = yrlPlotlyChartsObj.prefix
@@ -80,7 +80,7 @@ if (  yrl_wp_plotly_charts_obj ) {
           }
           break
 
-        case `${prefix}__fileUpload[mediaUploadBtn]`:
+        case `${prefix}__params[mediaUploadBtn]`:
           event.preventDefault()
 
           mediaUploader.open() 
@@ -115,11 +115,9 @@ if (  yrl_wp_plotly_charts_obj ) {
         // Bail if attachment can't be found
         if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
-        const chartId = chart.fileUpload !== undefined && chart.fileUpload.chartId !== undefined ? chart.fileUpload.chartId : null
+        const chartId = chart.params !== undefined && chart.params.chartId !== undefined ? chart.params.chartId : null
 
         spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
-
-        console.log(spreadsheet)
 
         chartUpdated = true
 
@@ -139,9 +137,11 @@ if (  yrl_wp_plotly_charts_obj ) {
     document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
     event.preventDefault( )
 
-      if( event.target.id.includes( `fileUpload` ) ) {
+      if( event.target.id.includes( `params` ) ) {
         // chart = cloneDeep(emptyChart)
         paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+
+        console.log("CHART", chart)
 
       } else {
 

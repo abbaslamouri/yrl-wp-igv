@@ -30,16 +30,16 @@ const setParamsFields = async function ( fileName, fileId, sheetId, chartType, c
   // document.querySelector( `#${prefix}__admin .loading` ).classList.remove("hidden")
   hideOptions(prefix)
   displayAdminMessage (null, null, prefix)
-  setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__fileUpload[sheetId]` ) )
+  setSheetIdOptions (spreadsheet, document.getElementById( `${prefix}__params[sheetId]` ) )
   // setFileUploadFields( fileName, fileId, spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: "", chartType, null, prefix )
-  document.getElementById(`${prefix}__fileUpload[fileName]`).value = fileName
-  document.getElementById(`${prefix}__fileUpload[fileId]`).value = fileId
-  document.getElementById(`${prefix}__fileUpload[chartId]`).value = chartId
-  document.getElementById( `${prefix}__fileUpload[sheetId]` ).value = sheetId
-  document.getElementById( `${prefix}__fileUpload[chartType]` ).value = chartType
-  document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
-  document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
-  document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.remove( "hidden" )
+  document.getElementById(`${prefix}__params[fileName]`).value = fileName
+  document.getElementById(`${prefix}__params[fileId]`).value = fileId
+  document.getElementById(`${prefix}__params[chartId]`).value = chartId
+  document.getElementById( `${prefix}__params[sheetId]` ).value = sheetId
+  document.getElementById( `${prefix}__params[chartType]` ).value = chartType
+  document.getElementById( `${prefix}__params[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
+  document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
+  document.getElementById( `${prefix}__params[chartType]` ).closest( ".field-group" ).classList.remove( "hidden" )
  
   if ( ! chartId ) mainAccordion.open(0)
 

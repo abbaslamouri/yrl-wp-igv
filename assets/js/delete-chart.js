@@ -19,7 +19,7 @@ const deleteChart = async function (charts, chartId, wpRestUrl, wpRestNonce, pre
         // Bail if there are no chart tr
         if ( ! chartId ) throw new Error(  `Chart ID is required` )
             
-        const newCharts = charts.filter(chart => chart.fileUpload.chartId != chartId)
+        const newCharts = charts.filter(chart => chart.params.chartId != chartId)
 
         const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(newCharts) ) 
 

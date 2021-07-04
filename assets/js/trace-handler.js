@@ -99,6 +99,13 @@ const traceHandler = async ( chart, key, value, prefix  ) => {
     document.getElementById(`${prefix}__traces[${traceNumber}][error_y][thickness]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
     document.getElementById(`${prefix}__traces[${traceNumber}][error_y][width]`).disabled = true !== trace.visible  || ! trace.error_y.visible ? true : false
 
+    document.getElementById(`${prefix}__traces[${traceNumber}][title][text]`).disabled = true !== trace.visible ? true : false
+    document.getElementById(`${prefix}__traces[${traceNumber}][title][font][family]`).disabled = true !== trace.visible || ! trace.title.text ? true : false
+    document.getElementById(`${prefix}__traces[${traceNumber}][title][font][color]`).disabled = true !== trace.visible || ! trace.title.text ? true : false
+    document.getElementById(`${prefix}__traces[${traceNumber}][title][font][size]`).disabled = true !== trace.visible || ! trace.title.text ? true : false
+    document.getElementById(`${prefix}__traces[${traceNumber}][title][position]`).disabled = true !== trace.visible || ! trace.title.text ? true : false
+
+
 
 }
 

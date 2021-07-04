@@ -8,7 +8,7 @@ class Hoverlabel {
 
     return {
 
-      hovermode: false,
+      hovermode: true,
       hoverlabel: {
         bgcolor: "#FFFFFF",
         bordercolor: "#000a12",

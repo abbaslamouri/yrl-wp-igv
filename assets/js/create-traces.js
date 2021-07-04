@@ -15,23 +15,23 @@ const traces = async function (chart, spreadsheet, prefix) {
   // // Remove extra traces if new spreasheet contains less columns than old spreasheet
   // if (chart.traces) {
   //   const traceCount = [...chart.traces].length
-  //   const spreadsheetLength = spreadsheet[chart.fileUpload.sheetId].data.length
+  //   const spreadsheetLength = spreadsheet[chart.params.sheetId].data.length
   //   if ( spreadsheetLength < traceCount +1 ) chart.traces.splice( spreadsheetLength-1, traceCount - spreadsheetLength + 1 )
   // }
 
 
-  for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
+  for (let i = 0;  i < spreadsheet[chart.params.sheetId].data.length - 1; i++) {
 
     // // Traces options
     // if (chart.traces[i] === undefined) {
     //   chart.traces[i] = Trace.defaultOptions( i )
-    //   chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-    //   chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-    //   chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+    //   chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
+    //   chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
+    //   chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
     // } else {
-    //   chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-    //   chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-    //   chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+    //   chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
+    //   chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
+    //   chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
     // }
 
     // Create a trace panel and add it to traces accordion
@@ -46,7 +46,7 @@ const traces = async function (chart, spreadsheet, prefix) {
     const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
 
     // Create panel sections
-    createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
+    createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
 
     // Create section accordion
     new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })

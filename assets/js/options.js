@@ -1,4 +1,5 @@
-import Trace from './Trace'
+import ScatterTrace from './ScatterTrace'
+import PieTrace from './PieTrace'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
@@ -12,47 +13,46 @@ const chartOptions = ( chart, spreadsheet  ) => {
   // Remove extra traces if new spreasheet contains less columns than old spreasheet
   if ( chart.traces.length ) {
     const traceCount = [...chart.traces].length
-    const spreadsheetLength = spreadsheet[chart.fileUpload.sheetId].data.length
+    const spreadsheetLength = spreadsheet[chart.params.sheetId].data.length
     if ( spreadsheetLength < traceCount +1 ) chart.traces.splice( spreadsheetLength-1, traceCount - spreadsheetLength + 1 )
   }
 
-  console.log("ZZZZZ", chart)
-  console.log("SP", spreadsheet)
+  for (let i = 0;  i < spreadsheet[chart.params.sheetId].data.length - 1; i++) {
 
+    // const result = spreadsheet[chart.params.sheetId].data[i].every( ( data ) => { data } )    
+    if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
 
-  for (let i = 0;  i < spreadsheet[chart.fileUpload.sheetId].data.length - 1; i++) {
+    if ( chart.traces[i] === undefined ) {
+      switch ( chart.params.chartType ) {
 
-    console.log(spreadsheet[chart.fileUpload.sheetId].data)
+        case "scatter":
+          chart.traces[i] = ScatterTrace.defaultOptions( i, chart.params.chartType )
+          break
 
-    // const result = spreadsheet[chart.fileUpload.sheetId].data[i].every( ( data ) => { data } )    
-    if ( spreadsheet[chart.fileUpload.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
+          case "pie":
+          chart.traces[i] = PieTrace.defaultOptions( i, chart.params.chartType )
+          break
 
-    // Traces options
-    // if (chart.traces[i] === undefined) {
-    chart.traces[i] = chart.traces[i] === undefined ? Trace.defaultOptions( i, chart.fileUpload.chartType ) : chart.traces[i]
-      // chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-      // chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-      // chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
-    // } else {
-      // chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
-      // chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-      // chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
-    // }
+      }
+    }
 
-    chart.traces[i].name = Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i+1]
+    
 
-    if ( chart.fileUpload.chartType === "scatter" ) {
-      delete chart.traces[i].labels
-      delete chart.traces[i].values
-      chart.traces[i].x = spreadsheet[chart.fileUpload.sheetId].data[0]
-      chart.traces[i].y = spreadsheet[chart.fileUpload.sheetId].data[i+1]
-    } else if ( chart.fileUpload.chartType === "pie" ) {
-      delete chart.traces[i].x
-      delete chart.traces[i].y
-      delete chart.traces[i].xaxis
-      delete chart.traces[i].yaxis
-      chart.traces[i].labels = spreadsheet[chart.fileUpload.sheetId].data[0]
-      chart.traces[i].values = spreadsheet[chart.fileUpload.sheetId].data[i+1]
+    chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
+    chart.traces[i].type = chart.params.chartType
+
+    if ( chart.params.chartType === "scatter" || chart.params.chartType === "bar" ) {
+      // delete chart.traces[i].labels
+      // delete chart.traces[i].values
+      chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
+      chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
+    } else if ( chart.params.chartType === "pie" ) {
+      // delete chart.traces[i].x
+      // delete chart.traces[i].y
+      // delete chart.traces[i].xaxis
+      // delete chart.traces[i].yaxis
+      chart.traces[i].labels = spreadsheet[chart.params.sheetId].data[0]
+      chart.traces[i].values = spreadsheet[chart.params.sheetId].data[i+1]
     }
 
   }

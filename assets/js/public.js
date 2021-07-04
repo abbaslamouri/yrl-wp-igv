@@ -1,5 +1,6 @@
 import Plotly from 'plotly.js-dist'
-import Trace from "./Trace"
+import ScatterTrace from "./ScatterTrace"
+import PieTrace from "./PieTrace"
 import { hideElementById, showElementById, fetchminMaxAvgTableChartData, getMinMaxAvgData } from "./utilities"
 import "../sass/public.scss"
 

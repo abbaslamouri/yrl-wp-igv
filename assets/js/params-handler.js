@@ -7,13 +7,13 @@ import panels from './panels'
 const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
 
   // Update chart params options
-  chart.fileUpload.fileName = document.getElementById( `${prefix}__fileUpload[fileName]` ).value
-  chart.fileUpload.fileId = document.getElementById( `${prefix}__fileUpload[fileId]` ).value
-  chart.fileUpload.sheetId = document.getElementById( `${prefix}__fileUpload[sheetId]` ).value
-  chart.fileUpload.chartType = document.getElementById( `${prefix}__fileUpload[chartType]` ).value
+  chart.params.fileName = document.getElementById( `${prefix}__params[fileName]` ).value
+  chart.params.fileId = document.getElementById( `${prefix}__params[fileId]` ).value
+  chart.params.sheetId = document.getElementById( `${prefix}__params[sheetId]` ).value
+  chart.params.chartType = document.getElementById( `${prefix}__params[chartType]` ).value
 
   // return  if no file name or file ID or chart type 
-  if ( ! chart.fileUpload.fileName || !  chart.fileUpload.fileId || ! chart.fileUpload.sheetId || ! chart.fileUpload.chartType ) return
+  if ( ! chart.params.fileName || !  chart.params.fileId || ! chart.params.sheetId || ! chart.params.chartType ) return
 
     // mainAccordion.close(0)
     Plotly.purge(`${prefix}__plotlyChart`)
@@ -37,8 +37,6 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
       // Hide warning and unhide loading
       // document.querySelector( `#${prefix}__admin .warning` ).classList.add( `${prefix}__hidden` )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add(`hidden`)
-
-      console.log(chart)
 
    })
 

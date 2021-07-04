@@ -18,12 +18,12 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
 
     createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-    if (sheets[chart.fileUpload.chartId]) {
+    if (sheets[chart.params.chartId]) {
 
       for ( let i=0; i < chart.traces.length; i++) {
 
-        chart.traces[i].x = sheets[chart.fileUpload.chartId].data[0]
-        chart.traces[i].y = sheets[chart.fileUpload.chartId].data[i+1]
+        chart.traces[i].x = sheets[chart.params.chartId].data[0]
+        chart.traces[i].y = sheets[chart.params.chartId].data[i+1]
         
       }
 
@@ -35,11 +35,11 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
       // newChart.layout.width = 400
       newChart.config.displayModeBar = false
 
-      await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)
+      await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
 
 
     } else {
-      document.getElementById( `${prefix}__chart__${chart.fileUpload.chartId}` ).innerHTML = `<div class='file-missing'>${chart.fileUpload.fileName} cannot be found</div>`
+      document.getElementById( `${prefix}__chart__${chart.params.chartId}` ).innerHTML = `<div class='file-missing'>${chart.params.fileName} cannot be found</div>`
     }
   
   })

@@ -16,9 +16,9 @@ const editChart = async function ( charts, chartId, wpRestUrl, wpRestNonce, main
 
   try {
 
-    const chart = charts.filter(chart => chart.fileUpload.chartId == chartId)[0]
+    const chart = charts.filter(chart => chart.params.chartId == chartId)[0]
 
-    const spreadsheet = await setParamsFields( chart.fileUpload.fileName, chart.fileUpload.fileId, chart.fileUpload.sheetId, chart.fileUpload.chartType, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+    const spreadsheet = await setParamsFields( chart.params.fileName, chart.params.fileId, chart.params.sheetId, chart.params.chartType, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
     Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ).then( ( ) => {
 

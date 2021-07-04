@@ -6,7 +6,8 @@ import Legend from "./Legend"
 import Hoverlabel from "./Hoverlabel"
 import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
-import Trace from './Trace'
+import ScatterTrace from './ScatterTrace'
+import PieTrace from './PieTrace'
 import { createPanel, createPanelSections } from "./utilities"
 // import traces from './create-traces'
 
@@ -32,7 +33,16 @@ const panels = async function (chart, spreadsheet, prefix) {
     const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
 
     // Create panel sections
-    createPanelSections( Trace.sections(chart.traces[i], i, Object.values(spreadsheet[chart.fileUpload.sheetId]["labels"])[i]), sectionsContainer, `traces${i}`, prefix )
+    switch ( chart.params.chartType ) {
+      
+      case "scatter":
+        createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+        break
+
+      case "Pie":
+        createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+        break
+    }
 
     // Create section accordion
     new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })

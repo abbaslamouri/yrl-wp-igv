@@ -141,8 +141,8 @@ const fetchTableChartData = ( chart, spreadsheet ) => {
 
   // Set table header values
   const headerValues = []
-  for ( let  i = 0; i < spreadsheet[chart.fileUpload.sheetId].labels.length; i++ ) {
-    headerValues.push([`<b>${spreadsheet[chart.fileUpload.sheetId].labels[i]}</b>`]);
+  for ( let  i = 0; i < spreadsheet[chart.params.sheetId].labels.length; i++ ) {
+    headerValues.push([`<b>${spreadsheet[chart.params.sheetId].labels[i]}</b>`]);
   }
   chart.tableChart.options.header.values = headerValues
 
@@ -153,15 +153,15 @@ const fetchTableChartData = ( chart, spreadsheet ) => {
   // Round cells values if rounding is not 0
   // if ( chart.tableChart.options.rounding) {
   //   const cellValues = []
-  //   for ( let  i = 0; i < spreadsheet[chart.fileUpload.sheetId].data.length; i++ ) {
+  //   for ( let  i = 0; i < spreadsheet[chart.params.sheetId].data.length; i++ ) {
   //     cellValues[i] =[]
-  //     for ( let  j = 0; j < spreadsheet[chart.fileUpload.sheetId].data[i].length; j++ ) {
-  //       cellValues[i][j] = ( spreadsheet[chart.fileUpload.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
+  //     for ( let  j = 0; j < spreadsheet[chart.params.sheetId].data[i].length; j++ ) {
+  //       cellValues[i][j] = ( spreadsheet[chart.params.sheetId].data[i][j].toFixed( chart.tableChart.options.rounding ) ) 
   //     }  
   //   }
   //   chart.tableChart.options.cells.values = cellValues  
   // } else {
-    chart.tableChart.options.cells.values = spreadsheet[chart.fileUpload.sheetId].data
+    chart.tableChart.options.cells.values = spreadsheet[chart.params.sheetId].data
   // }
 
     // Set table cells alignment
@@ -170,7 +170,7 @@ const fetchTableChartData = ( chart, spreadsheet ) => {
 
   // Set table even and odd row colors
   // const rowFillColors = []
-  // for ( let  j = 0; j < spreadsheet[chart.fileUpload.sheetId].data[0].length; j++ ) {
+  // for ( let  j = 0; j < spreadsheet[chart.params.sheetId].data[0].length; j++ ) {
     // rowFillColors[j] = (j % 2 === 0) ? chart.tableChart.options.oddRowColor : chart.tableChart.options.evenRowColor
   // }
   // chart.tableChart.options.cells.fill.color = [rowFillColors]
@@ -198,7 +198,7 @@ const fetchMinMaxAvgTableData = (chart, spreadsheet, xAxisMin = null, xAxisMax =
 
    // Set table even and odd row colors
   //  const rowFillColors = []
-  //  for ( let  j = 0; j < spreadsheet[chart.fileUpload.sheetId].data[0].length; j++ ) {
+  //  for ( let  j = 0; j < spreadsheet[chart.params.sheetId].data[0].length; j++ ) {
   //    rowFillColors[j] = (j % 2 === 0) ? chart.minMaxAvgTable.evenRowColor : chart.minMaxAvgTable.oddRowColor
   //  }
   //  chart.minMaxAvgTable.cells.fill.color = [rowFillColors]
@@ -221,7 +221,7 @@ const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax
   const max = ( xAxisMax ) ? xAxisMax : chart.layout.xaxis.range[1]
 
   // Remove first row from data (xaxis data)
-  const data = [...spreadsheet[chart.fileUpload.sheetId].data]
+  const data = [...spreadsheet[chart.params.sheetId].data]
   
   const indeces = []
   let i=0
@@ -244,8 +244,8 @@ const getMinMaxAvgData = function (chart, spreadsheet, xAxisMin = null, xAxisMax
   const minMaxAvgTableData = [[],[],[],[]];
 
   // Fetch header row and format as fist column for min-max-avg first column
-  for ( const property in Object.values(spreadsheet[chart.fileUpload.sheetId].labels)) {
-    minMaxAvgTableData[0].push(Object.values(spreadsheet[chart.fileUpload.sheetId].labels)[property])
+  for ( const property in Object.values(spreadsheet[chart.params.sheetId].labels)) {
+    minMaxAvgTableData[0].push(Object.values(spreadsheet[chart.params.sheetId].labels)[property])
   }
 
   // Remove first column header
@@ -891,9 +891,9 @@ const hideOptions = (prefix) => {
 
   // Hide file uploag fields
 
-  document.getElementById( `${prefix}__fileUpload[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
-  document.getElementById( `${prefix}__fileUpload[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
-  document.getElementById( `${prefix}__fileUpload[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
+  document.getElementById( `${prefix}__params[fileName]` ).closest( ".field-group" ).classList.add( "hidden" )
+  document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.add( "hidden" )
+  document.getElementById( `${prefix}__params[chartType]` ).closest( ".field-group" ).classList.add( "hidden" )
 
   // Hide all panels
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.add( "hidden" )
@@ -934,13 +934,13 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   // Create card
   const card = document.createElement( "div" )
   card.classList.add( "card")
-  card.id = `${prefix}__chart__${chart.fileUpload.chartId}__card`
+  card.id = `${prefix}__chart__${chart.params.chartId}__card`
   document.querySelector(parentContainer).prepend(card)
 
   // Create heading
   const heading = document.createElement( "h2" )
   heading.classList.add( "card__heading")
-  const headingText = document.createTextNode( chart.fileUpload.fileName )
+  const headingText = document.createTextNode( chart.params.fileName )
   heading.appendChild( headingText )
   card.appendChild( heading )
 
@@ -957,7 +957,7 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   // create plotly chart div
   const plotlyChart = document.createElement( "div" )
   plotlyChart.classList.add( "chart" )
-  plotlyChart.id = `${prefix}__chart__${chart.fileUpload.chartId}`
+  plotlyChart.id = `${prefix}__chart__${chart.params.chartId}`
   chartContainer.appendChild( plotlyChart )
 
   // // create loading spinner
@@ -974,7 +974,7 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   // create card content
   const shortcode = document.createElement( "div" )
   shortcode.classList.add( "shortcode")
-  const shortcodeText = document.createTextNode( `[${prefix} id=${chart.fileUpload.chartId}]` )
+  const shortcodeText = document.createTextNode( `[${prefix} id=${chart.params.chartId}]` )
   shortcode.appendChild( shortcodeText )
   cardFooter.appendChild( shortcode )
 
@@ -987,21 +987,21 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   const cloneAnchor = document.createElement( "a" )
   cloneAnchor.classList.add( "card__clone-chart" )
   cloneAnchor.href = "#"
-  cloneAnchor.dataset.chartId = chart.fileUpload.chartId
+  cloneAnchor.dataset.chartId = chart.params.chartId
   actions.appendChild( cloneAnchor )
 
   // create edit chart ancher tag
   const editAnchor = document.createElement( "a" )
   editAnchor.classList.add( "card__edit-chart" )
   editAnchor.href = "#"
-  editAnchor.dataset.chartId = chart.fileUpload.chartId
+  editAnchor.dataset.chartId = chart.params.chartId
   actions.appendChild( editAnchor )
 
   // create delete chart ancher tag
   const deleteAnchor = document.createElement( "a" )
   deleteAnchor.classList.add( "card__delete-chart")
   deleteAnchor.href = "#"
-  deleteAnchor.dataset.chartId = chart.fileUpload.chartId
+  deleteAnchor.dataset.chartId = chart.params.chartId
   actions.appendChild( deleteAnchor )
 
   // Create clone svg icon and add it to clone anchor tag

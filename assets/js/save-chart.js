@@ -11,11 +11,11 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
   try {
 
     // Bail if there are no chart traces, a file or a sheet id
-    if ( ! Object.values(chart.traces).length || ! chart.fileUpload.fileId || ! chart.fileUpload.sheetId ) throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
+    if ( ! Object.values(chart.traces).length || ! chart.params.fileId || ! chart.params.sheetId ) throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
 
-    if ( chart.fileUpload.chartId === undefined ) { // There is a chart Id (edit)
+    if ( chart.params.chartId === undefined ) { // There is a chart Id (edit)
       const chartId = ! charts.length ? 16327 : charts[charts.length-1].fileUpload.chartId + 1
-      chart.fileUpload.chartId = chartId
+      chart.params.chartId = chartId
       charts.push( chart )
       document.getElementById(`${prefix}__fileUpload[chartId]`).value = chartId
     }
@@ -49,7 +49,7 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
     newChart.layout.height = 300
     newChart.config.displayModeBar = false
 
-    await Plotly.newPlot(`${prefix}__chart__${chart.fileUpload.chartId}`, newChart.traces, newChart.layout, newChart.config)
+    await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
 
 
 
@@ -65,7 +65,7 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
   
         // Get chart Id
         // const chartId = event.target.closest(".card__edit-chart").dataset.chartId
-        editChart( charts, chart.fileUpload.chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+        editChart( charts, chart.params.chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
   
       })
   
@@ -79,7 +79,7 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
   
         // Get chart Id
         // const chartId = event.target.closest(".card__delete-chart").dataset.chartId
-        deleteChart(charts, chart.fileUpload.chartId, wpRestUrl, wpRestNonce, prefix)
+        deleteChart(charts, chart.params.chartId, wpRestUrl, wpRestNonce, prefix)
   
       })
   
