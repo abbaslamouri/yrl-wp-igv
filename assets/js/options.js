@@ -5,6 +5,7 @@ import Title from "./Title"
 import Legend from "./Legend"
 import Hoverlabel from "./Hoverlabel"
 import Modebar from "./Modebar"
+import Grid from "./Grid"
 import ChartAxis from "./ChartAxis"
 
 
@@ -71,6 +72,7 @@ const chartOptions = ( chart, spreadsheet  ) => {
     chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
     chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
     chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Grid.defaultOptions( ) }
 
     chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
     chart.config.displayModeBar = chart.layout.displayModeBar

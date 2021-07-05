@@ -76,6 +76,11 @@
               <div class="ac-panel"></div>
             </div>
 
+            <div class="ac gridAc hidden">
+              <h2 class="ac-header"><div class="ac-trigger">Grid</div></h2>
+              <div class="ac-panel"></div>
+            </div>
+
             <div class="ac modebarAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Modebar</div></h2>
               <div class="ac-panel"></div>
@@ -95,7 +100,6 @@
                 <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
                 <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}__addAnnotation"; ?>" >Add New</a>
                 <div class="accordion accordion__level-2 annotations__Accordion">
-                
                 </div>
               </div>
             </div>

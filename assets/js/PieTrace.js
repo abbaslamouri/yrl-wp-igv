@@ -9,71 +9,6 @@ class Trace {
     return {
 
       type: chartType,
-      visible: true,
-      showlegend: true,
-      mode: "lines+markers",
-      xaxis: "x",
-      yaxis: "y",
-      connectgaps: false,
-      opacity: 1,
-
-      marker: {
-        symbol: 0,
-        size: 6,
-        opacity:1,
-        color: colors()[index],
-        line: {
-          color: "#444444",
-          width: 0
-        },
-        gradient: {
-          type: "none",
-          color: "#444444"
-        },
-        masdisplayed: 0
-      },
-      line: {
-        dash: "solid",
-        shape: "linear",
-        width: 2,
-        color: colors()[index],
-        smoothing: 1,
-        simplify: true
-      },
-      text: null,
-      textfont: {
-        family: "Raleway",
-        color: colors()[index],
-        size: 12,
-      },
-      textposition: "top center",
-      hovertext: "",
-      hoverinfo: "all",
-      hoverlabel: {
-        align: "auto",
-        namelength: 15,
-        font: {
-          family: "Raleway",
-          color: "#FFFFFF",
-          size: 12,
-        },
-        bgcolor: colors()[index],
-        bordercolor : "#000000",
-      },
-      error_y: {
-        visible: false,
-        type: "percent",
-        value: 20,
-        valueminus: 10,
-        array: [],
-        arrayminus: [],
-        color: colors()[index],
-        symmetric: false,
-        thickness: 2,
-        width: 4
-      },
-
-
       title: {
         text: "",
         font: {
@@ -83,7 +18,63 @@ class Trace {
         },
         position: "top center",
       },
-      pull: 0
+      visible: true,
+      showlegend: true,
+      opacity: 1,
+      pull: 0,
+      text: [],
+      textposition: "auto",
+      hovertext: "",
+      hoverinfo: "all",
+      automargin: true,
+      marker: {
+        colors: [],
+        line: {
+          color: "#444444",
+          width: 0
+        },
+      },
+      textfont: {
+        family: "Raleway",
+        color: colors()[index],
+        size: 12,
+      },
+      textinfo: null,
+      direction: "counterclockwise",
+      hole: 0,
+      hoverlabel: {
+        bgcolor: colors()[index],
+        bordercolor : "#000000",
+        font: {
+          family: "Raleway",
+          color: "#FFFFFF",
+          size: 12,
+        },
+        align: "auto",
+        namelength: 15,
+      },
+      insidetextfont: {
+        font: {
+          family: Object.keys(fontFamily())[12],
+          size: 16,
+          color: "#263238",
+        },
+      },
+      insidetextorientation: "auto",
+      outsidetextfont: {
+        font: {
+          family: Object.keys(fontFamily())[12],
+          size: 16,
+          color: "#263238",
+        },
+      },
+      rotation: 0,
+      sort:true,
+      domain: {
+        row: 0,
+        column: 0
+      }
+
     }
 
   }
@@ -122,28 +113,6 @@ class Trace {
             ]
           },
           {
-            cssClasses : ["field-group"],     
-            inputFields : [
-              {
-                id : `traces[${index}][mode]`, 
-                title : "Mode", 	
-                type : "select", 
-                options : {
-                  none : "None",
-                  lines : "Lines",
-                  markers : "Markers",
-                  text: "text",
-                  "lines+markers" : "Lines & Markers",
-                  "markers+text" : "Markers & Text",
-                  "lines+markers+text" : "Lines, Markers & Text"
-                },
-                value : trace.mode === undefined ? this.defaultOptions(index, chartType).mode :trace.mode,
-                disabled: true !== trace.visible  ? true : false,
-                hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
-              },
-            ]
-          },
-          {
             cssClasses : ["field-group"],
             inputFields: [
               {
@@ -157,45 +126,25 @@ class Trace {
             ],
           },
           {
-            cssClasses : ["field-group", "fifty-fifty"],
+            cssClasses : ["field-group", "forty-sixty"],
             inputFields: [
               {
-                id : `traces[${index}][xaxis]`, 
-                title : "x-Axis", 	
-                type : "select", 
-                options : {
-                  x : "Bottom",
-                  x2 : "Top",
-                },
-                value : trace.xaxis === undefined ? this.defaultOptions(index, chartType).xaxis : trace.xaxis,
-                disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
-                hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
+                id : `traces[${index}][pull]`, 
+                title : "Slice Pull", 
+                type : "number",
+                min : 0,
+                max : 1,
+                step : 0.01,
+                value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
+                disabled: true !== trace.visible ? true : false,
+                hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
               },
-              {
-                id : `traces[${index}][yaxis]`, 
-                title : "Y-Axis", 	
-                type : "select", 
-                options : {
-                  y : "Left",
-                  y2 : "Right",
-                },
-                value : trace.yaxis === undefined ? this.defaultOptions(index, chartType).yaxis: trace.yaxis,
-                disabled: true !== trace.visible  ? true : false,
-                hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
-              },
-            ]
+              
+            ],
           },
           {
             cssClasses : ["field-group", "fifty-fifty"],     
             inputFields : [
-              {
-                id : `traces[${index}][connectgaps]`, 
-                title : "Connect Gaps", 
-                type : "checkbox",
-                value : trace.connectgaps === undefined ?  false : trace.connectgaps,
-                disabled: true !== trace.visible  ? true : false,
-                hint : "Determines whether or not gaps (i.e. {nan} or missing values) in the provided data arrays are connected."
-              },
               {
                 id : `traces[${index}][opacity]`, 
                 title : "Trace Opacity", 	
@@ -209,59 +158,85 @@ class Trace {
               },
             ]
           },
-        ],
-      },
-
-      markers: {
-        intro : `Here you can modify the markers of trace "${trace.name}`,
-        title : "Markers",
-        fieldGroups : [
           {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
+            cssClasses : ["field-group", "fifty-fifty"],     
+            inputFields : [
               {
-                id : `traces[${index}][marker][symbol]`, 
-                title : "Symbol", 	
+                id : `traces[${index}][domain][row]`, 
+                title : "Domain Row", 	
                 type : "number",
-                min : 1,
-                max : 300,
-                step : 1,
-                value :  trace.marker === undefined || trace.marker.symbol === undefined ? this.defaultOptions(index, chartType).marker.symbol : trace.marker.symbol,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-                hint : "Sets the marker symbol type. Adding 100 is equivalent to appending '-open' to a symbol name. Adding 200 is equivalent to appending '-dot' to a symbol name. Adding 300 is equivalent to appending '-open-dot' or 'dot-open' to a symbol name."
+                min: 0,
+                max: 100,
+                step: 1,
+                value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
               },
               {
-                id : `traces[${index}][marker][size]`, 
-                title : "Size", 	
+                id : `traces[${index}][domain][column]`, 
+                title : "Domain Column", 	
                 type : "number",
-                min : 1,
-                max : 2000,
-                step : 1,
-                value : trace.marker === undefined || trace.marker.size === undefined ? this.defaultOptions(index, chartType).marker.size : trace.marker.size,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-                hint : "Sets the marker size (in px).  Number or array of numbers greater than or equal to 0"
+                min: 0,
+                max: 100,
+                step: 1,
+                value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+              },
+            ]
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],     
+            inputFields : [
+              {
+                id : `traces[${index}][automargin]`, 
+                title : "Auto Margin", 	
+                type : "checkbox",
+                value : trace.automargin === undefined ? this.defaultOptions(index, chartType).automargin : trace.automargin,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "Determines whether outside text labels can push the margins"
+              },
+              {
+                id : `traces[${index}][hole]`, 
+                title : "Hole", 	
+                type : "number",
+                min : 0,
+                max : 1,
+                step : 0.01,
+                value : trace.hole === undefined ? this.defaultOptions(index, chartType).hole : trace.hole,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "Sets the fraction of the radius to cut out of the pie. Use this to make a donut chart."
+              },
+            ]
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][sort]`, 
+                title : "Sort", 
+                type : "checkbox",
+                value : trace.sort === undefined ? this.defaultOptions(index, chartType).sort : trace.sort,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint : "number greater than or equal to 1"
               },
             ],
           },
+        ],
+      },
+
+      marker: {
+        intro : `Here you can modify the markers of trace "${trace.name}`,
+        title : "Marker",
+        fieldGroups : [
           {
             cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
               {
-                id : `traces[${index}][marker][opacity]`, 
-                title : "Opacity", 	
-                type : "number",
-                min : 0,
-                max : 1,
-                step : .01,
-                value : trace.marker === undefined || trace.marker.opacity === undefined ? this.defaultOptions(index, chartType).marker.opacity : trace.marker.opacity,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-                hint : "Sets the marker's opacity."
-              },
-              {
-                id : `traces[${index}][marker][color]`,  
-                title : "Color",  
-                type : "color",
-                value : trace.marker === undefined || trace.marker.color === undefined ? this.defaultOptions(index, chartType).marker.color : trace.marker.color,
+                id : `traces[${index}][marker][colors]`,  
+                title : "Colors",  
+                type : "text",
+                value : trace.marker === undefined || trace.marker.colors === undefined ? this.defaultOptions(index, chartType).marker.colors.join() : trace.marker.colors.join(),
                 disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
                 hint : ""
               },
@@ -291,133 +266,6 @@ class Trace {
               },
             ],
           },
-          {
-            cssClasses : ["field-group", "sixty-forty"],
-            inputFields: [
-              {
-                id : `traces[${index}][marker][gradient][type]`, 
-                title : "Gradient Type", 	
-                type : "select",
-                options : {
-                  none : "None",
-                  radial : "Radial",
-                  horizontal : "Horizontal",
-                  vertical: "Vertical"
-                },
-                value : trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.type === undefined ? this.defaultOptions(index, chartType).marker.gradient.type : trace.marker.gradient.type,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-                hint : "Sets the type of gradient used to fill the markers"
-              },
-              {
-                id : `traces[${index}][marker][gradient][color]`, 
-                title : "Gradient Color", 	
-                type : "color",
-                value :  trace.marker === undefined || trace.marker.gradient === undefined || trace.marker.gradient.color === undefined ? this.defaultOptions(index, chartType).marker.gradient.color : trace.marker.gradient.color,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) || ( trace.marker !== undefined && trace.marker.gradient && trace.marker.gradient.type !== undefined && trace.marker.gradient.type === "none" ) ? true : false,
-                hint : "Sets the final color of the gradient fill: the center color for radial, the right for horizontal, or the bottom for vertical."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group"],
-            inputFields: [
-              {
-                id : `traces[${index}][marker][maxdisplayed]`, 
-                title : "Maximum Displayed", 	
-                type : "number",
-                min : 0,
-                max : 20000,
-                step : 1,
-                value : trace.marker === undefined || trace.marker.maxdisplayed === undefined ? this.defaultOptions(index, chartType).marker.maxdisplayed : trace.marker.maxdisplayed,
-                disabled: true !== trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-                hint : "Sets a maximum number of points to be drawn on the graph. '0' corresponds to no limit."
-              },
-            ],
-          },
-        ]
-      },
-
-      Line: {
-        intro : `Here you can modify the lines of trace "${trace.name}`,
-        title : "Lines",
-        fieldGroups : [
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `traces[${index}][line][dash]`, 
-                title : "Type", 	
-                type : "text",
-                value : trace.line === undefined || trace.line.dash === undefined ? this.defaultOptions(index, chartType).line.dash : trace.line.dash,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) )  ? true : false,
-                hint : "Sets the dash style of lines. Set to a dash type string ('solid', 'dot', 'dash', 'longdash', 'dashdot', or 'longdashdot') or a dash length list in px (eg '5px,10px,2px,2px')."
-              },
-              {
-                id : `traces[${index}][line][shape]`,  
-                title : "Shape",  
-                type : "select",
-                options : {
-                  linear : "Linear",
-                  spline : "Spline",
-                  hv : "Horizontal/Vertical",
-                  vh: "Vertical/Horizontal",
-                  hvh: "Horizontal/Vertical/Horizontal",
-                  vhv: "Vertical/Horizontal/Vertical"
-                },
-                value : trace.line === undefined || trace.line.shape === undefined ? this.defaultOptions(index, chartType).line.shape : trace.line.shape,
-                disabled: true !== trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) ) ? true : false,
-                hint : "Determines the line shape. With 'spline' the lines are drawn using spline interpolation. The other available values correspond to step-wise line shapes."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "sixty-forty"],
-            inputFields: [
-              {
-                id : `traces[${index}][line][width]`, 
-                title : "Width", 	
-                type : "number",
-                min : 0,
-                max : 2000,
-                step : 1,
-                value : trace.line === undefined || trace.line.width === undefined ? this.defaultOptions(index, chartType).line.width : trace.line.width,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) ) ? true : false,
-                hint : "Sets the width of the trace line."
-              },
-              {
-                id : `traces[${index}][line][color]`,  
-                title : "Color",  
-                type : "color",
-                value : trace.line === undefined || trace.line.color === undefined ? this.defaultOptions(index, chartType).line.color : trace.line.color,
-                disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) ) || ( trace.line !== undefined && trace.line.width !== undefined &&parseInt(trace.line.width) === 0 ) ? true : false,
-                hint : "Sets the color of the trace line"
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][line][simplify]`, 
-                title : "Simplify", 	
-                type : "checkbox",
-                value : trace.line === undefined || trace.line.simplify === undefined ? false : trace.line.simplify,
-                disabled: true !== trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) )  ? true : false,
-                hint : "Simplifies lines by removing nearly-collinear points. When transitioning lines, it may be desirable to disable this so that the number of points along the resulting SVG path is unaffected."
-              },
-              {
-                id : `traces[${index}][line][smoothing]`, 
-                title : "Smoothing", 	
-                type : "number",
-                min : 0,
-                max : 1.3,
-                step : 0.01,
-                value : trace.line === undefined || trace.line.smoothing === undefined ? this.defaultOptions(index, chartType).line.smoothing : trace.line.smoothing,
-                disabled: true !== trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "lines" ) ) ? true : false,
-                hint : "Has an effect only if `shape` is set to 'spline' Sets the amount of smoothing. '0' corresponds to no smoothing (equivalent to a 'linear' shape). Number between or equal to 0 and 1.3."
-              }, 
-            ],
-          },
         ]
       },
 
@@ -432,10 +280,11 @@ class Trace {
                 id : `traces[${index}][text]`, 
                 title : "Text", 	
                 type : "text",
-                value : trace.text === undefined ? Array.isArray( this.defaultOptions(index, chartType).text ) ? this.defaultOptions(index, chartType).text.join() : this.defaultOptions(index, chartType).text : Array.isArray( trace.text ) ? trace.text.join() : trace.text,
-                disabled: true !== trace.visible || ! trace.mode.includes( "text" ) ? true : false,
+                value : trace.text === undefined ? this.defaultOptions(index, chartType).text.join() : trace.text.join(),
+                disabled: true !== trace.visible ? true : false,
                 hint : "Sets text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. If trace `hoverinfo` contains a 'text' flag and 'hovertext' is not set, these elements will be seen in the hover labels."
               },
+              
             ],
           },
           {
@@ -447,7 +296,7 @@ class Trace {
                 type : "select",
                 options : fontFamily(),
                 value : trace.textfont === undefined || trace.textfont.family === undefined ? this.defaultOptions(index, chartType).textfont.family : trace.textfont.family,
-                disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+                disabled: true !== trace.visible || ! trace.text ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
@@ -458,7 +307,7 @@ class Trace {
                 max : 100,
                 step : 0.5,
                 value : trace.textfont === undefined || trace.textfont.size === undefined ? this.defaultOptions(index, chartType).textfont.size : trace.textfont.size,
-                disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+                disabled: true !== trace.visible || ! trace.text ? true : false,
                 hint : "number greater than or equal to 1"
               },
             ],
@@ -471,26 +320,62 @@ class Trace {
                 title : "Text Font Color",
                 type : "color", 
                 value : trace.textfont === undefined || trace.textfont.color === undefined ? this.defaultOptions(index, chartType).textfont.color : trace.textfont.color,
-                disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+                disabled: true !== trace.visible || ! trace.text ? true : false,
               }, 
               {
                 id : `traces[${index}][textposition]`, 
                 title : "Text Position", 	
                 type : "select",
-                options : {
-                  "top left" : "Top Left",
-                  "top center" : "Top Center",
-                  "top right": "Top Right",
-                  "middle left" : "Middle Left",
-                  "middle center" : "Middle Center",
-                  "middle right": "Middle Right",
-                  "bottom left" : "Bottom Left",
-                  "bottom center" : "Bottom Center",
-                  "bottom right": "Bottom Right",
+                options: {
+                  inside: "Inside",
+                  outside: "Outside",
+                  auto: "Auto",
+                  nobe: "None"
                 },
                 value : trace.textposition === undefined ? this.defaultOptions(index, chartType).textposition : trace.textposition,
-                disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
-                hint : "Sets the positions of the `text` elements with respects to the (x,y) coordinates."
+                disabled: true !== trace.visible  ? true : false,
+                hint : "Specifies the location of the `textinfo`"
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][textinfo]`, 
+                title : "Text Position", 	
+                type : "select",
+                options: {
+                  label: "Label",
+                  text: "Text",
+                  value: "Value",
+                  percent: "Percent",
+                  "label+text": "Label & Text",
+                  "label+value": "Label & Value",
+                  "label+percent": "Label & Percent",
+                  "text+value": "Text & Value",
+                  "text+percent": "Text & Percent",
+                  "value+percent": "Value & Percent",
+                  "label+text+value": "Label & Text & Value",
+                  "label+text+percent": "Label & Text & Percent",
+                  "text+value+percent": "Text & Value & Percent",
+                  none: "None"
+                },
+                value : trace.textinfo === undefined ? this.defaultOptions(index, chartType).textinfo : trace.textinfo,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "Specifies the location of the `textinfo`"
+              },
+              {
+                id : `traces[${index}][direction]`, 
+                title : "Text Position", 	
+                type : "select",
+                options: {
+                  clockwise: "Clockwise",
+                  counterclockwise: "Counterclockwise",
+                },
+                value : trace.direction === undefined ? this.defaultOptions(index, chartType).direction : trace.direction,
+                disabled: true !== trace.visible  ? true : false,
+                hint : "Specifies the direction at which succeeding sectors follow one another."
               },
             ],
           },
@@ -501,19 +386,19 @@ class Trace {
         intro : `Here you can modify the other of trace "${trace.name}`,
         title : "Hover Text & Label",
         fieldGroups : [
-          {
-            cssClasses : ["field-group"],
-            inputFields: [
-              {
-                id : `traces[${index}][hovertext]`, 
-                title : "Hover Text", 	
-                type : "text",
-                value : trace.hovertext === undefined ?  Array.isArray( this.defaultOptions(index, chartType).hovertext ) ? this.defaultOptions(index, chartType).hovertext.join() : this.defaultOptions(index, chartType).hovertext : Array.isArray( trace.hovertext ) ? trace.hovertext.join() : trace.hovertext,
-                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
-                hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
-              },
-            ],
-          },
+          // {
+          //   cssClasses : ["field-group"],
+          //   inputFields: [
+          //     {
+          //       id : `traces[${index}][hovertext]`, 
+          //       title : "Hover Text", 	
+          //       type : "text",
+          //       value : trace.hovertext === undefined ?  Array.isArray( this.defaultOptions(index, chartType).hovertext ) ? this.defaultOptions(index, chartType).hovertext.join() : this.defaultOptions(index, chartType).hovertext : Array.isArray( trace.hovertext ) ? trace.hovertext.join() : trace.hovertext,
+          //       disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+          //       hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
+          //     },
+          //   ],
+          // },
           {
             cssClasses : ["field-group", "fifty-fifty"],
             inputFields: [
@@ -588,6 +473,116 @@ class Trace {
               },
             ],
           },
+
+
+
+
+          {
+            cssClasses : ["field-group", "sixty-forty"],
+            inputFields: [
+              {
+                id : `traces[${index}][insidetextfont][font][family]`,
+                title : "Hover Label Font",	
+                type : "select",
+                options : fontFamily(),
+                value : trace.insidetextfont === undefined || trace.insidetextfont.font === undefined || trace.insidetextfont.font.family === undefined ? this.defaultOptions(index, chartType).insidetextfont.font.family : trace.insidetextfont.font.family,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : `traces[${index}][insidetextfont][font][color]`,
+                title : "Hover Label Font Color",
+                type : "color", 
+                value : trace.insidetextfont === undefined || trace.insidetextfont.font === undefined || trace.insidetextfont.font.color === undefined ? this.defaultOptions(index, chartType).insidetextfont.font.color : trace.insidetextfont.font.color,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][insidetextfont][font][size]`, 
+                title : "Hover Label Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : trace.insidetextfont === undefined || trace.insidetextfont.font === undefined || trace.insidetextfont.font.size === undefined ? this.defaultOptions(index, chartType).insidetextfont.font.size : trace.insidetextfont.font.size,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+              {
+                id : `traces[${index}][insidetextorientation]`, 
+                title : "Hover Label Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : trace.insidetextorientation === undefined ? this.defaultOptions(index, chartType).insidetextorientation : trace.insidetextorientation,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+            ],
+          },
+
+
+
+
+          {
+            cssClasses : ["field-group", "sixty-forty"],
+            inputFields: [
+              {
+                id : `traces[${index}][outsidetextfont][font][family]`,
+                title : "Hover Label Font",	
+                type : "select",
+                options : fontFamily(),
+                value : trace.outsidetextfont === undefined || trace.outsidetextfont.font === undefined || trace.outsidetextfont.font.family === undefined ? this.defaultOptions(index, chartType).outsidetextfont.font.family : trace.outsidetextfont.font.family,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : `traces[${index}][outsidetextfont][font][color]`,
+                title : "Hover Label Font Color",
+                type : "color", 
+                value : trace.outsidetextfont === undefined || trace.outsidetextfont.font === undefined || trace.outsidetextfont.font.color === undefined ? this.defaultOptions(index, chartType).outsidetextfont.font.color : trace.outsidetextfont.font.color,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][outsidetextfont][font][size]`, 
+                title : "Hover Label Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : trace.outsidetextfont === undefined || trace.outsidetextfont.font === undefined || trace.outsidetextfont.font.size === undefined ? this.defaultOptions(index, chartType).outsidetextfont.font.size : trace.outsidetextfont.font.size,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+              {
+                id : `traces[${index}][rotation]`, 
+                title : "Hover Label Font Size", 
+                type : "number",
+                min : -360,
+                max : 360,
+                step : 1,
+                value : trace.rotation === undefined ? this.defaultOptions(index, chartType).rotation : trace.rotation,
+                disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+            ],
+          },
+
+          
+
+
+
+
           {
             cssClasses : ["field-group", "sixty-forty"],
             inputFields: [
@@ -622,133 +617,9 @@ class Trace {
         ]
       },
 
-      error_y: {
+      title: {
         intro : `Here you can modify the other of trace "${trace.name}`,
-        title : "Error Y",
-        fieldGroups : [
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][error_y][visible]`,
-                title : "Show Error",	
-                type : "checkbox",
-                value : trace.error_y === undefined || trace.error_y.visible === undefined ? false : trace.error_y.visible,
-                disabled: true !== trace.visible  ? true : false,
-                hint: "Determines whether or not this set of error bars is visible."
-              },
-              {
-                id : `traces[${index}][error_y][type]`, 
-                title : "Error Type", 
-                type : "select",
-                options : {
-                  percent : "Percent",
-                  constant : "Constant",
-                  sqrt : "Square",
-                  data: "Data",
-                },
-                value : trace.error_y === undefined || trace.error_y.type === undefined ? this.defaultOptions(index, chartType).error_y.type : trace.error_y.type,
-                disabled:  trace.error_y === undefined || true !== trace.visible ? true : false,
-                hint : "Determines the rule used to generate the error bars. If 'constant`, the bar lengths are of a constant value. Set this constant in `value`. If 'percent', the bar lengths correspond to a percentage of underlying data. Set this percentage in `value`. If 'sqrt', the bar lengths correspond to the square of the underlying data. If 'data', the bar lengths are set with data set `array`."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `traces[${index}][error_y][value]`,
-                title : "Value",
-                type : "number", 
-                value : trace.error_y === undefined || trace.error_y.value === undefined ? this.defaultOptions(index, chartType).error_y.value : trace.error_y.value,
-                disabled: trace.error_y === undefined || trace.error_y.type === "data" || true !== trace.visible ? true : false,
-                hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars.  Number greater than or equal to 0"
-              },
-              {
-                id : `traces[${index}][error_y][valueminus]`,
-                title : "Value Minus",
-                type : "number", 
-                value : trace.error_y === undefined || trace.error_y.valueminus === undefined ? this.defaultOptions(index, chartType).error_y.valueminus : trace.error_y.valueminus,
-                disabled: trace.error_y === undefined || trace.error_y.type === "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
-                hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars in the bottom (left) direction for vertical (horizontal) bars"
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "fifty-fifty"],
-            inputFields: [
-              {
-                id : `traces[${index}][error_y][array]`,
-                title : "Error Array",	
-                type : "text",
-                value : trace.error_y === undefined || trace.error_y.array === undefined ? this.defaultOptions(index, chartType).error_y.array.join(): trace.error_y.array.join(),
-                disabled: trace.error_y === undefined || trace.error_y.type !== "data" || true !== trace.visible ? true : false,
-                hint: "Sets the data corresponding the length of each error bar. Values are plotted relative to the underlying data. Determines whether or not this set of error bars is array."
-              },
-              {
-                id : `traces[${index}][error_y][arrayminus]`, 
-                title : "Error Array Minus", 
-                type : "text",
-                value : trace.error_y === undefined || trace.error_y.arrayminus=== undefined ? this.defaultOptions(index, chartType).error_y.arrayminus.join(): trace.error_y.arrayminus.join(),
-                disabled: trace.error_y === undefined || trace.error_y.type !== "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
-                hint : "Sets the data corresponding the length of each error bar in the bottom (left) direction for vertical (horizontal) bars Values are plotted relative to the underlying data."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "sixty-forty"],
-            inputFields: [
-              {
-                id : `traces[${index}][error_y][thickness]`, 
-                title : "Error Bar Line Thickness", 
-                type : "number",
-                min : 1,
-                max : 1000,
-                step : 1,
-                value : trace.error_y === undefined || trace.error_y.thickness === undefined ? this.defaultOptions(index, chartType).error_y.thickness : trace.error_y.thickness,
-                disabled: trace.error_y === undefined || true !== trace.visible ? true : false,
-                hint : "Sets the thickness (in px) of the error bars."
-              },
-              {
-                id : `traces[${index}][error_y][color]`,
-                title : "Error Bar Color",
-                type : "color", 
-                value :  trace.error_y === undefined || trace.error_y.color === undefined ? this.defaultOptions(index, chartType).error_y.color : trace.error_y.color,
-                disabled: trace.error_y === undefined || true !== trace.visible ? true : false,
-                hint: "Sets the stoke color of the error bars."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][error_y][symmetric]`,
-                title : "Symmetric ?",
-                type : "checkbox", 
-                value : trace.error_y === undefined || trace.error_y.symmetric === undefined ? false : trace.error_y.symmetric,
-                disabled: trace.error_y === undefined || true !== trace.visible ? true : false,
-                hint: "Determines whether or not the error bars have the same length in both direction (top/bottom for vertical bars, left/right for horizontal bars."
-              },
-              {
-                id : `traces[${index}][error_y][width]`, 
-                title : "Error Bar Width", 
-                type : "number",
-                min : 1,
-                max : 1000,
-                step : 1,
-                value : trace.error_y === undefined || trace.error_y.width === undefined ? this.defaultOptions(index, chartType).error_y.width : trace.error_y.width,
-                disabled: trace.error_y === undefined || true !== trace.visible ? true : false,
-                hint : "Sets the width (in px) of the cross-bar at both ends of the error bars."
-              },
-            ],
-          },
-        ]
-      },
-
-      pie: {
-        intro : `Here you can modify the other of trace "${trace.name}`,
-        title : "Pie Chart Options",
+        title : "Title",
         fieldGroups : [
           {
             cssClasses : ["field-group"],
@@ -815,23 +686,6 @@ class Trace {
                 disabled: true !== trace.visible || ! trace.title.text ? true : false,
                 hint : "Specifies the location of the `title`. Note that the title's position used to be set by the now deprecated `titleposition` attribute."
               },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][pull]`, 
-                title : "Slice Pull", 
-                type : "number",
-                min : 0,
-                max : 1,
-                step : 0.01,
-                value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
-                disabled: true !== trace.visible ? true : false,
-                hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
-              },
-              
             ],
           },
         ]

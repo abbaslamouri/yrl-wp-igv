@@ -4,6 +4,7 @@ import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
 import Hoverlabel from "./Hoverlabel"
+import Grid from "./Grid"
 import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 import ScatterTrace from './ScatterTrace'
@@ -39,7 +40,8 @@ const panels = async function (chart, spreadsheet, prefix) {
         createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
         break
 
-      case "Pie":
+      case "pie":
+        console.log("PIE")
         createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
         break
     }
@@ -70,6 +72,10 @@ const panels = async function (chart, spreadsheet, prefix) {
   document.querySelector(`#${prefix}__admin .hoverlabelAc .ac-panel`).innerHTML = ""
   createPanelSections( Hoverlabel.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ), "hoverlabel", prefix  )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.remove( "hidden" )
+
+  document.querySelector(`#${prefix}__admin .gridAc .ac-panel`).innerHTML = ""
+  createPanelSections( Grid.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .gridAc .ac-panel` ), "grid", prefix  )
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .gridAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .modebarAc .ac-panel `).innerHTML = ""
   createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )

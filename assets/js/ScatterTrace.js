@@ -72,6 +72,10 @@ class Trace {
         thickness: 2,
         width: 4
       },
+      // domain: {
+      //   row: 0,
+      //   column: 0
+      // },
 
 
       title: {
@@ -209,6 +213,33 @@ class Trace {
               },
             ]
           },
+          // {
+          //   cssClasses : ["field-group", "fifty-fifty"],     
+          //   inputFields : [
+          //     {
+          //       id : `traces[${index}][domain][row]`, 
+          //       title : "Domain Row", 	
+          //       type : "number",
+          //       min: 0,
+          //       max: 100,
+          //       step: 1,
+          //       value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
+          //       disabled: true !== trace.visible  ? true : false,
+          //       hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
+          //     },
+          //     {
+          //       id : `traces[${index}][domain][column]`, 
+          //       title : "Domain Column", 	
+          //       type : "number",
+          //       min: 0,
+          //       max: 100,
+          //       step: 1,
+          //       value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+          //       disabled: true !== trace.visible  ? true : false,
+          //       hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+          //     },
+          //   ]
+          // },
         ],
       },
 
