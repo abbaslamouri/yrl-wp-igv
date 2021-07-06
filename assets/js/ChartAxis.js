@@ -88,7 +88,7 @@ class ChartAxis  {
 
     }
 
-    if ( axisId === "xaxis" || axisId === "xaxis2" ) return { ...axisOptions, ...rangesliderOptions }
+    if ( axisId.includes( "xaxis" ) ) return { ...axisOptions, ...rangesliderOptions }
     return axisOptions
   
   }
@@ -96,7 +96,7 @@ class ChartAxis  {
 
   static sections( layout, axisId, axisSide, axisOverlaying, axisTitleText, axisMatches ) {
 
-    const axisSideOptions = ( axisId === "xaxis" || axisId === "xaxis2" ) ? { bottom: "Bottom", top: "Top" } :  { left: "Left", right: "Right" }
+    const axisSideOptions = axisId.includes( "xaxis" ) ? { bottom: "Bottom", top: "Top" } : axisId.includes( "yaxis" ) ? { left: "Left", right: "Right" } : null
 
     const axisSections = {
 

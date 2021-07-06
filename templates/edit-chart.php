@@ -114,7 +114,7 @@
               </div>
             </div>
 
-            <div class="ac xaxisAc hidden">
+            <!-- <div class="ac xaxisAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
               <div class="ac-panel">
                 <p class="ac-text intro">Bottom Axis Options go here.</p>
@@ -143,7 +143,7 @@
               <div class="ac-panel">
                 <p class="ac-text intro">Right Axis Options go here.</p>
                 <div class="accordion accordion__level-3 yaxis2__Accordion"></div></div>
-            </div>
+            </div> -->
 
             <div class="ac minMaxAvgTableAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Min/Max/Avg Table</div></h2>

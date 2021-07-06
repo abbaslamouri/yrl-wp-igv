@@ -1,7 +1,10 @@
 import Plotly from 'plotly.js-dist'
 import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
-import Annotation from "./Annotation"
+import capitalize from 'lodash.capitalize'
+import ChartAxis from "./ChartAxis"
+import layoutHandler from "./layout-handler"
+
 
 import { chartOptionKey, createPanel, createPanelSections } from "./utilities"
 
@@ -9,64 +12,82 @@ import { chartOptionKey, createPanel, createPanelSections } from "./utilities"
 const chartAxis =  async( chart, axisType, prefix ) => {
 
 
-  const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
-  console.log("Chart Axis", xaxes)
-  let lastIndex = xaxes[0].split("xaxis")[1] ? parseInt(xaxes[0].split("xaxis")[1]) : 0
+  const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes(axisType))
+  let lastIndex =  0
 
-  for (let i=0; i<xaxes.length; i++) {
-    lastIndex = parseInt(xaxes[i].split("xaxis")[1]) > lastIndex ? parseInt(xaxes[i].split("xaxis")[1]) : lastIndex
+  console.log("AXES", xaxes)
+  // const axisOptions = []
+
+  for (let i = 0; i < xaxes.length; i++) {
+    lastIndex = parseInt(xaxes[i].split(axisType)[1]) > lastIndex ? parseInt(xaxes[i].split(axisType)[1]) : lastIndex
+    // axisOptions.push ( ! xaxes[i].split(axisType)[1] ? `x` : `x${parseInt(xaxes[i].split(axisType)[1])}` )
   }
+
+  const index = lastIndex+1
+
+  const axisOption = `x${index}`
+
   
-  const axisId = `${axisType}${lastIndex+1}` 
-  console.log(axisId)
+  const axisId = `${axisType}${index}` 
+  console.log("Option", axisOption)
 
- return
-
-  let index;
-
-  // Bail if no file, sheet Id or chart type
-  // if( ! event.target.id === `${prefix}__addAnnotation` ) return
-  Plotly.purge(`${prefix}__plotlyChart`)
-
-  if ( chart.layout.annotations === undefined) {
-    index = 0
-    chart.layout.annotations = []
-  } else {
-    index = chart.layout.annotations ? chart.layout.annotations.length : 0
+  for (let i = 0; i < chart.traces.length; i++) {
+   const tracesXaxis = document.getElementById(`${prefix}__traces[${i}][xaxis]`)
+   tracesXaxis.options.add( new Option(capitalize( axisId ), axisOption, false) );
+   console.log(tracesXaxis)
   }
 
-  const optionId = `annotations${index}`
 
-  const annotationsAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion`)
-    // Create a annotation panel and add it to annotations accordion
-    annotationsAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, "New Annotation", `Here you can modify the options for New Annotation` ) )
-
+  const xaxesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion`)
+    // Create a annotation panel and add it to xaxes accordion
+    xaxesAccordionDiv.appendChild( createPanel(  `${axisId}Ac`, `X-Axis${index}`, `Here you can modify the options for a new x-axis` ) )
   // Create Delete annotation button
   const deletebutton = document.createElement("div")
-  deletebutton.classList.add(`.${prefix}__deleteAnnotation`, "button", "btn", "btn-danger")
-  deletebutton.id = `.${prefix}__layout[annotations][${index}]`
-  const buttonText = document.createTextNode( "Delete Annotation" )
+  deletebutton.classList.add(`.${prefix}__deleteAxis`, "button", "btn", "btn-danger")
+  deletebutton.id = `.${prefix}__layout[${axisType}${index}]`
+  const buttonText = document.createTextNode( "Delete Axis" )
   deletebutton.appendChild(buttonText)
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( deletebutton )
+  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .${axisId}Ac .ac-panel `).appendChild( deletebutton )
 
 
   // Create level3 accordion inside new annotation panel
   const level3AccordionDiv = document.createElement("div")
-  level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${optionId}__Accordion`)
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+  level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${axisId}__Accordion`)
+  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-  const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .ac-panel .${optionId}__Accordion`)
+  const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .ac-panel .${axisId}__Accordion`)
 
-  chart.layout.annotations[index] = ( chart.layout.annotations[index] !== undefined )? chart.layout.annotations[index] : {}
+  chart.layout[axisId] =  chart.layout[axisId] !== undefined ? chart.layout[axisId] : {}
   // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
-  chart.layout.annotations[index] = Annotation.defaultOptions()
+  chart.layout[axisId] = ChartAxis.defaultOptions( axisId, "bottom", null, "Wavelength ( &#181;m )", null )
 
-  createPanelSections( Annotation.sections(chart.layout.annotations[index], index, chart.layout.annotations[index].text ), sectionsContainer, optionId, prefix )
-  new Accordion( `#${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+  createPanelSections( ChartAxis.sections( chart.layout, axisId, "bottom", null, "Wavelength ( &#181;m )", null  ), sectionsContainer, axisId, prefix )
 
-  Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+  new Accordion( `#${prefix}__admin .${axisId}__Accordion`, { duration: 400 })
 
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
+
+  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .${axisId}Ac .ac-trigger `).innerHTML = capitalize( axisId )
+
+  console.log(chart.layout)
+
+  // Add change event listener to all input fields
+  sectionsContainer.addEventListener( "input", async function ( event ) {
+    event.preventDefault( )
+
+      const control = chartOptionKey(event.target.name).control
+      const key = chartOptionKey(event.target.name).key
+      const keyParts = key.split(".")
+      let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
+      console.group()
+      console.log("Control", control)
+      console.log("key", key)
+      console.log("keyParts", keyParts)
+      console.log("value", value)
+      console.groupEnd()
+
+      layoutHandler( chart, key, value, prefix )
+  
+    } )
 
   deletebutton.addEventListener("click", function (event) {
 
@@ -74,7 +95,7 @@ const chartAxis =  async( chart, axisType, prefix ) => {
 
     swal({
       title: "Are you sure?",
-      text: "You will not be able to recover this annotation",
+      text: "You will not be able to recover this xaxes",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -84,13 +105,14 @@ const chartAxis =  async( chart, axisType, prefix ) => {
 
         const key = chartOptionKey(event.target.id).key
         const keyParts = key.split(".")
-        chart.layout.annotations[keyParts[1]] = null
+        console.log(keyParts)
+        chart.layout[keyParts[1]] = null
 
-        Plotly.purge(`${prefix}__plotlyChart`)
-        Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+        // Plotly.purge(`${prefix}__plotlyChart`)
+        // Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
 
         event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
-        swal(`Annotation has been deleted!`, {
+        swal(`${keyParts[1]} has been deleted!`, {
           icon: "success",
         });
       }

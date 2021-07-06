@@ -9,6 +9,7 @@ import Modebar from "./Modebar"
 import ChartAxis from "./ChartAxis"
 import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
+import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections } from "./utilities"
 // import traces from './create-traces'
 
@@ -81,32 +82,71 @@ const panels = async function (chart, spreadsheet, prefix) {
   createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.remove( "hidden" )
 
-  document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
-  createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
-  document.getElementById(`${prefix}__layout[xaxis][type]`).value = chart.layout.xaxis.type
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.remove( "hidden" )
-  new Accordion( `#${prefix}__admin .xaxis__Accordion`, { duration: 400 })
-
-  document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
-  createPanelSections( ChartAxis.sections( chart.layout, "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
-  document.getElementById(`${prefix}__layout[xaxis2][type]`).value = chart.layout.xaxis2.type
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.remove( "hidden" )
-  new Accordion( `#${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
-
-  document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
-  createPanelSections( ChartAxis.sections( chart.layout, "yaxis", "left", null, "Transmittance ( % )", null ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
-  document.getElementById(`${prefix}__layout[yaxis][type]`).value = chart.layout.yaxis.type
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.remove( "hidden" )
-  new Accordion( `#${prefix}__admin .yaxis__Accordion`, { duration: 400 })
-
-  document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
-  createPanelSections( ChartAxis.sections( chart.layout, "yaxis2", "right", "y", "Reflectance ( % )", "y"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
-  document.getElementById(`${prefix}__layout[yaxis2][type]`).value = chart.layout.yaxis2.type
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.remove( "hidden" )
-  new Accordion( `#${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
-
   document.querySelector(`#${prefix}__admin .xaxesAc .ac-panel .accordion`).innerHTML = ""
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxesAc`).classList.remove( "hidden" )
+
+  const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
+  console.log("AXES", xaxes)
+
+
+  const xaxesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion`)
+  console.log(xaxesAccordionDiv)
+
+  for (let i = 0;  i < xaxes.length; i++) {
+
+    const axisId = ! i ? "xaxis" : xaxes[i]
+    console.log(axisId)
+
+    // const AxisTitle = !i ? "X-Axis" : `X-Axis${}`
+
+   
+    // Create a annotation panel and add it to xaxes accordion
+    xaxesAccordionDiv.appendChild( createPanel(  `${axisId}Ac`, capitalize(axisId), `Here you can modify the options for a new ${axisId}` ) )
+
+    // Create level3 accordion inside new annotation panel
+    const level3AccordionDiv = document.createElement("div")
+    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${axisId}__Accordion`)
+    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+    const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .ac-panel .${axisId}__Accordion`)
+
+    // chart.layout[axisId] =  chart.layout[axisId] !== undefined ? chart.layout[axisId] : {}
+    // // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
+    // chart.layout[axisId] = ChartAxis.defaultOptions( axisId, "bottom", null, "Wavelength ( &#181;m )", null )
+  
+    createPanelSections( ChartAxis.sections( chart.layout, axisId, chart.layout[axisId].side, chart.layout[axisId].overlaying, chart.layout[axisId].title.text, chart.layout[axisId].matches  ), sectionsContainer, axisId, prefix )
+  
+    new Accordion( `#${prefix}__admin .${axisId}__Accordion`, { duration: 400 })
+
+
+  }
+  
+
+  console.log("AXES", xaxes)
+
+  // document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
+  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+  // document.getElementById(`${prefix}__layout[xaxis][type]`).value = chart.layout.xaxis.type
+  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.remove( "hidden" )
+  // new Accordion( `#${prefix}__admin .xaxis__Accordion`, { duration: 400 })
+
+  // document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
+  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+  // document.getElementById(`${prefix}__layout[xaxis2][type]`).value = chart.layout.xaxis2.type
+  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.remove( "hidden" )
+  // new Accordion( `#${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
+
+  // document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
+  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis", "left", null, "Transmittance ( % )", null ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+  // document.getElementById(`${prefix}__layout[yaxis][type]`).value = chart.layout.yaxis.type
+  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.remove( "hidden" )
+  // new Accordion( `#${prefix}__admin .yaxis__Accordion`, { duration: 400 })
+
+  // document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
+  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis2", "right", "y", "Reflectance ( % )", "y"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
+  // document.getElementById(`${prefix}__layout[yaxis2][type]`).value = chart.layout.yaxis2.type
+  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.remove( "hidden" )
+  // new Accordion( `#${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
   document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.remove( "hidden" )
