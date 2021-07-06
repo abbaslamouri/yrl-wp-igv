@@ -1,13 +1,6 @@
 import Plotly from 'plotly.js-dist'
 import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
-// import Trace from "./Trace"
-// import BasicOptions from "./BasicOptions"
-// import Title from "./Title"
-// import Legend from "./Legend"
-// import Hoverlabel from "./Hoverlabel"
-// import Modebar from "./Modebar"
-// import ChartAxis from "./ChartAxis"
 import Annotation from "./Annotation"
 
 import { chartOptionKey, createPanel, createPanelSections } from "./utilities"

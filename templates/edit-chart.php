@@ -98,8 +98,18 @@
               <h2 class="ac-header"><div class="ac-trigger">Annotations</div></h2>
               <div class="ac-panel">
                 <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" name="<?php echo "{$this->prefix}__addAnnotation"; ?>" >Add New</a>
+                <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addAnnotation"; ?>" >Add New</a>
                 <div class="accordion accordion__level-2 annotations__Accordion">
+                </div>
+              </div>
+            </div>
+
+            <div class="ac xaxesAc hidden">
+              <h2 class="ac-header"><div class="ac-trigger">X Axes</div></h2>
+              <div class="ac-panel">
+                <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addNewXAxis"; ?>" >Add New X-Axis</a>
+                <div class="accordion accordion__level-2 xaxes__Accordion">
                 </div>
               </div>
             </div>

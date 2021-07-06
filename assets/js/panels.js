@@ -105,6 +105,9 @@ const panels = async function (chart, spreadsheet, prefix) {
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.remove( "hidden" )
   new Accordion( `#${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
+  document.querySelector(`#${prefix}__admin .xaxesAc .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxesAc`).classList.remove( "hidden" )
+
   document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.remove( "hidden" )
 

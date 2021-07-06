@@ -11,7 +11,8 @@ import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
 import traceHandler from "./trace-handler"
-import addRemoveAnnotations from "./annotations"
+import annotations from "./annotations"
+import chartAxis from "./chart-axis"
 import "../sass/admin.scss"
 
 // console.log("yrlPlotlyChartsObj", {...yrl_wp_plotly_charts_obj})
@@ -94,7 +95,12 @@ if (  yrl_wp_plotly_charts_obj ) {
 
         case `${prefix}__addAnnotation`:
           event.preventDefault()
-          addRemoveAnnotations( chart, prefix )
+          annotations( chart, prefix )
+          break
+
+        case `${prefix}__addNewXAxis`:
+          event.preventDefault()
+          chartAxis( chart, "xaxis", prefix )
           break
 
       }
