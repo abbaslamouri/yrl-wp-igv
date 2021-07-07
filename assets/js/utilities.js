@@ -872,6 +872,37 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
 }
 
+
+
+const setSelectFielddOptions = (node, options) => { 
+
+  node.options.length = 0
+  for (const prop in options ) {
+    node.options.add( new Option( options[prop], prop, false) );
+  }
+
+}
+
+
+
+const fetchAxisOptions = (layout, axisType, capitalize) => { 
+
+  const axes = Object.keys(layout).filter( ( prop ) => prop.includes(axisType))
+  const axisOptions = []
+  let index =null
+  for (const prop in axes) {
+    if (axisType === "xaxis" ) index = axes[prop] === "xaxis" ? "x" : `x${parseInt(axes[prop].split("xaxis")[1])}`
+    if (axisType === "yaxis" ) index = axes[prop] === "yaxis" ? "y" : `y${parseInt(axes[prop].split("yaxis")[1])}`
+    axisOptions[index] = capitalize( axes[prop] )
+  }
+
+  return axisOptions
+
+}
+
+
+
+
 // const appendFormSaveBtn = function (form, iwpgvObj) {
 
 //   const saveChartBtn = document.createElement("button")
@@ -1129,6 +1160,8 @@ module.exports = {
   fetchformGroup,
   hideOptions,
   createChartCard,
-  chartsListDefaultLayout
+  chartsListDefaultLayout,
+  setSelectFielddOptions,
+  fetchAxisOptions
   
 };

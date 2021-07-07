@@ -167,10 +167,7 @@ class Trace {
                 id : `traces[${index}][xaxis]`, 
                 title : "x-Axis", 	
                 type : "select", 
-                options : {
-                  x : "Bottom",
-                  x2 : "Top",
-                },
+                options : null,
                 value : trace.xaxis === undefined ? this.defaultOptions(index, chartType).xaxis : trace.xaxis,
                 disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
@@ -179,10 +176,7 @@ class Trace {
                 id : `traces[${index}][yaxis]`, 
                 title : "Y-Axis", 	
                 type : "select", 
-                options : {
-                  y : "Left",
-                  y2 : "Right",
-                },
+                options : null,
                 value : trace.yaxis === undefined ? this.defaultOptions(index, chartType).yaxis: trace.yaxis,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."

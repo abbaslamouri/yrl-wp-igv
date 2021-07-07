@@ -902,7 +902,7 @@ class ChartAxis  {
 
     }
 
-    const rangesliderSection = axisId === "yaxis" || axisId === "yaxis2" ? null : {
+    const rangesliderSection = ! axisId.includes ( "xaxis" ) ? null : {
 
       rangeslider: {
         intro : "Here you can modify the plot x-axis range slider",

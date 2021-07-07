@@ -114,6 +114,16 @@
               </div>
             </div>
 
+            <div class="ac yaxesAc hidden">
+              <h2 class="ac-header"><div class="ac-trigger">Y Axes</div></h2>
+              <div class="ac-panel">
+                <p class="ac-text intro">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                <a href="#"  class="button button-primary" id="<?php echo "{$this->prefix}__addNewYAxis"; ?>" >Add New Y-Axis</a>
+                <div class="accordion accordion__level-2 yaxes__Accordion">
+                </div>
+              </div>
+            </div>
+
             <!-- <div class="ac xaxisAc hidden">
               <h2 class="ac-header"><div class="ac-trigger">Bottom Axis</div></h2>
               <div class="ac-panel">

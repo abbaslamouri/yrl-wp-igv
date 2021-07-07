@@ -78,9 +78,9 @@ const chartOptions = ( chart, spreadsheet  ) => {
     chart.config.displayModeBar = chart.layout.displayModeBar
     chart.config.displaylogo = chart.layout.displaylogo
     
-    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
+    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "xaxis", null, "Wavelength ( &#181;m )", null ) 
     // chart.layout.xaxis2 = ChartAxis.defaultOptions( "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x" )
-    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
+    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "yaxis", null, "Transmittance ( % )", null )
     // chart.layout.yaxis2 = ChartAxis.defaultOptions( "yaxis2", "right", "y", "Reflectance ( % )", "y" )
   }
 

@@ -6,16 +6,34 @@ import Legend from "./Legend"
 import Hoverlabel from "./Hoverlabel"
 import Grid from "./Grid"
 import Modebar from "./Modebar"
-import ChartAxis from "./ChartAxis"
+import axesPanel from "./axes-panel"
 import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
-import { createPanel, createPanelSections } from "./utilities"
+import { createPanel, createPanelSections, setSelectFielddOptions, fetchAxisOptions } from "./utilities"
 
 
 const panels = async function (chart, spreadsheet, prefix) {
 
   let deleteBtn = null
+
+  // const xaxisOptions = fetchAxisOptions (chart.layout, "xaxis", capitalize)
+  // const yaxisOptions = fetchAxisOptions (chart.layout, "yaxis", capitalize)
+
+  // const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
+  // const xaxisOptions = []
+  // for (const prop in xaxes) {
+  //   console.log("PROP",xaxes[prop])
+  //   xaxisOptions[xaxes[prop] === "xaxis" ? "x" : `xaxis${parseInt(xaxes[prop].split("xaxis")[1])}`] = capitalize( xaxes[prop] )
+  // }
+
+  // const yaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("yaxis"))
+  // const yaxisOptions = []  
+  // for (const prop in yaxes) {
+  //   console.log("PROP",yaxes[prop])
+  //   yaxisOptions[yaxes[prop] === "xaxis" ? "y" : `yaxis${parseInt(yaxes[prop].split("yaxis")[1])}`] = capitalize( yaxes[prop] )
+  // }
+
 
 
   document.querySelector(`#${prefix}__admin .tracesAc .ac-panel .accordion`).innerHTML = ""
@@ -24,6 +42,7 @@ const panels = async function (chart, spreadsheet, prefix) {
   tracesAccordionDiv.innerHTML = ""
 
   for (let i = 0;  i < chart.traces.length; i++) {
+
 
     // Create a trace panel and add it to traces accordion
     tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
@@ -41,6 +60,8 @@ const panels = async function (chart, spreadsheet, prefix) {
       
       case "scatter":
         createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+        setSelectFielddOptions ( document.getElementById ( `${prefix}__traces[${i}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
+        setSelectFielddOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
         break
 
       case "pie":
@@ -84,63 +105,68 @@ const panels = async function (chart, spreadsheet, prefix) {
   createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.remove( "hidden" )
 
+  axesPanel ( chart, "xaxis", prefix )
+  axesPanel ( chart, "yaxis", prefix )
 
 
 
 
-  const xaxesAccordionDiv = document.querySelector( `#${prefix}__admin .xaxes__Accordion`)
-
-  // Reset xaxes panel accordion
-  xaxesAccordionDiv.innerHTML = ""
-
-// Fetch an array of all xaxes
-  const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
-
-  const axisType = "xaxis"
-
-  for (let i = 0;  i < xaxes.length; i++) {
-
-    const axisId = ! i ? "xaxis" : xaxes[i]
 
 
+//   // const xaxesAccordionDiv = 
 
+//   // Reset xaxes panel accordion
+//   document.querySelector( `#${prefix}__admin .xaxes__Accordion`).innerHTML = ""
+
+// // Fetch an array of all xaxes
+//   const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
+
+//   const axisType = "xaxis"
+
+//   for (let i = 0;  i < xaxes.length; i++) {
+
+//     const axisId = ! i ? "xaxis" : xaxes[i]
 
    
-    // Create a annotation panel and add it to xaxes accordion
-    xaxesAccordionDiv.appendChild( createPanel(  `${axisId}Ac`, capitalize(axisId), `Here you can modify the options for a new ${axisId}` ) )
+//     // Create a annotation panel and add it to xaxes accordion
+//     document.querySelector( `#${prefix}__admin .xaxes__Accordion`).appendChild( createPanel(  `${axisId}Ac`, capitalize(axisId), `Here you can modify the options for a new ${axisId}` ) )
 
-    // Create level3 accordion inside new annotation panel
-    const level3AccordionDiv = document.createElement("div")
-    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${axisId}__Accordion`)
-    document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+//     // Create level3 accordion inside new annotation panel
+//     const level3AccordionDiv = document.createElement("div")
+//     level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${axisId}__Accordion`)
+//     document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-    const sectionsContainer = document.querySelector( `#${prefix}__admin .${axisId}__Accordion`)
+//     const sectionsContainer = document.querySelector( `#${prefix}__admin .${axisId}__Accordion`)
   
-    createPanelSections( ChartAxis.sections( chart.layout, axisId, chart.layout[axisId].side, chart.layout[axisId].overlaying, chart.layout[axisId].title.text, chart.layout[axisId].matches  ), sectionsContainer, axisId, prefix )
+//     createPanelSections( ChartAxis.sections( chart.layout, axisId, chart.layout[axisId].side, chart.layout[axisId].overlaying, chart.layout[axisId].title.text, chart.layout[axisId].matches  ), sectionsContainer, axisId, prefix )
   
-    if (axisId !== "xaxis" && axisId !== "yaxis") {
+//     if (axisId !== "xaxis" && axisId !== "yaxis") {
 
-      // Create Delete annotation button
-      deleteBtn = document.createElement("div")
-      deleteBtn.classList.add(`.${prefix}__deleteAxis`, "button", "btn", "btn-danger")
-      deleteBtn.id = `.${prefix}__layout[${axisType}${i}]`
-      const buttonText = document.createTextNode( "Delete Axis" )
-      deleteBtn.appendChild(buttonText)
-      document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( deleteBtn )
+//       // Create Delete annotation button
+//       deleteBtn = document.createElement("div")
+//       deleteBtn.classList.add(`.${prefix}__deleteAxis`, "button", "btn", "btn-danger")
+//       deleteBtn.id = `.${prefix}__layout[${axisType}${i}]`
+//       const buttonText = document.createTextNode( "Delete Axis" )
+//       deleteBtn.appendChild(buttonText)
+//       document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( deleteBtn )
 
-    }
+//     }
     
     
     
-    new Accordion( `#${prefix}__admin .${axisId}__Accordion`, { duration: 400 })
+//     new Accordion( `#${prefix}__admin .${axisId}__Accordion`, { duration: 400 })
 
-  }
+//   }
 
-  // Create traces accordion
-  document.querySelector(`#${prefix}__admin .main__Accordion .xaxesAc`).classList.remove( "hidden" )
+
+
+
+
+//   // Create traces accordion
+//   document.querySelector(`#${prefix}__admin .main__Accordion .xaxesAc`).classList.remove( "hidden" )
 
   
-  // new Accordion( xaxesAccordionDiv, { duration: 400 } )
+//   new Accordion( `#${prefix}__admin .xaxes__Accordion`, { duration: 400 } )
   
 
 

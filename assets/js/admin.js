@@ -41,7 +41,9 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
+    let xaxesAccordion = null
 
+    // console.log(xaxesAccordion)
     // List all charts
     listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
@@ -53,57 +55,77 @@ if (  yrl_wp_plotly_charts_obj ) {
     // Add click event listener to the Add New Chart button
     document.addEventListener("click", async function (event) {
 
-      switch ( event.target.id ) {
+      if ( event.target.id.includes ( "deletAxis" ) )  {
+        console.log( event.target.id)
 
-        case `${prefix}__addNewChart`:
-          event.preventDefault()
-          Plotly.purge(`${prefix}__plotlyChart`)
-          Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+        const key = chartOptionKey(event.target.id).key
+        console.log(key)
+        delete chart.layout[key]
+        console.log(chart.layout)
+        document.getElementById( event.target.id ).closest(".ac").remove()
 
-          // Unhide chart  and open first accordion panel 
-          document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
-          mainAccordion.close(0)
-          chart = cloneDeep(emptyChart)
-          hideOptions(prefix)
-          mainAccordion.open(0)
-          chartUpdated = false
+      } else {
 
-          break
+        switch ( event.target.id ) {
 
-        case `${prefix}__cancelChart`:
-          event.preventDefault()
-
-        console.log("UPDATED", chartUpdated)
-          if (chartUpdated) {
-            cancelChart( chart, prefix )
-          } else {
-            document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-          }
-          break
-
-        case `${prefix}__params[mediaUploadBtn]`:
-          event.preventDefault()
-
-          mediaUploader.open() 
-          break
-
-        case `${prefix}__saveChart`:
-          event.preventDefault()
-          saveChart( chart, charts, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
-          chartUpdated = false
-          break
-
-        case `${prefix}__addAnnotation`:
-          event.preventDefault()
-          annotations( chart, prefix )
-          break
-
-        case `${prefix}__addNewXAxis`:
-          event.preventDefault()
-          chartAxis( chart, "xaxis", prefix )
-          break
+          case `${prefix}__addNewChart`:
+            event.preventDefault()
+            Plotly.purge(`${prefix}__plotlyChart`)
+            Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+  
+            // Unhide chart  and open first accordion panel 
+            document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
+            mainAccordion.close(0)
+            chart = cloneDeep(emptyChart)
+            hideOptions(prefix)
+            mainAccordion.open(0)
+            chartUpdated = false
+  
+            break
+  
+          case `${prefix}__cancelChart`:
+            event.preventDefault()
+  
+          console.log("UPDATED", chartUpdated)
+            if (chartUpdated) {
+              cancelChart( chart, prefix )
+            } else {
+              document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+            }
+            break
+  
+          case `${prefix}__params[mediaUploadBtn]`:
+            event.preventDefault()
+  
+            mediaUploader.open() 
+            break
+  
+          case `${prefix}__saveChart`:
+            event.preventDefault()
+            saveChart( chart, charts, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            chartUpdated = false
+            break
+  
+          case `${prefix}__addAnnotation`:
+            event.preventDefault()
+            annotations( chart, prefix )
+            break
+  
+          case `${prefix}__addNewXAxis`:
+            event.preventDefault()
+            chartAxis ( chart, "xaxis", prefix )
+            break
+  
+          case `${prefix}__addNewYAxis`:
+            event.preventDefault()
+            chartAxis ( chart, "yaxis", prefix )
+            break
+  
+        }
 
       }
+
+     
       
     })
 
@@ -143,26 +165,25 @@ if (  yrl_wp_plotly_charts_obj ) {
     document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
     event.preventDefault( )
 
+
       if( event.target.id.includes( `params` ) ) {
         // chart = cloneDeep(emptyChart)
-        const xx = await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
-        new Accordion( document.querySelector( `#${prefix}__admin .xaxes__Accordion`), { duration: 400 } )
-
-
-        console.log("CHART", chart, xx)
+        await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        // xaxesAccordion = new Accordion( `#${prefix}__admin .xaxes__Accordion`, { duration: 400 } )
+        console.log("CHART", chart)
 
       } else {
 
-        const control = chartOptionKey(event.target.name).control
-        const key = chartOptionKey(event.target.name).key
+        const control = chartOptionKey(event.target.id).control
+        const key = chartOptionKey(event.target.id).key
         const keyParts = key.split(".")
         let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-        // console.group()
-        // console.log("Control", control)
-        // console.log("key", key)
-        // console.log("keyParts", keyParts)
-        // console.log("value", value)
-        // console.groupEnd()
+        console.group()
+        console.log("Control", control)
+        console.log("key", key)
+        console.log("keyParts", keyParts)
+        console.log("value", value)
+        console.groupEnd()
 
         switch ( control ) {
 
@@ -172,6 +193,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
           case "layout":
             layoutHandler( chart, key, value, prefix )
+            console.log(chart.layout)
             break
 
             case "traces":
