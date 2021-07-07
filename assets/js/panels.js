@@ -11,10 +11,12 @@ import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections } from "./utilities"
-// import traces from './create-traces'
 
 
 const panels = async function (chart, spreadsheet, prefix) {
+
+  let deleteBtn = null
+
 
   document.querySelector(`#${prefix}__admin .tracesAc .ac-panel .accordion`).innerHTML = ""
 
@@ -82,22 +84,26 @@ const panels = async function (chart, spreadsheet, prefix) {
   createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.remove( "hidden" )
 
-  document.querySelector(`#${prefix}__admin .xaxesAc .ac-panel .accordion`).innerHTML = ""
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxesAc`).classList.remove( "hidden" )
 
+
+
+
+  const xaxesAccordionDiv = document.querySelector( `#${prefix}__admin .xaxes__Accordion`)
+
+  // Reset xaxes panel accordion
+  xaxesAccordionDiv.innerHTML = ""
+
+// Fetch an array of all xaxes
   const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
-  console.log("AXES", xaxes)
 
-
-  const xaxesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion`)
-  console.log(xaxesAccordionDiv)
+  const axisType = "xaxis"
 
   for (let i = 0;  i < xaxes.length; i++) {
 
     const axisId = ! i ? "xaxis" : xaxes[i]
-    console.log(axisId)
 
-    // const AxisTitle = !i ? "X-Axis" : `X-Axis${}`
+
+
 
    
     // Create a annotation panel and add it to xaxes accordion
@@ -106,23 +112,37 @@ const panels = async function (chart, spreadsheet, prefix) {
     // Create level3 accordion inside new annotation panel
     const level3AccordionDiv = document.createElement("div")
     level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${axisId}__Accordion`)
-    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+    document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-    const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxesAc .ac-panel .xaxes__Accordion .ac-panel .${axisId}__Accordion`)
-
-    // chart.layout[axisId] =  chart.layout[axisId] !== undefined ? chart.layout[axisId] : {}
-    // // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
-    // chart.layout[axisId] = ChartAxis.defaultOptions( axisId, "bottom", null, "Wavelength ( &#181;m )", null )
+    const sectionsContainer = document.querySelector( `#${prefix}__admin .${axisId}__Accordion`)
   
     createPanelSections( ChartAxis.sections( chart.layout, axisId, chart.layout[axisId].side, chart.layout[axisId].overlaying, chart.layout[axisId].title.text, chart.layout[axisId].matches  ), sectionsContainer, axisId, prefix )
   
+    if (axisId !== "xaxis" && axisId !== "yaxis") {
+
+      // Create Delete annotation button
+      deleteBtn = document.createElement("div")
+      deleteBtn.classList.add(`.${prefix}__deleteAxis`, "button", "btn", "btn-danger")
+      deleteBtn.id = `.${prefix}__layout[${axisType}${i}]`
+      const buttonText = document.createTextNode( "Delete Axis" )
+      deleteBtn.appendChild(buttonText)
+      document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( deleteBtn )
+
+    }
+    
+    
+    
     new Accordion( `#${prefix}__admin .${axisId}__Accordion`, { duration: 400 })
 
-
   }
+
+  // Create traces accordion
+  document.querySelector(`#${prefix}__admin .main__Accordion .xaxesAc`).classList.remove( "hidden" )
+
+  
+  // new Accordion( xaxesAccordionDiv, { duration: 400 } )
   
 
-  console.log("AXES", xaxes)
 
   // document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
   // createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )

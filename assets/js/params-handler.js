@@ -6,6 +6,15 @@ import panels from './panels'
 
 const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
 
+  return new Promise((resolve, reject) =>{
+    if (true) {
+       resolve(Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ));   
+       console.log("LLLLLL")  
+    } else {
+       reject()
+    }
+ });
+
   // Update chart params options
   chart.params.fileName = document.getElementById( `${prefix}__params[fileName]` ).value
   chart.params.fileId = document.getElementById( `${prefix}__params[fileId]` ).value
@@ -19,6 +28,8 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
     Plotly.purge(`${prefix}__plotlyChart`)
     Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
     // chart = cloneDeep(emptyChart)
+    console.log("HERE1")
+
 
     // Hide warning and unhide loading
     document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
@@ -38,7 +49,13 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
       // document.querySelector( `#${prefix}__admin .warning` ).classList.add( `${prefix}__hidden` )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add(`hidden`)
 
+      console.log("HERE")
+      return "PPPPPPP"
+
    })
+
+   console.log("HERE2")
+
 
 }
 

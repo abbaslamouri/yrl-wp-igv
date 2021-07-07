@@ -8,103 +8,103 @@ const layoutHandler = async ( chart, key, value, prefix  ) => {
 
   switch(key) {
 
-    case "hovermode":
-      value = "false" === value ? false : "true" === value ? true : value
-        update = { ["hovermode"]: value }
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-    break
+    // case "hovermode":
+    //   value = "false" === value ? false : "true" === value ? true : value
+    //     update = { ["hovermode"]: value }
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    // break
 
-    case "xaxis.visible":
-      if ( value ){
-        update = {["xaxis.visible"]: true}
-      } else {
-        update = {["xaxis.visible"]: false}
-      }
-      Plotly.relayout( `${prefix}__plotlyChart`, update)
-      document.getElementById(`${prefix}__layout[xaxis2][visible]`).checked = value
-    break
+    // case "xaxis.visible":
+    //   if ( value ){
+    //     update = {["xaxis.visible"]: true}
+    //   } else {
+    //     update = {["xaxis.visible"]: false}
+    //   }
+    //   Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   // document.getElementById(`${prefix}__layout[xaxis2][visible]`).checked = value
+    // break
 
-    case "xaxis2.visible":
-      if ( value ){
-        update = {["xaxis2.visible"]: true}
-      } else {
-        update = {["xaxis2.visible"]: false}
-      }
-      Plotly.relayout( `${prefix}__plotlyChart`, update)
-      document.getElementById(`${prefix}__layout[xaxis][visible]`).checked = value
-    break
+    // case "xaxis2.visible":
+    //   if ( value ){
+    //     update = {["xaxis2.visible"]: true}
+    //   } else {
+    //     update = {["xaxis2.visible"]: false}
+    //   }
+    //   Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   document.getElementById(`${prefix}__layout[xaxis][visible]`).checked = value
+    // break
 
-    case "xaxis.autorange":
-      value = "false" === value ? false : "true" === value ? true : value
-      if ( false !== value ){
-        update = { ["xaxis.autorange"]: value, ["xaxis.range"]: null }
-        chart.layout.xaxis.range = []
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-      } else {
-        update = { ["xaxis.autorange"]: false }
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-        // document.getElementById(`${prefix}__layout[xaxis][range]`).value = null
-      }
-      document.getElementById(`${prefix}__layout[xaxis][range]`).value = chart.layout.xaxis.range.join()
-    break
+    // case "xaxis.autorange":
+    //   value = "false" === value ? false : "true" === value ? true : value
+    //   if ( false !== value ){
+    //     update = { ["xaxis.autorange"]: value, ["xaxis.range"]: null }
+    //     chart.layout.xaxis.range = []
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   } else {
+    //     update = { ["xaxis.autorange"]: false }
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //     // document.getElementById(`${prefix}__layout[xaxis][range]`).value = null
+    //   }
+    //   document.getElementById(`${prefix}__layout[xaxis][range]`).value = chart.layout.xaxis.range.join()
+    // break
 
-    case "xaxis.range":             
-      if (value) {
-        value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-        if ( Array.isArray( value ) ) {
-          update = { ["xaxis.range"]: value}
-          Plotly.relayout( `${prefix}__plotlyChart`, update)
-        }
-      } else {
-        update = { ["xaxis.range"]: null, "xaxis.autorange": true}
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-      }
-      document.getElementById(`${prefix}__layout[xaxis][autorange]`).value = true === chart.layout.xaxis.autorange ? "true" : false === chart.layout.xaxis.autorange ? "false" : chart.layout.xaxis.autorange 
-    break
+    // case "xaxis.range":             
+    //   if (value) {
+    //     value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
+    //     if ( Array.isArray( value ) ) {
+    //       update = { ["xaxis.range"]: value}
+    //       Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //     }
+    //   } else {
+    //     update = { ["xaxis.range"]: null, "xaxis.autorange": true}
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   }
+    //   document.getElementById(`${prefix}__layout[xaxis][autorange]`).value = true === chart.layout.xaxis.autorange ? "true" : false === chart.layout.xaxis.autorange ? "false" : chart.layout.xaxis.autorange 
+    // break
 
-    case "xaxis.tickvals":             
-      value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-      console.log(value)
+    // case "xaxis.tickvals":             
+    //   value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
+    //   console.log(value)
 
-      // if ( isNaN( value[value.length-1] ) ) value.pop()
-      // if ( Array.isArray( value ) ) {
-        update = { ["xaxis.tickvals"]: value}
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-      // }
-      // document.getElementById(`${prefix}__layout[xaxis][tickvals]`).value = value.join()
-    break
+    //   // if ( isNaN( value[value.length-1] ) ) value.pop()
+    //   // if ( Array.isArray( value ) ) {
+    //     update = { ["xaxis.tickvals"]: value}
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   // }
+    //   // document.getElementById(`${prefix}__layout[xaxis][tickvals]`).value = value.join()
+    // break
 
-    case "xaxis.ticktext":
-      value = value.split(",").map( ( item ) => { return item === "" ? null : item  } )
-      console.log(value)
+    // case "xaxis.ticktext":
+    //   value = value.split(",").map( ( item ) => { return item === "" ? null : item  } )
+    //   console.log(value)
 
-      // if ( ! value[value.length-1]  ) value.pop()
-      // if ( Array.isArray( value ) ) {
-        // if ( value.length > chart.layout.xaxis.tickvals.length  ) value.pop()
-        update = { ["xaxis.ticktext"]: value}
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-      // }
-      // document.getElementById(`${prefix}__layout[xaxis][ticktext]`).value = value.join()
+    //   // if ( ! value[value.length-1]  ) value.pop()
+    //   // if ( Array.isArray( value ) ) {
+    //     // if ( value.length > chart.layout.xaxis.tickvals.length  ) value.pop()
+    //     update = { ["xaxis.ticktext"]: value}
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   // }
+    //   // document.getElementById(`${prefix}__layout[xaxis][ticktext]`).value = value.join()
 
-    break
+    // break
 
-    case "xaxis.tickmode":             
-      if ( value === "linear" ) {
-        update = { ["xaxis.tickmode"]: value , ["xaxis.tick0"]: chart.layout.xaxis.range[0],["xaxis.dtick"]: (chart.layout.xaxis.range[1]-chart.layout.xaxis.range[0])/5 }
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-        document.getElementById(`${prefix}__layout[xaxis][tick0]`).value = chart.layout.xaxis.tick0
-        document.getElementById(`${prefix}__layout[xaxis][dtick]`).value = chart.layout.xaxis.dtick
-      } else {
-        update = { ["xaxis.tickmode"]: value }
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
-      }
-    break
+    // case "xaxis.tickmode":             
+    //   if ( value === "linear" ) {
+    //     update = { ["xaxis.tickmode"]: value , ["xaxis.tick0"]: chart.layout.xaxis.range[0],["xaxis.dtick"]: (chart.layout.xaxis.range[1]-chart.layout.xaxis.range[0])/5 }
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //     document.getElementById(`${prefix}__layout[xaxis][tick0]`).value = chart.layout.xaxis.tick0
+    //     document.getElementById(`${prefix}__layout[xaxis][dtick]`).value = chart.layout.xaxis.dtick
+    //   } else {
+    //     update = { ["xaxis.tickmode"]: value }
+    //     Plotly.relayout( `${prefix}__plotlyChart`, update)
+    //   }
+    // break
 
-    case "xaxis.mirror":
-      value = "false" === value ? false : "true" === value ? true : value
-      update = { ["xaxis.mirror"]: value }
-      Plotly.relayout( `${prefix}__plotlyChart`, update)
-    break
+    // case "xaxis.mirror":
+    //   value = "false" === value ? false : "true" === value ? true : value
+    //   update = { ["xaxis.mirror"]: value }
+    //   Plotly.relayout( `${prefix}__plotlyChart`, update)
+    // break
 
     default:
       update = { [key]: value }

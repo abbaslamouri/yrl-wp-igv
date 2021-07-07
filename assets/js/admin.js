@@ -145,9 +145,11 @@ if (  yrl_wp_plotly_charts_obj ) {
 
       if( event.target.id.includes( `params` ) ) {
         // chart = cloneDeep(emptyChart)
-        paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        const xx = await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        new Accordion( document.querySelector( `#${prefix}__admin .xaxes__Accordion`), { duration: 400 } )
 
-        console.log("CHART", chart)
+
+        console.log("CHART", chart, xx)
 
       } else {
 
