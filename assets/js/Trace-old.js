@@ -11,30 +11,6 @@ class Trace {
       type: chartType,
       visible: true,
       showlegend: true,
-      text: null,
-      textfont: {
-        family: "Raleway",
-        color: colors()[index],
-        size: 12,
-      },
-      textposition: "top center",
-      hovertext: "",
-      hoverinfo: "all",
-      hoverlabel: {
-        align: "auto",
-        namelength: 15,
-        font: {
-          family: "Raleway",
-          color: "#FFFFFF",
-          size: 12,
-        },
-        bgcolor: colors()[index],
-        bordercolor : "#000000",
-      },
-
-
-
-
       mode: "lines+markers",
       xaxis: "x",
       yaxis: "y",
@@ -64,9 +40,26 @@ class Trace {
         smoothing: 1,
         simplify: true
       },
-     
-      
-     
+      text: null,
+      textfont: {
+        family: "Raleway",
+        color: colors()[index],
+        size: 12,
+      },
+      textposition: "top center",
+      hovertext: "",
+      hoverinfo: "all",
+      hoverlabel: {
+        align: "auto",
+        namelength: 15,
+        font: {
+          family: "Raleway",
+          color: "#FFFFFF",
+          size: 12,
+        },
+        bgcolor: colors()[index],
+        bordercolor : "#000000",
+      },
       error_y: {
         visible: false,
         type: "percent",
@@ -79,15 +72,8 @@ class Trace {
         thickness: 2,
         width: 4
       },
-      // domain: {
-      //   row: 0,
-      //   column: 0
-      // },
 
 
-
-
-      // type: chartType,
       title: {
         text: "",
         font: {
@@ -97,72 +83,8 @@ class Trace {
         },
         position: "top center",
       },
-      // visible: true,
-      // showlegend: true,
-      opacity: 1,
-      pull: 0,
-      // text: [],
-      // textposition: "auto",
-      // hovertext: "",
-      // hoverinfo: "all",
-      automargin: true,
-      marker: {
-        colors: [],
-        line: {
-          color: "#444444",
-          width: 0
-        },
-      },
-      // textfont: {
-      //   family: "Raleway",
-      //   color: colors()[index],
-      //   size: 12,
-      // },
-      textinfo: null,
-      direction: "counterclockwise",
-      hole: 0,
-      hoverlabel: {
-        bgcolor: colors()[index],
-        bordercolor : "#000000",
-        font: {
-          family: "Raleway",
-          color: "#FFFFFF",
-          size: 12,
-        },
-        align: "auto",
-        namelength: 15,
-      },
-      insidetextfont: {
-        font: {
-          family: Object.keys(fontFamily())[12],
-          size: 16,
-          color: "#263238",
-        },
-      },
-      insidetextorientation: "auto",
-      outsidetextfont: {
-        font: {
-          family: Object.keys(fontFamily())[12],
-          size: 16,
-          color: "#263238",
-        },
-      },
-      rotation: 0,
-      sort:true,
-      domain: {
-        row: 0,
-        column: 0
-      }
-
-    
-
+      pull: 0
     }
-
-
-
-
-
-    
 
   }
 
@@ -241,7 +163,10 @@ class Trace {
                 id : `traces[${index}][xaxis]`, 
                 title : "x-Axis", 	
                 type : "select", 
-                options : null,
+                options : {
+                  x : "Bottom",
+                  x2 : "Top",
+                },
                 value : trace.xaxis === undefined ? this.defaultOptions(index, chartType).xaxis : trace.xaxis,
                 disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
                 hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
@@ -250,7 +175,10 @@ class Trace {
                 id : `traces[${index}][yaxis]`, 
                 title : "Y-Axis", 	
                 type : "select", 
-                options : null,
+                options : {
+                  y : "Left",
+                  y2 : "Right",
+                },
                 value : trace.yaxis === undefined ? this.defaultOptions(index, chartType).yaxis: trace.yaxis,
                 disabled: true !== trace.visible  ? true : false,
                 hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
@@ -281,33 +209,6 @@ class Trace {
               },
             ]
           },
-          // {
-          //   cssClasses : ["field-group", "fifty-fifty"],     
-          //   inputFields : [
-          //     {
-          //       id : `traces[${index}][domain][row]`, 
-          //       title : "Domain Row", 	
-          //       type : "number",
-          //       min: 0,
-          //       max: 100,
-          //       step: 1,
-          //       value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
-          //       disabled: true !== trace.visible  ? true : false,
-          //       hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
-          //     },
-          //     {
-          //       id : `traces[${index}][domain][column]`, 
-          //       title : "Domain Column", 	
-          //       type : "number",
-          //       min: 0,
-          //       max: 100,
-          //       step: 1,
-          //       value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
-          //       disabled: true !== trace.visible  ? true : false,
-          //       hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
-          //     },
-          //   ]
-          // },
         ],
       },
 
@@ -840,6 +741,97 @@ class Trace {
                 disabled: trace.error_y === undefined || true !== trace.visible ? true : false,
                 hint : "Sets the width (in px) of the cross-bar at both ends of the error bars."
               },
+            ],
+          },
+        ]
+      },
+
+      pie: {
+        intro : `Here you can modify the other of trace "${trace.name}`,
+        title : "Pie Chart Options",
+        fieldGroups : [
+          {
+            cssClasses : ["field-group"],
+            inputFields: [
+              {
+                id : `traces[${index}][title][text]`, 
+                title : "TitleText", 	
+                type : "text",
+                value : trace.title === undefined || trace.title.text === undefined ? this.defaultOptions(index, chartType).title.text : trace.title.text,
+                disabled: true !== trace.visible ? true : false,
+                hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "sixty-forty"],
+            inputFields: [
+              {
+                id : `traces[${index}][title][font][family]`,
+                title : "Title Font",	
+                type : "select",
+                options : fontFamily(),
+                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.family === undefined ? this.defaultOptions(index, chartType).title.font.family : trace.title.font.family,
+                disabled: true !== trace.visible || ! trace.title.text ? true : false,
+                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+              },
+              {
+                id : `traces[${index}][title][font][color]`,
+                title : "Title Font Color",
+                type : "color", 
+                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.color === undefined ? this.defaultOptions(index, chartType).title.font.color : trace.title.font.color,
+                disabled: true !== trace.visible || ! trace.title.text ? true : false,
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][title][font][size]`, 
+                title : "Title Font Size", 
+                type : "number",
+                min : 1,
+                max : 100,
+                step : 0.5,
+                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.size === undefined ? this.defaultOptions(index, chartType).title.font.size : trace.title.font.size,
+                disabled: true !== trace.visible || ! trace.title.text ? true : false,
+                hint : "number greater than or equal to 1"
+              },
+              {
+                id : `traces[${index}][title][position]`, 
+                title : "Title position", 
+                type : "select",
+                options : {
+                  "top left": "Top Left",
+                  "top center": "Top Center",
+                  "top right": "Top Right",
+                  "middle center": "Middle Center",
+                  "bottom left": "Bottom Left",
+                  "bottom center": "Bottom Center",
+                  "bottom right": "Bottom Right"
+                },
+                value : trace.title === undefined || trace.title.position === undefined ? this.defaultOptions(index, chartposition).title.position : trace.title.position,
+                disabled: true !== trace.visible || ! trace.title.text ? true : false,
+                hint : "Specifies the location of the `title`. Note that the title's position used to be set by the now deprecated `titleposition` attribute."
+              },
+            ],
+          },
+          {
+            cssClasses : ["field-group", "forty-sixty"],
+            inputFields: [
+              {
+                id : `traces[${index}][pull]`, 
+                title : "Slice Pull", 
+                type : "number",
+                min : 0,
+                max : 1,
+                step : 0.01,
+                value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
+                disabled: true !== trace.visible ? true : false,
+                hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
+              },
+              
             ],
           },
         ]

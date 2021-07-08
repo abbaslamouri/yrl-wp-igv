@@ -885,6 +885,21 @@ const setSelectFielddOptions = (node, options) => {
 
 
 
+
+const createDeleteBtn = (title, cssClass, btnId) => { 
+
+  const deleteBtn = document.createElement("div")
+  deleteBtn.classList.add( `${cssClass}`, "button", "btn", "btn-danger" )
+  deleteBtn.id = btnId
+  const buttonText = document.createTextNode( title )
+  deleteBtn.appendChild(buttonText)
+
+  return deleteBtn
+
+}
+
+
+
 const fetchAxisOptions = (layout, axisType, capitalize) => { 
 
   const axes = Object.keys(layout).filter( ( prop ) => prop.includes(axisType))
@@ -1162,6 +1177,7 @@ module.exports = {
   createChartCard,
   chartsListDefaultLayout,
   setSelectFielddOptions,
-  fetchAxisOptions
+  fetchAxisOptions,
+  createDeleteBtn
   
 };

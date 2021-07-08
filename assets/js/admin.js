@@ -55,7 +55,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     // Add click event listener to the Add New Chart button
     document.addEventListener("click", async function (event) {
 
-      if ( event.target.id.includes ( "deletAxis" ) )  {
+      if ( event.target.id.includes ( "deleteAxis" ) )  {
         console.log( event.target.id)
 
         const key = chartOptionKey(event.target.id).key

@@ -1,5 +1,6 @@
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
+import annotations from './annotations'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
@@ -12,29 +13,7 @@ import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections, setSelectFielddOptions, fetchAxisOptions } from "./utilities"
 
-
 const panels = async function (chart, spreadsheet, prefix) {
-
-  let deleteBtn = null
-
-  // const xaxisOptions = fetchAxisOptions (chart.layout, "xaxis", capitalize)
-  // const yaxisOptions = fetchAxisOptions (chart.layout, "yaxis", capitalize)
-
-  // const xaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("xaxis"))
-  // const xaxisOptions = []
-  // for (const prop in xaxes) {
-  //   console.log("PROP",xaxes[prop])
-  //   xaxisOptions[xaxes[prop] === "xaxis" ? "x" : `xaxis${parseInt(xaxes[prop].split("xaxis")[1])}`] = capitalize( xaxes[prop] )
-  // }
-
-  // const yaxes = Object.keys(chart.layout).filter( ( prop ) => prop.includes("yaxis"))
-  // const yaxisOptions = []  
-  // for (const prop in yaxes) {
-  //   console.log("PROP",yaxes[prop])
-  //   yaxisOptions[yaxes[prop] === "xaxis" ? "y" : `yaxis${parseInt(yaxes[prop].split("yaxis")[1])}`] = capitalize( yaxes[prop] )
-  // }
-
-
 
   document.querySelector(`#${prefix}__admin .tracesAc .ac-panel .accordion`).innerHTML = ""
 
@@ -42,7 +21,6 @@ const panels = async function (chart, spreadsheet, prefix) {
   tracesAccordionDiv.innerHTML = ""
 
   for (let i = 0;  i < chart.traces.length; i++) {
-
 
     // Create a trace panel and add it to traces accordion
     tracesAccordionDiv.appendChild( createPanel(  `traces${i}Ac`, chart.traces[i].name, "" ) )
@@ -76,38 +54,45 @@ const panels = async function (chart, spreadsheet, prefix) {
   }
 
   // Create traces accordion
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .tracesAc`).classList.remove( "hidden" )
+  document.querySelector(`#${prefix}__admin .tracesAc`).classList.remove( "hidden" )
   
   new Accordion( tracesAccordionDiv, { duration: 400 } )
 
 
   document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
-  createPanelSections( BasicOptions.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .basicOptionsAc .ac-panel` ), "basicOptions", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .basicOptionsAc`).classList.remove( "hidden" )
+  createPanelSections( BasicOptions.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin .basicOptionsAc .ac-panel` ), "basicOptions", prefix  )
+  document.querySelector(`#${prefix}__admin .basicOptionsAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
-  createPanelSections( Title.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .titleAc .ac-panel` ), "title", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .titleAc`).classList.remove( "hidden" )
+  createPanelSections( Title.sections( chart.layout ), document.querySelector( `#${prefix}__admin .titleAc .ac-panel` ), "title", prefix  )
+  document.querySelector(`#${prefix}__admin .titleAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .legendAc .ac-panel`).innerHTML = ""
-  createPanelSections( Legend.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .legendAc .ac-panel` ), "legend", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .legendAc`).classList.remove( "hidden" )
+  createPanelSections( Legend.sections( chart.layout ), document.querySelector( `#${prefix}__admin .legendAc .ac-panel` ), "legend", prefix  )
+  document.querySelector(`#${prefix}__admin .legendAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .hoverlabelAc .ac-panel`).innerHTML = ""
-  createPanelSections( Hoverlabel.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .hoverlabelAc .ac-panel` ), "hoverlabel", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .hoverlabelAc`).classList.remove( "hidden" )
+  createPanelSections( Hoverlabel.sections( chart.layout ), document.querySelector( `#${prefix}__admin .hoverlabelAc .ac-panel` ), "hoverlabel", prefix  )
+  document.querySelector(`#${prefix}__admin .hoverlabelAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .gridAc .ac-panel`).innerHTML = ""
-  createPanelSections( Grid.sections( chart.layout ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .gridAc .ac-panel` ), "grid", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .gridAc`).classList.remove( "hidden" )
+  createPanelSections( Grid.sections( chart.layout ), document.querySelector( `#${prefix}__admin .gridAc .ac-panel` ), "grid", prefix  )
+  document.querySelector(`#${prefix}__admin .gridAc`).classList.remove( "hidden" )
 
   document.querySelector(`#${prefix}__admin .modebarAc .ac-panel `).innerHTML = ""
-  createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .modebarAc .ac-panel` ), "modebar", prefix  )
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .modebarAc`).classList.remove( "hidden" )
+  createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin .modebarAc .ac-panel` ), "modebar", prefix  )
+  document.querySelector(`#${prefix}__admin .modebarAc`).classList.remove( "hidden" )
 
   axesPanel ( chart, "xaxis", prefix )
   axesPanel ( chart, "yaxis", prefix )
 
+  annotations(chart, prefix)
+
+
+
+
+
+  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
 
 
 
@@ -171,33 +156,30 @@ const panels = async function (chart, spreadsheet, prefix) {
 
 
   // document.querySelector(`#${prefix}__admin .xaxisAc .ac-panel .accordion`).innerHTML = ""
-  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
+  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis", "bottom", null, "Wavelength ( &#181;m )", null), document.querySelector( `#${prefix}__admin .xaxisAc .ac-panel .xaxis__Accordion` ), "xaxis", prefix )
   // document.getElementById(`${prefix}__layout[xaxis][type]`).value = chart.layout.xaxis.type
-  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxisAc`).classList.remove( "hidden" )
+  // document.querySelector(`#${prefix}__admin .xaxisAc`).classList.remove( "hidden" )
   // new Accordion( `#${prefix}__admin .xaxis__Accordion`, { duration: 400 })
 
   // document.querySelector(`#${prefix}__admin .xaxis2Ac .ac-panel .accordion`).innerHTML = ""
-  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
+  // createPanelSections( ChartAxis.sections( chart.layout, "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x"  ), document.querySelector( `#${prefix}__admin .xaxis2Ac .ac-panel .xaxis2__Accordion` ), "xaxis2", prefix )
   // document.getElementById(`${prefix}__layout[xaxis2][type]`).value = chart.layout.xaxis2.type
-  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .xaxis2Ac`).classList.remove( "hidden" )
+  // document.querySelector(`#${prefix}__admin .xaxis2Ac`).classList.remove( "hidden" )
   // new Accordion( `#${prefix}__admin .xaxis2__Accordion`, { duration: 400 })
 
   // document.querySelector(`#${prefix}__admin .yaxisAc .ac-panel .accordion`).innerHTML = ""
-  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis", "left", null, "Transmittance ( % )", null ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
+  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis", "left", null, "Transmittance ( % )", null ), document.querySelector( `#${prefix}__admin .yaxisAc .ac-panel .yaxis__Accordion` ), "yaxis", prefix )
   // document.getElementById(`${prefix}__layout[yaxis][type]`).value = chart.layout.yaxis.type
-  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxisAc`).classList.remove( "hidden" )
+  // document.querySelector(`#${prefix}__admin .yaxisAc`).classList.remove( "hidden" )
   // new Accordion( `#${prefix}__admin .yaxis__Accordion`, { duration: 400 })
 
   // document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
-  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis2", "right", "y", "Reflectance ( % )", "y"  ), document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
+  // createPanelSections( ChartAxis.sections( chart.layout, "yaxis2", "right", "y", "Reflectance ( % )", "y"  ), document.querySelector( `#${prefix}__admin .yaxis2Ac .ac-panel .yaxis2__Accordion` ), "yaxis2", prefix )
   // document.getElementById(`${prefix}__layout[yaxis2][type]`).value = chart.layout.yaxis2.type
-  // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.remove( "hidden" )
+  // document.querySelector(`#${prefix}__admin .yaxis2Ac`).classList.remove( "hidden" )
   // new Accordion( `#${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
-  document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
-  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.remove( "hidden" )
-
-  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
+ 
 
 
 }

@@ -3,88 +3,127 @@ import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
 import Annotation from "./Annotation"
 
-import { chartOptionKey, createPanel, createPanelSections } from "./utilities"
+import { chartOptionKey, createPanel, createPanelSections, createDeleteBtn } from "./utilities"
 
 
 const annotations =  async( chart, prefix ) => {
+  console.log(chart.layout)
 
-  // console.log(event.target.id)
 
-  let index;
+  document.querySelector(`#${prefix}__admin .annotations__Accordion`).innerHTML = ""
 
-  // Bail if no file, sheet Id or chart type
-  // if( ! event.target.id === `${prefix}__addAnnotation` ) return
-  Plotly.purge(`${prefix}__plotlyChart`)
+  if ( chart.layout.annotations === undefined) chart.layout.annotations = []
 
-  if ( chart.layout.annotations === undefined) {
-    index = 0
-    chart.layout.annotations = []
-  } else {
-    index = chart.layout.annotations ? chart.layout.annotations.length : 0
+  for (const prop in chart.layout.annotations) {
+
+    const annotationId = `annotations${prop}`
+
+    // Create annotation panel and add it to annotations accordion
+    document.querySelector( `#${prefix}__admin .annotations__Accordion`).appendChild( createPanel(  `${annotationId}Ac`, chart.layout.annotations[prop].text, `Here you can modify the options for a new ${chart.layout.annotations[prop].text}` ) )
+
+    document.querySelector( `#${prefix}__admin .${annotationId}Ac .ac-panel `).appendChild( createDeleteBtn( "Delete Annotation", "deleteAnnotation", `.${prefix}__deletAnnotation[${annotationId}]` ) )
+
+    // Create level3 accordion inside new annotation panel
+    const level3AccordionDiv = document.createElement("div")
+    level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${annotationId}__Accordion`)
+    document.querySelector( `#${prefix}__admin .${annotationId}Ac .ac-panel `).appendChild( level3AccordionDiv )
+
+    const sectionsContainer = document.querySelector( `#${prefix}__admin .${annotationId}__Accordion`)
+  
+    createPanelSections( Annotation.sections( chart.layout.annotations[prop], prop, chart.layout.annotations[prop].text ), sectionsContainer, annotationId, prefix )
+  
+    new Accordion( `#${prefix}__admin .${annotationId}__Accordion`, { duration: 400 })
+    
   }
 
-  const optionId = `annotations${index}`
+  document.querySelector(`#${prefix}__admin .annotationsAc`).classList.remove( "hidden" )
 
-  const annotationsAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion`)
-    // Create a annotation panel and add it to annotations accordion
-    annotationsAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, "New Annotation", `Here you can modify the options for New Annotation` ) )
-
-  // Create Delete annotation button
-  const deletebutton = document.createElement("div")
-  deletebutton.classList.add(`.${prefix}__deleteAnnotation`, "button", "btn", "btn-danger")
-  deletebutton.id = `.${prefix}__layout[annotations][${index}]`
-  const buttonText = document.createTextNode( "Delete Annotation" )
-  deletebutton.appendChild(buttonText)
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( deletebutton )
+  new Accordion( `#${prefix}__admin .annotations__Accordion`, { duration: 400 })
 
 
-  // Create level3 accordion inside new annotation panel
-  const level3AccordionDiv = document.createElement("div")
-  level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${optionId}__Accordion`)
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-  const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .ac-panel .${optionId}__Accordion`)
+  // return
 
-  chart.layout.annotations[index] = ( chart.layout.annotations[index] !== undefined )? chart.layout.annotations[index] : {}
-  // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
-  chart.layout.annotations[index] = Annotation.defaultOptions()
 
-  createPanelSections( Annotation.sections(chart.layout.annotations[index], index, chart.layout.annotations[index].text ), sectionsContainer, optionId, prefix )
-  new Accordion( `#${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+  // let index;
 
-  Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+  // // Bail if no file, sheet Id or chart type
+  // // if( ! event.target.id === `${prefix}__addAnnotation` ) return
+  // Plotly.purge(`${prefix}__plotlyChart`)
 
-  document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
+  // if ( chart.layout.annotations === undefined) {
+  //   index = 0
+  //   chart.layout.annotations = []
+  // } else {
+  //   index = chart.layout.annotations ? chart.layout.annotations.length : 0
+  // }
 
-  deletebutton.addEventListener("click", function (event) {
+  // const optionId = `annotations${index}`
 
-    event.preventDefault()
+  // const annotationsAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion`)
+  //   // Create a annotation panel and add it to annotations accordion
+  //   annotationsAccordionDiv.appendChild( createPanel(  `${optionId}Ac`, "New Annotation", `Here you can modify the options for New Annotation` ) )
 
-    swal({
-      title: "Are you sure?",
-      text: "You will not be able to recover this annotation",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
+  // // Create Delete annotation button
+  // const deletebutton = document.createElement("div")
+  // deletebutton.classList.add(`.${prefix}__deleteAnnotation`, "button", "btn", "btn-danger")
+  // deletebutton.id = `.${prefix}__layout[annotations][${index}]`
+  // const buttonText = document.createTextNode( "Delete Annotation" )
+  // deletebutton.appendChild(buttonText)
+  // document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( deletebutton )
 
-        const key = chartOptionKey(event.target.id).key
-        const keyParts = key.split(".")
-        chart.layout.annotations[keyParts[1]] = null
 
-        Plotly.purge(`${prefix}__plotlyChart`)
-        Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+  // // Create level3 accordion inside new annotation panel
+  // const level3AccordionDiv = document.createElement("div")
+  // level3AccordionDiv.classList.add("accordion", "accordion__level-3", `${optionId}__Accordion`)
+  // document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
-        event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
-        swal(`Annotation has been deleted!`, {
-          icon: "success",
-        });
-      }
-    })
+  // const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .ac-panel .${optionId}__Accordion`)
 
-  })
+  // chart.layout.annotations[index] = ( chart.layout.annotations[index] !== undefined )? chart.layout.annotations[index] : {}
+  // // const annotationInstance = new Annotation( chart.layout.annotations[index], index )
+  // chart.layout.annotations[index] = Annotation.defaultOptions()
+
+  // createPanelSections( Annotation.sections(chart.layout.annotations[index], index, chart.layout.annotations[index].text ), sectionsContainer, optionId, prefix )
+  // new Accordion( `#${prefix}__admin .${optionId}__Accordion`, { duration: 400 })
+
+  // Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
+
+  // document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .annotationsAc .ac-panel .annotations__Accordion .${optionId}Ac .ac-trigger `).innerHTML = chart.layout.annotations[index].text
+
+
+
+
+
+  // deletebutton.addEventListener("click", function (event) {
+
+  //   event.preventDefault()
+
+  //   swal({
+  //     title: "Are you sure?",
+  //     text: "You will not be able to recover this annotation",
+  //     icon: "warning",
+  //     buttons: true,
+  //     dangerMode: true,
+  //   })
+  //   .then((willDelete) => {
+  //     if (willDelete) {
+
+  //       const key = chartOptionKey(event.target.id).key
+  //       const keyParts = key.split(".")
+  //       chart.layout.annotations[keyParts[1]] = null
+
+  //       Plotly.purge(`${prefix}__plotlyChart`)
+  //       Plotly.plot( `${prefix}__plotlyChart`, Object.values(chart.traces), chart.layout, chart.config )
+
+  //       event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode)
+  //       swal(`Annotation has been deleted!`, {
+  //         icon: "success",
+  //       });
+  //     }
+  //   })
+
+  // })
 
 }
 

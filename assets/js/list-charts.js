@@ -31,7 +31,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
       
       newChart.layout.showlegend = false
       newChart.layout.hovermode = false
-      newChart.layout.height = 300
+      newChart.layout.height = newChart.params.chartType !== "pie" ? 300 : null
       // newChart.layout.width = 400
       newChart.config.displayModeBar = false
 

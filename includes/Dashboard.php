@@ -119,8 +119,8 @@ if (!class_exists('Dashboard')) {
 			foreach ($charts as $chart_id => $chart) {
 
 				// Fetch spreadsheet
-				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
-        $sheets[$chart['fileUpload']['chartId']] = $spreadsheet[$chart['fileUpload']['sheetId']];
+				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['params']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['params']['fileId'] ) : null;
+        $sheets[$chart['params']['chartId']] = $spreadsheet[$chart['params']['sheetId']];
 
 			}
       // echo "<pre>";

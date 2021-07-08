@@ -2,6 +2,8 @@ import Plotly from 'plotly.js-dist'
 
 
 const configHandler = async ( chart, key, value, prefix  ) => {
+  console.log(chart)
+  console.log(key)
 
   chart.config[key] = value    
   Plotly.purge(`${prefix}__plotlyChart`)
