@@ -14,10 +14,10 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
     if ( ! Object.values(chart.traces).length || ! chart.params.fileId || ! chart.params.sheetId ) throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
 
     if ( chart.params.chartId === undefined ) { // There is a chart Id (edit)
-      const chartId = ! charts.length ? 16327 : charts[charts.length-1].fileUpload.chartId + 1
+      const chartId = ! charts.length ? 16327 : charts[charts.length-1].params.chartId + 1
       chart.params.chartId = chartId
       charts.push( chart )
-      document.getElementById(`${prefix}__fileUpload[chartId]`).value = chartId
+      document.getElementById(`${prefix}__params[chartId]`).value = chartId
     }
 
     const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 

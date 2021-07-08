@@ -1,4 +1,4 @@
-import ScatterTrace from './ScatterTrace'
+import Trace from './Trace'
 import PieTrace from './PieTrace'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
@@ -24,37 +24,38 @@ const chartOptions = ( chart, spreadsheet  ) => {
     if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
 
     if ( chart.traces[i] === undefined ) {
-      switch ( chart.params.chartType ) {
+      // switch ( chart.params.chartType ) {
 
-        case "scatter":
-          chart.traces[i] = ScatterTrace.defaultOptions( i, chart.params.chartType )
-          break
+        // case "scatter":
+          chart.traces[i] = Trace.defaultOptions( i, chart.params.chartType, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1] )
+          // break
 
-          case "pie":
-          chart.traces[i] = PieTrace.defaultOptions( i, chart.params.chartType )
-          break
+          // case "pie":
+          // chart.traces[i] = PieTrace.defaultOptions( i, chart.params.chartType )
+          // break
 
-      }
+      // }
     }
 
     
 
-    chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
-    chart.traces[i].type = chart.params.chartType
+    // chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
+    // chart.traces[i].type = chart.params.chartType
 
-    if ( chart.params.chartType === "scatter" || chart.params.chartType === "bar" ) {
-      // delete chart.traces[i].labels
-      // delete chart.traces[i].values
-      chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
-      chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
-    } else if ( chart.params.chartType === "pie" ) {
-      // delete chart.traces[i].x
-      // delete chart.traces[i].y
-      // delete chart.traces[i].xaxis
-      // delete chart.traces[i].yaxis
-      chart.traces[i].labels = spreadsheet[chart.params.sheetId].data[0]
-      chart.traces[i].values = spreadsheet[chart.params.sheetId].data[i+1]
-    }
+    // if ( chart.params.chartType === "scatter" || chart.params.chartType === "bar" ) {
+    //   // delete chart.traces[i].labels
+    //   // delete chart.traces[i].values
+    //   // chart.traces[i].x = new Date (parseInt(spreadsheet[chart.params.sheetId].data[0] )*1000)
+    //   chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
+    //   chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
+    // } else if ( chart.params.chartType === "pie" ) {
+    //   // delete chart.traces[i].x
+    //   // delete chart.traces[i].y
+    //   // delete chart.traces[i].xaxis
+    //   // delete chart.traces[i].yaxis
+    //   chart.traces[i].labels = spreadsheet[chart.params.sheetId].data[0]
+    //   chart.traces[i].values = spreadsheet[chart.params.sheetId].data[i+1]
+    // }
 
   }
     
@@ -78,9 +79,9 @@ const chartOptions = ( chart, spreadsheet  ) => {
     chart.config.displayModeBar = chart.layout.displayModeBar
     chart.config.displaylogo = chart.layout.displaylogo
     
-    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "xaxis", null, "Wavelength ( &#181;m )", null ) 
+    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
     // chart.layout.xaxis2 = ChartAxis.defaultOptions( "xaxis2", "top", "x", "Wavelength ( &#181;m )", "x" )
-    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "yaxis", null, "Transmittance ( % )", null )
+    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
     // chart.layout.yaxis2 = ChartAxis.defaultOptions( "yaxis2", "right", "y", "Reflectance ( % )", "y" )
   }
 

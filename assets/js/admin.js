@@ -4,6 +4,8 @@ import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
 import setParamsFields from './set-params-fields'
 import saveChart from './save-chart'
+import deleteAxis from './delete-axis'
+import deleteAnnotation from './delete-annotation'
 import listCharts from "./list-charts"
 import { displayAdminMessage, hideOptions, chartOptionKey } from "./utilities"
 import cancelChart from "./cancel-chart"
@@ -11,8 +13,9 @@ import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
 import traceHandler from "./trace-handler"
-import annotations from "./annotations"
-import chartAxis from "./chart-axis"
+import annotationsHandler from "./annotations-handler"
+import axisHandler from "./axis-handler"
+import Annotation from "./Annotation"
 import "../sass/admin.scss"
 
 // console.log("yrlPlotlyChartsObj", {...yrl_wp_plotly_charts_obj})
@@ -56,15 +59,14 @@ if (  yrl_wp_plotly_charts_obj ) {
     document.addEventListener("click", async function (event) {
 
       if ( event.target.id.includes ( "deletAxis" ) )  {
-        console.log( event.target.id)
 
-        const key = chartOptionKey(event.target.id).key
-        console.log(key)
-        delete chart.layout[key]
-        console.log(chart.layout)
-        document.getElementById( event.target.id ).closest(".ac").remove()
+        deleteAxis(chart, event.target.id, prefix )
 
-      } else {
+      } else  if ( event.target.id.includes ( "deletAnnotation" ) )  {
+
+        deleteAnnotation(chart, event.target.id, prefix )
+
+      } else  {
 
         switch ( event.target.id ) {
 
@@ -108,17 +110,23 @@ if (  yrl_wp_plotly_charts_obj ) {
   
           case `${prefix}__addAnnotation`:
             event.preventDefault()
-            annotations( chart, prefix )
+            Plotly.purge(`${prefix}__plotlyChart`)
+            const index = chart.layout.annotations === undefined ? 0 : chart.layout.annotations.length
+            chart.layout.annotations[index] = Annotation.defaultOptions()
+            chart.layout.annotations[index].x = chart.layout.xaxis.range[0] +  (chart.layout.annotations.length )*(( chart.layout.xaxis.range[1] - chart.layout.xaxis.range[0])/10)
+            chart.layout.annotations[index].y = ( chart.layout.yaxis.range[1] + chart.layout.yaxis.range[0])/2
+            Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )           
+            annotationsHandler( chart, prefix )
             break
   
           case `${prefix}__addNewXAxis`:
             event.preventDefault()
-            chartAxis ( chart, "xaxis", prefix )
+            axisHandler ( chart, "xaxis", prefix )
             break
   
           case `${prefix}__addNewYAxis`:
             event.preventDefault()
-            chartAxis ( chart, "yaxis", prefix )
+            axisHandler ( chart, "yaxis", prefix )
             break
   
         }
@@ -148,6 +156,10 @@ if (  yrl_wp_plotly_charts_obj ) {
         spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
         chartUpdated = true
+
+        console.log(spreadsheet)
+        
+        console.log(new Date(44359))
 
       } catch (error) {
 

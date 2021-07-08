@@ -874,7 +874,7 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
 
 
-const setSelectFielddOptions = (node, options) => { 
+const setSelectFieldOptions = (node, options) => { 
 
   node.options.length = 0
   for (const prop in options ) {
@@ -897,6 +897,18 @@ const fetchAxisOptions = (layout, axisType, capitalize) => {
   }
 
   return axisOptions
+
+}
+
+const createDeleteBtn = (title, id, cssClass) => {
+
+  const deleteBtn = document.createElement("div")
+  deleteBtn.classList.add( `${cssClass}`, "button", "btn", "btn-danger" )
+  deleteBtn.id =id
+  const buttonText = document.createTextNode( title )
+  deleteBtn.appendChild(buttonText)
+
+  return deleteBtn
 
 }
 
@@ -1161,7 +1173,8 @@ module.exports = {
   hideOptions,
   createChartCard,
   chartsListDefaultLayout,
-  setSelectFielddOptions,
-  fetchAxisOptions
+  setSelectFieldOptions,
+  fetchAxisOptions,
+  createDeleteBtn
   
 };

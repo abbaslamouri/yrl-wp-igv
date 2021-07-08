@@ -13,10 +13,10 @@ class BasicOPtions {
       width: null,
       height: 450,
       margin: {
-        l: 80,
+        l: 120,
         r: 80,
         t: 100,
-        b: 80,
+        b: 120,
         pad: 0,
         autoexpand: true,
       },

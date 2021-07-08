@@ -4,18 +4,45 @@ class Trace {
 
   constructor( ) { }
 
-  static defaultOptions( index, chartType ) {
+  static defaultOptions( index, chartType, name, x, y ) {
 
-    return {
-
+    const commonOptions = {
       type: chartType,
+      name: name,
       visible: true,
       showlegend: true,
+      opacity: 1,
+      text: null,
+      textfont: {
+        family: "Raleway",
+        color: colors()[index],
+        size: 12,
+      },
+      textposition: "top center",
+      hovertext: "",
+      hoverinfo: "all",
+      hoverlabel: {
+        bgcolor: colors()[index],
+        bordercolor : "#000000",
+        align: "auto",
+        namelength: 15,
+        font: {
+          family: "Raleway",
+          color: "#FFFFFF",
+          size: 12,
+        },
+      },
+
+    }
+
+    const scaterChartOptions = {
+      
+      x: x,
+      y: y,
       mode: "lines+markers",
       xaxis: "x",
       yaxis: "y",
       connectgaps: false,
-      opacity: 1,
 
       marker: {
         symbol: 0,
@@ -40,26 +67,7 @@ class Trace {
         smoothing: 1,
         simplify: true
       },
-      text: null,
-      textfont: {
-        family: "Raleway",
-        color: colors()[index],
-        size: 12,
-      },
-      textposition: "top center",
-      hovertext: "",
-      hoverinfo: "all",
-      hoverlabel: {
-        align: "auto",
-        namelength: 15,
-        font: {
-          family: "Raleway",
-          color: "#FFFFFF",
-          size: 12,
-        },
-        bgcolor: colors()[index],
-        bordercolor : "#000000",
-      },
+     
       error_y: {
         visible: false,
         type: "percent",
@@ -72,8 +80,35 @@ class Trace {
         thickness: 2,
         width: 4
       },
+    }
 
-
+    const pieChartOptions = {
+       // type: chartType,
+      // visible: true,
+      // showlegend: true,
+      // opacity: 1,
+      // text: [],
+      // textfont: {
+      //   family: "Raleway",
+      //   color: colors()[index],
+      //   size: 12,
+      // },
+      // textposition: "auto",
+      // hovertext: "",
+      // hoverinfo: "all",
+      // hoverlabel: {
+      //   bgcolor: colors()[index],
+      //   bordercolor : "#000000",
+      //   align: "auto",
+      //   namelength: 15,
+      //   font: {
+      //     family: "Raleway",
+      //     color: "#FFFFFF",
+      //     size: 12,
+      //   },
+      // },
+      labels: x,
+      values: y,
       title: {
         text: "",
         font: {
@@ -83,8 +118,66 @@ class Trace {
         },
         position: "top center",
       },
-      pull: 0
+     
+     
+      pull: 0,
+    
+     
+      automargin: true,
+      marker: {
+        colors: [],
+        line: {
+          color: "#444444",
+          width: 0
+        },
+      },
+     
+      textinfo: null,
+      direction: "counterclockwise",
+      hole: 0,
+     
+      insidetextfont: {
+        font: {
+          family: Object.keys(fontFamily())[12],
+          size: 16,
+          color: "#263238",
+        },
+      },
+      insidetextorientation: "auto",
+      outsidetextfont: {
+        font: {
+          family: Object.keys(fontFamily())[12],
+          size: 16,
+          color: "#263238",
+        },
+      },
+      rotation: 0,
+      sort:true,
+      domain: {
+        row: 0,
+        column: 0
+      }
+
     }
+
+    switch (chartType) {
+
+      case "scatter":
+        return {...commonOptions, ...scaterChartOptions }
+        break
+
+      case "scatter":
+        return {...commonOptions, ...pieChartOptions }
+        break
+
+    }
+
+   
+
+
+
+
+    
 
   }
 
@@ -212,7 +305,7 @@ class Trace {
         ],
       },
 
-      markers: {
+      markers: chartType === "pie" ? null : {
         intro : `Here you can modify the markers of trace "${trace.name}`,
         title : "Markers",
         fieldGroups : [
@@ -746,96 +839,96 @@ class Trace {
         ]
       },
 
-      pie: {
-        intro : `Here you can modify the other of trace "${trace.name}`,
-        title : "Pie Chart Options",
-        fieldGroups : [
-          {
-            cssClasses : ["field-group"],
-            inputFields: [
-              {
-                id : `traces[${index}][title][text]`, 
-                title : "TitleText", 	
-                type : "text",
-                value : trace.title === undefined || trace.title.text === undefined ? this.defaultOptions(index, chartType).title.text : trace.title.text,
-                disabled: true !== trace.visible ? true : false,
-                hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "sixty-forty"],
-            inputFields: [
-              {
-                id : `traces[${index}][title][font][family]`,
-                title : "Title Font",	
-                type : "select",
-                options : fontFamily(),
-                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.family === undefined ? this.defaultOptions(index, chartType).title.font.family : trace.title.font.family,
-                disabled: true !== trace.visible || ! trace.title.text ? true : false,
-                hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
-              },
-              {
-                id : `traces[${index}][title][font][color]`,
-                title : "Title Font Color",
-                type : "color", 
-                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.color === undefined ? this.defaultOptions(index, chartType).title.font.color : trace.title.font.color,
-                disabled: true !== trace.visible || ! trace.title.text ? true : false,
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][title][font][size]`, 
-                title : "Title Font Size", 
-                type : "number",
-                min : 1,
-                max : 100,
-                step : 0.5,
-                value : trace.title === undefined || trace.title.font === undefined || trace.title.font.size === undefined ? this.defaultOptions(index, chartType).title.font.size : trace.title.font.size,
-                disabled: true !== trace.visible || ! trace.title.text ? true : false,
-                hint : "number greater than or equal to 1"
-              },
-              {
-                id : `traces[${index}][title][position]`, 
-                title : "Title position", 
-                type : "select",
-                options : {
-                  "top left": "Top Left",
-                  "top center": "Top Center",
-                  "top right": "Top Right",
-                  "middle center": "Middle Center",
-                  "bottom left": "Bottom Left",
-                  "bottom center": "Bottom Center",
-                  "bottom right": "Bottom Right"
-                },
-                value : trace.title === undefined || trace.title.position === undefined ? this.defaultOptions(index, chartposition).title.position : trace.title.position,
-                disabled: true !== trace.visible || ! trace.title.text ? true : false,
-                hint : "Specifies the location of the `title`. Note that the title's position used to be set by the now deprecated `titleposition` attribute."
-              },
-            ],
-          },
-          {
-            cssClasses : ["field-group", "forty-sixty"],
-            inputFields: [
-              {
-                id : `traces[${index}][pull]`, 
-                title : "Slice Pull", 
-                type : "number",
-                min : 0,
-                max : 1,
-                step : 0.01,
-                value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
-                disabled: true !== trace.visible ? true : false,
-                hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
-              },
+      // pie: {
+      //   intro : `Here you can modify the other of trace "${trace.name}`,
+      //   title : "Pie Chart Options",
+      //   fieldGroups : [
+      //     {
+      //       cssClasses : ["field-group"],
+      //       inputFields: [
+      //         {
+      //           id : `traces[${index}][title][text]`, 
+      //           title : "TitleText", 	
+      //           type : "text",
+      //           value : trace.title === undefined || trace.title.text === undefined ? this.defaultOptions(index, chartType).title.text : trace.title.text,
+      //           disabled: true !== trace.visible ? true : false,
+      //           hint : "Sets hover text elements associated with each (x,y) pair. If a single string, the same string appears over all the data points. If an array of string, the items are mapped in order to the this trace's (x,y) coordinates. To be seen, trace `hoverinfo` must contain a 'text' flag."
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       cssClasses : ["field-group", "sixty-forty"],
+      //       inputFields: [
+      //         {
+      //           id : `traces[${index}][title][font][family]`,
+      //           title : "Title Font",	
+      //           type : "select",
+      //           options : fontFamily(),
+      //           value : trace.title === undefined || trace.title.font === undefined || trace.title.font.family === undefined ? this.defaultOptions(index, chartType).title.font.family : trace.title.font.family,
+      //           disabled: true !== trace.visible || ! trace.title.text ? true : false,
+      //           hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
+      //         },
+      //         {
+      //           id : `traces[${index}][title][font][color]`,
+      //           title : "Title Font Color",
+      //           type : "color", 
+      //           value : trace.title === undefined || trace.title.font === undefined || trace.title.font.color === undefined ? this.defaultOptions(index, chartType).title.font.color : trace.title.font.color,
+      //           disabled: true !== trace.visible || ! trace.title.text ? true : false,
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       cssClasses : ["field-group", "forty-sixty"],
+      //       inputFields: [
+      //         {
+      //           id : `traces[${index}][title][font][size]`, 
+      //           title : "Title Font Size", 
+      //           type : "number",
+      //           min : 1,
+      //           max : 100,
+      //           step : 0.5,
+      //           value : trace.title === undefined || trace.title.font === undefined || trace.title.font.size === undefined ? this.defaultOptions(index, chartType).title.font.size : trace.title.font.size,
+      //           disabled: true !== trace.visible || ! trace.title.text ? true : false,
+      //           hint : "number greater than or equal to 1"
+      //         },
+      //         {
+      //           id : `traces[${index}][title][position]`, 
+      //           title : "Title position", 
+      //           type : "select",
+      //           options : {
+      //             "top left": "Top Left",
+      //             "top center": "Top Center",
+      //             "top right": "Top Right",
+      //             "middle center": "Middle Center",
+      //             "bottom left": "Bottom Left",
+      //             "bottom center": "Bottom Center",
+      //             "bottom right": "Bottom Right"
+      //           },
+      //           value : trace.title === undefined || trace.title.position === undefined ? this.defaultOptions(index, chartposition).title.position : trace.title.position,
+      //           disabled: true !== trace.visible || ! trace.title.text ? true : false,
+      //           hint : "Specifies the location of the `title`. Note that the title's position used to be set by the now deprecated `titleposition` attribute."
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       cssClasses : ["field-group", "forty-sixty"],
+      //       inputFields: [
+      //         {
+      //           id : `traces[${index}][pull]`, 
+      //           title : "Slice Pull", 
+      //           type : "number",
+      //           min : 0,
+      //           max : 1,
+      //           step : 0.01,
+      //           value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
+      //           disabled: true !== trace.visible ? true : false,
+      //           hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
+      //         },
               
-            ],
-          },
-        ]
-      },
+      //       ],
+      //     },
+      //   ]
+      // },
 
     }
   }

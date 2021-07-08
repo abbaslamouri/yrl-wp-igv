@@ -4,13 +4,13 @@ import 'accordion-js/dist/accordion.min.css';
 import capitalize from 'lodash.capitalize'
 import ChartAxis from "./ChartAxis"
 import layoutHandler from "./layout-handler"
-import { chartOptionKey, createPanel, createPanelSections } from "./utilities"
+import { chartOptionKey, createPanel, createPanelSections, createDeleteBtn } from "./utilities"
 
 
 const axesPanel =  async( chart, axisType, prefix ) => {
 
-  let deleteBtn = null
-  let axisId = null
+  // let deleteBtn = null
+  // let axisId = null
 
   const axesClass =  axisType === "xaxis" ? "xaxes" : axisType === "yaxis" ? "yaxes" : null
 
@@ -24,22 +24,13 @@ const axesPanel =  async( chart, axisType, prefix ) => {
 
   for (let i = 0;  i < axes.length; i++) {
 
-    axisId = axisType === "xaxis" ?  ! i ? "xaxis" : axes[i]  : axisType === "yaxis" ? ! i ? "yaxis" : axes[i] : null
+    const axisId = axisType === "xaxis" ?  ! i ? "xaxis" : axes[i]  : axisType === "yaxis" ? ! i ? "yaxis" : axes[i] : null
 
-    // Create a annotation panel and add it to xaxes accordion
+    // Create axis panel and add it to xaxes accordion
     document.querySelector( `#${prefix}__admin .${axesClass}__Accordion`).appendChild( createPanel(  `${axisId}Ac`, capitalize(axisId), `Here you can modify the options for a new ${axisId}` ) )
 
-    if (axisId !== "xaxis" && axisId !== "yaxis") {
-
-      // Create Delete annotation button
-      deleteBtn = document.createElement("div")
-      deleteBtn.classList.add( "deleteAxis", "button", "btn", "btn-danger" )
-      deleteBtn.id = `.${prefix}__deletAxis[${axisId}]`
-      const buttonText = document.createTextNode( "Delete Axis" )
-      deleteBtn.appendChild(buttonText)
-      document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( deleteBtn )
-
-    }
+     // Create Delete axis button
+    if (axisId !== "xaxis" && axisId !== "yaxis")  document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( createDeleteBtn ( "Delete Axis", `.${prefix}__deletAxis[${axisId}]`, "deleteAxis" ) )
 
     // Create level3 accordion inside new annotation panel
     const level3AccordionDiv = document.createElement("div")

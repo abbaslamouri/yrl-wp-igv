@@ -119,8 +119,8 @@ if (!class_exists('Dashboard')) {
 			foreach ($charts as $chart_id => $chart) {
 
 				// Fetch spreadsheet
-				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] ) : null;
-        $sheets[$chart['fileUpload']['chartId']] = $spreadsheet[$chart['fileUpload']['sheetId']];
+				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['params']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['params']['fileId'] ) : null;
+        $sheets[$chart['params']['chartId']] = $spreadsheet[$chart['params']['sheetId']];
 
 			}
       // echo "<pre>";
@@ -470,7 +470,7 @@ if (!class_exists('Dashboard')) {
 			$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 
 			// Advise the Reader that we only want to load cell data (no fprmating)
-			$reader->setReadDataOnly(true);
+			$reader->setReadDataOnly(false);
 
 			// Load $input_file_path to a input_file Object
 			$input_file = $reader->load($file_path);
