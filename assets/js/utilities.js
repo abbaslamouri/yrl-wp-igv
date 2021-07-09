@@ -1091,14 +1091,37 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
 }
 
 
-const chartsListDefaultLayout = (chart) => {  
 
-  // chart.layout.showlegend = false
-  // chart.layout.hovermode = false
-  // chart.layout.height = 300
-  // chart.config.displayModeBar = false
+// Remove empty spaces ("") from begining and end of array
+const trimArray = (arr) => {  
+  let index = null
+  for ( const i in arr) {
+    if (arr[i] == "") {
+      continue
+    } else {
+      index = i
+      break
+    }
+  }
+  arr.splice(0, index )
+
+  for ( const i in arr.reverse()) {
+    if (arr[i] == "") {
+      continue
+    } else {
+      index = i
+      break
+    }
+  }
+  arr.splice(0, index )
+
+  return arr
 
 }
+
+
+
+
 
 
 
@@ -1187,9 +1210,9 @@ module.exports = {
   fetchformGroup,
   hideOptions,
   createChartCard,
-  chartsListDefaultLayout,
   setSelectFieldOptions,
   fetchAxisOptions,
-  createDeleteBtn
+  createDeleteBtn,
+  trimArray
   
 };

@@ -12,34 +12,31 @@ class Trace {
       visible: true,
       showlegend: true,
       opacity: 1,
-
-      text: null,
+      text: ["pppppp", "TTTTTTTT"],
       textposition: "top center",
-      hovertext: "",
+      hovertext: ["1111", "222222"],
       hoverinfo: "all",
-
       textfont: {
         family: "Raleway",
-        color: colors()[index],
         size: 12,
+        color: colors()[index],
       },
-      
       hoverlabel: {
         bgcolor: colors()[index],
         bordercolor : "#000000",
-        align: "auto",
-        namelength: 15,
         font: {
           family: "Raleway",
           color: "#FFFFFF",
           size: 12,
         },
+        align: "auto",
+        namelength: 15,
       },
 
     }
 
-    const scaterChartOptions = {
-      mode: "lines+markers",
+    const scatterChartOptions = {
+      mode: "lines+markers+text",
       x: x,
       y: y,
       xaxis: "x",
@@ -62,32 +59,32 @@ class Trace {
         //   x: 1.02
         // }
       },
-
-
-      connectgaps: false,
-
-     
       line: {
-        dash: "solid",
-        shape: "linear",
-        width: 2,
         color: colors()[index],
+        width: 2,
+        shape: "linear",
         smoothing: 1,
+        dash: "solid",
         simplify: true
       },
-     
       error_y: {
         visible: false,
         type: "percent",
-        value: 20,
-        valueminus: 10,
+        symmetric: false,
         array: [],
         arrayminus: [],
+        value: 20,
+        valueminus: 10,
         color: colors()[index],
-        symmetric: false,
         thickness: 2,
         width: 4
       },
+      connectgaps: false,
+
+     
+    
+     
+     
     }
 
     const pieChartOptions = {
@@ -115,8 +112,6 @@ class Trace {
       //     size: 12,
       //   },
       // },
-      labels: x,
-      values: y,
       title: {
         text: "",
         font: {
@@ -126,11 +121,15 @@ class Trace {
         },
         position: "top center",
       },
-     
-     
+      values: y,
+      labels: x,
       pull: 0,
-    
-     
+      domain: {
+        x: [0,1],
+        y: [0,1],
+        row: 0,
+        column: 0
+      },
       automargin: true,
       marker: {
         colors: [],
@@ -161,17 +160,12 @@ class Trace {
       },
       rotation: 0,
       sort:true,
-      domain: {
-        row: 0,
-        column: 0
-      }
-
     }
 
     switch (chartType) {
 
       case "scatter":
-        return {...commonOptions, ...scaterChartOptions }
+        return {...commonOptions, ...scatterChartOptions }
         break
 
       case "pie":
@@ -189,6 +183,132 @@ class Trace {
       intro : `Here you can modify the basic options of trace "${name}"`,
       title : "Basic Options",
       fieldGroups : [
+        {
+          cssClasses : ["field-group", "sixty-forty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][type]`,  
+              title : "Trace Type",  
+              type : "text",
+              value : trace.type !== undefined ? trace.type : this.defaultOptions(index, chartType).type,
+              readonly : true
+            },
+            // {
+            //   id : `traces[${index}][name]`, 
+            //   title : "Trace Name", 	
+            //   type : "text",
+            //   value : trace.name !== undefined ? trace.name : this.defaultOptions(index, chartType).name,
+            //   readonly : true
+            // },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "sixty-forty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][visible]`,  
+              title : "Trace Visibility",  
+              type : "select",
+              options : {
+                true : "Visible",
+                false : "Hidden",
+                legendonly : "Legend Only",
+              },
+              value : trace.visible !== undefined ? true === trace.visible ? "true" : false === trace.visible ? "false" : trace.visible: this.defaultOptions(index, chartType).visible,
+              hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible)."
+            },
+            {
+              id : `traces[${index}][showlegend]`, 
+              title : "Show In Legend", 	
+              type : "checkbox",
+              value : trace.showlegend !== undefined ? trace.showlegend : defaultOptions(index, chartType).showlegend,
+              disabled: false === trace.visible  ? true : false,
+              hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group"],     
+          inputFields : [
+            {
+              id : `traces[${index}][mode]`, 
+              title : "Mode", 	
+              type : "select", 
+              options : {
+                none : "None",
+                lines : "Lines",
+                markers : "Markers",
+                text: "text",
+                "lines+markers" : "Lines & Markers",
+                "markers+text" : "Markers & Text",
+                "lines+markers+text" : "Lines, Markers & Text"
+              },
+              value : trace.mode !== undefined ? trace.mode : this.defaultOptions(index, chartType).mode,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group"],
+          inputFields: [
+            {
+              id : `traces[${index}][name]`,  
+              title : "Name",  
+              type : "text",
+              value : trace.name !== undefined ? trace.name : this.defaultOptions(index, chartType).name,
+              disabled: false === trace.visible  ? true : false,
+              hint : "Sets the trace name. The trace name appear as the legend item and on hove"
+            },
+          ],
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],
+          inputFields: [
+            {
+              id : `traces[${index}][xaxis]`, 
+              title : "x-Axis", 	
+              type : "select", 
+              options : null,
+              value : trace.xaxis !== undefined ? trace.xaxis : this.defaultOptions(index, chartType).xaxis,
+              disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
+              hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
+            },
+            {
+              id : `traces[${index}][yaxis]`, 
+              title : "Y-Axis", 	
+              type : "select", 
+              options : null,
+              value : trace.yaxis !== undefined ? trace.yaxis : this.defaultOptions(index, chartType).yaxis,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][connectgaps]`, 
+              title : "Connect Gaps", 
+              type : "checkbox",
+              value : trace.connectgaps !== undefined ?  trace.connectgaps : this.defaultOptions(index, chartType).connectgaps,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Determines whether or not gaps (i.e. {nan} or missing values) in the provided data arrays are connected."
+            },
+            {
+              id : `traces[${index}][opacity]`, 
+              title : "Trace Opacity", 	
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.02,
+              value : trace.opacity !== undefined ? trace.opacity : this.defaultOptions(index, chartType).opacity,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Sets the opacity of the trace."
+            },
+          ]
+        },
         {
           cssClasses : ["field-group", "sixty-forty"],     
           inputFields : [
@@ -215,28 +335,6 @@ class Trace {
           ]
         },
         {
-          cssClasses : ["field-group"],     
-          inputFields : [
-            {
-              id : `traces[${index}][mode]`, 
-              title : "Mode", 	
-              type : "select", 
-              options : {
-                none : "None",
-                lines : "Lines",
-                markers : "Markers",
-                text: "text",
-                "lines+markers" : "Lines & Markers",
-                "markers+text" : "Markers & Text",
-                "lines+markers+text" : "Lines, Markers & Text"
-              },
-              value : trace.mode === undefined ? this.defaultOptions(index, chartType).mode :trace.mode,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Determines the drawing mode for this scatter trace. If the provided `mode` includes 'text' then the `text` elements appear at the coordinates. Otherwise, the `text` elements appear on hover. If there are less than 20 points and the trace is not stacked then the default is 'lines+markers'. Otherwise, 'lines'."
-            },
-          ]
-        },
-        {
           cssClasses : ["field-group"],
           inputFields: [
             {
@@ -250,39 +348,25 @@ class Trace {
           ],
         },
         {
-          cssClasses : ["field-group", "fifty-fifty"],
+          cssClasses : ["field-group", "forty-sixty"],
           inputFields: [
             {
-              id : `traces[${index}][xaxis]`, 
-              title : "x-Axis", 	
-              type : "select", 
-              options : null,
-              value : trace.xaxis === undefined ? this.defaultOptions(index, chartType).xaxis : trace.xaxis,
-              disabled: true !== trace.visible || ! trace.showlegend  ? true : false,
-              hint : "Sets a reference between this trace's x coordinates and a 2D cartesian x axis. If 'x' (the default value), the x coordinates refer to `layout.xaxis`. If 'x2', the x coordinates refer to `layout.xaxis2`, and so on."
+              id : `traces[${index}][pull]`, 
+              title : "Slice Pull", 
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.01,
+              value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
+              disabled: true !== trace.visible ? true : false,
+              hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
             },
-            {
-              id : `traces[${index}][yaxis]`, 
-              title : "Y-Axis", 	
-              type : "select", 
-              options : null,
-              value : trace.yaxis === undefined ? this.defaultOptions(index, chartType).yaxis: trace.yaxis,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Sets a reference between this trace's y coordinates and a 2D cartesian y axis. If 'y' (the default value), the y coordinates refer to `layout.yaxis`. If 'y2', the y coordinates refer to `layout.yaxis2`, and so on."
-            },
-          ]
+            
+          ],
         },
         {
           cssClasses : ["field-group", "fifty-fifty"],     
           inputFields : [
-            {
-              id : `traces[${index}][connectgaps]`, 
-              title : "Connect Gaps", 
-              type : "checkbox",
-              value : trace.connectgaps === undefined ?  false : trace.connectgaps,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Determines whether or not gaps (i.e. {nan} or missing values) in the provided data arrays are connected."
-            },
             {
               id : `traces[${index}][opacity]`, 
               title : "Trace Opacity", 	
@@ -295,6 +379,70 @@ class Trace {
               hint : "Sets the opacity of the trace."
             },
           ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][domain][row]`, 
+              title : "Domain Row", 	
+              type : "number",
+              min: 0,
+              max: 100,
+              step: 1,
+              value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
+            },
+            {
+              id : `traces[${index}][domain][column]`, 
+              title : "Domain Column", 	
+              type : "number",
+              min: 0,
+              max: 100,
+              step: 1,
+              value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][automargin]`, 
+              title : "Auto Margin", 	
+              type : "checkbox",
+              value : trace.automargin === undefined ? this.defaultOptions(index, chartType).automargin : trace.automargin,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Determines whether outside text labels can push the margins"
+            },
+            {
+              id : `traces[${index}][hole]`, 
+              title : "Hole", 	
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.01,
+              value : trace.hole === undefined ? this.defaultOptions(index, chartType).hole : trace.hole,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Sets the fraction of the radius to cut out of the pie. Use this to make a donut chart."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "forty-sixty"],
+          inputFields: [
+            {
+              id : `traces[${index}][sort]`, 
+              title : "Sort", 
+              type : "checkbox",
+              value : trace.sort === undefined ? this.defaultOptions(index, chartType).sort : trace.sort,
+              disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+              hint : "number greater than or equal to 1"
+            },
+          ],
         },
         // {
         //   cssClasses : ["field-group", "fifty-fifty"],     
@@ -377,7 +525,7 @@ class Trace {
               type : "color",
               value : trace.marker === undefined || trace.marker.color === undefined ? this.defaultOptions(index, chartType).marker.color : trace.marker.color,
               disabled: false === trace.visible || ( trace.mode !== undefined && ! trace.mode.includes( "marker" ) ) ? true : false,
-              hint : ""
+              hint : "Sets the marker color. It accepts either a specific color or an array of numbers that are mapped to the colorscale relative to the max and min values of the array or relative to `marker.cmin` and `marker.cmax` if set."
             },
           ],
         },
@@ -582,7 +730,7 @@ class Trace {
               type : "select",
               options : fontFamily(),
               value : trace.textfont === undefined || trace.textfont.family === undefined ? this.defaultOptions(index, chartType).textfont.family : trace.textfont.family,
-              disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+              disabled: true !== trace.visible || ! trace.text || ( trace.mode !== undefined && ! trace.mode.includes( "text" ) ) ? true : false,
               hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
             },
             {
@@ -593,7 +741,7 @@ class Trace {
               max : 100,
               step : 0.5,
               value : trace.textfont === undefined || trace.textfont.size === undefined ? this.defaultOptions(index, chartType).textfont.size : trace.textfont.size,
-              disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+              disabled: true !== trace.visible || ! trace.text || ( trace.mode !== undefined && ! trace.mode.includes( "text" ) ) ? true : false,
               hint : "number greater than or equal to 1"
             },
           ],
@@ -606,7 +754,7 @@ class Trace {
               title : "Text Font Color",
               type : "color", 
               value : trace.textfont === undefined || trace.textfont.color === undefined ? this.defaultOptions(index, chartType).textfont.color : trace.textfont.color,
-              disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+              disabled: true !== trace.visible || ! trace.text || ( trace.mode !== undefined && ! trace.mode.includes( "text" ) ) ? true : false,
             }, 
             {
               id : `traces[${index}][textposition]`, 
@@ -624,7 +772,7 @@ class Trace {
                 "bottom right": "Bottom Right",
               },
               value : trace.textposition === undefined ? this.defaultOptions(index, chartType).textposition : trace.textposition,
-              disabled: true !== trace.visible || ! trace.text || ! trace.mode.includes( "text" ) ? true : false,
+              disabled: true !== trace.visible || ! trace.text || ( trace.mode !== undefined && ! trace.mode.includes( "text" ) ) ? true : false,
               hint : "Sets the positions of the `text` elements with respects to the (x,y) coordinates."
             },
           ],

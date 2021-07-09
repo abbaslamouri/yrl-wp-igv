@@ -8,7 +8,7 @@ import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
 import listCharts from "./list-charts"
-import { displayAdminMessage, hideOptions, chartOptionKey } from "./utilities"
+import { displayAdminMessage, hideOptions, chartOptionKey, trimArray } from "./utilities"
 import cancelChart from "./cancel-chart"
 import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
@@ -57,8 +57,6 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add click event listener to the Add New Chart button
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async function (event) {
-
-      console.log(event.target.classList)
 
       if ( event.target.id.includes ( "deletAxis" ) )  {
 
@@ -177,6 +175,15 @@ if (  yrl_wp_plotly_charts_obj ) {
         const chartId = chart.params !== undefined && chart.params.chartId !== undefined ? chart.params.chartId : null
 
         spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+
+        // trim spreadsheet
+        for ( const prop in spreadsheet ) {
+          for (const index in spreadsheet[prop].data) {
+            spreadsheet[prop].data[index] = trimArray(spreadsheet[prop].data[index])
+          }
+        }
+        console.log(spreadsheet)
+
 
         chartUpdated = true
 
