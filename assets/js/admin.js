@@ -1,4 +1,5 @@
 import Plotly from 'plotly.js-dist'
+import Swal from 'sweetalert2'
 import cloneDeep from 'lodash.clonedeep'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
@@ -17,6 +18,7 @@ import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 import Annotation from "./Annotation"
 import "../sass/admin.scss"
+// import { redraw } from 'plotly.js-basic-dist'
 
 // console.log("yrlPlotlyChartsObj", {...yrl_wp_plotly_charts_obj})
 
@@ -54,7 +56,9 @@ if (  yrl_wp_plotly_charts_obj ) {
     let mediaUploader = wp.media.frames.file_frame = wp.media( { multiple: false } );
 
     // Add click event listener to the Add New Chart button
-    document.addEventListener("click", async function (event) {
+    document.querySelector( `#${prefix}__admin` ).addEventListener("click", async function (event) {
+
+      console.log(event.target.classList)
 
       if ( event.target.id.includes ( "deletAxis" ) )  {
 
@@ -64,7 +68,30 @@ if (  yrl_wp_plotly_charts_obj ) {
 
         deleteAnnotation(chart, event.target.id, prefix )
 
-      } else  {
+      } else  if (event.target.classList.contains ( "form-group__tooltip-question-mark" )) {
+        console.log("LLLLLLLL")
+        const hint = event.target.nextElementSibling.innerHTML
+        console.log(hint)
+        Swal.fire({
+          // title: 'Error!',
+          // titleText: 'hello',
+          html: `<div class='hint-popup'>${hint}</div>`,
+          padding: "2rem",
+          // icon: 'info',
+          // iconColor: "red",
+          // confirmButtonText: 'Close',
+          // confirmButtonColor: "#CCCCCC",
+          showConfirmButton: false,
+          // footer: "footer",
+          // backdrop: true,
+          // toast:true,
+          // position: "top-end"
+          width: '50%',
+          // allowOutsideClick: true
+          showCloseButton: true
+        })
+    
+      } else {
 
         switch ( event.target.id ) {
 
@@ -77,7 +104,7 @@ if (  yrl_wp_plotly_charts_obj ) {
             document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
             mainAccordion.close(0)
             chart = cloneDeep(emptyChart)
-            hideOptions(prefix)
+            // hideOptions(prefix)
             mainAccordion.open(0)
             chartUpdated = false
   
@@ -130,8 +157,6 @@ if (  yrl_wp_plotly_charts_obj ) {
         }
 
       }
-
-     
       
     })
 

@@ -30,11 +30,14 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "@sweetalert2/theme-wordpress-admin": "^5.0.1",
+    "@sweetalert2/themes": "^5.0.1",
     "accordion-js": "^3.1.1",
     "lodash.capitalize": "^4.2.1",
     "lodash.clonedeep": "^4.5.0",
     "plotly.js-basic-dist": "^1.58.4",
     "plotly.js-dist": "^1.58.4",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.0.18"
   }
 }

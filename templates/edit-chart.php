@@ -5,7 +5,7 @@
   <div class="edit-chart__content">
     <!-- Admin messages -->
     
-    <!-- <div class="hint-popup"></div> -->
+    <!-- <div class="hint-popup">kkkkkkkk</div> -->
 
     <!-- Show module title -->
     <div class="edit-chart__header">
