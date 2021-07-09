@@ -8,16 +8,17 @@ import Hoverlabel from "./Hoverlabel"
 import Grid from "./Grid"
 import Modebar from "./Modebar"
 import axesPanel from "./axes-panel"
-import ScatterTrace from './ScatterTrace'
+import Trace from './Trace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
-import { createPanel, createPanelSections, setSelectFielddOptions, fetchAxisOptions } from "./utilities"
+import { createPanel, createPanelSections, setSelectFieldOptions, fetchAxisOptions } from "./utilities"
+import annotationsHandler from './annotations-handler'
 
 const panels = async function (chart, spreadsheet, prefix) {
 
-  document.querySelector(`#${prefix}__admin .tracesAc .ac-panel .accordion`).innerHTML = ""
+  document.querySelector(`#${prefix}__admin .tracesAc .accordion`).innerHTML = ""
 
-  const tracesAccordionDiv = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion`)
+  const tracesAccordionDiv = document.querySelector( `#${prefix}__admin .traces__Accordion`)
   tracesAccordionDiv.innerHTML = ""
 
   for (let i = 0;  i < chart.traces.length; i++) {
@@ -28,25 +29,25 @@ const panels = async function (chart, spreadsheet, prefix) {
     // Create level3 accordion inside new trace panel
     const level3AccordionDiv = document.createElement("div")
     level3AccordionDiv.classList.add("accordion", "accordion__level-3", `traces${i}__Accordion`)
-    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
+    document.querySelector( `#${prefix}__admin .traces${i}Ac .ac-panel `).appendChild( level3AccordionDiv )
 
     // Create a section container
-    const sectionsContainer = document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm .tracesAc .ac-panel .traces__Accordion .ac-panel .traces${i}__Accordion`)
+    const sectionsContainer = document.querySelector( `#${prefix}__admin .traces${i}__Accordion`)
 
-    // Create panel sections
-    switch ( chart.params.chartType ) {
+    // // Create panel sections
+    // switch ( chart.params.chartType ) {
       
-      case "scatter":
-        createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
-        setSelectFielddOptions ( document.getElementById ( `${prefix}__traces[${i}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
-        setSelectFielddOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
-        break
+      // case "scatter":
+        createPanelSections( Trace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+        setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${i}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
+        setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
+        // break
 
-      case "pie":
-        console.log("PIE")
-        createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
-        break
-    }
+    //   case "pie":
+    //     console.log("PIE")
+    //     createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+    //     break
+    // }
 
     // Create section accordion
     new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })
@@ -86,13 +87,8 @@ const panels = async function (chart, spreadsheet, prefix) {
   axesPanel ( chart, "xaxis", prefix )
   axesPanel ( chart, "yaxis", prefix )
 
-  annotations(chart, prefix)
+  annotationsHandler(chart, prefix)
 
-
-
-
-
-  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
 
 
 
@@ -179,7 +175,9 @@ const panels = async function (chart, spreadsheet, prefix) {
   // document.querySelector(`#${prefix}__admin .yaxis2Ac`).classList.remove( "hidden" )
   // new Accordion( `#${prefix}__admin .yaxis2__Accordion`, { duration: 400 })
 
- 
+  
+
+  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
 
 
 }

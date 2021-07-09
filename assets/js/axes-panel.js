@@ -4,7 +4,7 @@ import 'accordion-js/dist/accordion.min.css';
 import capitalize from 'lodash.capitalize'
 import ChartAxis from "./ChartAxis"
 import layoutHandler from "./layout-handler"
-import { chartOptionKey, createPanel, createPanelSections } from "./utilities"
+import { chartOptionKey, createPanel, createPanelSections, createDeleteBtn } from "./utilities"
 
 
 const axesPanel =  async( chart, axisType, prefix ) => {
@@ -29,15 +29,8 @@ const axesPanel =  async( chart, axisType, prefix ) => {
     // Create axis panel and add it to xaxes accordion
     document.querySelector( `#${prefix}__admin .${axesClass}__Accordion`).appendChild( createPanel(  `${axisId}Ac`, capitalize(axisId), `Here you can modify the options for a new ${axisId}` ) )
 
-    // Create Delete axis button
-    if (axisId !== "xaxis" && axisId !== "yaxis") {
-      const deleteBtn = document.createElement("div")
-      deleteBtn.classList.add( "deleteAxis", "button", "btn", "btn-danger" )
-      deleteBtn.id = `.${prefix}__deletAxis[${axisId}]`
-      const buttonText = document.createTextNode( "Delete Axis" )
-      deleteBtn.appendChild(buttonText)
-      document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( deleteBtn )
-    }
+     // Create Delete axis button
+    if (axisId !== "xaxis" && axisId !== "yaxis")  document.querySelector( `#${prefix}__admin .${axisId}Ac .ac-panel `).appendChild( createDeleteBtn ( "Delete Axis", `.${prefix}__deletAxis[${axisId}]`, "deleteAxis" ) )
 
     // Create level3 accordion inside new annotation panel
     const level3AccordionDiv = document.createElement("div")

@@ -470,7 +470,7 @@ if (!class_exists('Dashboard')) {
 			$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
 
 			// Advise the Reader that we only want to load cell data (no fprmating)
-			$reader->setReadDataOnly(true);
+			$reader->setReadDataOnly(false);
 
 			// Load $input_file_path to a input_file Object
 			$input_file = $reader->load($file_path);

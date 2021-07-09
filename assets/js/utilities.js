@@ -874,7 +874,7 @@ const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
 
 
-const setSelectFielddOptions = (node, options) => { 
+const setSelectFieldOptions = (node, options) => { 
 
   node.options.length = 0
   for (const prop in options ) {
@@ -886,17 +886,17 @@ const setSelectFielddOptions = (node, options) => {
 
 
 
-const createDeleteBtn = (title, cssClass, btnId) => { 
+// const createDeleteBtn = (title, cssClass, btnId) => { 
 
-  const deleteBtn = document.createElement("div")
-  deleteBtn.classList.add( `${cssClass}`, "button", "btn", "btn-danger" )
-  deleteBtn.id = btnId
-  const buttonText = document.createTextNode( title )
-  deleteBtn.appendChild(buttonText)
+//   const deleteBtn = document.createElement("div")
+//   deleteBtn.classList.add( `${cssClass}`, "button", "btn", "btn-danger" )
+//   deleteBtn.id = btnId
+//   const buttonText = document.createTextNode( title )
+//   deleteBtn.appendChild(buttonText)
 
-  return deleteBtn
+//   return deleteBtn
 
-}
+// }
 
 
 
@@ -912,6 +912,18 @@ const fetchAxisOptions = (layout, axisType, capitalize) => {
   }
 
   return axisOptions
+
+}
+
+const createDeleteBtn = (title, id, cssClass) => {
+
+  const deleteBtn = document.createElement("div")
+  deleteBtn.classList.add( `${cssClass}`, "button", "btn", "btn-danger" )
+  deleteBtn.id =id
+  const buttonText = document.createTextNode( title )
+  deleteBtn.appendChild(buttonText)
+
+  return deleteBtn
 
 }
 
@@ -1176,7 +1188,7 @@ module.exports = {
   hideOptions,
   createChartCard,
   chartsListDefaultLayout,
-  setSelectFielddOptions,
+  setSelectFieldOptions,
   fetchAxisOptions,
   createDeleteBtn
   

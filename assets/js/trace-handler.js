@@ -8,7 +8,7 @@ const traceHandler = async ( chart, key, value, prefix  ) => {
     const keyArr = key.split(".")
     const traceNumber = keyArr.shift()
     const optionKey = keyArr.join(".")
-    console.log("OPT", optionKey, value, traceNumber )
+    // console.log("OPT", optionKey, value, traceNumber )
 
     switch (optionKey) {
 
@@ -39,9 +39,6 @@ const traceHandler = async ( chart, key, value, prefix  ) => {
 
 
     Plotly.restyle(`${prefix}__plotlyChart`, { [optionKey]: value}, traceNumber)
-
-    console.log("CHART", chart)
-
 
     const trace =chart.traces[traceNumber]
 

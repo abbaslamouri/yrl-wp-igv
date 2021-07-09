@@ -26,6 +26,8 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
       document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
 
       chart = chartOptions(chart, spreadsheet)
+
+      console.log(chart)
       
       Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ).then( ( ) => {
          panels( chart, spreadsheet, prefix )
