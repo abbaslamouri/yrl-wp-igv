@@ -6,8 +6,48 @@ class Trace {
 
   static defaultOptions( index, chartType, name, x, y ) {
 
+    // let marker = {}
+
+    // switch (chartType) {
+
+    //   case "scatter":
+    //     marker = {
+    //       symbol: 0,
+    //       opacity:1,
+    //       size: 6,
+    //       masdisplayed: 0,
+    //       line: {
+    //         width: 0,
+    //         color: "#444444",
+    //       },
+    //       gradient: {
+    //         type: "none",
+    //         color: "#444444"
+    //       },
+    //       color: colors()[index],
+    //       // colorbar:{
+    //       //   x: 1.02
+    //       // }
+    //       colors: [],
+
+    //     }
+    //     break
+
+    //   case "pie":
+    //     marker = {
+    //       colors: [],
+    //       line: {
+    //         color: "#444444",
+    //         width: 0
+    //       },
+    //     }
+    //     break
+    // }
+
+    
+
     const commonOptions = {
-      type: chartType,
+      type: null,
       name: name,
       visible: true,
       showlegend: true,
@@ -58,7 +98,27 @@ class Trace {
         // colorbar:{
         //   x: 1.02
         // }
+        colors: [],
+
       },
+      // : {
+      //   symbol: 0,
+      //   opacity:1,
+      //   size: 6,
+      //   masdisplayed: 0,
+      //   line: {
+      //     width: 0,
+      //     color: "#444444",
+      //   },
+      //   gradient: {
+      //     type: "none",
+      //     color: "#444444"
+      //   },
+      //   color: colors()[index],
+      //   // colorbar:{
+      //   //   x: 1.02
+      //   // }
+      // },
       line: {
         color: colors()[index],
         width: 2,
@@ -125,19 +185,19 @@ class Trace {
       labels: x,
       pull: 0,
       domain: {
-        x: [0,1],
-        y: [0,1],
+        // x: [0,1],
+        // y: [0,1],
         row: 0,
         column: 0
       },
       automargin: true,
-      marker: {
-        colors: [],
-        line: {
-          color: "#444444",
-          width: 0
-        },
-      },
+      // marker: {
+      //   colors: [],
+      //   line: {
+      //     color: "#444444",
+      //     width: 0
+      //   },
+      // },
      
       textinfo: null,
       direction: "counterclockwise",
@@ -162,24 +222,24 @@ class Trace {
       sort:true,
     }
 
-    switch (chartType) {
+    // switch (chartType) {
 
-      case "scatter":
-        return {...commonOptions, ...scatterChartOptions }
-        break
+    //   case "scatter":
+        return {...commonOptions, ...scatterChartOptions, ... pieChartOptions }
+        // break
 
-      case "pie":
-        return {...commonOptions, ...pieChartOptions }
-        break
+      // case "pie":
+        // return {...commonOptions, ...pieChartOptions }
+        // break
 
-    }
+    // }
 
 
   }
 
   static sections( trace, index, name, chartType ) {
 
-    const basicOptions =  {
+    const basicOptions = {
       intro : `Here you can modify the basic options of trace "${name}"`,
       title : "Basic Options",
       fieldGroups : [
@@ -193,13 +253,7 @@ class Trace {
               value : trace.type !== undefined ? trace.type : this.defaultOptions(index, chartType).type,
               readonly : true
             },
-            // {
-            //   id : `traces[${index}][name]`, 
-            //   title : "Trace Name", 	
-            //   type : "text",
-            //   value : trace.name !== undefined ? trace.name : this.defaultOptions(index, chartType).name,
-            //   readonly : true
-            // },
+           
           ]
         },
         {
@@ -309,172 +363,10 @@ class Trace {
             },
           ]
         },
-        {
-          cssClasses : ["field-group", "sixty-forty"],     
-          inputFields : [
-            {
-              id : `traces[${index}][visible]`,  
-              title : "Trace Visibility",  
-              type : "select",
-              options : {
-                true : "Visible",
-                false : "Hidden",
-                legendonly : "Legend Only",
-              },
-              value : trace.visible === undefined ? this.defaultOptions(index, chartType).visible : true === trace.visible ? "true" : false === trace.visible ? "false" : trace.visible,
-              hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible). Default: visible"
-            },
-            {
-              id : `traces[${index}][showlegend]`, 
-              title : "Show In Legend", 	
-              type : "checkbox",
-              value : trace.showlegend === undefined ? false : trace.showlegend,
-              disabled: false === trace.visible  ? true : false,
-              hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
-            },
-          ]
-        },
-        {
-          cssClasses : ["field-group"],
-          inputFields: [
-            {
-              id : `traces[${index}][name]`,  
-              title : "Name",  
-              type : "text",
-              value : trace.name === undefined ? this.defaultOptions(index, chartType).name :trace.name,
-              disabled: false === trace.visible  ? true : false,
-              hint : "The trace name appear as the legend item and on hover."
-            },
-          ],
-        },
-        {
-          cssClasses : ["field-group", "forty-sixty"],
-          inputFields: [
-            {
-              id : `traces[${index}][pull]`, 
-              title : "Slice Pull", 
-              type : "number",
-              min : 0,
-              max : 1,
-              step : 0.01,
-              value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
-              disabled: true !== trace.visible ? true : false,
-              hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
-            },
-            
-          ],
-        },
-        {
-          cssClasses : ["field-group", "fifty-fifty"],     
-          inputFields : [
-            {
-              id : `traces[${index}][opacity]`, 
-              title : "Trace Opacity", 	
-              type : "number",
-              min : 0,
-              max : 1,
-              step : 0.02,
-              value : trace.opacity === undefined ? this.defaultOptions(index, chartType).opacity : trace.opacity,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Sets the opacity of the trace."
-            },
-          ]
-        },
-        {
-          cssClasses : ["field-group", "fifty-fifty"],     
-          inputFields : [
-            {
-              id : `traces[${index}][domain][row]`, 
-              title : "Domain Row", 	
-              type : "number",
-              min: 0,
-              max: 100,
-              step: 1,
-              value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
-            },
-            {
-              id : `traces[${index}][domain][column]`, 
-              title : "Domain Column", 	
-              type : "number",
-              min: 0,
-              max: 100,
-              step: 1,
-              value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
-            },
-          ]
-        },
-        {
-          cssClasses : ["field-group", "fifty-fifty"],     
-          inputFields : [
-            {
-              id : `traces[${index}][automargin]`, 
-              title : "Auto Margin", 	
-              type : "checkbox",
-              value : trace.automargin === undefined ? this.defaultOptions(index, chartType).automargin : trace.automargin,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Determines whether outside text labels can push the margins"
-            },
-            {
-              id : `traces[${index}][hole]`, 
-              title : "Hole", 	
-              type : "number",
-              min : 0,
-              max : 1,
-              step : 0.01,
-              value : trace.hole === undefined ? this.defaultOptions(index, chartType).hole : trace.hole,
-              disabled: true !== trace.visible  ? true : false,
-              hint : "Sets the fraction of the radius to cut out of the pie. Use this to make a donut chart."
-            },
-          ]
-        },
-        {
-          cssClasses : ["field-group", "forty-sixty"],
-          inputFields: [
-            {
-              id : `traces[${index}][sort]`, 
-              title : "Sort", 
-              type : "checkbox",
-              value : trace.sort === undefined ? this.defaultOptions(index, chartType).sort : trace.sort,
-              disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
-              hint : "number greater than or equal to 1"
-            },
-          ],
-        },
-        // {
-        //   cssClasses : ["field-group", "fifty-fifty"],     
-        //   inputFields : [
-        //     {
-        //       id : `traces[${index}][domain][row]`, 
-        //       title : "Domain Row", 	
-        //       type : "number",
-        //       min: 0,
-        //       max: 100,
-        //       step: 1,
-        //       value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
-        //       disabled: true !== trace.visible  ? true : false,
-        //       hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
-        //     },
-        //     {
-        //       id : `traces[${index}][domain][column]`, 
-        //       title : "Domain Column", 	
-        //       type : "number",
-        //       min: 0,
-        //       max: 100,
-        //       step: 1,
-        //       value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
-        //       disabled: true !== trace.visible  ? true : false,
-        //       hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
-        //     },
-        //   ]
-        // },
       ],
     }
 
-    const marker = chartType !== "scatter" ? {} :  {
+    const marker = {
       intro : `Here you can modify the markers of trace "${trace.name}`,
       title : "Markers",
       fieldGroups : [
@@ -620,7 +512,7 @@ class Trace {
     //   ]
     // }
 
-    const line =  chartType !== "scatter" ? {} :  {
+    const line = {
       intro : `Here you can modify the lines of trace "${trace.name}`,
       title : "Lines",
       fieldGroups : [
@@ -905,7 +797,7 @@ class Trace {
       ]
     }
 
-    const error_y = chartType !== "scatter" ? {} :  {
+    const error_y = {
       intro : `Here you can modify the other of trace "${trace.name}`,
       title : "Error Y",
       fieldGroups : [
@@ -1028,19 +920,163 @@ class Trace {
         },
       ]
     }
+
+    const pieChartOptions = {
+      intro : `Here you can modify the basic options of trace "${name}"`,
+      title : "Pie Chart Option",
+      fieldGroups : [
+        {
+          cssClasses : ["field-group"],
+          inputFields: [
+            // {
+            //   id : `traces[${index}][name]`,  
+            //   title : "Name",  
+            //   type : "text",
+            //   value : trace.name === undefined ? this.defaultOptions(index, chartType).name :trace.name,
+            //   disabled: false === trace.visible  ? true : false,
+            //   hint : "The trace name appear as the legend item and on hover."
+            // },
+          ],
+        },
+        {
+          cssClasses : ["field-group", "forty-sixty"],
+          inputFields: [
+            {
+              id : `traces[${index}][pull]`, 
+              title : "Slice Pull", 
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.01,
+              value : trace.pull === undefined ? this.defaultOptions(index, chartType).pull : trace.pull,
+              disabled: true !== trace.visible ? true : false,
+              hint : "Sets the fraction of larger radius to pull the sectors out from the center. This can be a constant to pull all slices apart from each other equally or an array to highlight one or more slices."
+            },
+            
+          ],
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            // {
+            //   id : `traces[${index}][opacity]`, 
+            //   title : "Trace Opacity", 	
+            //   type : "number",
+            //   min : 0,
+            //   max : 1,
+            //   step : 0.02,
+            //   value : trace.opacity === undefined ? this.defaultOptions(index, chartType).opacity : trace.opacity,
+            //   disabled: true !== trace.visible  ? true : false,
+            //   hint : "Sets the opacity of the trace."
+            // },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][domain][row]`, 
+              title : "Domain Row", 	
+              type : "number",
+              min: 0,
+              max: 100,
+              step: 1,
+              value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
+            },
+            {
+              id : `traces[${index}][domain][column]`, 
+              title : "Domain Column", 	
+              type : "number",
+              min: 0,
+              max: 100,
+              step: 1,
+              value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][automargin]`, 
+              title : "Auto Margin", 	
+              type : "checkbox",
+              value : trace.automargin === undefined ? this.defaultOptions(index, chartType).automargin : trace.automargin,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Determines whether outside text labels can push the margins"
+            },
+            {
+              id : `traces[${index}][hole]`, 
+              title : "Hole", 	
+              type : "number",
+              min : 0,
+              max : 1,
+              step : 0.01,
+              value : trace.hole === undefined ? this.defaultOptions(index, chartType).hole : trace.hole,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "Sets the fraction of the radius to cut out of the pie. Use this to make a donut chart."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "forty-sixty"],
+          inputFields: [
+            {
+              id : `traces[${index}][sort]`, 
+              title : "Sort", 
+              type : "checkbox",
+              value : trace.sort === undefined ? this.defaultOptions(index, chartType).sort : trace.sort,
+              disabled: true !== trace.visible || "skip" === trace.hoverinfo ||  "none" === trace.hoverinfo ? true : false,
+              hint : "number greater than or equal to 1"
+            },
+          ],
+        },
+        // {
+        //   cssClasses : ["field-group", "fifty-fifty"],     
+        //   inputFields : [
+        //     {
+        //       id : `traces[${index}][domain][row]`, 
+        //       title : "Domain Row", 	
+        //       type : "number",
+        //       min: 0,
+        //       max: 100,
+        //       step: 1,
+        //       value : trace.domain !== undefined && trace.domain.row !== undefined ? trace.domain.row : this.defaultOptions(index, chartType).domain.row,
+        //       disabled: true !== trace.visible  ? true : false,
+        //       hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
+        //     },
+        //     {
+        //       id : `traces[${index}][domain][column]`, 
+        //       title : "Domain Column", 	
+        //       type : "number",
+        //       min: 0,
+        //       max: 100,
+        //       step: 1,
+        //       value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+        //       disabled: true !== trace.visible  ? true : false,
+        //       hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+        //     },
+        //   ]
+        // },
+      ],
+    }
     
 
     
 
-    switch (chartType) {
+    // switch (chartType) {
 
-      case "scatter":
-        return {basicOptions, marker, line, text, hoverlabel, error_y }
-        break
+    //   case "scatter":
+        return {basicOptions, marker, line, text, hoverlabel, error_y, pieChartOptions }
+        // break
 
-      case "pie":
-        return {basicOptions, text, hoverlabel }
-        break
+      // case "pie":
+        // return {basicOptions, text, hoverlabel, pieChartOptions }
+        // break
 
   
       // pie: {
@@ -1134,7 +1170,7 @@ class Trace {
       //   ]
       // },
 
-    }
+    // }
   }
 
 }

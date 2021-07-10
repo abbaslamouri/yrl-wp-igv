@@ -12,10 +12,10 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
       chart.params.fileName = document.getElementById( `${prefix}__params[fileName]` ).value
       chart.params.fileId = document.getElementById( `${prefix}__params[fileId]` ).value
       chart.params.sheetId = document.getElementById( `${prefix}__params[sheetId]` ).value
-      chart.params.chartType = document.getElementById( `${prefix}__params[chartType]` ).value
+      // chart.params.chartType = null //document.getElementById( `${prefix}__params[chartType]` ).value
 
       // return  if no file name or file ID or chart type 
-      if ( ! chart.params.fileName || !  chart.params.fileId || ! chart.params.sheetId || ! chart.params.chartType ) return
+      // if ( ! chart.params.fileName || !  chart.params.fileId || ! chart.params.sheetId || ! chart.params.chartType ) return
 
       // mainAccordion.close(0)
       Plotly.purge(`${prefix}__plotlyChart`)
