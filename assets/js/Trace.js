@@ -4,7 +4,7 @@ class Trace {
 
   constructor( ) { }
 
-  static defaultOptions( index, chartType, name, x, y ) {
+  static defaultOptions( index, chartType, name, x, y, tableHeaderValue, tableCellValue ) {
 
     // let marker = {}
 
@@ -72,6 +72,14 @@ class Trace {
         align: "auto",
         namelength: 15,
       },
+
+      header: {
+        values: tableHeaderValue
+      },
+
+      cells: {
+        values: tableCellValue
+      }
 
     }
 

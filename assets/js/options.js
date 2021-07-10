@@ -28,7 +28,7 @@ const chartOptions = ( chart, spreadsheet  ) => {
       // switch ( chart.params.chartType ) {
 
         // case "scatter":
-          chart.traces[i] = Trace.defaultOptions( i, chart.params.chartType, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1] )
+          chart.traces[i] = Trace.defaultOptions( i, chart.params.chartType, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1], spreadsheet[chart.params.sheetId]["labels"], spreadsheet[chart.params.sheetId].data  )
           // break
 
           // case "pie":
