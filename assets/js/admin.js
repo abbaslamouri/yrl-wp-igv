@@ -8,7 +8,6 @@ import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
 import listCharts from "./list-charts"
-import { displayAdminMessage, hideOptions, chartOptionKey, trimArray } from "./utilities"
 import cancelChart from "./cancel-chart"
 import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
@@ -17,6 +16,8 @@ import traceHandler from "./trace-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 import Annotation from "./Annotation"
+import chartOptions from './options'
+import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions } from "./utilities"
 import "../sass/admin.scss"
 // import { redraw } from 'plotly.js-basic-dist'
 
@@ -172,9 +173,22 @@ if (  yrl_wp_plotly_charts_obj ) {
         // Bail if attachment can't be found
         if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
+        setSelectFieldOptions()
+
+
+        const response = await fetchData(`${wpRestUrl}/${fileId}`, "GET", wpRestNonce )
+  if (response.status !== 200 ) throw new Error(  response.json().message )
+  const spreadsheet = await response.json()
+
+  
+
+  if ( ! sheetId ) {
+      sheetId = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
+  }
+
         const chartId = chart.params !== undefined && chart.params.chartId !== undefined ? chart.params.chartId : null
 
-        spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+        // spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
         // trim spreadsheet
         for ( const prop in spreadsheet ) {
@@ -182,7 +196,42 @@ if (  yrl_wp_plotly_charts_obj ) {
             spreadsheet[prop].data[index] = trimArray(spreadsheet[prop].data[index])
           }
         }
-        console.log(spreadsheet)
+
+        if ( spreadsheet.length = 1  ) {
+          // await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
+        // mainAccordion.closeAll()
+
+        console.log(chart)
+        return
+
+         // mainAccordion.close(0)
+          Plotly.purge(`${prefix}__plotlyChart`)
+          Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
+          // Hide warning and unhide loading
+          document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
+          document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
+
+          chart = chartOptions(chart, spreadsheet)
+
+          console.log(chart)
+          
+          Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ).then( ( ) => {
+            panels( chart, spreadsheet, prefix )
+
+            mainAccordion.closeAll()
+
+            // Enable save button  // Add click event listener to the chart params panel inoput fields
+            document.getElementById( `${prefix}__saveChart` ).disabled = false
+            document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
+            document.querySelector( `#${prefix}__admin .loading` ).classList.add(`hidden`)
+
+            console.log("CHARTvvv", chart)
+
+          })
+        }
+        
+       
 
 
         chartUpdated = true

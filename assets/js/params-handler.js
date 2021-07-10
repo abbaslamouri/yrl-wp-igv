@@ -38,6 +38,8 @@ const paramsHandler = async ( chart, spreadsheet, mainAccordion, prefix  ) => {
          document.getElementById( `${prefix}__saveChart` ).disabled = false
          document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
          document.querySelector( `#${prefix}__admin .loading` ).classList.add(`hidden`)
+
+         console.log("DONE")
          // resolve ( true )   
 
       })
