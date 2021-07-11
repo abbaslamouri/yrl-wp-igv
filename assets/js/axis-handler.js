@@ -12,6 +12,8 @@ const chartAxis =  async( chart, axisType, prefix ) => {
  
   try {
 
+    console.log(chart.layout)
+
     const axes = Object.keys(chart.layout).filter( ( prop ) => prop.includes(axisType))
     let lastIndex =  0
           
@@ -23,7 +25,7 @@ const chartAxis =  async( chart, axisType, prefix ) => {
 
     const axisId = `${axisType}${index}`
     const axisSide = axisType === "xaxis" ? "top" : axisType === "yaxis" ? "right" : null
-    const axisOverlaying = axisType === "xaxis" ? "x" : axisType === "yaxis" ? "y" : null
+    const axisOverlaying = axisType === "xaxis" ? null : axisType === "yaxis" ? "y" : null
 
 
     if ( ! axisSide ) throw new Error( " Invalid axis Side" )

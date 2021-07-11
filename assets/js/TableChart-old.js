@@ -1,9 +1,5 @@
-// import ChartDefault from "./ChartDefault"
 
-import ChartDefault from "./ChartDefault";
-
-
-class TableChart extends ChartDefault{
+class TableChart {
 
   constructor(tableConfig, iwpgvObj, panelId, panelTitle, fontFamily) {
 

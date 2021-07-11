@@ -24,6 +24,7 @@ class ChartAxis  {
       visible : true,
       type : "-",
       side: axisSide,
+      domain: [0,1],
       autotypenumbers : "convert types",
       autorange : true,
       fixedrange : true,
@@ -282,6 +283,18 @@ class ChartAxis  {
                 title : "Matches", 
                 type : "text",
                 value : layout[axisId].matches !== undefined ? layout[axisId].matches : this.defaultOptions(axisId, axisSide, axisOverlaying, axisTitleText, axisMatches).matches,
+                hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
+              },
+            ]
+          },
+          {
+            cssClasses : ["field-group", "fifty-fifty"],
+            inputFields: [
+              {
+                id : `layout[${axisId}][domain]`, 
+                title : "domain", 
+                type : "text",
+                value : layout[axisId].domain !== undefined ? layout[axisId].domain : this.defaultOptions(axisId, axisSide, axisdomain, axisTitleText, axisMatches).domain,
                 hint : "If set a same-letter axis id, this axis is overlaid on top of the corresponding same-letter axis, with traces and axes visible for both axes. If 'false', this axis does not overlay any same-letter axes. In this case, for axes with overlapping domains only the highest-numbered axis will be visible."
               },
             ]

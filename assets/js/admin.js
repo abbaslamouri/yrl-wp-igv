@@ -66,6 +66,9 @@ if (  yrl_wp_plotly_charts_obj ) {
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async function (event) {
       displayAdminMessage(null, null,  prefix)
 
+      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
+      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+
 
       if ( event.target.id.includes ( "deletAxis" ) )  {
         event.preventDefault()
@@ -270,12 +273,12 @@ if (  yrl_wp_plotly_charts_obj ) {
         const key = chartOptionKey(event.target.id).key
         const keyParts = key.split(".")
         let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-        // console.group()
-        // console.log("Control", control)
-        // console.log("key", key)
-        // console.log("keyParts", keyParts)
-        // console.log("value", value)
-        // console.groupEnd()
+        console.group()
+        console.log("Control", control)
+        console.log("key", key)
+        console.log("keyParts", keyParts)
+        console.log("value", value)
+        console.groupEnd()
 
         switch ( control ) {
 
@@ -284,12 +287,12 @@ if (  yrl_wp_plotly_charts_obj ) {
             break
 
           case "layout":
-            layoutHandler( chart, key, value, prefix )
+            layoutHandler( chart, key, keyParts, value, prefix )
             console.log(chart.layout)
             break
 
             case "traces":
-            traceHandler( chart, key, value, prefix )
+            traceHandler( chart, key, keyParts, value, Plotly, prefix )
             break
 
         }

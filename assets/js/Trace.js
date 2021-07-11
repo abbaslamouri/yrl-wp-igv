@@ -193,10 +193,10 @@ class Trace {
       labels: x,
       pull: 0,
       domain: {
-        // x: [0,1],
-        // y: [0,1],
-        row: 0,
-        column: 0
+        x: [.5,1],
+        y: [.5,1],
+        row: null,
+        column: null
       },
       automargin: true,
       // marker: {
@@ -1001,6 +1001,27 @@ class Trace {
               max: 100,
               step: 1,
               value : trace.domain !== undefined && trace.domain.column !== undefined ? trace.domain.column : this.defaultOptions(index, chartType).domain.column,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
+            },
+          ]
+        },
+        {
+          cssClasses : ["field-group", "fifty-fifty"],     
+          inputFields : [
+            {
+              id : `traces[${index}][domain][x]`, 
+              title : "Domain x", 	
+              type : "text",
+              value : trace.domain !== undefined && trace.domain.x !== undefined ? trace.domain.x : this.defaultOptions(index, chartType).domain.x,
+              disabled: true !== trace.visible  ? true : false,
+              hint : "If there is a layout grid, use the domain for this row in the grid for this pie trace ."
+            },
+            {
+              id : `traces[${index}][domain][y]`, 
+              title : "Domain y", 	
+              type : "text",
+              value : trace.domain !== undefined && trace.domain.y !== undefined ? trace.domain.y : this.defaultOptions(index, chartType).domain.y,
               disabled: true !== trace.visible  ? true : false,
               hint : "The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it's also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots."
             },
