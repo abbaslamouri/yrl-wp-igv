@@ -3,12 +3,14 @@ import Swal from 'sweetalert2'
 import cloneDeep from 'lodash.clonedeep'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
-import setParamsFields from './set-params-fields'
+import fetchData from "./fetch-data"
+import fetchSpreadsheet from './fetch-spreadsheet'
+import drawChart from './draw-chart'
 import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
 import listCharts from "./list-charts"
-import cancelChart from "./cancel-chart"
+// import cancelChart from "./cancel-chart"
 import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
@@ -17,7 +19,10 @@ import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 import Annotation from "./Annotation"
 import chartOptions from './options'
-import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions } from "./utilities"
+import panels from './panels'
+
+
+import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart } from "./utilities"
 import "../sass/admin.scss"
 // import { redraw } from 'plotly.js-basic-dist'
 
@@ -47,6 +52,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
+    mainAccordion.closeAll()
 
     // List all charts
     listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
@@ -58,63 +64,52 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add click event listener to the Add New Chart button
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async function (event) {
+      displayAdminMessage(null, null,  prefix)
+
 
       if ( event.target.id.includes ( "deletAxis" ) )  {
+        event.preventDefault()
 
         deleteAxis(chart, event.target.id, prefix )
 
-      } else  if ( event.target.id.includes ( "deletAnnotation" ) )  {
+      } else if ( event.target.id.includes ( "deletAnnotation" ) )  {
+        event.preventDefault()
 
         deleteAnnotation(chart, event.target.id, prefix )
 
-      } else  if (event.target.classList.contains ( "form-group__tooltip-question-mark" )) {
-        console.log("LLLLLLLL")
-        const hint = event.target.nextElementSibling.innerHTML
-        console.log(hint)
-        Swal.fire({
-          // title: 'Error!',
-          // titleText: 'hello',
-          html: `<div class='hint-popup'>${hint}</div>`,
-          padding: "2rem",
-          // icon: 'info',
-          // iconColor: "red",
-          // confirmButtonText: 'Close',
-          // confirmButtonColor: "#CCCCCC",
-          showConfirmButton: false,
-          // footer: "footer",
-          // backdrop: true,
-          // toast:true,
-          // position: "top-end"
-          width: '50%',
-          // allowOutsideClick: true
-          showCloseButton: true
-        })
-    
+      } else if (event.target.classList.contains ( "form-group__tooltip-question-mark" )) {
+        event.preventDefault()
+
+        showToolTip( event.target, Swal, prefix)
+
       } else {
 
         switch ( event.target.id ) {
 
           case `${prefix}__addNewChart`:
+
             event.preventDefault()
-            Plotly.purge(`${prefix}__plotlyChart`)
-            Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
+            resetChart ( Plotly, prefix )
   
             // Unhide chart  and open first accordion panel 
             document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
-            mainAccordion.close(0)
+
+            // clone empty chart
             chart = cloneDeep(emptyChart)
+
             // hideOptions(prefix)
             mainAccordion.open(0)
+
+            // Set chart updated flag
             chartUpdated = false
-  
+
             break
   
           case `${prefix}__cancelChart`:
             event.preventDefault()
-  
-          console.log("UPDATED", chartUpdated)
             if (chartUpdated) {
-              cancelChart( chart, prefix )
+              cancelChart( Swal, prefix )
             } else {
               document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
             }
@@ -152,6 +147,9 @@ if (  yrl_wp_plotly_charts_obj ) {
             event.preventDefault()
             axisHandler ( chart, "yaxis", prefix )
             break
+
+          default:
+            break
   
         }
 
@@ -163,77 +161,59 @@ if (  yrl_wp_plotly_charts_obj ) {
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
 
+      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
+      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+
+      // Toggle warning and loading
       document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
       document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
 
       try {
 
+        //fetch attachment
         const attachment = mediaUploader.state().get("selection").first().toJSON()
 
         // Bail if attachment can't be found
         if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
 
-        setSelectFieldOptions()
+        // set chart filename and file id and params file name and file id
+        chart.params.fileName = attachment.filename
+        document.getElementById(`${prefix}__params[fileName]`).value = chart.params.fileName
+        chart.params.fileId = attachment.id
+        document.getElementById(`${prefix}__params[fileId]`).value = chart.params.fileId
 
+        // Set chart params chart Id
+        if ( undefined === chart.params.chartId ) chart.params.chartId  = null
+        document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
 
-        const response = await fetchData(`${wpRestUrl}/${fileId}`, "GET", wpRestNonce )
-  if (response.status !== 200 ) throw new Error(  response.json().message )
-  const spreadsheet = await response.json()
+        spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce )
 
-  
+        // Set sheet select field options array
+        setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
 
-  if ( ! sheetId ) {
-      sheetId = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
-  }
+        // Set params sheet id and sheet select value
+        chart.params.sheetId  = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
+        document.getElementById( `${prefix}__params[sheetId]` ).value = chart.params.sheetId
 
-        const chartId = chart.params !== undefined && chart.params.chartId !== undefined ? chart.params.chartId : null
-
-        // spreadsheet = await setParamsFields( attachment.filename, attachment.id, null, "", chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
-
-        // trim spreadsheet
-        for ( const prop in spreadsheet ) {
-          for (const index in spreadsheet[prop].data) {
-            spreadsheet[prop].data[index] = trimArray(spreadsheet[prop].data[index])
-          }
-        }
-
-        if ( spreadsheet.length = 1  ) {
-          // await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
-        // mainAccordion.closeAll()
-
-        console.log(chart)
-        return
-
-         // mainAccordion.close(0)
-          Plotly.purge(`${prefix}__plotlyChart`)
-          Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
-
-          // Hide warning and unhide loading
-          document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-          document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
-
-          chart = chartOptions(chart, spreadsheet)
-
-          console.log(chart)
-          
-          Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ).then( ( ) => {
-            panels( chart, spreadsheet, prefix )
-
-            mainAccordion.closeAll()
-
-            // Enable save button  // Add click event listener to the chart params panel inoput fields
-            document.getElementById( `${prefix}__saveChart` ).disabled = false
-            document.getElementById( `${prefix}__saveChart` ).classList.remove("hidden")
-            document.querySelector( `#${prefix}__admin .loading` ).classList.add(`hidden`)
-
-            console.log("CHARTvvv", chart)
-
-          })
-        }
-        
+        // Unhide file name, file id and chart id input fields
+        document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
        
+        // draw chart immediatelly if spreadsheet contains a single sheet
+        if ( spreadsheet.length == 1  ) {
+          await drawChart ( chart, spreadsheet, prefix )
+          document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
 
+          // Close main accordion
+          mainAccordion.closeAll()
 
+        } else {
+          document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
+          document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+        }
+
+        // Set chart updated flag
         chartUpdated = true
 
       } catch (error) {
@@ -243,22 +223,46 @@ if (  yrl_wp_plotly_charts_obj ) {
     
       }
 
-      document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-
     } )
+
+
+    
 
     // Add change event listener to all input fields
     document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
     event.preventDefault( )
 
+      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
+      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+
+      console.log(event.target)
+
       displayAdminMessage(null, null,  prefix)
 
-      if( event.target.id.includes( `params` ) ) {
-        // chart = cloneDeep(emptyChart)
-        await paramsHandler( chart, spreadsheet, mainAccordion, prefix  )
-        // xaxesAccordion = new Accordion( `#${prefix}__admin .xaxes__Accordion`, { duration: 400 } )
-        console.log("CHART", chart)
+      if( event.target.id === `${prefix}__params[sheetId]` ) {
+
+        // Bail if there is no sheet id
+        if ( event.target.value == "") return
+
+        // set params sheet id
+        chart.params.sheetId = event.target.value
+
+        // Unhide file name, file id and chart id input fields
+        document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+
+        // Toggle warning
+        document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
+
+        // draw chart
+        await drawChart ( chart, spreadsheet, prefix )
+
+        // Close main accordion
+        mainAccordion.closeAll()
+
+        // et chart updated flag
+        chartUpdated = true
 
       } else {
 

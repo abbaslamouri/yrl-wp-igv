@@ -25,17 +25,13 @@ const chartOptions = ( chart, spreadsheet  ) => {
     if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
 
     if ( chart.traces[i] === undefined ) {
-      // switch ( chart.params.chartType ) {
-
-        // case "scatter":
-          chart.traces[i] = Trace.defaultOptions( i, chart.params.chartType, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1], spreadsheet[chart.params.sheetId]["labels"], spreadsheet[chart.params.sheetId].data  )
-          // break
-
-          // case "pie":
-          // chart.traces[i] = PieTrace.defaultOptions( i, chart.params.chartType )
-          // break
-
-      // }
+      chart.traces[i] = Trace.defaultOptions( i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1], spreadsheet[chart.params.sheetId]["labels"], spreadsheet[chart.params.sheetId].data  )
+    } else {
+      chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
+      chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
+      chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
+      chart.traces[i].tableHeaderValue = spreadsheet[chart.params.sheetId]["labels"]
+      chart.traces[i].tableCellValue = spreadsheet[chart.params.sheetId].data 
     }
 
     

@@ -856,29 +856,30 @@ const createPanelSections = ( sections, sectionsContainer, optionId, prefix ) =>
 
 
 
-// Show sheet select field
-const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
+// // Show sheet select field
+// const setSheetIdOptions = (spreadsheet, sheetIdInput) => {
 
-  // Remove all options
-  sheetIdInput.options.length = 0
+//   // Remove all options
+//   sheetIdInput.options.length = 0
 
-  // Add default option
-  sheetIdInput.options[sheetIdInput.options.length] = new Option( "Select Sheet", "", false, false )
+//   // Add default option
+//   sheetIdInput.options[sheetIdInput.options.length] = new Option( "Select Sheet", "", false, false )
 
-  // Loop through all sheets in the spreadsheet and set options
-  for (const prop in spreadsheet) {
-    sheetIdInput.options[sheetIdInput.options.length] = new Option( spreadsheet[prop]["sheetName"], prop, false, false ) 
-  }
+//   // Loop through all sheets in the spreadsheet and set options
+//   for (const prop in spreadsheet) {
+//     sheetIdInput.options[sheetIdInput.options.length] = new Option( spreadsheet[prop]["sheetName"], prop, false, false ) 
+//   }
 
-}
+// }
 
 
 
-const setSelectFieldOptions = (node, options) => { 
+const setSelectFieldOptions = (node, optionsArr) => { 
 
   node.options.length = 0
-  for (const prop in options ) {
-    node.options.add( new Option( options[prop], prop, false) );
+  node.options.add( new Option( "Select Sheet", "", false, true) );
+  for (const prop in optionsArr ) {
+    node.options.add( new Option( optionsArr[prop], prop, false, false) );
   }
 
 }
@@ -966,10 +967,6 @@ const hideOptions = (prefix) => {
   // document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .yaxis2Ac`).classList.add( "hidden" )
   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion .annotationsAc`).classList.add( "hidden" )
 
-  // Disable save buttons
-  document.getElementById(`${prefix}__saveChart`).disabled = true
-  document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
-
   // Reset panels inner html
   document.querySelector(`#${prefix}__admin .basicOptionsAc .ac-panel`).innerHTML = ""
   document.querySelector(`#${prefix}__admin .titleAc .ac-panel`).innerHTML = ""
@@ -982,6 +979,10 @@ const hideOptions = (prefix) => {
   // document.querySelector(`#${prefix}__admin .yaxis2Ac .ac-panel .accordion`).innerHTML = ""
   document.querySelector(`#${prefix}__admin .annotationsAc .ac-panel .accordion`).innerHTML = ""
   document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
+
+  // Disable save buttons
+  document.getElementById(`${prefix}__saveChart`).disabled = true
+  document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
     
 }
 
@@ -1122,6 +1123,80 @@ const trimArray = (arr) => {
 
 
 
+const resetChart = (Plotly, prefix) => {
+
+  Plotly.purge(`${prefix}__plotlyChart`)
+  Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
+
+  // Reset and hide all panels
+  for ( const element of document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion`).children ) {
+    if ( element.classList.contains('fileUploadAc') ) continue
+
+    if ( element.querySelector(".accordion" ) ) {
+      element.querySelector(".accordion" ).innerHTML = ""
+    } else {
+      element.querySelector(".ac-panel" ).innerHTML = ""
+    }
+
+    element.classList.add ( 'hidden' )
+
+     // Disable and hide save buttons
+    document.getElementById(`${prefix}__saveChart`).disabled = true
+    document.getElementById( `${prefix}__saveChart` ).classList.add("hidden")
+
+    // Hide file name, file id and chart id input fields
+    document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.add ( 'hidden' )
+    document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.add ( 'hidden' )
+    document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.add ( 'hidden' )
+
+  }
+
+}
+
+
+const showToolTip = ( target, Swal, prefix) => {
+
+  const hint = target.nextElementSibling.innerHTML
+  const test = target.closest(".form-group").firstElementChild.id === `${prefix}__params[mediaUploadBtn]`
+  console.log(test)
+  Swal.fire({
+    html: `<div class='hint-popup'>${hint}</div>`,
+    padding: "2rem",
+    showConfirmButton: false,
+    width: '50%',
+    showCloseButton: true,
+    imageUrl: test ? "http://wp-sandbox:8888/wp-content/uploads/2021/07/Screen-Shot-2021-07-11-at-6.05.46-AM.png" : null,
+    imageWidth: test ? 600 : null,
+    imageHeight: test ? 400 : null,
+    imageAlt: test ? 'Hint Image' : null
+  })
+
+}
+
+
+
+
+const cancelChart = ( Swal, prefix) => {
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You will not be able to recover this chart!",
+    // icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#FF6D00',
+    cancelButtonColor: '#4f5b62',
+    confirmButtonText: 'Discard Changes'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+      chart = {}  
+    }
+  })
+  
+}
+
+
+
 
 
 
@@ -1184,6 +1259,9 @@ const chartOptionKey = (fieldId) => {
   return { control: controlWrapper, key: optionKey };
 }
 
+
+
+
 module.exports = {
   fontFamily,
   colors,
@@ -1200,7 +1278,7 @@ module.exports = {
   toggleInputField,
   createPanel,
   createPanelSections,
-  setSheetIdOptions,
+  // setSheetIdOptions,
   showPanels,
   hidePanels,
   fetchTableChartData,
@@ -1213,6 +1291,9 @@ module.exports = {
   setSelectFieldOptions,
   fetchAxisOptions,
   createDeleteBtn,
-  trimArray
+  trimArray,
+  resetChart,
+  showToolTip,
+  cancelChart
   
-};
+}

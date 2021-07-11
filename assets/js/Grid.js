@@ -11,8 +11,8 @@ class Grid {
       
 
       grid : {
-        rows: 2,
-        columns: 2,
+        rows: 1,
+        columns: 1,
         pattern: 'independent'
       //   text: "",
       //   x: 0.1,

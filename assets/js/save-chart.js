@@ -13,59 +13,54 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
     // Bail if there are no chart traces, a file or a sheet id
     if ( ! Object.values(chart.traces).length || ! chart.params.fileId || ! chart.params.sheetId ) throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
 
-    if ( chart.params.chartId === undefined ) { // There is a chart Id (edit)
+    document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+
+    // get chart id
+    if ( chart.params.chartId === null ) { // There is a chart Id (edit)
       const chartId = ! charts.length ? 16327 : charts[charts.length-1].params.chartId + 1
       chart.params.chartId = chartId
       charts.push( chart )
       document.getElementById(`${prefix}__params[chartId]`).value = chartId
     }
 
+    // Save charts
     const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
-  
-    // Convert response to json
     const jsonRes = await response.json();
-
     console.log("JSONRES-SAVE", jsonRes)
 
     // Bail is server response status = error
     if (response.status !== 200 ) throw new Error( jsonRes.message )
 
+    // Remove the no-chart div it it exists
+    if ( document.querySelector(`#${prefix}__admin .no-charts`) ) document.querySelector(`#${prefix}__admin .no-charts`).remove()
 
-
-
-
-    // await saveChart( chart, charts, wpRestUrl, wpRestNonce, prefix )
-    document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-
-    const noChartsContaine = document.querySelector(`#${prefix}__admin .no-charts`)
-    if ( noChartsContaine ) noChartsContaine.remove()
-
+    // Create a new chart card
     createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
+    // Clone chart
     const newChart = cloneDeep( chart )
 
+    // Ser card chart default layout
     newChart.layout.showlegend = false
     newChart.layout.hovermode = false
     newChart.layout.height = 300
     newChart.config.displayModeBar = false
 
+    // Plot card chart
     await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
-
-
-
 
     // Success handler
     displayAdminMessage("Chart saved successfully", "success",  prefix)
-
 
     document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
 
       element.addEventListener("click", async function (event) {  
         event.preventDefault()
   
-        // Get chart Id
-        // const chartId = event.target.closest(".card__edit-chart").dataset.chartId
-        editChart( charts, chart.params.chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+        // Get chart Id and edit chart
+        const chartId = event.target.closest('.card__edit-chart').dataset.chartId
+        const chart = charts.filter(element => element.params.chartId == chartId)[0]
+        editChart( chart, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
   
       })
   
@@ -78,12 +73,41 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
         event.preventDefault()
   
         // Get chart Id
-        // const chartId = event.target.closest(".card__delete-chart").dataset.chartId
-        deleteChart(charts, chart.params.chartId, wpRestUrl, wpRestNonce, prefix)
+        const chartId = event.target.closest(".card__delete-chart").dataset.chartId
+        const chart = charts.filter(element => element.params.chartId == chartId)[0]
+        deleteChart(charts, chartId, wpRestUrl, wpRestNonce, prefix)
   
       })
   
     })
+
+
+    // document.querySelector( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+
+    //   element.addEventListener("click", async function (event) {  
+    //     event.preventDefault()
+  
+    //     // Get chart Id
+    //     // const chartId = event.target.closest(".card__edit-chart").dataset.chartId
+    //     editChart( charts, chart.params.chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+  
+    //   })
+  
+    // })
+  
+  
+    // document.querySelectorAll( `#${prefix}__admin .card__delete-chart`).forEach( ( element ) => {
+  
+    //   element.addEventListener("click", async function (event) {  
+    //     event.preventDefault()
+  
+    //     // Get chart Id
+    //     // const chartId = event.target.closest(".card__delete-chart").dataset.chartId
+    //     deleteChart(charts, chart.params.chartId, wpRestUrl, wpRestNonce, prefix)
+  
+    //   })
+  
+    // })
 
 
 
@@ -92,6 +116,6 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
     console.log("CAUGHT ERROR", error)
   }
 
-};
+}
 
 export default saveChart;

@@ -1,9 +1,9 @@
 import Plotly from 'plotly.js-dist'
-import panels from "./panels"
-import setParamsFields from './set-params-fields'
-import { displayAdminMessage } from "./utilities"
+import drawChart from './draw-chart'
+import fetchSpreadsheet from './fetch-spreadsheet'
+import { displayAdminMessage, setSelectFieldOptions } from "./utilities"
 
-const editChart = async function ( charts, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
+const editChart = async function ( chart, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
 
   mainAccordion.close(0)
   Plotly.purge(`${prefix}__plotlyChart`)
@@ -15,18 +15,31 @@ const editChart = async function ( charts, chartId, wpRestUrl, wpRestNonce, main
 
   try {
 
-    const chart = charts.filter(chart => chart.params.chartId == chartId)[0]
+    // Bail if no chart id is provided
+    if ( ! chartId ) throw new Error(  `A chart id is required` )
 
-    const spreadsheet = await setParamsFields( chart.params.fileName, chart.params.fileId, chart.params.sheetId, chart.params.chartType, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+    // chart = charts.filter(element => element.params.chartId == chartId)[0]
+    const spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce )
 
-    Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config ).then( ( ) => {
+    // Set sheet select field options array
+    setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
 
-      // document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+    document.getElementById( `${prefix}__params[fileName]` ).value = chart.params.fileName
+    document.getElementById( `${prefix}__params[fileId]` ).value = chart.params.fileId
+    document.getElementById( `${prefix}__params[chartId]` ).value = chart.params.chartId
+    document.getElementById( `${prefix}__params[sheetId]` ).value = chart.params.sheetId
+    document.getElementById( `${prefix}__params[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
+    document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
+    document.getElementById( `${prefix}__params[chartId]` ).closest( ".field-group" ).classList.remove( "hidden" )
 
-      panels( chart, spreadsheet, prefix )
+    document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
 
-    } )
+
+    await drawChart ( chart, spreadsheet, prefix )
+
+    console.log(chart)
+
+   
 
   } catch (error) {
 

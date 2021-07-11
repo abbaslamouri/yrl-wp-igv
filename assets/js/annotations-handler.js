@@ -40,9 +40,6 @@ const annotations =  async( chart, prefix ) => {
   document.querySelector(`#${prefix}__admin .annotationsAc`).classList.remove( "hidden" )
 
   new Accordion( `#${prefix}__admin .annotations__Accordion`, { duration: 400 } )
-
-  console.log(chart)
-
   
   
 

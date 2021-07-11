@@ -7,8 +7,6 @@ import { createChartCard } from "./utilities"
 
 const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix) {
 
-  // let spreadsheet = []
-
   if ( ! charts.length ) {
     document.querySelector( `#${prefix}__admin .chart-library__content` ).innerHTML = "<div class='no-charts'> There are no charts to display</div>"
     return
@@ -50,9 +48,10 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
     element.addEventListener("click", async function (event) {  
       event.preventDefault()
 
-      // Get chart Id
-      const chartId = event.target.closest(".card__edit-chart").dataset.chartId
-      editChart( charts, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+      // Get chart Id and edit chart
+      const chartId = event.target.closest('.card__edit-chart').dataset.chartId
+      const chart = charts.filter(element => element.params.chartId == chartId)[0]
+      editChart( chart, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
     })
 
@@ -66,6 +65,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
 
       // Get chart Id
       const chartId = event.target.closest(".card__delete-chart").dataset.chartId
+      const chart = charts.filter(element => element.params.chartId == chartId)[0]
       deleteChart(charts, chartId, wpRestUrl, wpRestNonce, prefix)
 
     })
