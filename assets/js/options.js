@@ -22,7 +22,7 @@ const chartOptions = ( chart, spreadsheet  ) => {
   for (let i = 0;  i < spreadsheet[chart.params.sheetId].data.length - 1; i++) {
 
     // const result = spreadsheet[chart.params.sheetId].data[i].every( ( data ) => { data } )    
-    if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
+    // if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
 
     if ( chart.traces[i] === undefined ) {
       chart.traces[i] = Trace.defaultOptions( i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1], spreadsheet[chart.params.sheetId]["labels"], spreadsheet[chart.params.sheetId].data  )
@@ -33,26 +33,6 @@ const chartOptions = ( chart, spreadsheet  ) => {
       chart.traces[i].tableHeaderValue = spreadsheet[chart.params.sheetId]["labels"]
       chart.traces[i].tableCellValue = spreadsheet[chart.params.sheetId].data 
     }
-
-    
-
-    // chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
-    // chart.traces[i].type = chart.params.chartType
-
-    // if ( chart.params.chartType === "scatter" || chart.params.chartType === "bar" ) {
-    //   // delete chart.traces[i].labels
-    //   // delete chart.traces[i].values
-    //   // chart.traces[i].x = new Date (parseInt(spreadsheet[chart.params.sheetId].data[0] )*1000)
-    //   chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
-    //   chart.traces[i].y = spreadsheet[chart.params.sheetId].data[i+1]
-    // } else if ( chart.params.chartType === "pie" ) {
-    //   // delete chart.traces[i].x
-    //   // delete chart.traces[i].y
-    //   // delete chart.traces[i].xaxis
-    //   // delete chart.traces[i].yaxis
-    //   chart.traces[i].labels = spreadsheet[chart.params.sheetId].data[0]
-    //   chart.traces[i].values = spreadsheet[chart.params.sheetId].data[i+1]
-    // }
 
   }
     

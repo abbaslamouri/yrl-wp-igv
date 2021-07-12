@@ -25,17 +25,12 @@ const traceHandler = async ( chart, key, keyParts, value, Plotly, prefix  ) => {
       case "text":
       case "hovertext":
         value = value.includes(",") ? [commaSeparatedToStringArr( value )] : value
-
-        console.log("XXXXXXXXXX", value)
         break
 
       case "error_y.array":
       case "error_y.arrayminus":
         // value = value.includes(",") ? value.toString().split(",").map( item => parseFloat( item ) )]
-        value = value.includes(",") ? [commaSeparatedToNumberArr( value )] : null
-        console.log("XXXXXXXXXX", value)
-
-
+        value = value ? [commaSeparatedToNumberArr( value )] : null
         break
 
       default:
