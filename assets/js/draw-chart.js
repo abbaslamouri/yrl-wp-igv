@@ -5,55 +5,47 @@ import arrayMean from 'lodash.mean'
 import Trace from "./Trace"
 import chartOptions from "./options"
 import panels from "./panels"
-import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart } from "./utilities"
+import { indexOfAll, displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart } from "./utilities"
 
 
 const drawChart = async( chart, spreadsheet, prefix ) => {
 
    // Fetch chart options
-   chart = chartOptions(chart, spreadsheet)
-
+   chart = chartOptions(chart, spreadsheet) 
 
   const originalData = spreadsheet[chart.params.sheetId].data
 
   let xaxisData = []
-
-
-
   if ( typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String ) {
     xaxisData = [0]
-
     let i = 1
     while (i < originalData[0].length ) {
       xaxisData.push( i)
       i++
     }
-   
   } else {
     xaxisData = originalData[0]
-
   }
 
-
-  const minMaxAvgData = []
+  const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+  const cellValues = []
   const names = []
   const min = []
   const mean = []
   const max = []
-
   for (const prop in chart.traces) {
     const trace = chart.traces[prop]
     names.push(trace.name)
-    min.push(arrayMin(trace.y))
-    max.push(arrayMax(trace.y))
-    mean.push(arrayMean(trace.y))
+    min.push(Math.round((arrayMin(trace.y) + Number.EPSILON) * 1000) / 1000)
+    max.push(Math.round((arrayMax(trace.y) + Number.EPSILON) * 1000) / 1000)
+    mean.push(Math.round((arrayMean(trace.y) + Number.EPSILON) * 1000) / 1000)
   }
-  minMaxAvgData.push( names, min, mean, max )
-  const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+  cellValues.push( names, min, mean, max )
 
- 
+  const newTrace = Trace.defaultOptions( chart.traces.length, "Min/Max/Average", headerValues, cellValues, headerValues, cellValues  )
+  newTrace.type = 'table'
 
-  chart.traces[chart.traces.length] = Trace.defaultOptions( chart.traces.length, "Min/Max/Average", headerValues, minMaxAvgData, headerValues, minMaxAvgData  )
+// }
 
   
   
@@ -61,9 +53,13 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   // Draw charts
   await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
 
+  Plotly.addTraces( `${prefix}__plotlyChart`, {y: cellValues} )
+  Plotly.restyle(`${prefix}__plotlyChart`, newTrace, chart.traces.length-1)
 
   // build chart options field panels
   panels( chart, spreadsheet, prefix )
+
+  
 
   // Enable save button  // Add click event listener to the chart params panel inoput fields
   document.getElementById( `${prefix}__saveChart` ).disabled = false
@@ -79,7 +75,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
   // const range = chart.layout.xaxis.range
   // const selectedAxis = 'x'
-  // const minMaxAvgData = []
+  // const cellValues = []
   // const names = []
   // const min = []
   // const mean = []
@@ -98,9 +94,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   //     mean.push(arrayMean(trace.y))
   //   }
   // }
-  // minMaxAvgData.push( names, min, mean, max )
+  // cellValues.push( names, min, mean, max )
 
-  // console.log("MMMM", minMaxAvgData)
+  // console.log("MMMM", cellValues)
 
 
 // Add range slider event handler
@@ -116,31 +112,45 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
     const originalData = spreadsheet[chart.params.sheetId].data
 
-    const xaxisData = [0]
 
+
+    let xaxisData = []
     if ( typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String ) {
-      // const increment = 1/(originalData[0].length - 1)
-      // console.log("INC", increment)
-
+      xaxisData = [0]
       let i = 1
       while (i < originalData[0].length ) {
         xaxisData.push( i)
         i++
       }
-     
-    }
-        
-
+    } else {
+      xaxisData = originalData[0]
+    } 
 
     console.log("Range", range)
     console.log("xaxisData", xaxisData)
+    console.log(spreadsheet[chart.params.sheetId].data)
+    console.log(indexOfAll(spreadsheet[chart.params.sheetId].data[0], range[0], range[1]))
     return
 
-    const minMaxAvgData = []
-    const names = []
-    const min = []
-    const mean = []
-    const max = []
+    const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+  const cellValues = []
+  const names = []
+  const min = []
+  const mean = []
+  const max = []
+  for (const prop in chart.traces) {
+    const trace = chart.traces[prop]
+    names.push(trace.name)
+    min.push(Math.round((arrayMin(trace.y) + Number.EPSILON) * 1000) / 1000)
+    max.push(Math.round((arrayMax(trace.y) + Number.EPSILON) * 1000) / 1000)
+    mean.push(Math.round((arrayMean(trace.y) + Number.EPSILON) * 1000) / 1000)
+  }
+
+    cellValues = []
+    names = []
+    min = []
+    mean = []
+    max = []
 
     for (const prop in chart.traces) {
       const trace = chart.traces[prop]
@@ -155,9 +165,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
         mean.push(arrayMean(trace.y))
       }
     }
-    minMaxAvgData.push( names, min, mean, max )
+    cellValues.push( names, min, mean, max )
 
-    console.log("MMMM", minMaxAvgData)
+    console.log("MMMM", cellValues)
     console.log("PLotly", document.getElementById(`${prefix}__plotlyChart`).data)
     console.log(originalData)
 
@@ -173,7 +183,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     // document.getElementsByName(`${prefix}__rangeMinInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][0]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][0]
     // document.getElementsByName(`${prefix}__rangeMaxInput`)[0].value =  chart.minMaxAvgTable.rounding ? parseFloat(eventData['xaxis.range'][1]).toFixed( chart.minMaxAvgTable.rounding ) : eventData['xaxis.range'][1]
     
-    // Plotly.restyle( `${prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getMinMaxAvgData( chart, spreadsheet )] } )
+    // Plotly.restyle( `${prefix}__plotlyMinMaxAvgTable`, { "cells.values": [getcellValues( chart, spreadsheet )] } )
 
   })
 

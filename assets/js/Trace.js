@@ -194,7 +194,7 @@ class Trace {
       pull: 0,
       domain: {
         x: [.5,1],
-        y: [.5,1],
+        y: [0,1],
         row: null,
         column: null
       },

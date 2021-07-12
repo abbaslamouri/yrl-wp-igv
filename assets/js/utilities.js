@@ -1226,6 +1226,13 @@ const commaSeparatedToStringArr = ( value) => {
 
 
 
+const indexOfAll = (arr, min, max) => {
+  return [...arr].reduce((acc, el, i) => (el >= min && el <= max ? [...acc, i] : acc), [])
+}
+
+
+
+
 
 
 
@@ -1325,6 +1332,7 @@ module.exports = {
   showToolTip,
   cancelChart,
   commaSeparatedToNumberArr,
-  commaSeparatedToStringArr
+  commaSeparatedToStringArr,
+  indexOfAll
   
 }
