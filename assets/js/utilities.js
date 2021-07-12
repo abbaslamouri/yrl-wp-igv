@@ -1198,6 +1198,35 @@ const cancelChart = ( Swal, prefix) => {
 
 
 
+const commaSeparatedToNumberArr = ( value) => {
+
+  const array = value.split(",").map( item  => parseFloat( item ) )
+
+  var index = -1,
+  length = array == null ? 0 : array.length,
+  resIndex = 0,
+  result = []
+
+  while (++index < length) {
+    var value = array[index];
+    result[resIndex++] = isNaN(value) ? null : value
+    
+  }
+return result
+
+}
+
+
+
+const commaSeparatedToStringArr = ( value) => {
+
+  return value.toString().split(",").map( item  => item )
+  
+}
+
+
+
+
 
 
 
@@ -1294,6 +1323,8 @@ module.exports = {
   trimArray,
   resetChart,
   showToolTip,
-  cancelChart
+  cancelChart,
+  commaSeparatedToNumberArr,
+  commaSeparatedToStringArr
   
 }

@@ -844,7 +844,7 @@ class Trace {
               title : "Value",
               type : "number", 
               value : trace.error_y === undefined || trace.error_y.value === undefined ? this.defaultOptions(index, chartType).error_y.value : trace.error_y.value,
-              disabled: trace.error_y === undefined || trace.error_y.type === "data" || true !== trace.visible ? true : false,
+              // disabled: trace.error_y === undefined || trace.error_y.type === "data" || true !== trace.visible ? true : false,
               hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars.  Number greater than or equal to 0"
             },
             {
@@ -852,7 +852,7 @@ class Trace {
               title : "Value Minus",
               type : "number", 
               value : trace.error_y === undefined || trace.error_y.valueminus === undefined ? this.defaultOptions(index, chartType).error_y.valueminus : trace.error_y.valueminus,
-              disabled: trace.error_y === undefined || trace.error_y.type === "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
+              // disabled: trace.error_y === undefined || trace.error_y.type === "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
               hint: "Sets the value of either the percentage (if `type` is set to 'percent') or the constant (if `type` is set to 'constant') corresponding to the lengths of the error bars in the bottom (left) direction for vertical (horizontal) bars"
             },
           ],
@@ -865,7 +865,7 @@ class Trace {
               title : "Error Array",	
               type : "text",
               value : trace.error_y === undefined || trace.error_y.array === undefined ? this.defaultOptions(index, chartType).error_y.array.join(): trace.error_y.array.join(),
-              disabled: trace.error_y === undefined || trace.error_y.type !== "data" || true !== trace.visible ? true : false,
+              // disabled: trace.error_y === undefined || trace.error_y.type !== "data" || true !== trace.visible ? true : false,
               hint: "Sets the data corresponding the length of each error bar. Values are plotted relative to the underlying data. Determines whether or not this set of error bars is array."
             },
             {
@@ -873,7 +873,7 @@ class Trace {
               title : "Error Array Minus", 
               type : "text",
               value : trace.error_y === undefined || trace.error_y.arrayminus=== undefined ? this.defaultOptions(index, chartType).error_y.arrayminus.join(): trace.error_y.arrayminus.join(),
-              disabled: trace.error_y === undefined || trace.error_y.type !== "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
+              // disabled: trace.error_y === undefined || trace.error_y.type !== "data" || trace.error_y.symmetric || true !== trace.visible ? true : false,
               hint : "Sets the data corresponding the length of each error bar in the bottom (left) direction for vertical (horizontal) bars Values are plotted relative to the underlying data."
             },
           ],

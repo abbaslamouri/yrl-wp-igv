@@ -1,7 +1,4 @@
-// import Plotly from 'plotly.js-dist'
-// import chartOptions from './options'
-// import panels from "./panels"
-
+import { commaSeparatedToNumberArr, commaSeparatedToStringArr } from "./utilities"
 
 const traceHandler = async ( chart, key, keyParts, value, Plotly, prefix  ) => {
 
@@ -10,59 +7,49 @@ const traceHandler = async ( chart, key, keyParts, value, Plotly, prefix  ) => {
     const optionKey = keyArr.join(".")
     console.log("OPT", optionKey, value, traceNumber )
 
-    if ( keyParts[1] == "domain" && ( keyParts[2] == "x" || keyParts[2] == "y") )  {
-      if (value) {
-        value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-        console.log("VVVVV", value)
-        const update = { 'domain.x': [0,1] }
-        Plotly.restyle(`${prefix}__plotlyChart`, update, traceNumber)
-        console.log(chart.traces)
+    // if ( keyParts[1] == "domain" && ( keyParts[2] == "x" || keyParts[2] == "y") )  {
+        
+    // } else {
 
-        return
+    switch (optionKey) {
 
-        // chart.traces[traceNumber].domain.x= value
-        // Plotly.plot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )
-        // if ( Array.isArray( value ) ) {
-          // update = { [`${key}`]: value}
-        // }
-      // } else {
-        // update = { ["xaxis.domain"]: null }
-      }
-      // Plotly.relayout( `${prefix}__plotlyChart`, update)
-
-    } else {
-
-      switch (optionKey) {
-
-        case "visible":
-          value = "true" === value ? true : "false" === value ? false : value
+      case "domain.x":
+      case "domain.y":
+        value = value ? [commaSeparatedToNumberArr( value )] : null
         break
 
-        case "text":
-        case "hovertext":
-          if (value.includes(",")) {
-            value = [value.toString().split(",").map( ( item ) => { return item } )]
-          }
+      case "visible":
+        value = "true" === value ? true : "false" === value ? false : value
         break
 
-        case "error_y.array":
-        case "error_y.arrayminus":
-          if (value.includes(",")) {
-            value = [value.toString().split(",").map( ( item ) => { return parseFloat( item ) } )]
-            console.log(value)
-          }
+      case "text":
+      case "hovertext":
+        value = value.includes(",") ? [commaSeparatedToStringArr( value )] : value
+
+        console.log("XXXXXXXXXX", value)
         break
 
-        default:
+      case "error_y.array":
+      case "error_y.arrayminus":
+        // value = value.includes(",") ? value.toString().split(",").map( item => parseFloat( item ) )]
+        value = value.includes(",") ? [commaSeparatedToNumberArr( value )] : null
+        console.log("XXXXXXXXXX", value)
+
 
         break
 
-      }
+      default:
 
-      Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: value}, traceNumber)
+        break
+
+      // }
+
 
 
     }
+
+    Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: value}, traceNumber)
+
 
     console.log(chart.traces)
     console.log("OPT", optionKey, value, traceNumber )
