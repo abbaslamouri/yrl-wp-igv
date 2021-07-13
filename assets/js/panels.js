@@ -8,7 +8,7 @@ import Hoverlabel from "./Hoverlabel"
 import Grid from "./Grid"
 import Modebar from "./Modebar"
 import axesPanel from "./axes-panel"
-import Trace from './Trace'
+import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections, setSelectFieldOptions, fetchAxisOptions } from "./utilities"
@@ -38,7 +38,7 @@ const panels = async function (chart, spreadsheet, prefix) {
     // switch ( chart.params.chartType ) {
       
       // case "scatter":
-        createPanelSections( Trace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
+        createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[i] ), sectionsContainer, `traces${i}`, prefix )
         setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${i}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
         setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
         // break

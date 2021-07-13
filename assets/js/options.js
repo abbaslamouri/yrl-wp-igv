@@ -1,4 +1,5 @@
 import Trace from './Trace'
+import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
 import BarTrace from './BarTrace'
 import BasicOptions from './BasicOptions'
@@ -21,11 +22,8 @@ const chartOptions = ( chart, spreadsheet  ) => {
 
   for (let i = 0;  i < spreadsheet[chart.params.sheetId].data.length - 1; i++) {
 
-    // const result = spreadsheet[chart.params.sheetId].data[i].every( ( data ) => { data } )    
-    // if ( spreadsheet[chart.params.sheetId].data[i+1].every( ( data ) =>  ! data ) ) continue
-
     if ( chart.traces[i] === undefined ) {
-      chart.traces[i] = Trace.defaultOptions( i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1], spreadsheet[chart.params.sheetId]["labels"], spreadsheet[chart.params.sheetId].data  )
+      chart.traces[i] = ScatterTrace.defaultOptions( i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1] )
     } else {
       chart.traces[i].name = Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1]
       chart.traces[i].x = spreadsheet[chart.params.sheetId].data[0]
@@ -35,7 +33,6 @@ const chartOptions = ( chart, spreadsheet  ) => {
     }
 
   }
-    
     
   // Retreive new chart options
   if ( Object.values(chart.layout).length ) {

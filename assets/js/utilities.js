@@ -1235,9 +1235,80 @@ const indexOfAll = (arr, min, max) => {
 
 
 
+const convertXAxisData = (originalData) => {
+  // const originalData = spreadsheet[chart.params.sheetId].data
+
+  let xaxisData = []
+  if ( typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String ) {
+    xaxisData = [0]
+    let i = 1
+    while (i < originalData[0].length ) {
+      xaxisData.push( i)
+      i++
+    }
+  } else {
+    xaxisData = originalData[0]
+  }
+
+  return xaxisData
+
+}
 
 
 
+
+const fetchMinMaxAvgCellValues = ( datraArr, labels, arrayMin, arrayMax, arrayMean, rounding=4 ) => {
+
+  const cellValues = []
+  const names = []
+  const min = []
+  const mean = []
+  const max = []
+  const roundTo = rounding == 2 ? 100  : rounding == 3 ? 1000 : rounding == 4 ? 10000 : rounding == 5 ? 100000 : rounding == 6 ? 1000000 : 10000000
+  for (const prop in datraArr) {
+    if (prop == 0 ) continue
+    names.push( labels[prop] )
+
+    if ( ! isNaN( Math.round((arrayMin(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
+      min.push(Math.round((arrayMin(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    } else {
+      min.push(null)
+    }
+
+    if ( ! isNaN( Math.round((arrayMax(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
+      max.push(Math.round((arrayMax(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    } else {
+      max.push(null)
+    }
+    
+    if ( ! isNaN( Math.round((arrayMean(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
+      mean.push(Math.round((arrayMean(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    } else {
+      mean.push(null)
+    }
+
+  }
+  cellValues.push( names, min, mean, max )
+
+  return cellValues
+
+}
+
+
+
+const fetchTableCellsColors = (trace) => {
+
+  
+  const cellsColors = []
+
+   for ( let i = 0; i <trace.cells.values[0].length; i++ ) {
+     cellsColors.push( i % 2 == 0 ?trace.evenRowColor :trace.oddRowColor )
+   }
+
+ return cellsColors
+
+
+}
 
 
 
@@ -1334,6 +1405,9 @@ module.exports = {
   cancelChart,
   commaSeparatedToNumberArr,
   commaSeparatedToStringArr,
-  indexOfAll
+  indexOfAll,
+  convertXAxisData,
+  fetchMinMaxAvgCellValues,
+  fetchTableCellsColors
   
 }
