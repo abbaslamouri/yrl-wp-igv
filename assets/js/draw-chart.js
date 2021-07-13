@@ -10,6 +10,8 @@ import { indexOfAll, displayAdminMessage, hideOptions, chartOptionKey, trimArray
 
 const drawChart = async( chart, spreadsheet, prefix ) => {
 
+  console.log(spreadsheet)
+
    // Fetch chart options
    chart = chartOptions(chart, spreadsheet) 
 
@@ -33,12 +35,12 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   const min = []
   const mean = []
   const max = []
-  for (const prop in chart.traces) {
-    const trace = chart.traces[prop]
-    names.push(trace.name)
-    min.push(Math.round((arrayMin(trace.y) + Number.EPSILON) * 1000) / 1000)
-    max.push(Math.round((arrayMax(trace.y) + Number.EPSILON) * 1000) / 1000)
-    mean.push(Math.round((arrayMean(trace.y) + Number.EPSILON) * 1000) / 1000)
+  for (const prop in originalData) {
+    if (prop == 0 ) continue
+    names.push(spreadsheet[chart.params.sheetId].labels[prop])
+    min.push(Math.round((arrayMin(originalData[prop]) + Number.EPSILON) * 1000) / 1000)
+    max.push(Math.round((arrayMax(originalData[prop]) + Number.EPSILON) * 1000) / 1000)
+    mean.push(Math.round((arrayMean(originalData[prop]) + Number.EPSILON) * 1000) / 1000)
   }
   cellValues.push( names, min, mean, max )
 
@@ -110,69 +112,88 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     const range = chart.layout[keyParts[0]][keyParts[1]]
     const selectedAxis = keyParts[0].split("xaxis")[1] !== undefined ? `x${keyParts[0].split("xaxis")[1]}` : 'x'
 
-    const originalData = spreadsheet[chart.params.sheetId].data
+    // const originalData = spreadsheet[chart.params.sheetId].data
 
 
 
-    let xaxisData = []
-    if ( typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String ) {
-      xaxisData = [0]
-      let i = 1
-      while (i < originalData[0].length ) {
-        xaxisData.push( i)
-        i++
-      }
-    } else {
-      xaxisData = originalData[0]
-    } 
+    // let xaxisData = []
+    // if ( typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String ) {
+    //   xaxisData = [0]
+    //   let i = 1
+    //   while (i < originalData[0].length ) {
+    //     xaxisData.push( i)
+    //     i++
+    //   }
+    // } else {
+    //   xaxisData = originalData[0]
+    // } 
 
     console.log("Range", range)
     console.log("xaxisData", xaxisData)
     console.log(spreadsheet[chart.params.sheetId].data)
-    console.log(indexOfAll(spreadsheet[chart.params.sheetId].data[0], range[0], range[1]))
-    return
+    console.log("indeces", indexOfAll(xaxisData, range[0], range[1]))
 
-    const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
+    const indeces = indexOfAll(xaxisData, range[0], range[1])
+
+    console.log('test', indeces.includes( 1 ))
+
+    let newData = []
+    for (const prop in originalData) {
+      newData[prop] = []
+      for (const index in originalData[prop]) {
+        if ( indeces.includes( parseInt(index) ) ) {
+          newData[prop][index] = originalData[prop][index]
+        } else {
+          newData[prop][index] = null
+        }
+      }
+      newData[prop] = newData[prop].filter(el => el !== null)
+    }
+
+    // const xnewData = newData.filter(el => el !== null)
+    console.log("new", newData)
+
+
+    
+
+    // const headerValues = [["Trace"], ["Min"], ["Average"], ["Max"]]
   const cellValues = []
   const names = []
   const min = []
   const mean = []
   const max = []
-  for (const prop in chart.traces) {
-    const trace = chart.traces[prop]
-    names.push(trace.name)
-    min.push(Math.round((arrayMin(trace.y) + Number.EPSILON) * 1000) / 1000)
-    max.push(Math.round((arrayMax(trace.y) + Number.EPSILON) * 1000) / 1000)
-    mean.push(Math.round((arrayMean(trace.y) + Number.EPSILON) * 1000) / 1000)
-  }
+  for (const prop in newData) {
+    if (prop == 0 ) continue
+    names.push(spreadsheet[chart.params.sheetId].labels[prop])
 
-    cellValues = []
-    names = []
-    min = []
-    mean = []
-    max = []
-
-    for (const prop in chart.traces) {
-      const trace = chart.traces[prop]
-      console.log(prop)
-      console.log(selectedAxis)
-      console.log(trace.xaxis)
-      console.log(trace.y)
-      if ( selectedAxis == trace.xaxis ) {
-        names.push(trace.name)
-        min.push(arrayMin(trace.y))
-        max.push(arrayMax(trace.y))
-        mean.push(arrayMean(trace.y))
-      }
+    if ( ! isNaN( Math.round((arrayMin(newData[prop]) + Number.EPSILON ) * 1000) / 1000) ) {
+      min.push(Math.round((arrayMin(newData[prop]) + Number.EPSILON) * 1000) / 1000)
+    } else {
+      min.push(null)
     }
-    cellValues.push( names, min, mean, max )
 
-    console.log("MMMM", cellValues)
-    console.log("PLotly", document.getElementById(`${prefix}__plotlyChart`).data)
-    console.log(originalData)
+    if ( ! isNaN( Math.round((arrayMax(newData[prop]) + Number.EPSILON ) * 1000) / 1000) ) {
+      max.push(Math.round((arrayMax(newData[prop]) + Number.EPSILON) * 1000) / 1000)
+    } else {
+      max.push(null)
+    }
+    
+    if ( ! isNaN( Math.round((arrayMean(newData[prop]) + Number.EPSILON ) * 1000) / 1000) ) {
+      mean.push(Math.round((arrayMean(newData[prop]) + Number.EPSILON) * 1000) / 1000)
+    } else {
+      mean.push(null)
+    }
 
-    console.log(typeof originalData[0][0] === 'string' || originalData[0][0] instanceof String)
+  }
+  cellValues.push( names, min, mean, max )
 
+  console.log("NEWCELLVALUES", cellValues)
+
+  Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+
+  console.log(chart)
+
+   
     
 
 
