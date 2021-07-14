@@ -9,6 +9,7 @@ import Grid from "./Grid"
 import Modebar from "./Modebar"
 import axesPanel from "./axes-panel"
 import ScatterTrace from './ScatterTrace'
+import TableTrace from './TableTrace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections, setSelectFieldOptions, fetchAxisOptions } from "./utilities"
@@ -20,6 +21,8 @@ const panels = async function (chart, spreadsheet, prefix) {
 
   const tracesAccordionDiv = document.querySelector( `#${prefix}__admin .traces__Accordion`)
   tracesAccordionDiv.innerHTML = ""
+
+  console.log("IIIIIII", chart.traces)
 
   for (let i = 0;  i < chart.traces.length; i++) {
 
@@ -34,20 +37,21 @@ const panels = async function (chart, spreadsheet, prefix) {
     // Create a section container
     const sectionsContainer = document.querySelector( `#${prefix}__admin .traces${i}__Accordion`)
 
-    // // Create panel sections
-    // switch ( chart.params.chartType ) {
+
+
+    // Create panel sections
+    switch ( chart.traces[i].type ) {
       
-      // case "scatter":
+      case "scatter":
         createPanelSections( ScatterTrace.sections( chart.traces[i], i, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[i] ), sectionsContainer, `traces${i}`, prefix )
         setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${i}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
         setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
-        // break
+        break
 
-    //   case "pie":
-    //     console.log("PIE")
-    //     createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i], chart.params.chartType ), sectionsContainer, `traces${i}`, prefix )
-    //     break
-    // }
+      case "table":
+        createPanelSections( TableTrace.sections( chart.traces[i], i, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[i] ), sectionsContainer, `traces${i}`, prefix )
+        break
+    }
 
     // Create section accordion
     new Accordion( `#${prefix}__admin .traces${i}__Accordion`, { duration: 400 })

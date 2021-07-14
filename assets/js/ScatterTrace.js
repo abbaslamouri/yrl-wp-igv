@@ -87,16 +87,16 @@ class Trace {
     return {
 
       basicOptions: {
-        intro : `Here you can modify the basic options of trace "${name}"`,
+        intro : `Here you can modify the basic options of trace '${name}'`,
         title : "Basic Options",
         fieldGroups : [
           {
-            cssClasses : ["field-group", "sixty-forty"],     
+            cssClasses : ['field-group', 'sixty-forty'],     
             inputFields : [
               {
                 id : `traces[${index}][type]`,  
-                title : "Trace Type",  
-                type : "text",
+                title : 'Trace Type',  
+                type: 'text',
                 value : trace.type === undefined ? this.defaultOptions(index).type : trace.type,
                 readonly : true
               },
@@ -104,27 +104,27 @@ class Trace {
             ]
           },
           {
-            cssClasses : ["field-group", "sixty-forty"],     
+            cssClasses : ['field-group', 'sixty-forty'],     
             inputFields : [
               {
                 id : `traces[${index}][visible]`,  
-                title : "Trace Visibility",  
-                type : "select",
+                title : 'Trace Visibility',  
+                type : 'select',
                 options : {
-                  true : "Visible",
-                  false : "Hidden",
-                  legendonly : "Legend Only",
+                  true : 'Visible',
+                  false : 'Hidden',
+                  legendonly : 'Legend Only',
                 },
-                value : trace.visible === undefined ? this.defaultOptions(index).visible : true === trace.visible ? "true" : false === trace.visible ? "false" : trace.visible,
-                hint : "Determines whether or not this trace is visible. If 'legendonly', the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible)."
+                value : trace.visible === undefined ? this.defaultOptions(index).visible : true === trace.visible ? 'true' : false === trace.visible ? 'false' : trace.visible,
+                hint : 'Determines whether or not this trace is visible. If "legendonly", the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible).'
               },
               {
                 id : `traces[${index}][showlegend]`, 
-                title : "Show In Legend", 	
-                type : "checkbox",
+                title : 'Show In Legend', 	
+                type : 'checkbox',
                 value : trace.showlegend === undefined ? this.defaultOptions(index).showlegend : trace.showlegend,
                 disabled: false === trace.visible  ? true : false,
-                hint : "Determines whether or not an item corresponding to this trace is shown in the legend."
+                hint : 'Determines whether or not an item corresponding to this trace is shown in the legend.'
               },
             ]
           },
