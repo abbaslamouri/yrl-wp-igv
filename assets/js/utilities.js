@@ -1257,14 +1257,14 @@ const convertXAxisData = (originalData) => {
 
 
 
-const fetchMinMaxAvgCellValues = ( datraArr, labels, arrayMin, arrayMax, arrayMean, rounding=4 ) => {
+const fetchMinMaxAvgCellValues = ( datraArr, labels, arrayMin, arrayMax, arrayMean, rounding = 1 ) => {
 
   const cellValues = []
   const names = []
   const min = []
   const mean = []
   const max = []
-  const roundTo = rounding == 2 ? 100  : rounding == 3 ? 1000 : rounding == 4 ? 10000 : rounding == 5 ? 100000 : rounding == 6 ? 1000000 : 10000000
+  const roundTo = rounding == 1 ? 10 : rounding == 2 ? 100  : rounding == 3 ? 1000 : rounding == 4 ? 10000 : rounding == 5 ? 100000 : rounding == 6 ? 1000000 : 10000000
   for (const prop in datraArr) {
     if (prop == 0 ) continue
     names.push( labels[prop] )

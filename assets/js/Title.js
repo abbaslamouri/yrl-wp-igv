@@ -9,12 +9,12 @@ class Title {
     return {
 
       title : {
-        text: "",
+        text: "Ge 8.0 - 12.0 &#181;m",
         x: 0.1,
         y: 0.9,
         font: {
           family: Object.keys(fontFamily())[12],
-          size: 14,
+          size: 18,
           color: "#000a12",
         },
       }

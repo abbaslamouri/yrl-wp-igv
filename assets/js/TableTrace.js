@@ -78,8 +78,6 @@ class Trace {
 
   static sections( trace, index ) {
 
-    console.log("TRC", trace)
-
     return {
       basicOptions: {
         intro : `Here you can modify the basic options of trace '${trace.name}'`,

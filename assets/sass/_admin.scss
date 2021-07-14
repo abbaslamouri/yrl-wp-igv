@@ -154,23 +154,24 @@
 
       .plotly {
         .min-max-avg-table {
-
-          // display: flex;
           justify-content: center;
           padding:1rem;
       
           .inputs {
             display:flex;
-            //  flex-direction: column;
             justify-content: center;
-            margin-right:0.5rem;
+            align-items: center;
+
+            h2 {
+              margin-right:2rem;
+            }
       
-            .form-group{
-              margin-bottom:1rem;
+            .min-max-form-group{
+              display:flex;
+              justify-content: center;
+              align-items: center;
             }
           }
-      
-         
         } 
       }
 

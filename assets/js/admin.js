@@ -232,7 +232,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     
 
     // Add change event listener to all input fields
-    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "input", async function ( event ) {
+    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "change", async function ( event ) {
     event.preventDefault( )
 
       const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 

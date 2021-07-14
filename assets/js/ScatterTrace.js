@@ -13,7 +13,7 @@ class Trace {
       showlegend: true,
       legendrank: 1000,
       opacity: 1,
-      mode: 'lines+markers+text',
+      mode: 'lines',
       x: x,
       y: y,
       text: ['pppppp', 'TTTTTTTT'],
