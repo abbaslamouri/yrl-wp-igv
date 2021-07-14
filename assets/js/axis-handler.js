@@ -33,8 +33,9 @@ const chartAxis =  async( chart, axisType, prefix ) => {
     chart.layout[axisId] = ChartAxis.defaultOptions( axisId, axisSide, axisOverlaying, "Wavelength-1 ( &#181;m )", null )
 
     for (const prop in chart.traces) {
-      setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${prop}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
-      setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${prop}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
+
+      if ( chart.traces[prop].xaxis ) setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${prop}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
+      if ( chart.traces[prop].yaxis ) setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${prop}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
     }
 
     axesPanel ( chart, axisType, prefix )

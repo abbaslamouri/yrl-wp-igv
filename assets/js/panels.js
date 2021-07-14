@@ -22,8 +22,6 @@ const panels = async function (chart, spreadsheet, prefix) {
   const tracesAccordionDiv = document.querySelector( `#${prefix}__admin .traces__Accordion`)
   tracesAccordionDiv.innerHTML = ""
 
-  console.log("IIIIIII", chart.traces)
-
   for (let i = 0;  i < chart.traces.length; i++) {
 
     // Create a trace panel and add it to traces accordion
@@ -37,8 +35,6 @@ const panels = async function (chart, spreadsheet, prefix) {
     // Create a section container
     const sectionsContainer = document.querySelector( `#${prefix}__admin .traces${i}__Accordion`)
 
-
-
     // Create panel sections
     switch ( chart.traces[i].type ) {
       
@@ -48,9 +44,14 @@ const panels = async function (chart, spreadsheet, prefix) {
         setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${i}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
         break
 
+      case "pie":
+        createPanelSections( PieTrace.sections( chart.traces[i], i, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[i] ), sectionsContainer, `traces${i}`, prefix )
+        break
+
       case "table":
         createPanelSections( TableTrace.sections( chart.traces[i], i, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[i] ), sectionsContainer, `traces${i}`, prefix )
         break
+
     }
 
     // Create section accordion
@@ -181,67 +182,64 @@ const panels = async function (chart, spreadsheet, prefix) {
 
   
 
-  document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
+  // document.querySelector(`#${prefix}__admin .minMaxAvgTableAc .ac-panel`).innerHTML = ""
 
 
 
    // Add hover event to tooltips
-   document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip-question-mark`).addEventListener("mouseenter", (event) => {
+    //  document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .form-group__tooltip-question-mark`).addEventListener("mouseenter", (event) => {
 
-    console.log(event.target.classList)
-    return
-
-    Swal.fire({
-      // title: 'Error!',
-      // titleText: 'hello',
-      text: 'Do you want to continue',
-      // icon: 'info',
-      // iconColor: "red",
-      confirmButtonText: 'Close',
-      confirmButtonColor: "#CCCCCC",
-      // footer: "footer",
-      // backdrop: true,
-      // toast:true,
-      // position: "top-end"
-      width: '50%',
-      // allowOutsideClick: true
-      showCloseButton: true
-    })
-
-    return
-
-      // Reset popup div
-      document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
-
-
-      // const hint = el.querySelector( ".form-group__tooltip-hint")
-      // console.log("NEW", el.getBoundingClientRect())
-      
-      // Create tooltip popup and add it to hint popup
-      const hintDiv = document.createElement("div")
-      hintDiv.classList.add ("form-group__tooltip-popup")
-      hintDiv.innerHTML = el.querySelector( ".form-group__tooltip-hint").innerHTML
-      document.querySelector(`.${prefix}__admin .hint-popup`).appendChild(hintDiv)
-
-      // const questionMark = el.querySelector(".form-group__tooltip-question-mark")
-      // Get question mark coordinates and set hint popup position and visibility style
-      document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = `${window.innerHeight - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().y - 40}px`
-      document.querySelector(`.${prefix}__admin .hint-popup`).style.right = `${window.innerWidth - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().x - 20}px`
-      document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "1"
-      document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "visible"
-      console.log(window.innerWidth, window.innerHeight )
-
-      // Add event listener to hide hint popup on mouseleave
-      el.addEventListener("mouseleave", async function (event) {
-        // document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = "0"
-        document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "0"
-        document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "hidden"
-        document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
-      })
+    //   Swal.fire({
+    //     // title: 'Error!',
+    //     // titleText: 'hello',
+    //     text: 'Do you want to continue',
+    //     // icon: 'info',
+    //     // iconColor: "red",
+    //     confirmButtonText: 'Close',
+    //     confirmButtonColor: "#CCCCCC",
+    //     // footer: "footer",
+    //     // backdrop: true,
+    //     // toast:true,
+    //     // position: "top-end"
+    //     width: '50%',
+    //     // allowOutsideClick: true
+    //     showCloseButton: true
+    //   })
 
     
 
-  })
+    //     // Reset popup div
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
+
+
+    //     // const hint = el.querySelector( ".form-group__tooltip-hint")
+    //     // console.log("NEW", el.getBoundingClientRect())
+        
+    //     // Create tooltip popup and add it to hint popup
+    //     const hintDiv = document.createElement("div")
+    //     hintDiv.classList.add ("form-group__tooltip-popup")
+    //     hintDiv.innerHTML = el.querySelector( ".form-group__tooltip-hint").innerHTML
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).appendChild(hintDiv)
+
+    //     // const questionMark = el.querySelector(".form-group__tooltip-question-mark")
+    //     // Get question mark coordinates and set hint popup position and visibility style
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = `${window.innerHeight - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().y - 40}px`
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).style.right = `${window.innerWidth - el.querySelector(".form-group__tooltip-question-mark").getBoundingClientRect().x - 20}px`
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "1"
+    //     document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "visible"
+    //     console.log(window.innerWidth, window.innerHeight )
+
+    //     // Add event listener to hide hint popup on mouseleave
+    //     el.addEventListener("mouseleave", async function (event) {
+    //       // document.querySelector(`.${prefix}__admin .hint-popup`).style.bottom = "0"
+    //       document.querySelector(`.${prefix}__admin .hint-popup`).style.opacity = "0"
+    //       document.querySelector(`.${prefix}__admin .hint-popup`).style.visibility = "hidden"
+    //       document.querySelector(`.${prefix}__admin .hint-popup`).innerHTML = ""
+    //     })
+
+      
+
+    // })
 
 
 }
