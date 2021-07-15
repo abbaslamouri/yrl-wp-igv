@@ -15,7 +15,7 @@
 
 <div class="field-group hidden">
   <div class="form-group">
-    <input type="text" class="form-group__input" id="<?php echo "{$this->prefix}__params[fileName]"; ?>" name="<?php echo "{$this->prefix}__params[fileName]"; ?>" placeholder="Selected File" readonly>
+    <input type="text" class="form-group__input" id="<?php echo "{$this->prefix}__params[fileName]"; ?>" name="<?php echo "{$this->prefix}__params[fileName]"; ?>" placeholder="Selected File" disabled>
     <label for="" class="form-group__label">Selected File</label>
   </div>
 </div>
@@ -28,15 +28,22 @@
   </div>
 </div>
 
+<div class="field-group hidden">
+  <div class="form-group">
+    <input type='checkbox' class="form-group__input form-group__input-checkbox" id="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" name="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" >
+    </select>
+    <label for="" class="form-group__label">Enable Min/Max/Avg Table</label>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-group__input" id="<?php echo "{$this->prefix}__params[chartId]"; ?>" name="<?php echo "{$this->prefix}__params[chartId]"; ?>" placeholder="Chart Id"  disabled>
+    <label for="" class="form-group__label">Chart Id</label>
+  </div>
+</div>
+
 <!-- <div class="field-group hidden">
   <div class="form-group">
-    <select class="form-group__input form-group__input-select" id="<?php //echo "{$this->prefix}__params[chartType]"; ?>" name="<?php //echo "{$this->prefix}__params[chartType]"; ?>" >
-      <option value="" selected>Select Chart Type</option>
-      <option value="scatter">Scatter Chart</option>
-      <option value="pie">Pie Chart</option>
-      <option value="bar">Bar Chart</option>
-    </select>
-    <label for="" class="form-group__label">Chart Type</label>
+    <input type="text" class="form-group__input" id="<?php echo "{$this->prefix}__params[chartId]"; ?>" name="<?php echo "{$this->prefix}__params[chartId]"; ?>" placeholder="Chart Id"  disabled>
+    <label for="" class="form-group__label">Chart Id</label>
   </div>
 </div> -->
 
@@ -44,12 +51,5 @@
   <div class="form-group">
     <input type="hidden" id="<?php echo "{$this->prefix}__params[fileId]"; ?>" name="<?php echo "{$this->prefix}__params[fileId]"; ?>" >
     <!-- <label for="" class="form-group__label">File Id</label> -->
-  </div>
-</div>
-
-<div class="field-group hidden">
-  <div class="form-group">
-    <input type="text" class="form-group__input" id="<?php echo "{$this->prefix}__params[chartId]"; ?>" name="<?php echo "{$this->prefix}__params[chartId]"; ?>" placeholder="Chart Id"  readonly>
-    <label for="" class="form-group__label">Chart Id</label>
   </div>
 </div>

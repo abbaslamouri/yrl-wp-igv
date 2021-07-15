@@ -38,6 +38,7 @@
     "lodash.max": "^4.0.1",
     "lodash.mean": "^4.1.0",
     "lodash.min": "^4.0.1",
+    "lodash.round": "^4.0.4",
     "plotly.js-basic-dist": "^1.58.4",
     "plotly.js-dist": "^1.58.4",
     "sweetalert": "^2.1.2",

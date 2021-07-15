@@ -1,6 +1,10 @@
 import Plotly from 'plotly.js-dist'
 import Swal from 'sweetalert2'
 import cloneDeep from 'lodash.clonedeep'
+import arrayMin from 'lodash.min'
+import arrayMax from 'lodash.max'
+import arrayMean from 'lodash.mean'
+import floatRound from 'lodash.round'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
 import fetchData from "./fetch-data"
@@ -18,11 +22,14 @@ import traceHandler from "./trace-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 import Annotation from "./Annotation"
+import TableTrace from "./TableTrace"
 import chartOptions from './options'
 import panels from './panels'
+import tracesPanel from "./traces-panel"
 
 
-import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart } from "./utilities"
+
+import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart , fetchMinMaxAvgCellValues, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler} from "./utilities"
 import "../sass/admin.scss"
 // import { redraw } from 'plotly.js-basic-dist'
 
@@ -185,6 +192,9 @@ if (  yrl_wp_plotly_charts_obj ) {
         chart.params.fileId = attachment.id
         document.getElementById(`${prefix}__params[fileId]`).value = chart.params.fileId
 
+        // get min/max/avg/ checkbox
+        chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
+
         // Set chart params chart Id
         if ( undefined === chart.params.chartId ) chart.params.chartId  = null
         document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
@@ -202,9 +212,12 @@ if (  yrl_wp_plotly_charts_obj ) {
         document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+
        
         // draw chart immediatelly if spreadsheet contains a single sheet
         if ( spreadsheet.length == 1  ) {
+          document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
           await drawChart ( chart, spreadsheet, prefix )
           document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
 
@@ -232,8 +245,19 @@ if (  yrl_wp_plotly_charts_obj ) {
     
 
     // Add change event listener to all input fields
-    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "change", async function ( event ) {
+    document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "change", async ( event ) => {
     event.preventDefault( )
+
+      const control = chartOptionKey(event.target.id).control
+      const key = chartOptionKey(event.target.id).key
+      const keyParts = key.split(".")
+      let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
+      console.group()
+      console.log("Control", control)
+      console.log("key", key)
+      console.log("keyParts", keyParts)
+      console.log("value", value)
+      console.groupEnd()
 
       const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
       if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
@@ -250,10 +274,14 @@ if (  yrl_wp_plotly_charts_obj ) {
         // set params sheet id
         chart.params.sheetId = event.target.value
 
+        // get min/max/avg/ checkbox
+        chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
+
         // Unhide file name, file id and chart id input fields
         document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+        document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
 
         // Toggle warning
         document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
@@ -267,18 +295,42 @@ if (  yrl_wp_plotly_charts_obj ) {
         // et chart updated flag
         chartUpdated = true
 
-      } else {
+      } else if (event.target.id === `${prefix}__params[enableMinMaxAvgTable]`) {
 
-        const control = chartOptionKey(event.target.id).control
-        const key = chartOptionKey(event.target.id).key
-        const keyParts = key.split(".")
-        let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-        console.group()
-        console.log("Control", control)
-        console.log("key", key)
-        console.log("keyParts", keyParts)
-        console.log("value", value)
-        console.groupEnd()
+        if ( value ) {
+
+          const update = {'xaxis.domain': [0,.5]}
+          Plotly.relayout( `${prefix}__plotlyChart`, update)
+
+          addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
+          await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
+          tracesPanel( chart, spreadsheet, prefix )
+
+          addRangeMinMaxInputs( chart, Plotly, floatRound, prefix )
+          // Add range slider event handler
+          eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+
+            minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, prefix  )
+
+          })
+        } else {
+
+          const update = {'xaxis.domain': [0,1]}
+          Plotly.relayout( `${prefix}__plotlyChart`, update)
+          Plotly.deleteTraces( `${prefix}__plotlyChart`, chart.traces.length-1 )
+          tracesPanel( chart, spreadsheet, prefix )
+
+          document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.add( 'hidden')
+
+
+
+          console.log(chart.traces)
+        }
+
+
+        console.log(chart)
+
+      } else {
 
         switch ( control ) {
 

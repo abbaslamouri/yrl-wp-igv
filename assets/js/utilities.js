@@ -1257,32 +1257,31 @@ const convertXAxisData = (originalData) => {
 
 
 
-const fetchMinMaxAvgCellValues = ( datraArr, labels, arrayMin, arrayMax, arrayMean, rounding = 1 ) => {
+const fetchMinMaxAvgCellValues = ( dataArr, labels, arrayMin, arrayMax, arrayMean, floatRound, rounding = 1 ) => {
 
   const cellValues = []
   const names = []
   const min = []
   const mean = []
   const max = []
-  const roundTo = rounding == 1 ? 10 : rounding == 2 ? 100  : rounding == 3 ? 1000 : rounding == 4 ? 10000 : rounding == 5 ? 100000 : rounding == 6 ? 1000000 : 10000000
-  for (const prop in datraArr) {
+  for (const prop in dataArr) {
     if (prop == 0 ) continue
     names.push( labels[prop] )
 
-    if ( ! isNaN( Math.round((arrayMin(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
-      min.push(Math.round((arrayMin(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    if ( ! isNaN( arrayMin( dataArr[prop] ) ) ) {
+      min.push( floatRound( arrayMin( dataArr[prop] ), rounding  ) )
     } else {
       min.push(null)
     }
 
-    if ( ! isNaN( Math.round((arrayMax(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
-      max.push(Math.round((arrayMax(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    if ( ! isNaN( arrayMax(dataArr[prop] ) ) ) {
+      max.push( floatRound( arrayMax( dataArr[prop] ), rounding ) )
     } else {
       max.push(null)
     }
     
-    if ( ! isNaN( Math.round((arrayMean(datraArr[prop]) + Number.EPSILON ) * roundTo) / roundTo) ) {
-      mean.push(Math.round((arrayMean(datraArr[prop]) + Number.EPSILON) * roundTo) / roundTo)
+    if ( ! isNaN( arrayMean(dataArr[prop] ) ) ) {
+      mean.push( floatRound( arrayMean( dataArr[prop] ), rounding ) )
     } else {
       mean.push(null)
     }
@@ -1312,7 +1311,76 @@ const fetchTableCellsColors = (trace) => {
 
 
 
+const addMinMaxAvgTable = ( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound ) => {
 
+  const originalData =  spreadsheet[chart.params.sheetId].data
+  const headerValues = [['Trace'], ['Min'], ['Average'], ['Max']]
+  const cellValues = fetchMinMaxAvgCellValues( originalData, spreadsheet[chart.params.sheetId].labels, arrayMin, arrayMax, arrayMean, floatRound )
+  chart.traces[chart.traces.length]= TableTrace.defaultOptions( chart.traces.length, 'Min/Max/Average', headerValues, cellValues  )
+  chart.traces[chart.traces.length-1].cells.fill.color = [fetchTableCellsColors( chart.traces[chart.traces.length-1] )]
+
+}
+
+
+
+
+const addRangeMinMaxInputs = ( chart, Plotly, floatRound, prefix ) => {
+
+  document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.remove( 'hidden')
+  document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
+  document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
+
+  // Add change event listener to range min and range max input fields
+  document.querySelector( `#${prefix}__admin` ).addEventListener( "change", async( event ) => {
+    event.preventDefault( )
+
+    // Bail if not rangeMin or rangeMax inputs
+    if ( event.target.id !== `${prefix}__rangeMinInput` && event.target.id !== `${prefix}__rangeMaxInput`) return
+    const update = {'xaxis.range': [document.getElementById( `${prefix}__rangeMinInput` ).value, document.getElementById( `${prefix}__rangeMaxInput` ).value]}
+    Plotly.relayout( `${prefix}__plotlyChart`, update)
+  
+  } )
+
+}
+
+
+const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, prefix ) => {
+
+  // Bail if ecentData does not include xaxis
+  if (  Object.keys(eventData)[0] !== 'xaxis.range' ) return
+
+
+  const keyParts = Object.keys(eventData)[0].split('.')
+
+  const originalData =  spreadsheet[chart.params.sheetId].data
+
+
+  const xaxisData = convertXAxisData( originalData )
+
+
+  const range = chart.layout[keyParts[0]][keyParts[1]]
+  const indeces = indexOfAll(xaxisData, range[0], range[1])
+  let newData = []
+  for (const prop in originalData) {
+    newData[prop] = []
+    for (const index in originalData[prop]) {
+      if ( indeces.includes( parseInt(index) ) ) {
+        newData[prop][index] = originalData[prop][index]
+      } else {
+        newData[prop][index] = null
+      }
+    }
+    newData[prop] = newData[prop].filter(el => el !== null)
+  }
+
+  const cellValues = fetchMinMaxAvgCellValues( newData, spreadsheet[chart.params.sheetId].labels, arrayMin, arrayMax, arrayMean, floatRound, chart.traces[chart.traces.length-1].rounding )
+  Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+
+  document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( range[0], chart.traces[chart.traces.length-1].rounding )
+  document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( range[1], chart.traces[chart.traces.length-1].rounding )
+
+
+}
 
 
 
@@ -1408,6 +1476,9 @@ module.exports = {
   indexOfAll,
   convertXAxisData,
   fetchMinMaxAvgCellValues,
-  fetchTableCellsColors
+  fetchTableCellsColors,
+  addMinMaxAvgTable,
+  addRangeMinMaxInputs,
+  minMaxRangesliderHandler
   
 }

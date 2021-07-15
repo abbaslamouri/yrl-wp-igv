@@ -1,4 +1,6 @@
 import Plotly from 'plotly.js-dist'
+import { commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
+
 
 
 const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
@@ -65,7 +67,8 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
       //   document.getElementById(`${prefix}__layout[xaxis][range]`).value = chart.layout.xaxis.range.join()
       // break
 
-      // case "xaxis.range":             
+      case "xaxis.range":
+        value = value ? [commaSeparatedToNumberArr( value )] : null           
       //   if (value) {
       //     value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
       //     if ( Array.isArray( value ) ) {
@@ -77,7 +80,7 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
       //     Plotly.relayout( `${prefix}__plotlyChart`, update)
       //   }
       //   document.getElementById(`${prefix}__layout[xaxis][autorange]`).value = true === chart.layout.xaxis.autorange ? "true" : false === chart.layout.xaxis.autorange ? "false" : chart.layout.xaxis.autorange 
-      // break
+      break
 
       // case "xaxis.tickvals":             
       //   value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
