@@ -120,7 +120,7 @@ if (!class_exists('Dashboard')) {
 
 				// Fetch spreadsheet
 				$spreadsheet = ! is_wp_error( $this->fetch_spreadsheet( $chart['params']['fileId'] ) ) ? $this->fetch_spreadsheet( $chart['params']['fileId'] ) : null;
-        $sheets[$chart['params']['chartId']] = $spreadsheet[$chart['params']['sheetId']];
+        $sheets[] = ['chartId' => $chart['params']['chartId'], 'sheet' => $spreadsheet[$chart['params']['sheetId']]];
 
 			}
       // echo "<pre>";

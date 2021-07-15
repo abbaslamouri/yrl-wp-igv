@@ -17,44 +17,52 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
     return
   }
 
-  charts.forEach( async(chart) => {
+  for ( const prop in charts ) {
+    
+    const sheet = sheets[prop].sheet
+    const chartId = sheets[prop].chartId
 
-    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+    console.log(prop)
+    console.log(charts[prop])
+    console.log(chartId)
+    console.log(sheet)
 
-    if (sheets[chart.params.chartId]) {
+    createChartCard(charts[prop], pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-      for ( let i=0; i < chart.traces.length; i++) {
+    if (sheet) {
 
-        chart.traces[i].x = sheets[chart.params.chartId].data[0]
-        chart.traces[i].y = sheets[chart.params.chartId].data[i+1]
+      for ( let i=0; i < charts[prop].traces.length; i++) {
+
+        charts[prop].traces[i].x = sheet.data[0]
+        charts[prop].traces[i].y = sheet.data[i+1]
         
       }
 
-      const newChart = cloneDeep( chart )
+      // const newChart = cloneDeep( chart )
       
-      newChart.layout.showlegend = false
-      newChart.layout.hovermode = false
-      newChart.layout.xaxis.rangeslider.visible = false
-      newChart.layout.xaxis.domain = [0,1]
-      newChart.layout.title.text = ''
-      newChart.layout.margin.t = 10
-      newChart.layout.margin.b = 10
-      newChart.layout.margin.l = 10
-      newChart.layout.margin.r = 10
-      newChart.layout.height = newChart.params.chartType !== "pie" ? 300 : null
-      newChart.traces[newChart.traces.length-1].visible = false
+      charts[prop].layout.showlegend = false
+      charts[prop].layout.hovermode = false
+      charts[prop].layout.xaxis.rangeslider.visible = false
+      charts[prop].layout.xaxis.domain = [0,1]
+      charts[prop].layout.title.text = ''
+      charts[prop].layout.margin.t = 10
+      charts[prop].layout.margin.b = 10
+      charts[prop].layout.margin.l = 10
+      charts[prop].layout.margin.r = 10
+      // charts[prop].layout.height = charts[prop].params.chartType !== "pie" ?300 : null
+      charts[prop].traces[charts[prop].traces.length-1].visible = false
 
       // newChart.layout.width = 400
-      newChart.config.displayModeBar = false
+      charts[prop].config.displayModeBar = false
 
-      await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
+      await Plotly.newPlot(`${prefix}__chart__${chartId}`, charts[prop].traces, charts[prop].layout, charts[prop].config)
 
 
     } else {
-      document.getElementById( `${prefix}__chart__${chart.params.chartId}` ).innerHTML = `<div class='file-missing'>${chart.params.fileName} cannot be found</div>`
+      document.getElementById( `${prefix}__chart__${chartId}` ).innerHTML = `<div class='file-missing'>${charts[prop].params.fileName} cannot be found</div>`
     }
   
-  })
+  }
 
 
   document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {

@@ -26,9 +26,6 @@ import TableTrace from "./TableTrace"
 import chartOptions from './options'
 import panels from './panels'
 import tracesPanel from "./traces-panel"
-
-
-
 import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart , fetchMinMaxAvgCellValues, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler} from "./utilities"
 import "../sass/admin.scss"
 // import { redraw } from 'plotly.js-basic-dist'
@@ -135,10 +132,41 @@ if (  yrl_wp_plotly_charts_obj ) {
   
           case `${prefix}__saveChart`:
             event.preventDefault()
-            await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            if ( ! Object.values(chart.traces).length || ! chart.params.fileId || ! chart.params.sheetId ) throw new Error(  `Chart traces as well as a file name and a sheet ID are required to save a chart` )
+
+            document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+        
+            // get chart id
+            if ( chart.params.chartId === null ) { // There is a chart Id (edit)
+              const chartId = ! charts.length ? 16327 : charts[charts.length-1].params.chartId + 1
+              chart.params.chartId = chartId
+              charts.push( chart )
+              document.getElementById(`${prefix}__params[chartId]`).value = chartId
+              sheets[chartId] = spreadsheet[chart.params.sheetId]
+            }
+        
+           
+            // Save charts
+            const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
+            const jsonRes = await response.json();
+            console.log("JSONRES-SAVE", jsonRes)
+        
+            // Bail is server response status = error
+            if (response.status !== 200 ) throw new Error( jsonRes.message )
+        
+            // Remove the no-chart div it it exists
+            if ( document.querySelector(`#${prefix}__admin .no-charts`) ) document.querySelector(`#${prefix}__admin .no-charts`).remove()
+        
+            document.querySelector(`#${prefix}__admin .chart-library__content`).innerHTML = ""
+        
+             // List all charts
+             await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+            // await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
             console.log("XXXXXX")
             chart = cloneDeep(emptyChart)
             console.log("DEEP", chart)
+            console.log("charts", charts)
+            console.log("sheets", sheets)
             document.getElementById(`${prefix}__params[chartId]`).value = null
             chartUpdated = false
             break

@@ -19,11 +19,10 @@ const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl
 
     // get chart id
     if ( chart.params.chartId === null ) { // There is a chart Id (edit)
-      const chartId = ! charts.length ? 16327 : charts[charts.length-1].params.chartId + 1
-      chart.params.chartId = chartId
+      chart.params.chartId = ! charts.length ? 16327 : charts[charts.length-1].params.chartId + 1
       charts.push( chart )
-      document.getElementById(`${prefix}__params[chartId]`).value = chartId
-      sheets[chartId] = spreadsheet[chart.params.sheetId]
+      document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
+      sheets.push( {chartId, sheet: spreadsheet[chart.params.sheetId]} )
     }
 
    
@@ -41,27 +40,27 @@ const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl
     document.querySelector(`#${prefix}__admin .chart-library__content`).innerHTML = ""
 
      // List all charts
-     await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+    //  await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
     // return 
 
-    // // Create a new chart card
-    // createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+    // Create a new chart card
+    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-    // // Clone chart
-    // const newChart = cloneDeep( chart )
+    // Clone chart
+    const newChart = cloneDeep( chart )
 
-    // // Ser card chart default layout
-    // newChart.layout.showlegend = false
-    // newChart.layout.hovermode = false
-    // newChart.layout.height = 300
-    // newChart.config.displayModeBar = false
+    // Ser card chart default layout
+    newChart.layout.showlegend = false
+    newChart.layout.hovermode = false
+    newChart.layout.height = 300
+    newChart.config.displayModeBar = false
 
-    // // Plot card chart
-    // await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
+    // Plot card chart
+    await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
 
-    // // Success handler
-    // displayAdminMessage("Chart saved successfully", "success",  prefix)
+    // Success handler
+    displayAdminMessage("Chart saved successfully", "success",  prefix)
 
     // document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
 
