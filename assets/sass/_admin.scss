@@ -152,28 +152,48 @@
 
       }
 
-      .plotly {
-        .min-max-avg-table {
-          justify-content: center;
-          padding:1rem;
-      
-          .inputs {
-            display:flex;
-            justify-content: center;
-            align-items: center;
+      .plotMinMaxAvgForm {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        padding:1rem;
+        background-color: rgba(#4f5b62, .1);          
 
-            h2 {
-              margin-right:2rem;
-            }
-      
-            .min-max-form-group{
-              display:flex;
-              justify-content: center;
-              align-items: center;
-            }
+        h4 {
+          margin-right:2rem;
+          color: #000A12;
+        }
+    
+        .min-max-form-group{
+          display:flex;
+          flex-direction: column;
+          margin-left:1rem;
+        
+
+          &__label {
+            margin-bottom: .5rem;
+            font-weight: 500;
           }
-        } 
-      }
+
+          &__input {
+            font-size:.7rem;
+            font-family: inherit;
+            color:inherit;
+            padding: .3rem 1.5rem;
+            border-radius: 2px;
+            background-color: rgba(#FFFFFF, .8);
+            border:none;
+            border-bottom: 3px solid transparent;
+            display:block;
+            // width:100%;
+            // margin-left: 1rem;
+          }
+
+
+        }
+        
+      } 
+      
 
     }
 

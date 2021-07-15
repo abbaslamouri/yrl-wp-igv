@@ -1126,7 +1126,6 @@ const trimArray = (arr) => {
 const resetChart = (Plotly, prefix) => {
 
   Plotly.purge(`${prefix}__plotlyChart`)
-  Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
   // Reset and hide all panels
   for ( const element of document.querySelector(`#${prefix}__admin #${prefix}__chartOptionsForm .main__Accordion`).children ) {
@@ -1148,6 +1147,10 @@ const resetChart = (Plotly, prefix) => {
     document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.add ( 'hidden' )
     document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.add ( 'hidden' )
     document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.add ( 'hidden' )
+
+    // Hide min/max/avg form
+    document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.add( 'hidden')
+
 
   }
 

@@ -3,10 +3,12 @@ import cloneDeep from 'lodash.clonedeep'
 import fetchData from "./fetch-data"
 import editChart from "./edit-chart"
 import deleteChart from "./delete-chart"
+import listCharts from "./list-charts"
+
 import { displayAdminMessage, createChartCard } from "./utilities"
 
 
-const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
+const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
 
   try {
 
@@ -21,8 +23,10 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
       chart.params.chartId = chartId
       charts.push( chart )
       document.getElementById(`${prefix}__params[chartId]`).value = chartId
+      sheets[chartId] = spreadsheet[chart.params.sheetId]
     }
 
+   
     // Save charts
     const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
     const jsonRes = await response.json();
@@ -34,52 +38,59 @@ const saveChart = async function ( chart, charts, pluginUrl, wpRestUrl, wpRestNo
     // Remove the no-chart div it it exists
     if ( document.querySelector(`#${prefix}__admin .no-charts`) ) document.querySelector(`#${prefix}__admin .no-charts`).remove()
 
-    // Create a new chart card
-    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+    document.querySelector(`#${prefix}__admin .chart-library__content`).innerHTML = ""
 
-    // Clone chart
-    const newChart = cloneDeep( chart )
+     // List all charts
+     await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
-    // Ser card chart default layout
-    newChart.layout.showlegend = false
-    newChart.layout.hovermode = false
-    newChart.layout.height = 300
-    newChart.config.displayModeBar = false
+    // return 
 
-    // Plot card chart
-    await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
+    // // Create a new chart card
+    // createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
 
-    // Success handler
-    displayAdminMessage("Chart saved successfully", "success",  prefix)
+    // // Clone chart
+    // const newChart = cloneDeep( chart )
 
-    document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+    // // Ser card chart default layout
+    // newChart.layout.showlegend = false
+    // newChart.layout.hovermode = false
+    // newChart.layout.height = 300
+    // newChart.config.displayModeBar = false
 
-      element.addEventListener("click", async function (event) {  
-        event.preventDefault()
+    // // Plot card chart
+    // await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
+
+    // // Success handler
+    // displayAdminMessage("Chart saved successfully", "success",  prefix)
+
+    // document.querySelectorAll( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {
+
+    //   element.addEventListener("click", async function (event) {  
+    //     event.preventDefault()
   
-        // Get chart Id and edit chart
-        const chartId = event.target.closest('.card__edit-chart').dataset.chartId
-        const chart = charts.filter(element => element.params.chartId == chartId)[0]
-        editChart( chart, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+    //     // Get chart Id and edit chart
+    //     const chartId = event.target.closest('.card__edit-chart').dataset.chartId
+    //     const chart = charts.filter(element => element.params.chartId == chartId)[0]
+    //     editChart( chart, chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
   
-      })
+    //   })
   
-    })
+    // })
   
   
-    document.querySelectorAll( `#${prefix}__admin .card__delete-chart`).forEach( ( element ) => {
+    // document.querySelectorAll( `#${prefix}__admin .card__delete-chart`).forEach( ( element ) => {
   
-      element.addEventListener("click", async function (event) {  
-        event.preventDefault()
+    //   element.addEventListener("click", async function (event) {  
+    //     event.preventDefault()
   
-        // Get chart Id
-        const chartId = event.target.closest(".card__delete-chart").dataset.chartId
-        const chart = charts.filter(element => element.params.chartId == chartId)[0]
-        deleteChart(charts, chartId, wpRestUrl, wpRestNonce, prefix)
+    //     // Get chart Id
+    //     const chartId = event.target.closest(".card__delete-chart").dataset.chartId
+    //     const chart = charts.filter(element => element.params.chartId == chartId)[0]
+    //     deleteChart(charts, chartId, wpRestUrl, wpRestNonce, prefix)
   
-      })
+    //   })
   
-    })
+    // })
 
 
     // document.querySelector( `#${prefix}__admin .card__edit-chart`).forEach( ( element ) => {

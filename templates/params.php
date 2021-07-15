@@ -30,7 +30,7 @@
 
 <div class="field-group hidden">
   <div class="form-group">
-    <input type='checkbox' class="form-group__input form-group__input-checkbox" id="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" name="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" >
+    <input type='checkbox' class="form-group__input form-group__input-checkbox" id="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" name="<?php echo "{$this->prefix}__params[enableMinMaxAvgTable]"; ?>" checked >
     </select>
     <label for="" class="form-group__label">Enable Min/Max/Avg Table</label>
   </div>

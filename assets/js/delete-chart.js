@@ -1,8 +1,9 @@
 import Swal from 'sweetalert2'
 import fetchData from "./fetch-data"
+import pickBy from 'lodash.pickby'
 import { displayAdminMessage } from "./utilities"
 
-const deleteChart = async function (charts, chartId, wpRestUrl, wpRestNonce, prefix) {
+const deleteChart = async function (charts, chartId, sheets, wpRestUrl, wpRestNonce, prefix) {
 
   try {
 
@@ -21,6 +22,10 @@ const deleteChart = async function (charts, chartId, wpRestUrl, wpRestNonce, pre
          // Bail if there are no chart tr
          if ( ! chartId ) throw new Error(  `Chart ID is required` )
          charts = charts.filter( element => element.params.chartId != chartId)
+         sheets = pickBy(sheets, (value, key) => key != chartId)
+         console.log( "charts", charts)
+         console.log( "sheets", sheets)
+
      
          const response = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
          const jsonRes = await response.json();

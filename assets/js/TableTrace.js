@@ -7,7 +7,7 @@ class Trace {
   static defaultOptions( index, name = null, x = null, y = null ) {
 
     return {
-      rounding: 3,
+      rounding: 1,
       firstColAlign: 'center',
       evenRowColor: '#b0bec5',
       oddRowColor: '#e2f1f8',

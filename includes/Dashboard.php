@@ -175,7 +175,8 @@ if (!class_exists('Dashboard')) {
 
     public function save_chart( $request ) {
 
-      return update_option( "{$this->prefix}_charts", json_decode( $request->get_body(), true ) );
+      update_option( "{$this->prefix}_charts", json_decode( $request->get_body(), true ) );
+			return  json_decode( $request->get_body(), true );
       
     }
 

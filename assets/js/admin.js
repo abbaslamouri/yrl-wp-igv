@@ -114,6 +114,8 @@ if (  yrl_wp_plotly_charts_obj ) {
             // Set chart updated flag
             chartUpdated = false
 
+            console.log("Test",chart)
+
             break
   
           case `${prefix}__cancelChart`:
@@ -133,7 +135,11 @@ if (  yrl_wp_plotly_charts_obj ) {
   
           case `${prefix}__saveChart`:
             event.preventDefault()
-            saveChart( chart, charts, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            console.log("XXXXXX")
+            chart = cloneDeep(emptyChart)
+            console.log("DEEP", chart)
+            document.getElementById(`${prefix}__params[chartId]`).value = null
             chartUpdated = false
             break
   
@@ -180,6 +186,8 @@ if (  yrl_wp_plotly_charts_obj ) {
 
       try {
 
+        console.log("SSSSSS", cloneDeep(chart))
+
         //fetch attachment
         const attachment = mediaUploader.state().get("selection").first().toJSON()
 
@@ -213,6 +221,12 @@ if (  yrl_wp_plotly_charts_obj ) {
         document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+
+        // Reset chart traces types
+        // if (Object.keys(chart.traces).length)
+        // for (const prop in chart.traces) {
+        //   chart.traces[prop].type = null
+        // }
 
        
         // draw chart immediatelly if spreadsheet contains a single sheet

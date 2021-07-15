@@ -32,10 +32,7 @@
         <div class='plotly'>
           <!-- PLot goes here -->
           <div class='chart' id='<?php echo "{$this->prefix}__plotlyChart" ?>'></div>
-          <div class='min-max-avg-table'>
-            <?php require "{$this->path}templates/min-max-inputs.php"; ?>
-            <div class='table ' id='<?php echo "{$this->prefix}__plotlyMinMaxAvgTable"; ?>' ></div>
-          </div>
+          <div class='min-max-avg-table'><?php require "{$this->path}templates/min-max-inputs.php"; ?></div>
         </div>
 
       </div>

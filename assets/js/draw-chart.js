@@ -14,9 +14,9 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
   // Fetch chart options
   chart = chartOptions(chart, spreadsheet)
+  chart.layout.xaxis.range = null
 
   // Add min/max/avg table cahrt
-  console.log("ENAB:",chart.params.enableMinMaxAvgTable)
   if (chart.params.enableMinMaxAvgTable) {
     addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
   } else {

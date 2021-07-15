@@ -7,7 +7,6 @@ const editChart = async function ( chart, chartId, wpRestUrl, wpRestNonce, mainA
 
   mainAccordion.close(0)
   Plotly.purge(`${prefix}__plotlyChart`)
-  Plotly.purge(`${prefix}__plotlyMinMaxAvgTable`)
 
   document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
   document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
