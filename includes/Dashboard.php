@@ -91,7 +91,7 @@ if (!class_exists('Dashboard')) {
         return (!current_user_can('manage_options')) ? false : true;
       });
 
-			add_shortcode( $this->prefix, [$this, 'render_shortcode'] );
+			add_shortcode( 'wp-plotly-chart', [$this, 'render_shortcode'] );
 
 
 			// Rest API Settings
@@ -229,18 +229,6 @@ if (!class_exists('Dashboard')) {
 
 
 
-
-		// public function select_file_permissions_check() {
-
-		// 	if ( ! current_user_can( 'manage_options' ) ) 
-		// 	return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this content.', $this->plugin), array('status' => 401));
-			
-		// 	return true;
-
-		// } // END 	public function permissions_check() {
-
-
-
 		public function permissions_check() {
 
 			if ( ! current_user_can( 'manage_options' ) ) 
@@ -272,7 +260,7 @@ if (!class_exists('Dashboard')) {
 			try {
 
 				// Bail if there is no id
-        if ( !  $atts["id"] ) {
+        if ( ! $atts["id"] ) {
           throw new \Exception(  __(wp_kses_post( "A chart ID is required", $this->plugin ) ) );
         }
 
@@ -284,15 +272,22 @@ if (!class_exists('Dashboard')) {
           throw new \Exception(  __(wp_kses_post( "We cannot find any charts", $this->plugin ) ) );
         }
 
-				// Get chart from GET chart ID
-				$chart = isset($charts[$atts['id']])? $charts[$atts['id']] : [];
+				// Get chart
+				$chart = [];
+				foreach ($charts as $value) {
+					if (intval($value['params']['chartId']) === intval($atts["id"]) ) {
+						$chart = $value;
+						break;
+					}
+				}
+
 
 				if ( empty( $chart ) ) {
 					throw new \Exception(  __(wp_kses_post( "We cannot find a chart with this ID {$atts['id']}", $this->plugin ) ) );
 				}
 
 				// Fetch spreadsheet
-				$spreadsheet = $this->fetch_spreadsheet( $chart['fileUpload']['fileId'] );
+				$spreadsheet = $this->fetch_spreadsheet( $chart['params']['fileId'] );
 
 				// Bail if error ( fetch_spreadsheet( ) return an spreadsheet (array) or WP error)
 			 	if (  is_wp_error( $spreadsheet ) ) {
@@ -308,7 +303,7 @@ if (!class_exists('Dashboard')) {
 				];
 
 				// Prepare error output
-				$response = ["status"	=> "success", "message" => "", "payload" => $payload];
+				$response = ["payload" => $payload];
 
 
 			} catch (\Exception $e) {
@@ -318,8 +313,8 @@ if (!class_exists('Dashboard')) {
 				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => $payload];
 
 			}
-        
-      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__plotlyChart", $response);
+ 
+      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__plotlyChart", $payload);
 
       // Return login template
 			return $this->get_template_html("shortcode", $payload);			

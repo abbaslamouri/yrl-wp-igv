@@ -1327,27 +1327,27 @@ const addMinMaxAvgTable = ( chart, TableTrace, spreadsheet, arrayMin, arrayMax, 
 
 
 
-const addRangeMinMaxInputs = ( chart, Plotly, floatRound, prefix ) => {
+const addRangeMinMaxInputs = ( chart, Plotly, floatRound, plotlyChartDiv, prefix ) => {
 
   document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.remove( 'hidden')
   document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
   document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
 
   // Add change event listener to range min and range max input fields
-  document.querySelector( `#${prefix}__admin` ).addEventListener( "change", async( event ) => {
+  document.querySelector( `.${prefix}` ).addEventListener( "change", ( event ) => {
     event.preventDefault( )
 
     // Bail if not rangeMin or rangeMax inputs
     if ( event.target.id !== `${prefix}__rangeMinInput` && event.target.id !== `${prefix}__rangeMaxInput`) return
     const update = {'xaxis.range': [document.getElementById( `${prefix}__rangeMinInput` ).value, document.getElementById( `${prefix}__rangeMaxInput` ).value]}
-    Plotly.relayout( `${prefix}__plotlyChart`, update)
+    Plotly.relayout( plotlyChartDiv, update)
   
   } )
 
 }
 
 
-const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, prefix ) => {
+const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, plotlyChartDiv, prefix ) => {
 
   // Bail if ecentData does not include xaxis
   if (  Object.keys(eventData)[0] !== 'xaxis.range' ) return
@@ -1377,7 +1377,7 @@ const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayM
   }
 
   const cellValues = fetchMinMaxAvgCellValues( newData, spreadsheet[chart.params.sheetId].labels, arrayMin, arrayMax, arrayMean, floatRound, chart.traces[chart.traces.length-1].rounding )
-  Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+  Plotly.restyle(plotlyChartDiv, {'cells.values' : [cellValues]}, chart.traces.length-1)
 
   document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( range[0], chart.traces[chart.traces.length-1].rounding )
   document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( range[1], chart.traces[chart.traces.length-1].rounding )

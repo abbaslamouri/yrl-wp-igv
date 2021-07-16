@@ -1,24 +1,47 @@
-.yrl_wp_igv__admin, .yrl_wp_igv__public {
+.yrl_wp_plotly_charts {
 
-  .min-max-avg-table {
-
-    // display: flex;
+  .plotMinMaxAvgForm {
+    display:flex;
     justify-content: center;
+    align-items: center;
     padding:1rem;
-    // min-height: 500px;
-    // background-color: rgba($color-grey-dark, .3);
+    background-color: rgba(#4f5b62, .1);
+    font-size: .5rem !important;  
 
-    .inputs {
-      display:flex;
-      //  flex-direction: column;
-      justify-content: center;
-      margin-right:0.5rem;
 
-      .form-group{
-        margin-bottom:1rem;
-      }
+    h4 {
+      margin-right:2rem;
+      color: #000A12;
     }
 
-   
-  } 
+    .min-max-form-group{
+      display:flex;
+      flex-direction: column;
+      margin-left:1rem;
+    
+
+      &__label {
+        margin-bottom: .5rem;
+        font-weight: 500;
+      }
+
+      &__input {
+        font-size:.7rem;
+        font-family: inherit;
+        color:inherit;
+        padding: .3rem 1.5rem;
+        border-radius: 2px;
+        background-color: rgba(#FFFFFF, .8);
+        border:none;
+        border-bottom: 3px solid transparent;
+        display:block;
+        // width:100%;
+        // margin-left: 1rem;
+      }
+
+
+    }
+    
+  }
+
 }

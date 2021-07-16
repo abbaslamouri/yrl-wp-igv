@@ -10,12 +10,9 @@ import 'accordion-js/dist/accordion.min.css'
 import fetchData from "./fetch-data"
 import fetchSpreadsheet from './fetch-spreadsheet'
 import drawChart from './draw-chart'
-import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
 import listCharts from "./list-charts"
-// import cancelChart from "./cancel-chart"
-import paramsHandler from "./params-handler"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
 import traceHandler from "./trace-handler"
@@ -23,14 +20,10 @@ import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 import Annotation from "./Annotation"
 import TableTrace from "./TableTrace"
-import chartOptions from './options'
-import panels from './panels'
 import tracesPanel from "./traces-panel"
-import { displayAdminMessage, hideOptions, chartOptionKey, trimArray, setSelectFieldOptions, resetChart, showToolTip, cancelChart , fetchMinMaxAvgCellValues, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler, createChartCard, fetchChartListDefaultOptions} from "./utilities"
+import { displayAdminMessage, chartOptionKey, setSelectFieldOptions, resetChart, showToolTip, cancelChart, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler} from "./utilities"
 import "../sass/admin.scss"
-// import { redraw } from 'plotly.js-basic-dist'
 
-// console.log("yrlPlotlyChartsObj", {...yrl_wp_plotly_charts_obj})
 
 if (  yrl_wp_plotly_charts_obj ) {
 
@@ -62,6 +55,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // List all charts
     listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
@@ -145,67 +139,20 @@ if (  yrl_wp_plotly_charts_obj ) {
               chart.params.chartId = chartId
               charts.push( chart )
               sheets.push( {chartId, sheet: spreadsheet[chart.params.sheetId]} )
-              // document.getElementById(`${prefix}__params[chartId]`).value = chartId
-              // sheets[chartId] = spreadsheet[chart.params.sheetId]
             }
         
-           
             // Save charts
             jsonRes = await fetchData( wpRestUrl, "POST", wpRestNonce, JSON.stringify(charts) ) 
-            // jsonRes = await response.json();
-            // console.log("JSONRES-SAVE", jsonRes)
-        
-            // // Bail is server response status = error
-            // if (response.status !== 200 ) throw new Error( jsonRes.message )
-
-
-            // Get Data
-            jsonRes = await fetchData( wpRestUrl, "GET", wpRestNonce ) 
-            // jsonRes = await response.json();
-            // console.log("JSONRES-GET", jsonRes)
-        
-            // // Bail is server response status = error
-            // if (response.status !== 200 ) throw new Error( jsonRes.message )
-
-
-            
         
             // Remove the no-chart div it it exists
             if ( document.querySelector(`#${prefix}__admin .no-charts`) ) document.querySelector(`#${prefix}__admin .no-charts`).remove()
         
+            // Clear chart library div
             document.querySelector(`#${prefix}__admin .chart-library__content`).innerHTML = ""
         
              // List all charts
             await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
-            // await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix )
 
-            // Create a new chart card
-            // createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
-
-            // Clone chart
-            // const newChart = cloneDeep( chart )
-
-            // Ser card chart default layout
-            // newChart.layout.showlegend = false
-            // newChart.layout.hovermode = false
-            // newChart.layout.height = 300
-            // newChart.config.displayModeBar = false
-            // const newChart = fetchChartListDefaultOptions( cloneDeep( chart ) )
-
-
-            // Plot card chart
-            // await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)
-
-            // Success handler
-            displayAdminMessage("Chart saved successfully", "success",  prefix)
-
-
-
-            chart = cloneDeep(emptyChart)
-            console.log("DEEP", chart)
-            console.log("charts", charts)
-            console.log("sheets", sheets)
-            // document.getElementById(`${prefix}__params[chartId]`).value = null
             chartUpdated = false
             break
   
@@ -252,7 +199,6 @@ if (  yrl_wp_plotly_charts_obj ) {
 
       try {
 
-        console.log("SSSSSS", cloneDeep(chart))
 
         //fetch attachment
         const attachment = mediaUploader.state().get("selection").first().toJSON()
@@ -288,12 +234,6 @@ if (  yrl_wp_plotly_charts_obj ) {
         document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
         document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
 
-        // Reset chart traces types
-        // if (Object.keys(chart.traces).length)
-        // for (const prop in chart.traces) {
-        //   chart.traces[prop].type = null
-        // }
-
        
         // draw chart immediatelly if spreadsheet contains a single sheet
         if ( spreadsheet.length == 1  ) {
@@ -321,8 +261,6 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     } )
 
-
-    
 
     // Add change event listener to all input fields
     document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "change", async ( event ) => {

@@ -1,6 +1,6 @@
 import { displayAdminMessage } from "./utilities"
 
-const fetchData = async function ( url, method, wpRestNonce, body = null, prefix ) {
+const fetchData = async ( url, method, wpRestNonce, body = null, prefix ) => {
 
   let response
 
