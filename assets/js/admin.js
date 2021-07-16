@@ -36,8 +36,9 @@ if (  yrl_wp_plotly_charts_obj ) {
   let response = null
   let jsonRes = null
   const prefix = yrlPlotlyChartsObj.prefix
-  const wpRestUrl = yrlPlotlyChartsObj.wp_rest_url
-  const wpRestNonce= yrlPlotlyChartsObj.wp_rest_nonce
+  const shortcodeText = yrlPlotlyChartsObj.shortcodeText
+  const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
+  const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
   const pluginUrl =yrlPlotlyChartsObj.url
   let chartUpdated = false
 
@@ -46,7 +47,7 @@ if (  yrl_wp_plotly_charts_obj ) {
   try {
 
     // Check that the necessary parameters are present
-    if ( yrlPlotlyChartsObj.wp_rest_nonce === undefined  || yrlPlotlyChartsObj.wp_rest_url === undefined ) throw new Error( "Don't know where to go from here" )
+    if ( yrlPlotlyChartsObj.wpRestNonce === undefined  || yrlPlotlyChartsObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
     if ( yrlPlotlyChartsObj.charts === undefined ) throw new Error( " can't find charts" )
 
     // Create main accordion
@@ -54,7 +55,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     mainAccordion.closeAll()
 
     // List all charts
-    listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+    listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
 
     // Initialize the media uploader
@@ -151,7 +152,7 @@ if (  yrl_wp_plotly_charts_obj ) {
             document.querySelector(`#${prefix}__admin .chart-library__content`).innerHTML = ""
         
              // List all charts
-            await listCharts( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+            await listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
             chartUpdated = false
             break

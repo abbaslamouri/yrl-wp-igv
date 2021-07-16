@@ -7,7 +7,7 @@ import fetchSpreadsheet from './fetch-spreadsheet'
 import { setSelectFieldOptions, createChartCard, displayAdminMessage, fetchChartListDefaultOptions } from "./utilities"
 import {  } from "./utilities"
 
-const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix) {
+const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix) {
 
   if ( ! charts.length ) {
     document.querySelector( `#${prefix}__admin .chart-library__content` ).innerHTML = "<div class='no-charts'> There are no charts to display</div>"
@@ -18,7 +18,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, wpRestUrl, wpRest
   const newCharts = cloneDeep( charts )
 
   for ( const prop in newCharts ) {
-    createChartCard(newCharts[prop], pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+    createChartCard(newCharts[prop], pluginUrl, shortcodeText, `#${prefix}__admin .chart-library__content`, prefix)
     newCharts[prop] = fetchChartListDefaultOptions( newCharts[prop], sheets[prop] )
     await Plotly.newPlot(`${prefix}__chart__${newCharts[prop].params.chartId}`, newCharts[prop].traces, newCharts[prop].layout, newCharts[prop].config)
   }

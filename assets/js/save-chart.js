@@ -8,7 +8,7 @@ import listCharts from "./list-charts"
 import { displayAdminMessage, createChartCard } from "./utilities"
 
 
-const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
+const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix ) {
 
   try {
 
@@ -45,7 +45,7 @@ const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl
     // return 
 
     // Create a new chart card
-    createChartCard(chart, pluginUrl, `#${prefix}__admin .chart-library__content`, prefix)
+    createChartCard(chart, pluginUrl, shortcodeText, `#${prefix}__admin .chart-library__content`, prefix)
 
     // Clone chart
     const newChart = cloneDeep( chart )

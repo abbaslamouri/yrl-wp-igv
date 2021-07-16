@@ -24,6 +24,7 @@ if (!class_exists('Dashboard')) {
 		public $base = YRL_WP_PLOTLY_BASE; 				// represents plugin-dir/plugin-file
 		public $prefix = "yrl_".YRL_WP_PLOTLY_PREFIX; 		// prefix (yrl_wp_plotly_charts)
     public $plugin = "yrl-".YRL_WP_PLOTLY_PLUGIN; 		// plugin (yrl-wp-plotly_charts)
+    public $shortcode_text = 'wp-plotly-chart'; 		// plugin (yrl-wp-plotly_charts)
 		
 	
 		
@@ -91,7 +92,7 @@ if (!class_exists('Dashboard')) {
         return (!current_user_can('manage_options')) ? false : true;
       });
 
-			add_shortcode( 'wp-plotly-chart', [$this, 'render_shortcode'] );
+			add_shortcode( $this->shortcode_text, [$this, 'render_shortcode'] );
 
 
 			// Rest API Settings
@@ -456,8 +457,9 @@ if (!class_exists('Dashboard')) {
 					"plugin" => $this->plugin,
 					"prefix" => $this->prefix,
 					'url' => $this->url,
-          "wp_rest_nonce"  => wp_create_nonce("wp_rest" ),
-          "wp_rest_url" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
+          'shortcodeText' => $this->shortcode_text,
+          "wpRestNonce"  => wp_create_nonce("wp_rest" ),
+          "wpRestUrl" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
           "charts" => $this->fetch_payload()["charts"],
           "sheets" => $this->fetch_payload()["sheets"]
 				)

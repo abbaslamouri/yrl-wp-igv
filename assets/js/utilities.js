@@ -988,7 +988,7 @@ const hideOptions = (prefix) => {
 
 
 
-const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
+const createChartCard = (chart, pluginUrl, shortcodeText, parentContainer, prefix) => {
 
   // Create card
   const card = document.createElement( "div" )
@@ -1033,8 +1033,8 @@ const createChartCard = (chart, pluginUrl, parentContainer, prefix) => {
   // create card content
   const shortcode = document.createElement( "div" )
   shortcode.classList.add( "shortcode")
-  const shortcodeText = document.createTextNode( `[${prefix} id=${chart.params.chartId}]` )
-  shortcode.appendChild( shortcodeText )
+  const shortcodeTextNode = document.createTextNode( `[${shortcodeText} id=${chart.params.chartId}]` )
+  shortcode.appendChild( shortcodeTextNode )
   cardFooter.appendChild( shortcode )
 
   // create actions div

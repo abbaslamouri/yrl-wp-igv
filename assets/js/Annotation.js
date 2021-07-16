@@ -36,7 +36,7 @@ class Annotation {
       arrowwidth: 1,
       standoff: 0,
       startstandoff: 0,
-      axref: "pixel",
+      axref: "page",
       ayref: "pixel",
       ax: -30,
       ay: -40,
