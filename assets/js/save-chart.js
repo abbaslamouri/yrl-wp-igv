@@ -51,10 +51,12 @@ const saveChart = async function ( chart, charts, spreadsheet, sheets, pluginUrl
     const newChart = cloneDeep( chart )
 
     // Ser card chart default layout
-    newChart.layout.showlegend = false
-    newChart.layout.hovermode = false
-    newChart.layout.height = 300
-    newChart.config.displayModeBar = false
+    // newChart.layout.showlegend = false
+    // newChart.layout.hovermode = false
+    // newChart.layout.height = 300
+    // newChart.config.displayModeBar = false
+
+    newChart = fetchChartListDefaultOptions( newChart )
 
     // Plot card chart
     await Plotly.newPlot(`${prefix}__chart__${chart.params.chartId}`, newChart.traces, newChart.layout, newChart.config)

@@ -109,9 +109,66 @@ if (!class_exists('Dashboard')) {
 
 
 
+   
+
+
+
+		public function register_rest_api_routes() {
+
+      	// *************************** Dashboard
+					register_rest_route( $this->rest_namespace, "/{$this->rest_base}",
+          array(
+            'methods' => "GET",
+            'callback' => [$this, "get_charts_sheets"],
+            'args' => array(),
+            'permission_callback' => array($this, "permissions_check"),
+          )
+        );
+
+
+
+      // *************************** Dashboard
+					register_rest_route( $this->rest_namespace, "/{$this->rest_base}/(?P<id>\d+)",
+          array(
+            'methods' => "GET",
+            'callback' => [$this, "fetch_chart_spreadsheet"],
+            'args' => array(),
+            'permission_callback' => array($this, "permissions_check"),
+          )
+        );
+
+
+					// *************************** Dashboard
+					register_rest_route( $this->rest_namespace, "/{$this->rest_base}",
+						array(
+							'methods' => "POST",
+							'callback' => [$this, "save_chart"],
+							'args' => array(),
+							'permission_callback' => array($this, "permissions_check"),
+						)
+					);
+          
+
+		}
+
+
+
+
+
     public function fetch_payload() {
 
+      return $this->fetch_charts_sheets();
+     
 
+    }
+
+
+
+
+
+
+    public function fetch_charts_sheets(  ) {
+      
       $charts = get_option("{$this->prefix}_charts") ? get_option("{$this->prefix}_charts") : [];
       $sheets = [];
 
@@ -135,31 +192,21 @@ if (!class_exists('Dashboard')) {
 
 
 
-		public function register_rest_api_routes() {
-
-      // *************************** Dashboard
-					register_rest_route( $this->rest_namespace, "/{$this->rest_base}/(?P<id>\d+)",
-          array(
-            'methods' => "GET",
-            'callback' => [$this, "fetch_chart_spreadsheet"],
-            'args' => array(),
-            'permission_callback' => array($this, "select_file_permissions_check"),
-          )
-        );
 
 
-					// *************************** Dashboard
-					register_rest_route( $this->rest_namespace, "/{$this->rest_base}",
-						array(
-							'methods' => "POST",
-							'callback' => [$this, "save_chart"],
-							'args' => array(),
-							'permission_callback' => array($this, "create_chart_permissions_check"),
-						)
-					);
-          
 
-		}
+
+
+
+    public function get_charts_sheets( $request ) {
+      
+			return $this->fetch_payload();
+
+    }
+
+
+
+    
 
 
 
@@ -183,21 +230,21 @@ if (!class_exists('Dashboard')) {
 
 
 
-		public function select_file_permissions_check() {
+		// public function select_file_permissions_check() {
+
+		// 	if ( ! current_user_can( 'manage_options' ) ) 
+		// 	return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this content.', $this->plugin), array('status' => 401));
+			
+		// 	return true;
+
+		// } // END 	public function permissions_check() {
+
+
+
+		public function permissions_check() {
 
 			if ( ! current_user_can( 'manage_options' ) ) 
 			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this content.', $this->plugin), array('status' => 401));
-			
-			return true;
-
-		} // END 	public function permissions_check() {
-
-
-
-		public function create_chart_permissions_check() {
-
-			if ( ! current_user_can( 'manage_options' ) ) 
-			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to save charts.', $this->plugin), array('status' => 401));
 			
 			return true;
 

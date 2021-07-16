@@ -1390,6 +1390,50 @@ const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayM
 
 
 
+const fetchChartListDefaultOptions = ( chart, sheet ) => {
+
+  for ( let i=0; i < chart.traces.length; i++) {
+    chart.traces[i].x = sheet.sheet.data[0]
+    chart.traces[i].y = sheet.sheet.data[i+1]
+  }
+
+      
+  chart.layout.showlegend = false
+  chart.layout.hovermode = false
+  chart.layout.xaxis.rangeslider.visible = false
+  chart.layout.xaxis.domain = [0,1]
+  chart.layout.title.text = ''
+  chart.layout.margin.t = 10
+  chart.layout.margin.b = 10
+  chart.layout.margin.l = 10
+  chart.layout.margin.r = 10
+  chart.layout.height = 300
+  chart.traces[chart.traces.length-1].visible = false
+  chart.config.displayModeBar = false
+
+  return chart
+
+}
+
+
+
+// const plotCardChart = ( chart, sheet, Plotly ) => {
+
+// for ( let i=0; i < chart.traces.length; i++) {
+//   chart.traces[i].x = sheet.sheet.data[0]
+//   chart.traces[i].y = sheet.sheet.data[i+1]
+// }
+// chart = fetchChartListDefaultOptions( chart )
+
+// return chart
+
+// }
+
+
+
+
+
+
 
 
 
@@ -1482,6 +1526,7 @@ module.exports = {
   fetchTableCellsColors,
   addMinMaxAvgTable,
   addRangeMinMaxInputs,
-  minMaxRangesliderHandler
+  minMaxRangesliderHandler,
+  fetchChartListDefaultOptions
   
 }
