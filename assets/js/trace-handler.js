@@ -44,6 +44,10 @@ const traceHandler = async ( chart, key, keyParts, value, Plotly, prefix  ) => {
         value = value ? [commaSeparatedToNumberArr( value )] : null
         break
 
+      case 'columnwidth':
+        value = value ? [commaSeparatedToNumberArr( value )] : null
+        break
+
       default:
 
         break

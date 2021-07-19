@@ -10,11 +10,10 @@ import panels from './panels'
 import { addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler } from './utilities'
 
 
-const drawChart = async( chart, spreadsheet, prefix ) => {
+const drawChart = async( chart, spreadsheet, action, fileStatus, prefix ) => {
 
-  // Fetch chart options
-  chart = chartOptions(chart, spreadsheet)
-  // chart.layout.xaxis.range = null
+  
+  chart = chartOptions (chart, spreadsheet, action, fileStatus )
 
   // Add min/max/avg table cahrt
   if (chart.params.enableMinMaxAvgTable) {
@@ -22,6 +21,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   } else {
     chart.layout.xaxis.domain = [0,1]
   }
+
 
   // Draw charts
   await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {

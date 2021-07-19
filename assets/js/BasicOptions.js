@@ -47,7 +47,6 @@ class BasicOPtions {
                 max : 2000,
                 step : 10,
                 value : layout.width,
-                disabled: true,
                 hint : "Sets the plot's width (in px).  Number greater than or equal to 10.  Default: 700."
               },
               {

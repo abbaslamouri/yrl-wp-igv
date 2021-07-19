@@ -1,16 +1,9 @@
 import Plotly from 'plotly.js-dist'
 import Swal from 'sweetalert2'
-import cloneDeep from 'lodash.clonedeep'
-import arrayMin from 'lodash.min'
-import arrayMax from 'lodash.max'
-import arrayMean from 'lodash.mean'
-import floatRound from 'lodash.round'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
-import fetchData from "./fetch-data"
-import fetchSpreadsheet from './fetch-spreadsheet'
 import addNewChart from './add-new-chart'
-import drawChart from './draw-chart'
+import fileSelect from './file-select'
 import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
@@ -18,13 +11,12 @@ import listCharts from "./list-charts"
 import configHandler from "./config-handler"
 import layoutHandler from "./layout-handler"
 import traceHandler from "./trace-handler"
-import annotationsPanels from "./annotations-panels"
+import sheetHandler from "./sheet-handler"
+import minMaxAvgHandler from "./minmaxavg-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
-import Annotation from "./Annotation"
-import TableTrace from "./TableTrace"
-import tracesPanel from "./traces-panel"
-import { displayAdminMessage, chartOptionKey, setSelectFieldOptions, resetChart, showToolTip, cancelChart, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler} from "./utilities"
+
+import { displayAdminMessage, chartOptionKey, resetChart, showToolTip, cancelChart } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -36,13 +28,13 @@ if (  yrl_wp_plotly_charts_obj ) {
   let emptyChart = { params: {}, layout: {}, config: {}, traces: [] } 
   let chart = {}
   let spreadsheet = []
-  let response = null
-  let jsonRes = null
   const prefix = yrlPlotlyChartsObj.prefix
   const shortcodeText = yrlPlotlyChartsObj.shortcodeText
   const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
   const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
   const pluginUrl =yrlPlotlyChartsObj.url
+  let action = null
+  let fileStatus = null
   let chartUpdated = false
 
   console.log("yrlPlotlyChartsObj", {...yrlPlotlyChartsObj})
@@ -59,7 +51,6 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // List all charts
     listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
-
 
     // Initialize the media uploader
     if (mediaUploader) mediaUploader.open()
@@ -92,6 +83,8 @@ if (  yrl_wp_plotly_charts_obj ) {
           case `${prefix}__addNewChart`:
             event.preventDefault()
             chart = addNewChart( chart, emptyChart, mainAccordion, prefix )
+            action = 'new'
+            fileStatus = 'new'
 
             // Set chart updated flag
             chartUpdated = false
@@ -115,6 +108,7 @@ if (  yrl_wp_plotly_charts_obj ) {
           case `${prefix}__saveChart`:
             event.preventDefault()
             chartUpdated = await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            console.log("Saved", chart)
             break
 
           case `${prefix}__addAnnotation`:
@@ -142,78 +136,16 @@ if (  yrl_wp_plotly_charts_obj ) {
       
     })
 
-
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
 
-      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+      const returnedObj = await fileSelect( chart, charts, spreadsheet, action, fileStatus, wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
 
-      // Toggle warning and loading
-      document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-      document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
+      // Set chart updated flag
+      chart = returnedObj.chart
+      spreadsheet = returnedObj.spreadsheet
+      chartUpdated = true
 
-      try {
-
-
-        //fetch attachment
-        const attachment = mediaUploader.state().get("selection").first().toJSON()
-
-        // Bail if attachment can't be found
-        if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
-
-        // set chart filename and file id and params file name and file id
-        chart.params.fileName = attachment.filename
-        document.getElementById(`${prefix}__params[fileName]`).value = chart.params.fileName
-        chart.params.fileId = attachment.id
-        document.getElementById(`${prefix}__params[fileId]`).value = chart.params.fileId
-
-        // get min/max/avg/ checkbox
-        chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
-
-        // Set chart params chart Id
-        if ( undefined === chart.params.chartId ) chart.params.chartId  = null
-        document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
-
-        spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce, prefix )
-
-        // Set sheet select field options array
-        setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
-
-        // Set params sheet id and sheet select value
-        chart.params.sheetId  = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
-        document.getElementById( `${prefix}__params[sheetId]` ).value = chart.params.sheetId
-
-        // Unhide file name, file id and chart id input fields
-        document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-
-       
-        // draw chart immediatelly if spreadsheet contains a single sheet
-        if ( spreadsheet.length == 1  ) {
-          document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
-          await drawChart ( chart, spreadsheet, prefix )
-          document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-
-          // Close main accordion
-          mainAccordion.closeAll()
-
-        } else {
-          document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
-          document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-        }
-
-        // Set chart updated flag
-        chartUpdated = true
-
-      } catch (error) {
-
-        displayAdminMessage(error.message, "error",  prefix)
-        console.log("CAUGHT ERROR", error)
-    
-      }
 
     } )
 
@@ -240,67 +172,17 @@ if (  yrl_wp_plotly_charts_obj ) {
 
       if( event.target.id === `${prefix}__params[sheetId]` ) {
 
-        // Bail if there is no sheet id
+         // Bail if there is no sheet id
         if ( event.target.value == "") return
 
-        // set params sheet id
-        chart.params.sheetId = event.target.value
-
-        // get min/max/avg/ checkbox
-        chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
-
-        // Unhide file name, file id and chart id input fields
-        document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-        document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-
-        // Toggle warning
-        document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-
-        // draw chart
-        await drawChart ( chart, spreadsheet, prefix )
-
-        // Close main accordion
-        mainAccordion.closeAll()
-
-        // et chart updated flag
-        chartUpdated = true
+        chartUpdated = await sheetHandler( chart, value, spreadsheet, mainAccordion, prefix )
 
       } else if (event.target.id === `${prefix}__params[enableMinMaxAvgTable]`) {
 
-        if ( value ) {
+        await minMaxAvgHandler( chart, value, spreadsheet, wpRestUrl, wpRestNonce, prefix )
 
-          const update = {'xaxis.domain': [0,.5]}
-          Plotly.relayout( `${prefix}__plotlyChart`, update)
+        console.log("BBBBBB", chart)
 
-          addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
-          await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
-          tracesPanel( chart, spreadsheet, prefix )
-
-          addRangeMinMaxInputs( chart, Plotly, floatRound, prefix )
-          // Add range slider event handler
-          eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
-
-            minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, prefix  )
-
-          })
-        } else {
-
-          const update = {'xaxis.domain': [0,1]}
-          Plotly.relayout( `${prefix}__plotlyChart`, update)
-          Plotly.deleteTraces( `${prefix}__plotlyChart`, chart.traces.length-1 )
-          tracesPanel( chart, spreadsheet, prefix )
-
-          document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.add( 'hidden')
-
-
-
-          console.log(chart.traces)
-        }
-
-
-        console.log(chart)
 
       } else {
 

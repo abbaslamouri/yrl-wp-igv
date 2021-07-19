@@ -11,6 +11,7 @@ class Trace {
       firstColAlign: 'center',
       evenRowColor: '#b0bec5',
       oddRowColor: '#e2f1f8',
+      columnwidth:[],
       type: 'table',
       name: name,
       visible: true,
@@ -91,6 +92,13 @@ class Trace {
                 title : 'Trace Type',  
                 type : 'text',
                 value : trace.type === undefined ? this.defaultOptions(index).type : trace.type,
+                readonly : true
+              },
+              {
+                id : `traces[${index}][columnwidth]`,  
+                title : 'Column Width',  
+                type : 'text',
+                value : trace.columnwidth === undefined ? this.defaultOptions(index).columnwidth : trace.columnwidth,
                 readonly : true
               },
             

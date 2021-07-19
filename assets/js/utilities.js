@@ -1095,6 +1095,7 @@ const createChartCard = (chart, pluginUrl, shortcodeText, parentContainer, prefi
 
 // Remove empty spaces ("") from begining and end of array
 const trimArray = (arr) => {  
+  // return
   let index = null
   for ( const i in arr) {
     if (arr[i] == "") {
@@ -1104,6 +1105,7 @@ const trimArray = (arr) => {
       break
     }
   }
+  if ( index === null) return []
   arr.splice(0, index )
 
   for ( const i in arr.reverse()) {
@@ -1393,9 +1395,22 @@ const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayM
 const fetchChartListDefaultOptions = ( chart, sheet ) => {
 
   for ( let i=0; i < chart.traces.length; i++) {
-    chart.traces[i].x = sheet.sheet.data[0]
-    chart.traces[i].y = sheet.sheet.data[i+1]
+
+    switch (chart.traces.type ) {
+
+      case 'scatter':
+        chart.traces[i].x = sheet.sheet.data[0]
+        chart.traces[i].y = sheet.sheet.data[i+1]
+        break
+
+      case 'table':
+        chart.traces[i].header.values = sheet.sheet.data[0]
+        chart.traces[i].cells.values = sheet.sheet.data[i+1]
+
+    }
   }
+
+  // chart.traces[chart.traces.legth-1].visible = false
 
       
   chart.layout.showlegend = false

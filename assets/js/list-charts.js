@@ -17,6 +17,8 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
   // Clone charts
   const newCharts = cloneDeep( charts )
 
+  console.log("NNNNNN", newCharts)
+
   for ( const prop in newCharts ) {
     createChartCard(newCharts[prop], pluginUrl, shortcodeText, `#${prefix}__admin .chart-library__content`, prefix)
     newCharts[prop] = fetchChartListDefaultOptions( newCharts[prop], sheets[prop] )
@@ -66,7 +68,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
 
     
         // Draw chart
-        await drawChart ( chart, spreadsheet, prefix )
+        await drawChart ( chart, spreadsheet, 'edit', prefix )
     
         console.log("CHART", chart)
     

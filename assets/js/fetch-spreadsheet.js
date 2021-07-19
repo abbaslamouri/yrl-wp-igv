@@ -7,15 +7,20 @@ const fetchSpreadsheet = async function ( chart, wpRestUrl, wpRestNonce, prefix 
 
      // Fetch spreadsheet
      const spreadsheet = await fetchData(`${wpRestUrl}/${chart.params.fileId}`, "GET", wpRestNonce, null, prefix )
-    //  if (response.status !== 200 ) throw new Error(  response.json().message )
-    //  const spreadsheet = await response.json()
 
       // trim leading and trailing empty elements from spreadsheet
       for ( const prop in spreadsheet ) {
        for (const index in spreadsheet[prop].data) {
-         spreadsheet[prop].data[index] = trimArray(spreadsheet[prop].data[index])
+         const traceData = trimArray(spreadsheet[prop].data[index])
+         if ( traceData.length === 0 ) {
+           delete spreadsheet[prop].data.splice(index,1)
+           delete spreadsheet[prop].labels.splice(index,1)
+         } else {
+          spreadsheet[prop].data[index] = trimArray(spreadsheet[prop].data[index])
+         }
        }
      }
+
 
     return spreadsheet
 

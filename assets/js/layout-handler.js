@@ -13,6 +13,10 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
       value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
       update = { [`${key}`]: value}
     }
+  } else if ( key === 'width' || key === 'height') {
+    chart.layout[key] = value 
+    await Plotly.react( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
+      console.log("here")
   } else {
 
     switch(key) {
@@ -117,15 +121,15 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
         break
 
     }
-    
 
+    console.log(update)
+    Plotly.relayout( `${prefix}__plotlyChart`, update)
+    console.log("CL", chart.layout)
+    
 
   }
 
-  console.log(update)
-  console.log("CL", chart.layout)
-  Plotly.relayout( `${prefix}__plotlyChart`, update)
-  console.log("CL", chart.layout)
+  
 
   // // Title
   // document.getElementById(`${prefix}__layout[title][font][family]`).disabled = ! chart.layout.title.text  ? true : false

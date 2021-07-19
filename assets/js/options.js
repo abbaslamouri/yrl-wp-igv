@@ -11,7 +11,37 @@ import Grid from "./Grid"
 import ChartAxis from "./ChartAxis"
 
 
-const chartOptions = ( chart, spreadsheet  ) => {
+const chartOptions = ( chart, spreadsheet, action, fileStatus ) => {
+
+  // Fetch chart options and add min/max/avg table options only if this is a new chart or a new spreadsheet has been selected
+
+  console.log("OOOOOO", action, fileStatus )
+
+  if ( action === 'new' && fileStatus === 'new' ) {
+
+    for (let i = 0;  i < spreadsheet[chart.params.sheetId].data.length - 1; i++) {
+      chart.traces[i] = ScatterTrace.defaultOptions( i, Object.values(spreadsheet[chart.params.sheetId]["labels"])[i+1], spreadsheet[chart.params.sheetId].data[0], spreadsheet[chart.params.sheetId].data[i+1] )
+    }
+    
+    chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
+    chart.config.responsive = chart.layout.responsive
+    chart.config.staticPlot = chart.layout.staticPlot
+
+    chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Grid.defaultOptions( ) }
+
+    chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
+    chart.config.displayModeBar = chart.layout.displayModeBar
+    chart.config.displaylogo = chart.layout.displaylogo
+    
+    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
+    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
+  
+  }
+
+  return chart
 
   // Remove extra traces if new spreasheet contains less columns than old spreasheet
   if ( chart.traces.length ) {
