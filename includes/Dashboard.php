@@ -314,6 +314,14 @@ if (!class_exists('Dashboard')) {
 				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => $payload];
 
 			}
+
+      // Enqueue Stylesheet
+			wp_register_style("{$this->plugin}-public", $this->url . "assets/bundle/public.css", null, false, 'all');
+			wp_enqueue_style("{$this->plugin}-public");
+
+			// Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
+			wp_register_script("{$this->plugin}-public", "{$this->url}assets/bundle/public.js", null, false, true);
+			wp_enqueue_script("{$this->plugin}-public");
  
       wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__plotlyChart", $payload);
 
@@ -421,13 +429,15 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function enqueue_scripts()	{
 
-			// Enqueue Stylesheet
-			wp_register_style("{$this->plugin}-public", $this->url . "assets/bundle/public.css", null, false, 'all');
-			wp_enqueue_style("{$this->plugin}-public");
+			// // Enqueue Stylesheet
+			// wp_register_style("{$this->plugin}-public", $this->url . "assets/bundle/public.css", null, false, 'all');
+			// wp_enqueue_style("{$this->plugin}-public");
 
-			// Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
-			wp_register_script("{$this->plugin}-public", "{$this->url}assets/bundle/public.js", null, false, true);
-			wp_enqueue_script("{$this->plugin}-public");
+			// // Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
+			// wp_register_script("{$this->plugin}-public", "{$this->url}assets/bundle/public.js", null, false, true);
+			// wp_enqueue_script("{$this->plugin}-public");
+
+      
       
 
 		} // END enqueue_scripts
@@ -440,30 +450,30 @@ if (!class_exists('Dashboard')) {
 		 */
 		public function admin_enqueue_scripts()	{
 
-			wp_enqueue_media();
+			// wp_enqueue_media();
 
-			// Enqueue Stylesheet
-			wp_register_style($this->plugin, $this->url . "assets/bundle/admin.css", [], false, 'all');
-			wp_enqueue_style($this->plugin);
+			// // Enqueue Stylesheet
+			// wp_register_style($this->plugin, $this->url . "assets/bundle/admin.css", [], false, 'all');
+			// wp_enqueue_style($this->plugin);
 
 
-			// Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
-			wp_register_script("{$this->plugin}-admin", "{$this->url}assets/bundle/admin.js", [], false, true);
-			wp_enqueue_script("{$this->plugin}-admin");
-			wp_localize_script(
-				"{$this->plugin}-admin", //handle for the script
-				"{$this->prefix}_obj", //  The name of the variable which will contain the data (used in the ajax url)
-				array( // Data to be passed
-					"plugin" => $this->plugin,
-					"prefix" => $this->prefix,
-					'url' => $this->url,
-          'shortcodeText' => $this->shortcode_text,
-          "wpRestNonce"  => wp_create_nonce("wp_rest" ),
-          "wpRestUrl" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
-          "charts" => $this->fetch_payload()["charts"],
-          "sheets" => $this->fetch_payload()["sheets"]
-				)
-      );
+			// // Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
+			// wp_register_script("{$this->plugin}-admin", "{$this->url}assets/bundle/admin.js", [], false, true);
+			// wp_enqueue_script("{$this->plugin}-admin");
+			// wp_localize_script(
+			// 	"{$this->plugin}-admin", //handle for the script
+			// 	"{$this->prefix}_obj", //  The name of the variable which will contain the data (used in the ajax url)
+			// 	array( // Data to be passed
+			// 		"plugin" => $this->plugin,
+			// 		"prefix" => $this->prefix,
+			// 		'url' => $this->url,
+      //     'shortcodeText' => $this->shortcode_text,
+      //     "wpRestNonce"  => wp_create_nonce("wp_rest" ),
+      //     "wpRestUrl" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
+      //     "charts" => $this->fetch_payload()["charts"],
+      //     "sheets" => $this->fetch_payload()["sheets"]
+			// 	)
+      // );
       
       
 
@@ -716,6 +726,31 @@ if (!class_exists('Dashboard')) {
 					'caps' => 'administrator', 
 					'id' => $this->prefix,
 					'callback' => function() {
+            wp_enqueue_media();
+
+            // Enqueue Stylesheet
+            wp_register_style($this->plugin, $this->url . "assets/bundle/admin.css", [], false, 'all');
+            wp_enqueue_style($this->plugin);
+      
+      
+            // Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
+            wp_register_script("{$this->plugin}-admin", "{$this->url}assets/bundle/admin.js", [], false, true);
+            wp_enqueue_script("{$this->plugin}-admin");
+            wp_localize_script(
+              "{$this->plugin}-admin", //handle for the script
+              "{$this->prefix}_obj", //  The name of the variable which will contain the data (used in the ajax url)
+              array( // Data to be passed
+                "plugin" => $this->plugin,
+                "prefix" => $this->prefix,
+                'url' => $this->url,
+                'shortcodeText' => $this->shortcode_text,
+                "wpRestNonce"  => wp_create_nonce("wp_rest" ),
+                "wpRestUrl" => get_rest_url(null, "{$this->rest_namespace}/{$this->rest_base}"),
+                "charts" => $this->fetch_payload()["charts"],
+                "sheets" => $this->fetch_payload()["sheets"]
+              )
+            );
+            
             echo $this->get_template_html("admin");
           }
 				),

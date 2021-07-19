@@ -3,7 +3,7 @@ import Accordion from 'accordion-js';
 import 'accordion-js/dist/accordion.min.css';
 import capitalize from 'lodash.capitalize'
 import ChartAxis from "./ChartAxis"
-import axesPanel from "./axes-panel"
+import axesPanel from "./axes-panels"
 import layoutHandler from "./layout-handler"
 import { chartOptionKey, createPanel, createPanelSections, displayAdminMessage, setSelectFieldOptions, fetchAxisOptions } from "./utilities"
 

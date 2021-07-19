@@ -14,7 +14,7 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
 
   // Fetch chart options
   chart = chartOptions(chart, spreadsheet)
-  chart.layout.xaxis.range = null
+  // chart.layout.xaxis.range = null
 
   // Add min/max/avg table cahrt
   if (chart.params.enableMinMaxAvgTable) {

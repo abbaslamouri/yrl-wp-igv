@@ -1,20 +1,20 @@
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
-import annotations from './annotations'
+import annotations from './annotations-panels'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
 import Hoverlabel from "./Hoverlabel"
 import Grid from "./Grid"
 import Modebar from "./Modebar"
-import axesPanel from "./axes-panel"
+import axesPanels from "./axes-panels"
 import tracesPanel from "./traces-panel"
 import ScatterTrace from './ScatterTrace'
 import TableTrace from './TableTrace'
 import PieTrace from './PieTrace'
 import capitalize from 'lodash.capitalize'
 import { createPanel, createPanelSections, setSelectFieldOptions, fetchAxisOptions } from "./utilities"
-import annotationsHandler from './annotations-handler'
+import annotationsPanels from './annotations-panels'
 
 const panels = async function (chart, spreadsheet, prefix) {
 
@@ -44,10 +44,10 @@ const panels = async function (chart, spreadsheet, prefix) {
   createPanelSections( Modebar.sections( chart.layout, chart.config ), document.querySelector( `#${prefix}__admin .modebarAc .ac-panel` ), "modebar", prefix  )
   document.querySelector(`#${prefix}__admin .modebarAc`).classList.remove( "hidden" )
 
-  axesPanel ( chart, "xaxis", prefix )
-  axesPanel ( chart, "yaxis", prefix )
+  axesPanels ( chart, "xaxis", prefix )
+  axesPanels ( chart, "yaxis", prefix )
 
-  annotationsHandler(chart, prefix)
+  annotationsPanels(chart, prefix)
 
 
 

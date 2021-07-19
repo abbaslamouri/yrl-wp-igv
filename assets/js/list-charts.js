@@ -62,6 +62,8 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
         document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
         document.getElementById( `${prefix}__params[chartId]` ).closest( ".field-group" ).classList.remove( "hidden" )
         document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+        console.log("CHART", chart)
+
     
         // Draw chart
         await drawChart ( chart, spreadsheet, prefix )

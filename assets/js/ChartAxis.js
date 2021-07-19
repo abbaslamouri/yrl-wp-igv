@@ -1,4 +1,5 @@
 
+import floatRound from 'lodash.round'
 import { fontFamily } from "./utilities"
 
 class ChartAxis  {
@@ -96,6 +97,8 @@ class ChartAxis  {
 
 
   static sections( layout, axisId, axisSide, axisOverlaying, axisTitleText, axisMatches ) {
+
+    layout[axisId].range = [floatRound( layout[axisId].range[0], 3), floatRound( layout[axisId].range[1], 3) ]
 
     const axisSideOptions = axisId.includes( "xaxis" ) ? { bottom: "Bottom", top: "Top" } : axisId.includes( "yaxis" ) ? { left: "Left", right: "Right" } : null
 
@@ -210,7 +213,7 @@ class ChartAxis  {
                 id : `layout[${axisId}][range]`,
                 title : "Range",	
                 type : "text",
-                value : layout[axisId].range !== undefined ? layout[axisId].range.join() : null,
+                value : layout[axisId].range === undefined ? this.defaultOptions(axisId, axisSide, axisOverlaying, axisTitleText, axisMatches).rangemode.join() : layout[axisId].range.join(),
                 disabled: ! layout[axisId].visible ? true : false,
                 // disabled: ( ! layout[axisId].visible  || layout[axisId].autorange ) ? true : false,
                 hint: "Sets the range of this axis. If the axis `type` is 'log', then you must take the log of your desired range (e.g. to set the range from 1 to 100, set the range from 0 to 2). If the axis `type` is 'date', it should be date strings, like date data, though Date objects and unix milliseconds will be accepted and converted to strings. If the axis `type` is 'category', it should be numbers, using the scale where each category is assigned a serial number from zero in the order it appears."

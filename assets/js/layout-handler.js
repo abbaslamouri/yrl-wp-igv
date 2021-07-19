@@ -9,23 +9,19 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
   let update = {}
 
   if ( keyParts[0].includes( "axis") && keyParts[1] == "domain" )  {
-      if (value) {
-        value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-        // if ( Array.isArray( value ) ) {
-          update = { [`${key}`]: value}
-        // }
-      // } else {
-        // update = { ["xaxis.domain"]: null }
-      }
-      Plotly.relayout( `${prefix}__plotlyChart`, update)
-
+    if (value) {
+      value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
+      update = { [`${key}`]: value}
+    }
   } else {
-
-  
 
     switch(key) {
 
-      
+      // case "width":
+      // case "height":
+      //   value = value ? value : null
+      //   update = { [key]: value }
+      // break
 
       // case "hovermode":
       //   value = "false" === value ? false : "true" === value ? true : value
@@ -68,18 +64,8 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
       // break
 
       case "xaxis.range":
-        value = value ? [commaSeparatedToNumberArr( value )] : null           
-      //   if (value) {
-      //     value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
-      //     if ( Array.isArray( value ) ) {
-      //       update = { ["xaxis.range"]: value}
-      //       Plotly.relayout( `${prefix}__plotlyChart`, update)
-      //     }
-      //   } else {
-      //     update = { ["xaxis.range"]: null, "xaxis.autorange": true}
-      //     Plotly.relayout( `${prefix}__plotlyChart`, update)
-      //   }
-      //   document.getElementById(`${prefix}__layout[xaxis][autorange]`).value = true === chart.layout.xaxis.autorange ? "true" : false === chart.layout.xaxis.autorange ? "false" : chart.layout.xaxis.autorange 
+        value = value ? [commaSeparatedToNumberArr( value )] : null 
+        update = { [`${key}`]: value}          
       break
 
       // case "xaxis.tickvals":             
@@ -128,12 +114,18 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
 
       default:
         update = { [key]: value }
-        Plotly.relayout( `${prefix}__plotlyChart`, { [key]: value })
-
-        console.log(chart.layout)
+        break
 
     }
+    
+
+
   }
+
+  console.log(update)
+  console.log("CL", chart.layout)
+  Plotly.relayout( `${prefix}__plotlyChart`, update)
+  console.log("CL", chart.layout)
 
   // // Title
   // document.getElementById(`${prefix}__layout[title][font][family]`).disabled = ! chart.layout.title.text  ? true : false
