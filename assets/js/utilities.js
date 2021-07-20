@@ -1325,6 +1325,8 @@ const addMinMaxAvgTable = ( chart, TableTrace, spreadsheet, arrayMin, arrayMax, 
   chart.traces[chart.traces.length]= TableTrace.defaultOptions( chart.traces.length, 'Min/Max/Average', headerValues, cellValues  )
   chart.traces[chart.traces.length-1].cells.fill.color = [fetchTableCellsColors( chart.traces[chart.traces.length-1] )]
 
+  return chart
+
 }
 
 
@@ -1447,6 +1449,41 @@ const fetchChartListDefaultOptions = ( chart, sheet ) => {
 
 
 
+const setChartTraces = (chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound) => {
+
+  const sheet = spreadsheet[chart.params.sheetId]
+  if ( ! chart.traces.length ) {
+    for (const prop in  sheet.data ) {
+      if ( prop == 0 ) continue
+      chart.traces[prop-1] = ScatterTrace.defaultOptions( prop, Object.values(sheet["labels"])[prop], sheet.data[0], sheet.data[prop] )
+    }
+  } else {
+
+    // Remove extra traces if new spreasheet contains less columns than old spreasheet
+    if ( sheet.data.length < chart.traces.length +1 ) chart.traces.splice( sheet.data.length-1, chart.traces.length - sheet.data.length + 1 )
+
+    for (const prop in  sheet.data ) {
+      if ( prop == 0 ) continue
+      chart.traces[prop-1].name = Object.values(sheet["labels"])[prop]
+      chart.traces[prop-1].x = sheet.data[0]
+      chart.traces[prop-1].y = sheet.data[prop]
+    }
+  }
+
+  // Reset chart axis type to default
+  chart.layout.xaxis.type = '-'
+
+  // Add min/max/avg table cahrt
+  if (chart.params.enableMinMaxAvgTable) addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
+
+  localStorage.setItem("chart", JSON.stringify(chart))
+
+  return chart
+
+}
+
+
+
 
 
 
@@ -1543,6 +1580,7 @@ module.exports = {
   addMinMaxAvgTable,
   addRangeMinMaxInputs,
   minMaxRangesliderHandler,
-  fetchChartListDefaultOptions
+  fetchChartListDefaultOptions,
+  setChartTraces
   
 }

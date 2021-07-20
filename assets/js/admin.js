@@ -16,7 +16,7 @@ import minMaxAvgHandler from "./minmaxavg-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
 
-import { displayAdminMessage, chartOptionKey, resetChart, showToolTip, cancelChart } from "./utilities"
+import { displayAdminMessage, chartOptionKey, showToolTip, cancelChart } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -25,14 +25,14 @@ if (  yrl_wp_plotly_charts_obj ) {
   const yrlPlotlyChartsObj = yrl_wp_plotly_charts_obj
   const charts = yrlPlotlyChartsObj.charts
   const sheets = yrlPlotlyChartsObj.sheets
-  var chart = {}
-  let spreadsheet = []
+  // var chart = {}
+  // let spreadsheet = []
   const prefix = yrlPlotlyChartsObj.prefix
   const shortcodeText = yrlPlotlyChartsObj.shortcodeText
   const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
   const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
   const pluginUrl =yrlPlotlyChartsObj.url
-  let chartUpdated = false
+  // let chartUpdated = false
 
   console.log("yrlPlotlyChartsObj", {...yrlPlotlyChartsObj})
   
@@ -79,14 +79,13 @@ if (  yrl_wp_plotly_charts_obj ) {
 
           case `${prefix}__addNewChart`:
             event.preventDefault()
-            addNewChart( chart, mainAccordion, prefix )
-            // console.log('chart', chart)
-            chartUpdated = false
+            addNewChart( mainAccordion, prefix )
+            // chartUpdated = false
             break
   
           case `${prefix}__cancelChart`:
             event.preventDefault()
-            if (chartUpdated) {
+            if ( JSON.parse( localStorage.getItem( 'chartUpdated')  )) {
               cancelChart( Swal, prefix )
             } else {
               document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
@@ -132,15 +131,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
-
-      const returnedObj = await fileSelect( JSON.parse( localStorage.getItem( 'chart')  ), charts, spreadsheet, wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
-
-      // Set chart updated flag
-      chart = returnedObj.chart
-      spreadsheet = returnedObj.spreadsheet
-      chartUpdated = true
-
-
+      await fileSelect( wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
     } )
 
 
@@ -152,12 +143,12 @@ if (  yrl_wp_plotly_charts_obj ) {
       const key = chartOptionKey(event.target.id).key
       const keyParts = key.split(".")
       let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      console.group()
-      console.log("Control", control)
-      console.log("key", key)
-      console.log("keyParts", keyParts)
-      console.log("value", value)
-      console.groupEnd()
+      // console.group()
+      // console.log("Control", control)
+      // console.log("key", key)
+      // console.log("keyParts", keyParts)
+      // console.log("value", value)
+      // console.groupEnd()
 
       const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
       if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
@@ -166,18 +157,13 @@ if (  yrl_wp_plotly_charts_obj ) {
 
       if( event.target.id === `${prefix}__params[sheetId]` ) {
 
-         // Bail if there is no sheet id
         if ( event.target.value == "") return
-
-        chartUpdated = await sheetHandler( chart, value, spreadsheet, mainAccordion, prefix )
+        await sheetHandler( value, mainAccordion, prefix )
 
       } else if (event.target.id === `${prefix}__params[enableMinMaxAvgTable]`) {
 
-        await minMaxAvgHandler( chart, value, spreadsheet, wpRestUrl, wpRestNonce, prefix )
-
-        console.log("BBBBBB", chart)
-
-
+        await minMaxAvgHandler( value, prefix )
+        
       } else {
 
         switch ( control ) {

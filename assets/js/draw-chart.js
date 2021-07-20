@@ -3,19 +3,13 @@ import arrayMin from 'lodash.min'
 import arrayMax from 'lodash.max'
 import arrayMean from 'lodash.mean'
 import floatRound from 'lodash.round'
-import TableTrace from './TableTrace'
-import chartOptions from './options'
 import panels from './panels'
-
-import { addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRangesliderHandler } from './utilities'
-
+import { addRangeMinMaxInputs, minMaxRangesliderHandler } from './utilities'
 
 const drawChart = async( chart, spreadsheet, prefix ) => {
   
   // Draw charts
   await Plotly.newPlot( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
-
-  console.log('CHART', chart)
 
   // build chart options field panels
   panels( chart, spreadsheet, prefix )
@@ -33,7 +27,6 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
     if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart`, prefix  )
 
   })
-
 
 }
 

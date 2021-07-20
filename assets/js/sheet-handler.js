@@ -1,17 +1,26 @@
+import arrayMin from 'lodash.min'
+import arrayMax from 'lodash.max'
+import arrayMean from 'lodash.mean'
+import floatRound from 'lodash.round'
 import drawChart from "./draw-chart"
-import { displayAdminMessage } from "./utilities"
+import ScatterTrace from './ScatterTrace'
+import TableTrace from './TableTrace'
+import { displayAdminMessage, setChartTraces } from "./utilities"
 
-const sheetHandler = async ( chart, sheetId, spreadsheet, mainAccordion, prefix ) => {
+const sheetHandler = async ( sheetId, mainAccordion, prefix ) => {
 
   try {
 
-   
+    let chart = JSON.parse( localStorage.getItem( 'chart')  )
+    const spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet')  )
 
     // set params sheet id
     chart.params.sheetId = sheetId
 
     // get min/max/avg/ checkbox
     chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
+
+    chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
 
     // Unhide file name, file id and chart id input fields
     document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
@@ -23,15 +32,18 @@ const sheetHandler = async ( chart, sheetId, spreadsheet, mainAccordion, prefix 
     document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
 
     // draw chart
-    await drawChart ( chart, spreadsheet, 'new', prefix )
+    await drawChart ( chart, spreadsheet, prefix )
 
     // Close main accordion
     mainAccordion.closeAll()
 
-    // et chart updated flag
-    const chartUpdated = true
+    localStorage.setItem("chart", JSON.stringify(chart))
 
-    return chartUpdated
+
+    // et chart updated flag
+    localStorage.setItem("chartUpdated", true)
+
+    // return chartUpdated
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)

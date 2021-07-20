@@ -8,7 +8,7 @@ import Grid from "./Grid"
 import ChartAxis from "./ChartAxis"
 import { displayAdminMessage, resetChart } from "./utilities"
 
-const addNewChart = ( chart, mainAccordion, prefix ) => {
+const addNewChart = ( mainAccordion, prefix ) => {
 
   try {
 
@@ -17,7 +17,7 @@ const addNewChart = ( chart, mainAccordion, prefix ) => {
     // Unhide chart  and open first accordion panel 
     document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
 
-    chart = { params: {}, layout: {}, config: {}, traces: [] }
+    const chart = { params: {}, layout: {}, config: {}, traces: [] }
 
     chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
     chart.config.responsive = chart.layout.responsive
@@ -38,8 +38,8 @@ const addNewChart = ( chart, mainAccordion, prefix ) => {
     mainAccordion.open(0)
 
     localStorage.setItem("chart", JSON.stringify(chart))
-
-    // return chart
+    localStorage.setItem("chartUpdated", false)
+    localStorage.setItem("spreadsheet", [])
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)

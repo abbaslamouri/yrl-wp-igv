@@ -2,30 +2,24 @@ import arrayMin from 'lodash.min'
 import arrayMax from 'lodash.max'
 import arrayMean from 'lodash.mean'
 import floatRound from 'lodash.round'
-import fetchData from "./fetch-data"
-import listCharts from "./list-charts"
 import drawChart from "./draw-chart"
 import ScatterTrace from './ScatterTrace'
 import TableTrace from './TableTrace'
-
-
 import fetchSpreadsheet from './fetch-spreadsheet'
+import { displayAdminMessage, setSelectFieldOptions, setChartTraces } from "./utilities"
 
-import { displayAdminMessage, setSelectFieldOptions, addMinMaxAvgTable } from "./utilities"
-
-const fileSelect = async function ( chart, charts, spreadsheet, wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix ) {
+const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix ) {
 
   try {
 
-   
+    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
     
-    // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-    // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+    // Bail if attachment can't be found
+    if ( !Object.keys(chart) ) throw new Error( `Chart missing` )
 
     // Toggle warning and loading
     document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
     document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
-
 
     //fetch attachment
     const attachment = mediaUploader.state().get("selection").first().toJSON()
@@ -46,7 +40,9 @@ const fileSelect = async function ( chart, charts, spreadsheet, wpRestUrl, wpRes
     if ( undefined === chart.params.chartId ) chart.params.chartId  = null
     document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
 
-    spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce, prefix )
+    const spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce, prefix )
+    localStorage.setItem("spreadsheet", JSON.stringify(spreadsheet))
+
 
     // Set sheet select field options array
     setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
@@ -60,51 +56,21 @@ const fileSelect = async function ( chart, charts, spreadsheet, wpRestUrl, wpRes
     document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
     document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
     document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-
-    const sheet = spreadsheet[chart.params.sheetId]
-    if ( ! chart.traces.length ) {
-      for (const prop in  sheet.data ) {
-        if ( prop == 0 ) continue
-        chart.traces[prop-1] = ScatterTrace.defaultOptions( prop, Object.values(sheet["labels"])[prop], sheet.data[0], sheet.data[prop] )
-      }
-    } else {
-
-      // Remove extra traces if new spreasheet contains less columns than old spreasheet
-      const traceCount = [...chart.traces].length
-      const spreadsheetLength = sheet.data.length
-      if ( spreadsheetLength < traceCount +1 ) chart.traces.splice( spreadsheetLength-1, traceCount - spreadsheetLength + 1 )
-
-      for (const prop in  sheet.data ) {
-        if ( prop == 0 ) continue
-        chart.traces[prop-1].name = Object.values(sheet["labels"])[prop]
-        chart.traces[prop-1].x = sheet.data[0]
-        chart.traces[prop-1].y = sheet.data[prop]
-      }
-    }
-
-    // Reset chart axis type to default
-    chart.layout.xaxis.type = '-'
-
-    // Add min/max/avg table cahrt
-    if (chart.params.enableMinMaxAvgTable) addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
-
-
-    console.log("ZZZZZ", chart)
   
     // draw chart immediatelly if spreadsheet contains a single sheet
     if ( spreadsheet.length == 1  ) {
+      chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
       await drawChart ( chart, spreadsheet, prefix )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
       mainAccordion.closeAll()
+      localStorage.setItem("chartUpdated", true)
 
     } else {
       document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
     }
     
-    return {chart, spreadsheet }
-
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)
     console.log("CAUGHT ERROR", error)
