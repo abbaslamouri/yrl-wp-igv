@@ -1,60 +1,89 @@
+import ScatterTrace from './ScatterTrace'
+import PieTrace from './PieTrace'
+import tracesPanel from "./traces-panel"
 import { commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
-const traceHandler = async ( chart, key, keyParts, value, Plotly, prefix  ) => {
+const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, prefix  ) => {
 
     const keyArr = key.split('.')
     const traceNumber = keyArr.shift()
     const optionKey = keyArr.join('.')
+
+   
     console.log('OPT', optionKey, value, traceNumber )
 
-    // if ( keyParts[1] == 'domain' && ( keyParts[2] == 'x' || keyParts[2] == 'y') )  {
+    if (optionKey === 'type') {
+      if ( ! ['scatter', 'pie', 'bar', 'table'].includes( value ) )  return
+
+      const sheet = spreadsheet[chart.params.sheetId]
+
+      switch ( value ) {
+
+        case 'scatter':
+          chart.traces[traceNumber] = ScatterTrace.defaultOptions( traceNumber, Object.values(sheet["labels"])[traceNumber], sheet.data[0], sheet.data[traceNumber+1] )
+          break
+
+        case 'pie':
+          chart.traces[traceNumber] = PieTrace.defaultOptions( traceNumber, Object.values(sheet["labels"])[traceNumber], sheet.data[0], sheet.data[traceNumber+1])
+          break
+
+      }
+
+      await Plotly.react(`${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config)
+      console.log("Y", chart)
+      tracesPanel( chart, spreadsheet, prefix )
+
+    //} else if ( keyParts[1] == 'domain' && ( keyParts[2] == 'x' || keyParts[2] == 'y') )  {
         
-    // } else {
+    } else {
 
-    switch (optionKey) {
+      switch (optionKey) {
 
-      case 'type':
-      if ( ! ['scatter', 'pie', 'bar', 'table'].includes( value ) ) break
-      console.log("Y")
+        // case 'type':
+        // if ( ! ['scatter', 'pie', 'bar', 'table'].includes( value ) ) break
+        // console.log("Y")
+        // tracesPanel( chart, spreadsheet, prefix )
 
+          // break
 
-        break
+        // case 'legendrank':
+        //   value = parseInt( value )
+        //   break
 
-      // case 'legendrank':
-      //   value = parseInt( value )
-      //   break
+        case 'domain.x':
+        case 'domain.y':
+          value = value ? [commaSeparatedToNumberArr( value )] : null
+          break
 
-      case 'domain.x':
-      case 'domain.y':
-        value = value ? [commaSeparatedToNumberArr( value )] : null
-        break
+        case 'visible':
+          value = 'true' === value ? true : 'false' === value ? false : value
+          break
 
-      case 'visible':
-        value = 'true' === value ? true : 'false' === value ? false : value
-        break
+        case 'text':
+        case 'hovertext':
+          value = value.includes(',') ? [commaSeparatedToStringArr( value )] : value
+          break
 
-      case 'text':
-      case 'hovertext':
-        value = value.includes(',') ? [commaSeparatedToStringArr( value )] : value
-        break
+        case 'error_y.array':
+        case 'error_y.arrayminus':
+          // value = value.includes(',') ? value.toString().split(',').map( item => parseFloat( item ) )]
+          value = value ? [commaSeparatedToNumberArr( value )] : null
+          break
 
-      case 'error_y.array':
-      case 'error_y.arrayminus':
-        // value = value.includes(',') ? value.toString().split(',').map( item => parseFloat( item ) )]
-        value = value ? [commaSeparatedToNumberArr( value )] : null
-        break
+        case 'columnwidth':
+          value = value ? [commaSeparatedToNumberArr( value )] : null
+          break
 
-      case 'columnwidth':
-        value = value ? [commaSeparatedToNumberArr( value )] : null
-        break
+        default:
 
-      default:
+          break
 
-        break
+      }
+
+      Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: value}, traceNumber)
 
     }
 
-    Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: value}, traceNumber)
 
 
     console.log("chart", chart)

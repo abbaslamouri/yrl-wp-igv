@@ -92,6 +92,19 @@ class Trace {
         title : 'Basic Options',
         fieldGroups : [
           {
+            cssClasses : ['field-group'],
+            inputFields: [
+              {
+                id : `traces[${index}][type]`,  
+                title : 'Type',  
+                type : 'text',
+                value : trace.type === undefined ? this.defaultOptions( index ).type :trace.type,
+                disabled: false === trace.visible  ? true : false,
+                hint : 'The trace name appear as the legend item and on hover.'
+              },
+            ],
+          },
+          {
             cssClasses : ['field-group', 'sixty-forty'],     
             inputFields : [
               {
@@ -184,6 +197,27 @@ class Trace {
                 max: 100,
                 step: 1,
                 value : trace.domain === undefined && trace.domain.column !== undefined ? this.defaultOptions( index ).domain.column: trace.domain.column,
+                disabled: true !== trace.visible  ? true : false,
+                hint : 'The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it\'s also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots.'
+              },
+            ]
+          },
+          {
+            cssClasses : ['field-group', 'fifty-fifty'],     
+            inputFields : [
+              {
+                id : `traces[${index}][domain][x]`, 
+                title : 'Domain X', 	
+                type : 'text',
+                value : trace.domain === undefined && trace.domain.x !== undefined ? this.defaultOptions( index ).domain.x : trace.domain.x,
+                disabled: true !== trace.visible  ? true : false,
+                hint : 'If there is a layout grid, use the domain for this row in the grid for this pie trace .'
+              },
+              {
+                id : `traces[${index}][domain][y]`, 
+                title : 'Domain Y', 	
+                type : 'text',
+                value : trace.domain === undefined && trace.domain.y !== undefined ? this.defaultOptions( index ).domain.y: trace.domain.y,
                 disabled: true !== trace.visible  ? true : false,
                 hint : 'The number of columns in the grid. If you provide a 2D `subplots` array, the length of its longest row is used as the default. If you give an `xaxes` array, its length is used as the default. But it\'s also possible to have a different length, if you want to leave a row at the end for non-cartesian subplots.'
               },

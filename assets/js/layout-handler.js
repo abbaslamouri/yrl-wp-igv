@@ -68,7 +68,7 @@ const layoutHandler = async ( chart, key, keyParts, value, prefix  ) => {
       // break
 
       case "xaxis.range":
-        value = value ? [commaSeparatedToNumberArr( value )] : null 
+        value = value ? commaSeparatedToNumberArr( value ) : null 
         update = { [`${key}`]: value}          
       break
 

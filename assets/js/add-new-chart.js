@@ -1,8 +1,14 @@
 import Plotly from 'plotly.js-dist'
-import cloneDeep from 'lodash.clonedeep'
+import BasicOptions from './BasicOptions'
+import Title from "./Title"
+import Legend from "./Legend"
+import Hoverlabel from "./Hoverlabel"
+import Modebar from "./Modebar"
+import Grid from "./Grid"
+import ChartAxis from "./ChartAxis"
 import { displayAdminMessage, resetChart } from "./utilities"
 
-const addNewChart = ( chart, emptyChart, mainAccordion, prefix ) => {
+const addNewChart = ( chart, mainAccordion, prefix ) => {
 
   try {
 
@@ -11,13 +17,29 @@ const addNewChart = ( chart, emptyChart, mainAccordion, prefix ) => {
     // Unhide chart  and open first accordion panel 
     document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
 
-    // clone empty chart
-    chart = cloneDeep(emptyChart)
+    chart = { params: {}, layout: {}, config: {}, traces: [] }
 
-    // hideOptions(prefix)
+    chart.layout = { ...chart.layout, ...BasicOptions.defaultOptions( ) }
+    chart.config.responsive = chart.layout.responsive
+    chart.config.staticPlot = chart.layout.staticPlot
+
+    chart.layout = { ...chart.layout, ...Title.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Legend.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Hoverlabel.defaultOptions( ) }
+    chart.layout = { ...chart.layout, ...Grid.defaultOptions( ) }
+
+    chart.layout = { ...chart.layout, ...Modebar.defaultOptions( ) }
+    chart.config.displayModeBar = chart.layout.displayModeBar
+    chart.config.displaylogo = chart.layout.displaylogo
+    
+    chart.layout.xaxis = ChartAxis.defaultOptions( "xaxis", "bottom", null, "Wavelength ( &#181;m )", null ) 
+    chart.layout.yaxis = ChartAxis.defaultOptions( "yaxis", "left", null, "Transmittance ( % )", null )
+
     mainAccordion.open(0)
 
-    return chart
+    localStorage.setItem("chart", JSON.stringify(chart))
+
+    // return chart
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)

@@ -25,7 +25,7 @@ class ChartAxis  {
       visible : true,
       type : "-",
       side: axisSide,
-      domain: axisId.includes('xaxis') ? [0,.5] : [0,1],
+      domain: [0,1],
       autotypenumbers : "convert types",
       autorange : true,
       fixedrange : true,

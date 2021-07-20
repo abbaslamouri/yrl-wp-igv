@@ -1318,6 +1318,7 @@ const fetchTableCellsColors = (trace) => {
 
 const addMinMaxAvgTable = ( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound ) => {
 
+  chart.layout.xaxis.domain = [0,.5]
   const originalData =  spreadsheet[chart.params.sheetId].data
   const headerValues = [['Trace'], ['Min'], ['Average'], ['Max']]
   const cellValues = fetchMinMaxAvgCellValues( originalData, spreadsheet[chart.params.sheetId].labels, arrayMin, arrayMax, arrayMean, floatRound )

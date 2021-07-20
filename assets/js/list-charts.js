@@ -68,7 +68,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
 
     
         // Draw chart
-        await drawChart ( chart, spreadsheet, 'edit', prefix )
+        await drawChart ( chart, spreadsheet, prefix )
     
         console.log("CHART", chart)
     

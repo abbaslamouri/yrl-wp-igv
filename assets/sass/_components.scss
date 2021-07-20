@@ -188,8 +188,8 @@
       border:none;
       border-bottom: 3px solid transparent;
       display:block;
-      line-height:10px !important;
-      width:100%;
+      // line-height:10px !important;
+      // width:100%;
 
       &:disabled {
         background-color:rgba( $color_danger, .1);;

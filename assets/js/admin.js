@@ -25,16 +25,13 @@ if (  yrl_wp_plotly_charts_obj ) {
   const yrlPlotlyChartsObj = yrl_wp_plotly_charts_obj
   const charts = yrlPlotlyChartsObj.charts
   const sheets = yrlPlotlyChartsObj.sheets
-  let emptyChart = { params: {}, layout: {}, config: {}, traces: [] } 
-  let chart = {}
+  var chart = {}
   let spreadsheet = []
   const prefix = yrlPlotlyChartsObj.prefix
   const shortcodeText = yrlPlotlyChartsObj.shortcodeText
   const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
   const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
   const pluginUrl =yrlPlotlyChartsObj.url
-  let action = null
-  let fileStatus = null
   let chartUpdated = false
 
   console.log("yrlPlotlyChartsObj", {...yrlPlotlyChartsObj})
@@ -82,11 +79,8 @@ if (  yrl_wp_plotly_charts_obj ) {
 
           case `${prefix}__addNewChart`:
             event.preventDefault()
-            chart = addNewChart( chart, emptyChart, mainAccordion, prefix )
-            action = 'new'
-            fileStatus = 'new'
-
-            // Set chart updated flag
+            addNewChart( chart, mainAccordion, prefix )
+            // console.log('chart', chart)
             chartUpdated = false
             break
   
@@ -139,7 +133,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
 
-      const returnedObj = await fileSelect( chart, charts, spreadsheet, action, fileStatus, wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
+      const returnedObj = await fileSelect( JSON.parse( localStorage.getItem( 'chart')  ), charts, spreadsheet, wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
 
       // Set chart updated flag
       chart = returnedObj.chart
@@ -197,7 +191,7 @@ if (  yrl_wp_plotly_charts_obj ) {
             break
 
             case "traces":
-            traceHandler( chart, key, keyParts, value, Plotly, prefix )
+            traceHandler( chart, key, keyParts, value, spreadsheet, Plotly, prefix )
             break
 
         }
