@@ -3,11 +3,18 @@ import PieTrace from './PieTrace'
 import tracesPanel from "./traces-panel"
 import { commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
-const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, prefix  ) => {
+const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
 
-    const keyArr = key.split('.')
-    const traceNumber = keyArr.shift()
-    const optionKey = keyArr.join('.')
+  try {
+
+    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
+    let spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet') ) ? JSON.parse( localStorage.getItem( 'spreadsheet') ) : {}
+  
+    if ( ! Object.keys(chart).length || ! Object.keys(spreadsheet).length ) throw new Error( `Either chart or spreadsheet missing` )
+
+    // const keyParts = key.split('.')
+    const traceNumber = keyParts.shift()
+    const optionKey = keyParts.join('.')
 
    
     console.log('OPT', optionKey, value, traceNumber )
@@ -30,7 +37,6 @@ const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, p
       }
 
       await Plotly.react(`${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config)
-      console.log("Y", chart)
       tracesPanel( chart, spreadsheet, prefix )
 
     //} else if ( keyParts[1] == 'domain' && ( keyParts[2] == 'x' || keyParts[2] == 'y') )  {
@@ -52,7 +58,7 @@ const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, p
 
         case 'domain.x':
         case 'domain.y':
-          value = value ? [commaSeparatedToNumberArr( value )] : null
+          value = value ? commaSeparatedToNumberArr( value ) : null
           break
 
         case 'visible':
@@ -61,17 +67,17 @@ const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, p
 
         case 'text':
         case 'hovertext':
-          value = value.includes(',') ? [commaSeparatedToStringArr( value )] : value
+          value = value.includes(',') ? commaSeparatedToStringArr( value ) : value
           break
 
         case 'error_y.array':
         case 'error_y.arrayminus':
           // value = value.includes(',') ? value.toString().split(',').map( item => parseFloat( item ) )]
-          value = value ? [commaSeparatedToNumberArr( value )] : null
+          value = value ? commaSeparatedToNumberArr( value ) : null
           break
 
         case 'columnwidth':
-          value = value ? [commaSeparatedToNumberArr( value )] : null
+          value = value ? commaSeparatedToNumberArr( value ) : null
           break
 
         default:
@@ -80,13 +86,14 @@ const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, p
 
       }
 
-      Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: value}, traceNumber)
+      await Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: [value]}, traceNumber)
+      console.log(value)
+      chart.traces[traceNumber][optionKey] = value
 
     }
 
 
 
-    console.log("chart", chart)
 
 
 
@@ -166,7 +173,18 @@ const traceHandler = async ( chart, key, keyParts, value, spreadsheet, Plotly, p
         break
 
 
+
+
     }
+
+    console.log("chartx", chart)
+    localStorage.setItem("chart", JSON.stringify(chart))
+
+
+  } catch (error) {
+    displayAdminMessage(error.message, "error",  prefix)
+    console.log("CAUGHT ERROR", error)
+  }
 
 
 

@@ -24,7 +24,7 @@ const fetchData = async ( url, method, wpRestNonce, body = null, prefix ) => {
     }
 
     const jsonRes = await response.json();
-    console.log("JSONRES", jsonRes)
+    // console.log("JSONRES", jsonRes)
 
     // Bail is server response status = error
     if (response.status !== 200 ) throw new Error( jsonRes.message )

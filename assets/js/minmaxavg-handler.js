@@ -9,12 +9,12 @@ import { displayAdminMessage, addMinMaxAvgTable, addRangeMinMaxInputs, minMaxRan
 
 const minMaxAvgHandler = async ( value, prefix ) => {
 
-  let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
-  let spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet') ) ? JSON.parse( localStorage.getItem( 'spreadsheet') ) : {}
-
-  if ( ! Object.keys(spreadsheet).length || ! Object.keys(spreadsheet).length ) throw new Error( `Either chart or spreadsheet missing` )
-  
   try {
+
+    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
+    let spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet') ) ? JSON.parse( localStorage.getItem( 'spreadsheet') ) : {}
+  
+    if ( ! Object.keys(chart).length || ! Object.keys(spreadsheet).length ) throw new Error( `Either chart or spreadsheet missing` )
 
     if ( value ) {
 
@@ -34,7 +34,9 @@ const minMaxAvgHandler = async ( value, prefix ) => {
     } else {
 
       Plotly.relayout( `${prefix}__plotlyChart`, {'xaxis.domain': [0,1]})
-      Plotly.deleteTraces( `${prefix}__plotlyChart`,chart.traces.length-1 )
+      Plotly.deleteTraces( `${prefix}__plotlyChart`, chart.traces.length-1 )
+      console.log("CCxxxx", chart)
+       chart.traces.splice( chart.traces.length-1, 1)
       // await Plotly.react( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
       tracesPanel( chart, spreadsheet, prefix )
 

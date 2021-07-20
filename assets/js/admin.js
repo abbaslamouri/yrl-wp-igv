@@ -50,7 +50,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
     // Initialize the media uploader
-    if (mediaUploader) mediaUploader.open()
+    // if (mediaUploader) mediaUploader.open()
       
     let mediaUploader = wp.media.frames.file_frame = wp.media( { multiple: false } );
 
@@ -58,8 +58,8 @@ if (  yrl_wp_plotly_charts_obj ) {
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async (event) => {
       displayAdminMessage(null, null,  prefix)
 
-      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+      // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
+      // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
 
       if ( event.target.id.includes ( "deleteAxis" ) )  {
         event.preventDefault()
@@ -90,34 +90,33 @@ if (  yrl_wp_plotly_charts_obj ) {
             } else {
               document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
             }
+
+
             break
   
           case `${prefix}__params[mediaUploadBtn]`:
             event.preventDefault()
-  
             mediaUploader.open() 
             break
   
           case `${prefix}__saveChart`:
             event.preventDefault()
-            chartUpdated = await saveChart( chart, charts, spreadsheet, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
-            console.log("Saved", chart)
+            await saveChart( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
             break
 
           case `${prefix}__addAnnotation`:
             event.preventDefault()    
-            chart = await annotationsHandler( chart, prefix )
-            console.log("LLLLL", chart)
+            annotationsHandler( prefix )
             break
   
           case `${prefix}__addNewXAxis`:
             event.preventDefault()
-            axisHandler ( chart, "xaxis", prefix )
+            axisHandler ( "xaxis", prefix )
             break
   
           case `${prefix}__addNewYAxis`:
             event.preventDefault()
-            axisHandler ( chart, "yaxis", prefix )
+            axisHandler ( "yaxis", prefix )
             break
 
           default:
@@ -143,17 +142,18 @@ if (  yrl_wp_plotly_charts_obj ) {
       const key = chartOptionKey(event.target.id).key
       const keyParts = key.split(".")
       let value =  event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      // console.group()
-      // console.log("Control", control)
-      // console.log("key", key)
-      // console.log("keyParts", keyParts)
-      // console.log("value", value)
-      // console.groupEnd()
+      console.group()
+      console.log("Control", control)
+      console.log("key", key)
+      console.log("keyParts", keyParts)
+      console.log("value", value)
+      console.groupEnd()
 
-      const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-      if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
+      // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
+      // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
 
       displayAdminMessage(null, null,  prefix)
+      localStorage.setItem("chartUpdated", true)
 
       if( event.target.id === `${prefix}__params[sheetId]` ) {
 
@@ -169,15 +169,15 @@ if (  yrl_wp_plotly_charts_obj ) {
         switch ( control ) {
 
           case "config":
-            configHandler( chart, key, value, prefix )
+            configHandler( key, value, prefix )
             break
 
           case "layout":
-            layoutHandler( chart, key, keyParts, value, prefix )
+            layoutHandler( key, keyParts, value, prefix )
             break
 
             case "traces":
-            traceHandler( chart, key, keyParts, value, spreadsheet, Plotly, prefix )
+            traceHandler( keyParts, value, Plotly, prefix )
             break
 
         }

@@ -44,7 +44,7 @@ class Modebar {
                 title : "Display Plotly Logo",
                 type : "checkbox", 
                 value : config.displaylogo === undefined ?  config.displaylogo : false,
-                disabled: ! config.displayModeBar ? true: false,
+                // disabled: ! config.displayModeBar ? true: false,
                 hint: ""
               },
             ],
@@ -57,7 +57,7 @@ class Modebar {
                 title : "Background Color",
                 type : "color", 
                 value : layout.modebar !== undefined && layout.modebar.bgcolor !== undefined ? layout.modebar.bgcolor : this.defaultOptions().modebar.bgcolor,
-                disabled: ! config.displayModeBar ? true: false,
+                // disabled: ! config.displayModeBar ? true: false,
                 hint: "Sets the background color of the modebar."
               },
               {
@@ -69,7 +69,7 @@ class Modebar {
                   v: "Vertical"
                 },
                 value: layout.modebar !== undefined && layout.modebar.orientation !== undefined ? layout.modebar.orientation : this.defaultOptions().modebar.orientation,
-                disabled: ! config.displayModeBar ? true: false,
+                // disabled: ! config.displayModeBar ? true: false,
                 hint: "Sets the orientation of the modebar"
               },
             ],
@@ -82,7 +82,7 @@ class Modebar {
                 title : "Icon Color",
                 type : "color", 
                 value : layout.modebar !== undefined && layout.modebar.color !== undefined ? layout.modebar.color : this.defaultOptions().modebar.color,
-                disabled: ! config.displayModeBar ? true: false,
+                // disabled: ! config.displayModeBar ? true: false,
                 hint: "Sets the color of the icons in the modebar."
               },
               {
@@ -90,7 +90,7 @@ class Modebar {
                 title : "Active Icon Color",
                 type : "color", 
                 value : layout.modebar !== undefined && layout.modebar.activecolor !== undefined ? layout.modebar.activecolor : this.defaultOptions().modebar.activecolor,
-                disabled: ! config.displayModeBar ? true: false,
+                // disabled: ! config.displayModeBar ? true: false,
                 hint: "Sets the color of the active or hovered on icons in the modebar."
               },
             ],

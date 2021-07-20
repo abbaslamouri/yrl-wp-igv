@@ -17,8 +17,6 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
   // Clone charts
   const newCharts = cloneDeep( charts )
 
-  console.log("NNNNNN", newCharts)
-
   for ( const prop in newCharts ) {
     createChartCard(newCharts[prop], pluginUrl, shortcodeText, `#${prefix}__admin .chart-library__content`, prefix)
     newCharts[prop] = fetchChartListDefaultOptions( newCharts[prop], sheets[prop] )
@@ -52,6 +50,7 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
        
         // Fetch spreadsheet
         const spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce )
+        localStorage.setItem("spreadsheet", JSON.stringify(spreadsheet))
     
         // Set sheet select field options array
         setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
@@ -64,11 +63,12 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
         document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
         document.getElementById( `${prefix}__params[chartId]` ).closest( ".field-group" ).classList.remove( "hidden" )
         document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-        console.log("CHART", chart)
-
     
         // Draw chart
         await drawChart ( chart, spreadsheet, prefix )
+
+        localStorage.setItem("chart", JSON.stringify(chart))
+        localStorage.setItem("chartUpdated", false)
     
         console.log("CHART", chart)
     
@@ -103,8 +103,6 @@ const listCharts = async function ( charts, sheets, pluginUrl, shortcodeText, wp
 
           try {
 
-            console.log( "charts", cloneDeep(charts))
-            console.log( "sheets", cloneDeep(sheets))
             // Get chart Id
             const chartId = event.target.closest(".card__delete-chart").dataset.chartId
             if ( ! chartId ) throw new Error(  `Chart ID is required` )
