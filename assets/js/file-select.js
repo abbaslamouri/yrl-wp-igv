@@ -62,11 +62,11 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
     if ( spreadsheet.length == 1  ) {
       mainAccordion.closeAll()
       chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
-      await localForage.setItem( "chart", chart )
+      // await localForage.setItem( "chart", chart )
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
       await drawChart ( chart, spreadsheet, prefix )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-      await localForage.setItem("chartUpdated", true)
+      // await localForage.setItem("chartUpdated", true)
 
     } else {
       document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )

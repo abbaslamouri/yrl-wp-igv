@@ -1181,24 +1181,24 @@ const showToolTip = ( target, Swal, prefix) => {
 
 
 
-const cancelChart = ( Swal, prefix) => {
+// const cancelChart = ( Swal, prefix) => {
 
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You will not be able to recover this chart!",
-    // icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#FF6D00',
-    cancelButtonColor: '#4f5b62',
-    confirmButtonText: 'Discard Changes'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-      chart = {}  
-    }
-  })
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: "You will not be able to recover this chart!",
+//     // icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#FF6D00',
+//     cancelButtonColor: '#4f5b62',
+//     confirmButtonText: 'Discard Changes'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+//       chart = {}  
+//     }
+//   })
   
-}
+// }
 
 
 
@@ -1568,7 +1568,7 @@ module.exports = {
   trimArray,
   resetChart,
   showToolTip,
-  cancelChart,
+  // cancelChart,
   commaSeparatedToNumberArr,
   commaSeparatedToStringArr,
   indexOfAll,

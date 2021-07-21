@@ -45,8 +45,6 @@ const editChart = async function ( chartId, wpRestUrl, wpRestNonce, mainAccordio
    await localForage.setItem( "chart", chart )
    await localForage.setItem( "chartUpdated", false )
 
-   console.log("CHART", chart)
-
  } catch (error) {
 
    displayAdminMessage(error.message, "error",  prefix)

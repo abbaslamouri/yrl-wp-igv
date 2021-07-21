@@ -38,11 +38,11 @@ const sheetHandler = async ( sheetId, mainAccordion, prefix ) => {
     // Close main accordion
     mainAccordion.closeAll()
 
-    await localForage.setItem( 'chart', chart )
+    // await localForage.setItem( 'chart', chart )
 
 
     // et chart updated flag
-    await localForage.setItem( 'chartUpdated', true )
+    // await localForage.setItem( 'chartUpdated', true )
 
     // return chartUpdated
 

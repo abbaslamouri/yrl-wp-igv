@@ -1,23 +1,22 @@
+import Plotly from 'plotly.js-dist'
+import localForage from 'localforage'
 import ScatterTrace from './ScatterTrace'
 import PieTrace from './PieTrace'
 import tracesPanel from "./traces-panel"
-import { commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
+import { displayAdminMessage, commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
-const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
+const traceHandler = async ( keyParts, value, prefix  ) => {
 
   try {
 
-    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
-    let spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet') ) ? JSON.parse( localStorage.getItem( 'spreadsheet') ) : {}
-  
+    let plotlyPlot = {}
+
+    let chart = await localForage.getItem( 'chart')
+    let spreadsheet = await localForage.getItem( 'spreadsheet')
     if ( ! Object.keys(chart).length || ! Object.keys(spreadsheet).length ) throw new Error( `Either chart or spreadsheet missing` )
 
-    // const keyParts = key.split('.')
     const traceNumber = keyParts.shift()
     const optionKey = keyParts.join('.')
-
-   
-    console.log('OPT', optionKey, value, traceNumber )
 
     if (optionKey === 'type') {
       if ( ! ['scatter', 'pie', 'bar', 'table'].includes( value ) )  return
@@ -25,7 +24,6 @@ const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
       const sheet = spreadsheet[chart.params.sheetId]
 
       switch ( value ) {
-
         case 'scatter':
           chart.traces[traceNumber] = ScatterTrace.defaultOptions( traceNumber, Object.values(sheet["labels"])[traceNumber], sheet.data[0], sheet.data[traceNumber+1] )
           break
@@ -33,13 +31,10 @@ const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
         case 'pie':
           chart.traces[traceNumber] = PieTrace.defaultOptions( traceNumber, Object.values(sheet["labels"])[traceNumber], sheet.data[0], sheet.data[traceNumber+1])
           break
-
       }
 
-      await Plotly.react(`${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config)
+      plotlyPlot = await Plotly.react(`${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config)
       tracesPanel( chart, spreadsheet, prefix )
-
-    //} else if ( keyParts[1] == 'domain' && ( keyParts[2] == 'x' || keyParts[2] == 'y') )  {
         
     } else {
 
@@ -86,11 +81,14 @@ const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
 
       }
 
-      await Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: [value]}, traceNumber)
+      plotlyPlot = await Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: [value]}, traceNumber)
       console.log(value)
       chart.traces[traceNumber][optionKey] = value
 
     }
+
+    chart.traces = plotlyPlot.data
+    chart.layout = plotlyPlot.layout
 
 
 
@@ -177,8 +175,9 @@ const traceHandler = async ( keyParts, value, Plotly, prefix  ) => {
 
     }
 
-    console.log("chartx", chart)
-    localStorage.setItem("chart", JSON.stringify(chart))
+    await localForage.setItem( "chart", chart )
+    console.log('chart', chart)
+
 
 
   } catch (error) {
