@@ -3,6 +3,8 @@ import Swal from 'sweetalert2'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
 import addNewChart from './add-new-chart'
+import editChart from './edit-chart'
+import deleteChart from './delete-chart'
 import fileSelect from './file-select'
 import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
@@ -40,7 +42,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Check that the necessary parameters are present
     if ( yrlPlotlyChartsObj.wpRestNonce === undefined  || yrlPlotlyChartsObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
-    if ( yrlPlotlyChartsObj.charts === undefined ) throw new Error( " can't find charts" )
+    // if ( yrlPlotlyChartsObj.charts === undefined ) throw new Error( " can't find charts" )
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -48,6 +50,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // List all charts
     listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
+
 
     // Initialize the media uploader
     // if (mediaUploader) mediaUploader.open()
@@ -57,6 +60,7 @@ if (  yrl_wp_plotly_charts_obj ) {
     // Add click event listener to the Add New Chart button
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async (event) => {
       displayAdminMessage(null, null,  prefix)
+
 
       // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
       // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
@@ -72,6 +76,20 @@ if (  yrl_wp_plotly_charts_obj ) {
       } else if (event.target.classList.contains ( "form-group__tooltip-question-mark" )) {
         event.preventDefault()
         showToolTip( event.target, Swal, prefix)
+
+      } else if ( event.target.closest( 'a' ) && event.target.closest( 'a' ).classList.contains( `card__edit-chart`) ) {
+
+        // Get chart Id and edit chart
+        const chartId = event.target.closest('.card__edit-chart').dataset.chartId
+        console.log(chartId)
+        await editChart( chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+
+      } else if ( event.target.closest( 'a' ) && event.target.closest( 'a' ).classList.contains( `card__delete-chart`) ) {
+
+          // Get chart Id and edit chart
+          const chartId = event.target.closest('.card__delete-chart').dataset.chartId
+          console.log(chartId)
+          await deleteChart( chartId, wpRestUrl, wpRestNonce, prefix )
 
       } else {
 
@@ -101,7 +119,7 @@ if (  yrl_wp_plotly_charts_obj ) {
   
           case `${prefix}__saveChart`:
             event.preventDefault()
-            await saveChart( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            await saveChart( pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
             break
 
           case `${prefix}__addAnnotation`:
@@ -118,6 +136,7 @@ if (  yrl_wp_plotly_charts_obj ) {
             event.preventDefault()
             axisHandler ( "yaxis", prefix )
             break
+
 
           default:
             break

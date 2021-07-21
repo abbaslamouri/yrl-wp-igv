@@ -1476,8 +1476,6 @@ const setChartTraces = (chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, 
   // Add min/max/avg table cahrt
   if (chart.params.enableMinMaxAvgTable) addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
 
-  localStorage.setItem("chart", JSON.stringify(chart))
-
   return chart
 
 }

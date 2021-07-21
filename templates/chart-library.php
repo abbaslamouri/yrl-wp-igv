@@ -8,6 +8,9 @@
     </a>
   </h2>
   
-  <div class="chart-library__content"></div>
+  <div class="chart-library__content">
+  <div class='loading'>Loading...</div> 
+
+  </div>
 
 </div>

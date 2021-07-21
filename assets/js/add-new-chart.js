@@ -1,4 +1,5 @@
 import Plotly from 'plotly.js-dist'
+import localForage from 'localforage'
 import BasicOptions from './BasicOptions'
 import Title from "./Title"
 import Legend from "./Legend"
@@ -8,7 +9,7 @@ import Grid from "./Grid"
 import ChartAxis from "./ChartAxis"
 import { displayAdminMessage, resetChart } from "./utilities"
 
-const addNewChart = ( mainAccordion, prefix ) => {
+const addNewChart = async ( mainAccordion, prefix ) => {
 
   try {
 
@@ -35,9 +36,9 @@ const addNewChart = ( mainAccordion, prefix ) => {
 
     mainAccordion.open(0)
 
-    localStorage.setItem("chart", JSON.stringify(chart))
-    localStorage.setItem("chartUpdated", false)
-    localStorage.setItem("spreadsheet", [])
+    await localForage.setItem( "chart", chart )
+    await localForage.setItem( "chartUpdated", false )
+    await localForage.setItem( "spreadsheet", [] )
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)
