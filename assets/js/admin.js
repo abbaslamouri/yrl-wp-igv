@@ -1,8 +1,11 @@
-import Plotly from 'plotly.js-dist'
 import Swal from 'sweetalert2'
 import Accordion from 'accordion-js'
 import 'accordion-js/dist/accordion.min.css'
+import localForage from 'localforage'
 import addNewChart from './add-new-chart'
+import cancelChart from './cancel-chart'
+import editChart from './edit-chart'
+import deleteChart from './delete-chart'
 import fileSelect from './file-select'
 import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
@@ -15,29 +18,27 @@ import sheetHandler from "./sheet-handler"
 import minMaxAvgHandler from "./minmaxavg-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
-
-import { displayAdminMessage, chartOptionKey, showToolTip, cancelChart } from "./utilities"
+import { displayAdminMessage, chartOptionKey, showToolTip } from "./utilities"
 import "../sass/admin.scss"
 
 
 if (  yrl_wp_plotly_charts_obj ) {
 
-  const localizeObj = yrl_wp_plotly_charts_obj
-  const prefix = localizeObj.prefix
-  const shortcodeText = localizeObj.shortcodeText
-  const wpRestUrl = localizeObj.wpRestUrl
-  const wpRestNonce= localizeObj.wpRestNonce
-  const pluginUrl =localizeObj.url
-  localStorage.setItem("charts", JSON.stringify(localizeObj.charts))
-  localStorage.setItem("sheets", JSON.stringify(localizeObj.sheets))
+  const yrlPlotlyChartsObj = yrl_wp_plotly_charts_obj
+  const charts = yrlPlotlyChartsObj.charts
+  const sheets = yrlPlotlyChartsObj.sheets
+  const prefix = yrlPlotlyChartsObj.prefix
+  const shortcodeText = yrlPlotlyChartsObj.shortcodeText
+  const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
+  const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
+  const pluginUrl =yrlPlotlyChartsObj.url
 
-  console.log("localizeObj", localizeObj)
+  console.log("yrlPlotlyChartsObj", {...yrlPlotlyChartsObj})
   
   try {
 
     // Check that the necessary parameters are present
-    if ( localizeObj.wpRestNonce === undefined  || localizeObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
-    if ( localizeObj.charts === undefined ) throw new Error( " can't find charts" )
+    if ( yrlPlotlyChartsObj.wpRestNonce === undefined  || yrlPlotlyChartsObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
@@ -46,29 +47,38 @@ if (  yrl_wp_plotly_charts_obj ) {
     // List all charts
     listCharts( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix)
 
-    // Initialize the media uploader
-    // if (mediaUploader) mediaUploader.open()
-      
     let mediaUploader = wp.media.frames.file_frame = wp.media( { multiple: false } );
 
     // Add click event listener to the Add New Chart button
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async (event) => {
       displayAdminMessage(null, null,  prefix)
 
-      // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-      // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
-
       if ( event.target.id.includes ( "deleteAxis" ) )  {
+
         event.preventDefault()
         deleteAxis(chart, event.target.id, prefix )
 
-      } else if ( event.target.id.includes ( "deleteAnnotation" ) )  {
+      } else if ( event.target.id.includes ( "deleteAnnotation" ) ) {
+
         event.preventDefault()
         deleteAnnotation(chart, event.target.id, prefix )
 
       } else if (event.target.classList.contains ( "form-group__tooltip-question-mark" )) {
+
         event.preventDefault()
         showToolTip( event.target, Swal, prefix)
+
+      } else if ( event.target.closest( 'a' ) && event.target.closest( 'a' ).classList.contains( `card__edit-chart`) ) {
+
+        event.preventDefault()
+        const chartId = event.target.closest('.card__edit-chart').dataset.chartId
+        await editChart( chartId, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+
+      } else if ( event.target.closest( 'a' ) && event.target.closest( 'a' ).classList.contains( `card__delete-chart`) ) {
+
+          const chartId = event.target.closest('.card__delete-chart').dataset.chartId
+          console.log(chartId)
+          await deleteChart( chartId, wpRestUrl, wpRestNonce, prefix )
 
       } else {
 
@@ -77,18 +87,15 @@ if (  yrl_wp_plotly_charts_obj ) {
           case `${prefix}__addNewChart`:
             event.preventDefault()
             addNewChart( mainAccordion, prefix )
-            // chartUpdated = false
             break
   
           case `${prefix}__cancelChart`:
             event.preventDefault()
-            if ( JSON.parse( localStorage.getItem( 'chartUpdated')  )) {
-              cancelChart( Swal, prefix )
+            if ( await localForage.getItem( 'chartUpdated') ){
+              cancelChart( prefix )
             } else {
               document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
             }
-
-
             break
   
           case `${prefix}__params[mediaUploadBtn]`:
@@ -98,7 +105,7 @@ if (  yrl_wp_plotly_charts_obj ) {
   
           case `${prefix}__saveChart`:
             event.preventDefault()
-            await saveChart( charts, sheets, pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
+            await saveChart( pluginUrl, shortcodeText, wpRestUrl, wpRestNonce, mainAccordion, prefix )
             break
 
           case `${prefix}__addAnnotation`:
@@ -115,6 +122,7 @@ if (  yrl_wp_plotly_charts_obj ) {
             event.preventDefault()
             axisHandler ( "yaxis", prefix )
             break
+
 
           default:
             break
@@ -133,7 +141,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add change event listener to all input fields
     document.querySelector( `#${prefix}__admin #${prefix}__chartOptionsForm` ).addEventListener( "change", async ( event ) => {
-    event.preventDefault( )
+      event.preventDefault( )
 
       const control = chartOptionKey(event.target.id).control
       const key = chartOptionKey(event.target.id).key
@@ -145,9 +153,6 @@ if (  yrl_wp_plotly_charts_obj ) {
       console.log("keyParts", keyParts)
       console.log("value", value)
       console.groupEnd()
-
-      // const chartId =  document.getElementById(`${prefix}__params[chartId]`).value 
-      // if ( chartId ) chart = charts.filter(element => element.params.chartId == chartId)[0]
 
       displayAdminMessage(null, null,  prefix)
       localStorage.setItem("chartUpdated", true)
@@ -174,9 +179,8 @@ if (  yrl_wp_plotly_charts_obj ) {
             break
 
             case "traces":
-            traceHandler( keyParts, value, Plotly, prefix )
+            traceHandler( keyParts, value, prefix )
             break
-
         }
 
       }

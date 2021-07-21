@@ -1,4 +1,5 @@
 import Plotly from 'plotly.js-dist'
+import localForage from 'localforage'
 import { displayAdminMessage, commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
 
@@ -7,20 +8,21 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
 
   try {
 
-    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
+    let chart = await localForage.getItem( 'chart')
     if ( ! Object.keys(chart).length ) throw new Error( `Chart missing` )
 
     let update = {}
+    let plotlyPlot = {}
 
     if ( keyParts[0].includes( "axis") && keyParts[1] == "domain" )  {
       if (value) {
         value = value.split(",").map( ( item ) => { return parseFloat( item ) } )
         update = { [`${key}`]: value}
-        Plotly.relayout( `${prefix}__plotlyChart`, update)
+        plotlyPlot = await Plotly.relayout( `${prefix}__plotlyChart`, update)
       }
     } else if ( key === 'width' || key === 'height') {
       chart.layout[key] = value 
-      await Plotly.react( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
+      plotlyPlot = await Plotly.react( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
     } else {
 
       switch(key) {
@@ -127,11 +129,12 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
       }
 
       console.log(update)
-      Plotly.relayout( `${prefix}__plotlyChart`, update)
-      console.log("CL", chart.layout)
-      
-
+      plotlyPlot = await Plotly.relayout( `${prefix}__plotlyChart`, update)
     }
+
+    chart.traces = plotlyPlot.data
+    chart.layout = plotlyPlot.layout
+    console.log('chart', chart)
 
 
 
@@ -237,10 +240,10 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
     // document.getElementById(`${prefix}__layout[xaxis][exponentformat]`).disabled = ! chart.layout.xaxis.visible ? true : false
     // document.getElementById(`${prefix}__layout[xaxis][minexponent]`).disabled = ! chart.layout.xaxis.visible ? true : false
     // document.getElementById(`${prefix}__layout[xaxis][separatethousands]`).disabled = ! chart.layout.xaxis.visible ? true : false
-    console.log("CLLLLL", chart.layout)
 
+    await localForage.setItem( "chart", chart )
+    console.log('chart', chart)
 
-    localStorage.setItem("chart", JSON.stringify(chart))
 
   } catch (error) {
     displayAdminMessage(error.message, "error",  prefix)

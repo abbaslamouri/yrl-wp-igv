@@ -874,10 +874,10 @@ const createPanelSections = ( sections, sectionsContainer, optionId, prefix ) =>
 
 
 
-const setSelectFieldOptions = (node, optionsArr) => { 
+const setSelectFieldOptions = (node, optionsArr, nullOptionTitle) => { 
 
   node.options.length = 0
-  node.options.add( new Option( "Select Sheet", "", false, true) );
+  node.options.add( new Option( nullOptionTitle, "", false, true) );
   for (const prop in optionsArr ) {
     node.options.add( new Option( optionsArr[prop], prop, false, false) );
   }
@@ -915,6 +915,10 @@ const fetchAxisOptions = (layout, axisType, capitalize) => {
   return axisOptions
 
 }
+
+
+
+
 
 const createDeleteBtn = (title, id, cssClass) => {
 
@@ -1181,24 +1185,24 @@ const showToolTip = ( target, Swal, prefix) => {
 
 
 
-const cancelChart = ( Swal, prefix) => {
+// const cancelChart = ( Swal, prefix) => {
 
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You will not be able to recover this chart!",
-    // icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#FF6D00',
-    cancelButtonColor: '#4f5b62',
-    confirmButtonText: 'Discard Changes'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
-      chart = {}  
-    }
-  })
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: "You will not be able to recover this chart!",
+//     // icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#FF6D00',
+//     cancelButtonColor: '#4f5b62',
+//     confirmButtonText: 'Discard Changes'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+//       chart = {}  
+//     }
+//   })
   
-}
+// }
 
 
 
@@ -1476,8 +1480,6 @@ const setChartTraces = (chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, 
   // Add min/max/avg table cahrt
   if (chart.params.enableMinMaxAvgTable) addMinMaxAvgTable( chart, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
 
-  localStorage.setItem("chart", JSON.stringify(chart))
-
   return chart
 
 }
@@ -1570,7 +1572,7 @@ module.exports = {
   trimArray,
   resetChart,
   showToolTip,
-  cancelChart,
+  // cancelChart,
   commaSeparatedToNumberArr,
   commaSeparatedToStringArr,
   indexOfAll,

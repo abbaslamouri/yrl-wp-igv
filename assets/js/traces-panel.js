@@ -32,8 +32,9 @@ const tracesPanel = function ( chart, spreadsheet, prefix ) {
       
       case "scatter":
         createPanelSections( ScatterTrace.sections( chart.traces[prop], prop, Object.values( spreadsheet[chart.params.sheetId]["labels"] )[prop] ), sectionsContainer, `traces${prop}`, prefix )
-        setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${prop}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ) )
-        setSelectFieldOptions ( document.getElementById (`${prefix}__traces[${prop}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize) )
+        setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${prop}][xaxis]` ), fetchAxisOptions ( chart.layout, "xaxis", capitalize ), 'Select X-Axis' )
+        setSelectFieldOptions ( document.getElementById ( `${prefix}__traces[${prop}][yaxis]` ), fetchAxisOptions (chart.layout, "yaxis", capitalize), 'Select Y-Axis' )
+        
         break
 
       case "pie":
@@ -53,6 +54,15 @@ const tracesPanel = function ( chart, spreadsheet, prefix ) {
 
   // Create traces accordion
   document.querySelector(`#${prefix}__admin .tracesAc`).classList.remove( "hidden" )
+
+  console.log('CT', chart.traces)
+
+
+  // Set traces xaxis and yaxis values
+  for (const prop in chart.traces) { 
+    if ( chart.traces[prop].xaxis ) document.getElementById ( `${prefix}__traces[${prop}][xaxis]` ).value = chart.traces[prop].xaxis
+    if ( chart.traces[prop].yaxis )  document.getElementById ( `${prefix}__traces[${prop}][yaxis]` ).value = chart.traces[prop].yaxis
+  }
   
   new Accordion( tracesAccordionDiv, { duration: 400 } )
 

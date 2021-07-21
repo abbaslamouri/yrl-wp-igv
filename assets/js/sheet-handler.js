@@ -1,18 +1,19 @@
+import localForage from 'localforage'
 import arrayMin from 'lodash.min'
 import arrayMax from 'lodash.max'
 import arrayMean from 'lodash.mean'
 import floatRound from 'lodash.round'
-import drawChart from "./draw-chart"
+import drawChart from './draw-chart'
 import ScatterTrace from './ScatterTrace'
 import TableTrace from './TableTrace'
-import { displayAdminMessage, setChartTraces } from "./utilities"
+import { displayAdminMessage, setChartTraces } from './utilities'
 
 const sheetHandler = async ( sheetId, mainAccordion, prefix ) => {
 
   try {
 
-    let chart = JSON.parse( localStorage.getItem( 'chart')  )
-    const spreadsheet = JSON.parse( localStorage.getItem( 'spreadsheet')  )
+    let chart = await localForage.getItem( 'chart')
+    const spreadsheet = await localForage.getItem( 'spreadsheet')
 
     // set params sheet id
     chart.params.sheetId = sheetId
@@ -37,17 +38,17 @@ const sheetHandler = async ( sheetId, mainAccordion, prefix ) => {
     // Close main accordion
     mainAccordion.closeAll()
 
-    localStorage.setItem("chart", JSON.stringify(chart))
+    // await localForage.setItem( 'chart', chart )
 
 
     // et chart updated flag
-    localStorage.setItem("chartUpdated", true)
+    // await localForage.setItem( 'chartUpdated', true )
 
     // return chartUpdated
 
   } catch (error) {
-    displayAdminMessage(error.message, "error",  prefix)
-    console.log("CAUGHT ERROR", error)
+    displayAdminMessage(error.message, 'error',  prefix)
+    console.log('CAUGHT ERROR', error)
   }
 
 }

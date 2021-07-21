@@ -1,3 +1,4 @@
+import localForage from 'localforage'
 import arrayMin from 'lodash.min'
 import arrayMax from 'lodash.max'
 import arrayMean from 'lodash.mean'
@@ -12,11 +13,6 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
 
   try {
 
-    let chart = JSON.parse( localStorage.getItem( 'chart') ) ? JSON.parse( localStorage.getItem( 'chart') ) : {}
-    
-    // Bail if attachment can't be found
-    if ( !Object.keys(chart) ) throw new Error( `Chart missing` )
-
     // Toggle warning and loading
     document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
     document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
@@ -26,6 +22,11 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
 
     // Bail if attachment can't be found
     if ( ! attachment || ! attachment.filename ) throw new Error(  `Something went terribly wrong, we cannot find the attachemnt` )
+
+    let chart = await localForage.getItem( 'chart')
+    // Bail if attachment can't be found
+    if ( ! Object.keys(chart) ) throw new Error( `Chart missing` )
+
 
     // set chart filename and file id and params file name and file id
     chart.params.fileName = attachment.filename
@@ -41,11 +42,11 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
     document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
 
     const spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce, prefix )
-    localStorage.setItem("spreadsheet", JSON.stringify(spreadsheet))
+    await localForage.setItem( "spreadsheet", spreadsheet )
 
 
     // Set sheet select field options array
-    setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ) )
+    setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ), 'Select Sheet' )
 
     // Set params sheet id and sheet select value
     chart.params.sheetId  = spreadsheet.length == 1 ? Object.keys(spreadsheet)[0]: ""
@@ -59,12 +60,13 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
   
     // draw chart immediatelly if spreadsheet contains a single sheet
     if ( spreadsheet.length == 1  ) {
+      mainAccordion.closeAll()
       chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
+      // await localForage.setItem( "chart", chart )
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
       await drawChart ( chart, spreadsheet, prefix )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-      mainAccordion.closeAll()
-      localStorage.setItem("chartUpdated", true)
+      // await localForage.setItem("chartUpdated", true)
 
     } else {
       document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
