@@ -22,25 +22,22 @@ import "../sass/admin.scss"
 
 if (  yrl_wp_plotly_charts_obj ) {
 
-  const yrlPlotlyChartsObj = yrl_wp_plotly_charts_obj
-  const charts = yrlPlotlyChartsObj.charts
-  const sheets = yrlPlotlyChartsObj.sheets
-  // var chart = {}
-  // let spreadsheet = []
-  const prefix = yrlPlotlyChartsObj.prefix
-  const shortcodeText = yrlPlotlyChartsObj.shortcodeText
-  const wpRestUrl = yrlPlotlyChartsObj.wpRestUrl
-  const wpRestNonce= yrlPlotlyChartsObj.wpRestNonce
-  const pluginUrl =yrlPlotlyChartsObj.url
-  // let chartUpdated = false
+  const localizeObj = yrl_wp_plotly_charts_obj
+  const prefix = localizeObj.prefix
+  const shortcodeText = localizeObj.shortcodeText
+  const wpRestUrl = localizeObj.wpRestUrl
+  const wpRestNonce= localizeObj.wpRestNonce
+  const pluginUrl =localizeObj.url
+  localStorage.setItem("charts", JSON.stringify(localizeObj.charts))
+  localStorage.setItem("sheets", JSON.stringify(localizeObj.sheets))
 
-  console.log("yrlPlotlyChartsObj", {...yrlPlotlyChartsObj})
+  console.log("localizeObj", localizeObj)
   
   try {
 
     // Check that the necessary parameters are present
-    if ( yrlPlotlyChartsObj.wpRestNonce === undefined  || yrlPlotlyChartsObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
-    if ( yrlPlotlyChartsObj.charts === undefined ) throw new Error( " can't find charts" )
+    if ( localizeObj.wpRestNonce === undefined  || localizeObj.wpRestUrl === undefined ) throw new Error( "Don't know where to go from here" )
+    if ( localizeObj.charts === undefined ) throw new Error( " can't find charts" )
 
     // Create main accordion
     const mainAccordion = new Accordion( `#${prefix}__admin .main__Accordion`, { duration: 400 })
