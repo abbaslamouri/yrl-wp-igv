@@ -14,9 +14,9 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
   try {
 
     // Toggle warning and loading
-    document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-    document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
-    document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.remove( `hidden` )
+    document.querySelector( `#${prefix}__admin .edit-chart__chart-view .warning` ).classList.add( `hidden` )
+    // document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
+    document.querySelector( `#${prefix}__admin .edit-chart__chart-view .loading-spinner` ).classList.remove( `hidden` )
 
     //fetch attachment
     const attachment = mediaUploader.state().get("selection").first().toJSON()
@@ -39,12 +39,11 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
     chart.params.enableMinMaxAvgTable = document.getElementById(`${prefix}__params[enableMinMaxAvgTable]`).checked
 
     // Set chart params chart Id
-    if ( undefined === chart.params.chartId ) chart.params.chartId  = null
+    if ( chart.params.chartId === undefined ) chart.params.chartId  = null
     document.getElementById(`${prefix}__params[chartId]`).value = chart.params.chartId
 
     const spreadsheet = await fetchSpreadsheet ( chart, wpRestUrl, wpRestNonce, prefix )
     await localForage.setItem( "spreadsheet", spreadsheet )
-
 
     // Set sheet select field options array
     setSelectFieldOptions( document.getElementById( `${prefix}__params[sheetId]` ), spreadsheet.map( el  => el.sheetName ), 'Select Sheet' )
@@ -65,19 +64,17 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
       chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
       // await localForage.setItem( "chart", chart )
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
-      document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.add( `hidden` )
-      console.log(document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList)
+      // document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+      document.querySelector( `#${prefix}__admin .edit-chart__chart-view .loading-spinner` ).classList.add( `hidden` )
       document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList.remove( 'hidden' )
-      await drawChart ( chart, spreadsheet, prefix )
-      displayAdminMessage('success', "error",  prefix)
 
-      
-      // await localForage.setItem("chartUpdated", true)
+      await drawChart ( chart, spreadsheet, prefix )
+
+      displayAdminMessage('Chart created succesfully', "success",  prefix)
 
     } else {
-      document.querySelector( `#${prefix}__admin .warning` ).classList.remove( `hidden` )
-      document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+      document.querySelector( `#${prefix}__admin .edit-chart__chart-view .warning` ).classList.remove( `hidden` )
+      document.querySelector( `#${prefix}__admin .edit-chart__chart-view .loading-spinner` ).classList.add( `hidden` )
     }
     
   } catch (error) {

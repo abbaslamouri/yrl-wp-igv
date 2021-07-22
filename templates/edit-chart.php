@@ -12,7 +12,7 @@
 
       <div class='edit-chart__chart-view'>
         <img class='loading-spinner hidden' src='<?php echo "{$this->url}assets/img/loading-spinner.svg" ?>' alt='Loading Spinner'>
-        <div class='loading hidden'>Loading...</div> 
+        <!-- <div class='loading hidden'>Loading...</div>  -->
         <div class='warning'>To view a chart, you must select/upload a file, select a sheet, and chart type</div>
         <div class='plotly hidden'>
           <div class='chart' id='<?php echo "{$this->prefix}__plotlyChart" ?>'></div>

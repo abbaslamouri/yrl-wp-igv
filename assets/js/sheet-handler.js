@@ -23,28 +23,23 @@ const sheetHandler = async ( sheetId, mainAccordion, prefix ) => {
 
     chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
 
-    // Unhide file name, file id and chart id input fields
-    document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-    document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-    document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
-    document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+    // // Unhide file name, file id and chart id input fields
+    // document.getElementById( `${prefix}__params[fileName]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+    // document.getElementById( `${prefix}__params[sheetId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+    // document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.remove ( 'hidden' )
+    // document.getElementById( `${prefix}__params[enableMinMaxAvgTable]` ).closest('.field-group' ).classList.remove ( 'hidden' )
 
-    // Toggle warning
-    document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
+    document.querySelector( `#${prefix}__admin .edit-chart__chart-view .warning` ).classList.add( `hidden` )
+    document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList.remove( 'hidden' )
 
     // draw chart
     await drawChart ( chart, spreadsheet, prefix )
 
+
+
+
     // Close main accordion
     mainAccordion.closeAll()
-
-    // await localForage.setItem( 'chart', chart )
-
-
-    // et chart updated flag
-    // await localForage.setItem( 'chartUpdated', true )
-
-    // return chartUpdated
 
   } catch (error) {
     displayAdminMessage(error.message, 'error',  prefix)
