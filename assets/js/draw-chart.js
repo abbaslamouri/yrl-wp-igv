@@ -30,9 +30,27 @@ const drawChart = async( chart, spreadsheet, prefix ) => {
   console.log('chart', chart)
 
   // Add range slider event handler
-  eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+  eval(`${prefix}__plotlyChart`).on('plotly_relayout', async(eventData) => {
 
-    if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart`, prefix  )
+  // Bail if ecentData does not include xaxis
+  if (  Object.keys(eventData)[0] !== 'xaxis.range' ) return
+
+    // console.log('EDDrawxx', eventData)
+    // console.log("RANGE", chart.layout.xaxis.range)
+
+    if ( ! chart.params.enableMinMaxAvgTable ) return 
+    
+    const cellValues= minMaxRangesliderHandler( chart, chart.layout.xaxis.range, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
+
+    await Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+  
+    document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
+    document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
+  
+
+    await localForage.setItem( "chart", chart )
+
+    console.log("CCCCC", chart.layout.xaxis.range)
 
   })
 

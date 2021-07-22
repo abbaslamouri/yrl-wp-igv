@@ -67,7 +67,8 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
       document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.add( `hidden` )
-      document.querySelector( `#${prefix}__admin .plotly` ).classList.remove( `hidden` )
+      console.log(document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList)
+      document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList.remove( 'hidden' )
       await drawChart ( chart, spreadsheet, prefix )
       displayAdminMessage('success', "error",  prefix)
 

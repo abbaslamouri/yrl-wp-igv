@@ -1371,13 +1371,10 @@ const addRangeMinMaxInputs = ( chart, Plotly, floatRound, plotlyChartDiv, prefix
 }
 
 
-const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, plotlyChartDiv, prefix ) => {
-
-  // Bail if ecentData does not include xaxis
-  if (  Object.keys(eventData)[0] !== 'xaxis.range' ) return
+const minMaxRangesliderHandler = ( chart, range, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound ) => {
 
 
-  const keyParts = Object.keys(eventData)[0].split('.')
+  // const keyParts = Object.keys(eventData)[0].split('.')
 
   const originalData =  spreadsheet[chart.params.sheetId].data
 
@@ -1385,7 +1382,8 @@ const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayM
   const xaxisData = convertXAxisData( originalData )
 
 
-  const range = chart.layout[keyParts[0]][keyParts[1]]
+  // const range = chart.layout[keyParts[0]][keyParts[1]]
+  console.log("RR", range)
   const indeces = indexOfAll(xaxisData, range[0], range[1])
   let newData = []
   for (const prop in originalData) {
@@ -1401,10 +1399,9 @@ const minMaxRangesliderHandler = ( chart, eventData, spreadsheet, Plotly, arrayM
   }
 
   const cellValues = fetchMinMaxAvgCellValues( newData, spreadsheet[chart.params.sheetId].labels, arrayMin, arrayMax, arrayMean, floatRound, chart.traces[chart.traces.length-1].rounding )
-  Plotly.restyle(plotlyChartDiv, {'cells.values' : [cellValues]}, chart.traces.length-1)
 
-  document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( range[0], chart.traces[chart.traces.length-1].rounding )
-  document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( range[1], chart.traces[chart.traces.length-1].rounding )
+  return cellValues
+ 
 
 
 }

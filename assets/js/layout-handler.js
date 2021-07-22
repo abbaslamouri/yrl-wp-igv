@@ -6,8 +6,6 @@ import arrayMean from 'lodash.mean'
 import floatRound from 'lodash.round'
 import { displayAdminMessage, minMaxRangesliderHandler, commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
-
-
 const layoutHandler = async ( key, keyParts, value, prefix  ) => {
 
   try {
@@ -30,6 +28,27 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
     } else if ( key === 'width' || key === 'height') {
       chart.layout[key] = value 
       plotlyPlot = await Plotly.react( `${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config )//.then( ( ) => {
+
+      // Add range slider event handler
+      eval(`${prefix}__plotlyChart`).on('plotly_relayout', async (eventData) => {
+
+        // console.log(eventData)
+
+        // if ( ! chart.params.enableMinMaxAvgTable ) return 
+        
+        // const cellValues= minMaxRangesliderHandler( chart, eventData, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
+
+        // await Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+      
+        // document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( eventData.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
+        // document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( eventData.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
+      
+
+        // await localForage.setItem( "chart", chart )
+
+        // console.log("CCCCC", chart)
+
+      })
     } else {
 
       switch(key) {
@@ -250,13 +269,6 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
 
     await localForage.setItem( "chart", chart )
     console.log('chart', chart)
-
-     // Add range slider event handler
-     eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
-
-      if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart`, prefix  )
-
-    })
 
 
   } catch (error) {
