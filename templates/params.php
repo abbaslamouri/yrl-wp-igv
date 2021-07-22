@@ -4,7 +4,7 @@
   <div class="form-group">
     <button type="button" class="form-group__btn btn button" id="<?php echo "{$this->prefix}__params[mediaUploadBtn]"; ?>" name="<?php echo "{$this->prefix}__params[mediaUploadBtn]"; ?>" >Upload New File </button>
     <label for="" class="form-group__label"></label>
-    <div class="form-group__tooltip">
+    <div class="form-group__tooltip fileUpload">
       <div class="form-group__tooltip-question-mark">?</div>
       <div class="form-group__tooltip-hint">
       Click the question mark If you are unsure about how to format your data CSV then please take a look at this sample: line.csv. If you are using non-English characters, please make sure you save the file in UTF-8 encoding.

@@ -46,8 +46,23 @@ const chartTypes = () => {
 
 
 const displayAdminMessage = ( message, status, prefix ) => {
-  const messageDiv = document.querySelector(`#${prefix}__admin .edit-chart__admin-messages`)
-  if ( messageDiv ) messageDiv.innerHTML = message ? `<div class='notice notice-${status} is-dismissible'><p>${message}</p></div>` : null
+  const messageDiv = document.querySelector(`#${prefix}__admin .admin-message`)
+  if ( messageDiv && message ) {
+    messageDiv.classList.add ( status )
+    messageDiv.classList.remove ( 'hidden' )
+    messageDiv.innerHTML  = `<p>${message}</p>`
+  }
+}
+
+
+
+const hideAdminMessage = ( prefix ) => {
+  const messageDiv = document.querySelector(`#${prefix}__admin .admin-message`)
+  if ( messageDiv ) {
+    messageDiv.classList.remove ( ...messageDiv.classList )
+    messageDiv.classList.add ( 'hidden' )
+    messageDiv.innerHTML  = ''
+  }
 }
 
 
@@ -1545,6 +1560,7 @@ module.exports = {
   colors,
   chartTypes,
   displayAdminMessage,
+  hideAdminMessage,
   showElementById,
   hideElementById,
   toggleElementById,

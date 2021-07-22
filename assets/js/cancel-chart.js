@@ -1,4 +1,6 @@
 import Swal from 'sweetalert2'
+import { hideAdminMessage } from "./utilities"
+
 
 const cancelChart = ( prefix  ) => {
 
@@ -12,7 +14,8 @@ const cancelChart = ( prefix  ) => {
     confirmButtonText: 'Delete'
   }).then( async ( result ) => {
     if (result.isConfirmed) {
-      document.querySelector(`#${prefix}__admin .edit-chart`).classList.add("hidden")
+      hideAdminMessage( prefix )
+      document.querySelector( `#${prefix}__admin .edit-chart` ).classList.add("hidden")
       document.querySelector( `#${prefix}__admin .warning` ).classList.remove("hidden")
     }
   })

@@ -6,7 +6,7 @@ import addNewChart from './add-new-chart'
 import cancelChart from './cancel-chart'
 import editChart from './edit-chart'
 import deleteChart from './delete-chart'
-import fileSelect from './file-select'
+import selectFile from './select-file'
 import saveChart from './save-chart'
 import deleteAxis from './delete-axis'
 import deleteAnnotation from './delete-annotation'
@@ -18,7 +18,7 @@ import sheetHandler from "./sheet-handler"
 import minMaxAvgHandler from "./minmaxavg-handler"
 import annotationsHandler from "./annotations-handler"
 import axisHandler from "./axis-handler"
-import { displayAdminMessage, chartOptionKey, showToolTip } from "./utilities"
+import { displayAdminMessage, hideAdminMessage, chartOptionKey, showToolTip } from "./utilities"
 import "../sass/admin.scss"
 
 
@@ -51,7 +51,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add click event listener to the Add New Chart button
     document.querySelector( `#${prefix}__admin` ).addEventListener("click", async (event) => {
-      displayAdminMessage(null, null,  prefix)
+      // displayAdminMessage(null, null,  prefix)
 
       if ( event.target.id.includes ( "deleteAxis" ) )  {
 
@@ -135,7 +135,7 @@ if (  yrl_wp_plotly_charts_obj ) {
 
     // Add media uploader event handler
     mediaUploader.on("select", async function () {
-      await fileSelect( wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
+      await selectFile( wpRestUrl, wpRestNonce, mediaUploader, mainAccordion, prefix )
     } )
 
 
@@ -154,7 +154,7 @@ if (  yrl_wp_plotly_charts_obj ) {
       console.log("value", value)
       console.groupEnd()
 
-      displayAdminMessage(null, null,  prefix)
+      // displayAdminMessage(null, null,  prefix)
       localStorage.setItem("chartUpdated", true)
 
       if( event.target.id === `${prefix}__params[sheetId]` ) {

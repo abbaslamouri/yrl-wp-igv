@@ -1,6 +1,10 @@
 import Plotly from 'plotly.js-dist'
 import localForage from 'localforage'
-import { displayAdminMessage, commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
+import arrayMin from 'lodash.min'
+import arrayMax from 'lodash.max'
+import arrayMean from 'lodash.mean'
+import floatRound from 'lodash.round'
+import { displayAdminMessage, minMaxRangesliderHandler, commaSeparatedToNumberArr, commaSeparatedToStringArr } from './utilities'
 
 
 
@@ -10,6 +14,9 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
 
     let chart = await localForage.getItem( 'chart')
     if ( ! Object.keys(chart).length ) throw new Error( `Chart missing` )
+
+    let spreadsheet = await localForage.getItem( 'spreadsheet') 
+    if ( ! Object.keys(spreadsheet).length ) throw new Error( `Spreadsheet missing` )
 
     let update = {}
     let plotlyPlot = {}
@@ -243,6 +250,13 @@ const layoutHandler = async ( key, keyParts, value, prefix  ) => {
 
     await localForage.setItem( "chart", chart )
     console.log('chart', chart)
+
+     // Add range slider event handler
+     eval(`${prefix}__plotlyChart`).on('plotly_relayout',function(eventData){
+
+      if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart`, prefix  )
+
+    })
 
 
   } catch (error) {

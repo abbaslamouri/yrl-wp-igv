@@ -16,6 +16,7 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
     // Toggle warning and loading
     document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
     document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
+    document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.remove( `hidden` )
 
     //fetch attachment
     const attachment = mediaUploader.state().get("selection").first().toJSON()
@@ -64,8 +65,13 @@ const fileSelect = async function ( wpRestUrl, wpRestNonce, mediaUploader, mainA
       chart = setChartTraces(chart, ScatterTrace, TableTrace, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound)
       // await localForage.setItem( "chart", chart )
       document.getElementById( `${prefix}__params[sheetId]` ).disabled = true
-      await drawChart ( chart, spreadsheet, prefix )
       document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+      document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.add( `hidden` )
+      document.querySelector( `#${prefix}__admin .plotly` ).classList.remove( `hidden` )
+      await drawChart ( chart, spreadsheet, prefix )
+      displayAdminMessage('success', "error",  prefix)
+
+      
       // await localForage.setItem("chartUpdated", true)
 
     } else {

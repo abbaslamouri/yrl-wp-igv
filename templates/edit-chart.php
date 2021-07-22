@@ -1,47 +1,27 @@
 <!-- Create a header in the default WordPress 'wrap' container -->
-<div class='edit-chart hidden'>
-
-  <!-- Content wrapper -->
+<div class='edit-chart hidden'>    
   <div class='edit-chart__content'>
-    <!-- Admin messages -->
     
-    <!-- <div class='hint-popup'>kkkkkkkk</div> -->
-
-    <!-- Show module title -->
     <div class='edit-chart__header'>
-      <div class='page-title'>
-        <h2><?php echo esc_html(get_admin_page_title()) ?></h2>
-        <a class='button-secondary btn' id='<?php echo "{$this->prefix}__cancelChart"; ?>' href='<?php echo add_query_arg(array('page' => $this->prefix), admin_url('admin.php')); ?>' title='<?php esc_attr_e( 'Go Back' ); ?>'><?php esc_attr_e( 'Cancel' ); ?></a>
-      </div>
-      <div class='edit-chart__admin-messages'></div>
-
-      <!-- <div class='edit-chart__close-chart'>&times;</div>  -->
+      <h2 class='page-title'><?php echo esc_html(get_admin_page_title()) ?></h2>
+      <a class='button-secondary btn' id='<?php echo "{$this->prefix}__cancelChart"; ?>' href='#' >Cancel</a>
     </div>
+    <div class='admin-message hidden'></div>
 
     <div class='edit-chart__body'>
 
       <div class='edit-chart__chart-view'>
-
-        <!-- Loading spinner -->
-        <!-- <img class='spinner' src='<?php //echo '{$this->url}assets/img/loading-spinner.svg' ?>' alt='Loading Spinner'> -->
+        <img class='loading-spinner hidden' src='<?php echo "{$this->url}assets/img/loading-spinner.svg" ?>' alt='Loading Spinner'>
         <div class='loading hidden'>Loading...</div> 
-
-        <!-- Warning heading -->
         <div class='warning'>To view a chart, you must select/upload a file, select a sheet, and chart type</div>
-
-        <div class='plotly'>
-          <!-- PLot goes here -->
+        <div class='plotly hidden'>
           <div class='chart' id='<?php echo "{$this->prefix}__plotlyChart" ?>'></div>
           <div class='min-max-avg-table'><?php require "{$this->path}templates/min-max-inputs.php"; ?></div>
         </div>
-
       </div>
 
       <div class='edit-chart__chart-options'>
-
-        <!-- Create the form that will be used to render our options -->
         <form id='<?php echo "{$this->prefix}__chartOptionsForm" ?>' name='<?php echo "{$this->prefix}__chartOptionsForm" ?>' novalidate action='javascript:void(0);'>
-
           <div class='accordion accordion__level-1 main__Accordion'>
             
             <div class='ac fileUploadAc'>
@@ -126,20 +106,14 @@
             </div>
 
           </div>
-
         </form>
 
-        <!-- Accordion will be injected here -->
         <button class='button button-primary hidden' id='<?php echo "{$this->prefix}__saveChart"; ?>' name='<?php echo "{$this->prefix}__saveChart"; ?>' disabled>Save Chart</button>
 
-      </div>  <!-- .chart-options -->
+      </div> 
 
     </div>
 
-    <!-- <div class='edit-chart__footer'>
-      footer
-    </div> -->
+  </div> 
 
-  </div> <!-- // END <div class='edit-chart__content'> -->
-
-</div> <!-- // END <div class='edit-chart' -->
+</div> 
