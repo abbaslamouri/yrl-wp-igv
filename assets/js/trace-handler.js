@@ -35,6 +35,23 @@ const traceHandler = async ( keyParts, value, prefix  ) => {
 
       plotlyPlot = await Plotly.react(`${prefix}__plotlyChart`, chart.traces, chart.layout, chart.config)
       tracesPanel( chart, spreadsheet, prefix )
+
+       // Add range slider event handler
+      eval(`${prefix}__plotlyChart`).on('plotly_relayout', async(eventData) => {
+
+        // Bail if ecentData does not include xaxis
+        if ( ! chart.params.enableMinMaxAvgTable || Object.keys(eventData)[0] !== 'xaxis.range' ) return
+        
+        const cellValues = minMaxRangesliderHandler( chart, chart.layout.xaxis.range, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
+
+        await Plotly.restyle(`${prefix}__plotlyChart`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+      
+        document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
+        document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
+
+        await localForage.setItem( "chart", chart )
+
+      })
         
     } else {
 
@@ -83,7 +100,7 @@ const traceHandler = async ( keyParts, value, prefix  ) => {
 
       plotlyPlot = await Plotly.restyle(`${prefix}__plotlyChart`, { [`${optionKey}`]: [value]}, traceNumber)
       console.log(value)
-      chart.traces[traceNumber][optionKey] = value
+      // chart.traces[traceNumber][optionKey] = value
 
     }
 

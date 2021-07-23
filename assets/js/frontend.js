@@ -20,16 +20,31 @@ if (  yrl_wp_plotly_charts__plotlyChart ) {
 
   // drawChart ( chart, spreadsheet, prefix )
   if ( document.getElementById( `${prefix}__plotlyChart__${chart.params.chartId}` ) ) {
+
     Plotly.newPlot( `${prefix}__plotlyChart__${chart.params.chartId}`, chart.traces, chart.layout, chart.config ) .then( ( ) => {
 
-      if (chart.params.enableMinMaxAvgTable) addRangeMinMaxInputs( chart, Plotly, floatRound, `${prefix}__plotlyChart__${chart.params.chartId}`, prefix )
+      // if (chart.params.enableMinMaxAvgTable) addRangeMinMaxInputs( chart, Plotly, floatRound, `${prefix}__plotlyChart__${chart.params.chartId}`, prefix )
 
       // Add range slider event handler
-      eval(`${prefix}__plotlyChart__${chart.params.chartId}`).on('plotly_relayout',function(eventData){
+      eval(`${prefix}__plotlyChart__${chart.params.chartId}`).on('plotly_relayout', async (eventData) => {
 
-        if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart__${chart.params.chartId}`, prefix  )
+         // Bail if ecentData does not include xaxis
+        if ( ! chart.params.enableMinMaxAvgTable || Object.keys(eventData)[0] !== 'xaxis.range' ) return
+        
+        const cellValues = minMaxRangesliderHandler( chart, chart.layout.xaxis.range, spreadsheet, arrayMin, arrayMax, arrayMean, floatRound )
 
-      })
+        await Plotly.restyle(`${prefix}__plotlyChart__${chart.params.chartId}`, {'cells.values' : [cellValues]}, chart.traces.length-1)
+      
+        document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
+        document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
+
+        console.log(chart)
+
+        // await localForage.setItem( "chart", chart )
+
+        // if (chart.params.enableMinMaxAvgTable) minMaxRangesliderHandler( chart, eventData, spreadsheet, Plotly, arrayMin, arrayMax, arrayMean, floatRound, `${prefix}__plotlyChart__${chart.params.chartId}`, prefix  )
+
+      } )
     } )
   }
 
