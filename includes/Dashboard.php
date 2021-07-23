@@ -307,26 +307,32 @@ if (!class_exists('Dashboard')) {
 				$response = ["payload" => $payload];
 
 
+        // Enqueue Stylesheet
+        wp_register_style("{$this->plugin}-frontend", $this->url . "assets/bundle/frontend.css", null, false, 'all');
+        wp_enqueue_style("{$this->plugin}-frontend");
+
+        // Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
+        wp_register_script("{$this->plugin}-frontend", "{$this->url}assets/bundle/frontend.js", null, false, true);
+        wp_enqueue_script("{$this->plugin}-frontend");
+  
+        wp_localize_script( "{$this->plugin}-frontend", "{$this->prefix}__plotlyChart", $payload);
+
+        // Return login template
+        return $this->get_template_html("shortcode", $payload);		
+
+
 			} catch (\Exception $e) {
   
 				// Prepare error output
         $payload =[];
 				$response = ["status"	=> "error", "message" => $e->getMessage(), "payload" => $payload];
 
+        return $this->get_template_html("shortcode", $response);		
+
+
 			}
 
-      // Enqueue Stylesheet
-			wp_register_style("{$this->plugin}-public", $this->url . "assets/bundle/public.css", null, false, 'all');
-			wp_enqueue_style("{$this->plugin}-public");
-
-			// Register and Enqueue file upload Javascript and use wp_localize_script to pass data to the javascript handler
-			wp_register_script("{$this->plugin}-public", "{$this->url}assets/bundle/public.js", null, false, true);
-			wp_enqueue_script("{$this->plugin}-public");
- 
-      wp_localize_script( "{$this->plugin}-public", "{$this->prefix}__plotlyChart", $payload);
-
-      // Return login template
-			return $this->get_template_html("shortcode", $payload);			
+     	
 			
 
 		} // END render_shortcode

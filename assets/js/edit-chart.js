@@ -21,7 +21,7 @@ const editChart = async function ( chartId, wpRestUrl, wpRestNonce, mainAccordio
  
    document.querySelector(`#${prefix}__admin .edit-chart`).classList.remove("hidden")
    document.querySelector( `#${prefix}__admin .warning` ).classList.add( `hidden` )
-   document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
+  //  document.querySelector( `#${prefix}__admin .loading` ).classList.remove( `hidden` )
    document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.remove( `hidden` )
   
    // Fetch spreadsheet
@@ -38,16 +38,13 @@ const editChart = async function ( chartId, wpRestUrl, wpRestNonce, mainAccordio
    document.getElementById( `${prefix}__params[fileName]` ).closest( ".field-group" ).classList.remove( "hidden" )
    document.getElementById( `${prefix}__params[sheetId]` ).closest( ".field-group" ).classList.remove( "hidden" )
    document.getElementById( `${prefix}__params[chartId]` ).closest( ".field-group" ).classList.remove( "hidden" )
-   document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
+  //  document.querySelector( `#${prefix}__admin .loading` ).classList.add( `hidden` )
    document.querySelector( `#${prefix}__admin .loading-spinner` ).classList.add( `hidden` )
    console.log(document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList)
    document.querySelector( `#${prefix}__admin .edit-chart__chart-view .plotly` ).classList.remove( `hidden` )
 
-
    // Draw chart
    await drawChart ( chart, spreadsheet, prefix )
-   displayAdminMessage('success', "error",  prefix)
-
 
    await localForage.setItem( "chart", chart )
    await localForage.setItem( "chartUpdated", false )

@@ -1170,7 +1170,7 @@ const resetChart = (Plotly, prefix) => {
     document.getElementById( `${prefix}__params[chartId]` ).closest('.field-group' ).classList.add ( 'hidden' )
 
     // Hide min/max/avg form
-    document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.add( 'hidden')
+    document.getElementById( `${prefix}__min-max-avg-form` ).classList.add( 'hidden')
 
 
   }
@@ -1353,7 +1353,7 @@ const addMinMaxAvgTable = ( chart, TableTrace, spreadsheet, arrayMin, arrayMax, 
 
 const addRangeMinMaxInputs = ( chart, Plotly, floatRound, plotlyChartDiv, prefix ) => {
 
-  document.getElementById( `${prefix}__plotMinMaxAvgForm` ).classList.remove( 'hidden')
+  document.getElementById( `${prefix}__min-max-avg-form` ).classList.remove( 'hidden')
   document.getElementById( `${prefix}__rangeMinInput` ).value = floatRound( chart.layout.xaxis.range[0], chart.traces[chart.traces.length-1].rounding )
   document.getElementById( `${prefix}__rangeMaxInput` ).value = floatRound( chart.layout.xaxis.range[1], chart.traces[chart.traces.length-1].rounding )
 
