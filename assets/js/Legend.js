@@ -70,7 +70,7 @@ class Legend {
                   bottom: "Bottom"
                 },
                 value : layout.legend !== undefined && layout.legend.valign !== undefined ? layout.legend.valign : this.defaultOptions().legend.valign,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the vertical alignment of the symbols with respect to their associated text."
               },
             ],
@@ -86,7 +86,7 @@ class Legend {
                 max : 100,
                 step : 1,
                 value : layout.legend !== undefined && layout.legend.borderwidth !== undefined ? layout.legend.borderwidth : this.defaultOptions().legend.borderwidth,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the width (in px) of the border enclosing the legend."
               },
               {
@@ -108,7 +108,7 @@ class Legend {
                 type : "select",
                 options : fontFamily(),
                 value : layout.legend !== undefined && layout.legend.font !== undefined && layout.legend.font.family !== undefined ? layout.legend.font.family : this.defaultOptions().legend.font.family,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
@@ -119,7 +119,7 @@ class Legend {
                 max : 100,
                 step : 0.5,
                 value : layout.legend !== undefined && layout.legend.font !== undefined && layout.legend.font.size !== undefined ? layout.legend.font.size : this.defaultOptions().legend.font.size,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint : "number greater than or equal to 1"
               },
             ],
@@ -143,7 +143,7 @@ class Legend {
                   v: "Vertical"
                 },
                 value : layout.legend !== undefined && layout.legend.orientation !== undefined ? layout.legend.orientation : this.defaultOptions().legend.orientation,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the orientation of the legend."
               },
             ],
@@ -160,7 +160,7 @@ class Legend {
                   constant: "Constant"
                 },
                 value : layout.legend !== undefined && layout.legend.itemsizing !== undefined ? layout.legend.itemsizing : this.defaultOptions().legend.itemsizing,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Determines if the legend items symbols scale with their corresponding 'trace' attributes or remain 'constant' independent of the symbol size on the graph."
               },
               {
@@ -171,7 +171,7 @@ class Legend {
                 max : 1000,
                 step : 1,
                 value : layout.legend !== undefined && layout.legend.itemwidth !== undefined ? layout.legend.itemwidth : this.defaultOptions().legend.itemwidth,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the width (in px) of the legend item symbols (the part other than the title.text). Number greater than or equal to 30.  Default: 30."
               },
             ],
@@ -189,7 +189,7 @@ class Legend {
                   false: "Disabled"
                 },
                 value : layout.legend !== undefined && layout.legend.itemclick !== undefined ? layout.legend.itemclick : this.defaultOptions().legend.itemclick,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Determines the behavior on legend item click. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
               },
               {
@@ -202,7 +202,7 @@ class Legend {
                   false: "Disabled"
                 },
                 value : layout.legend !== undefined && layout.legend.itemdoubleclick !== undefined ? layout.legend.itemdoubleclick : this.defaultOptions().legend.itemdoubleclick,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Determines the behavior on legend item doubleclick. 'toggle' toggles the visibility of the item clicked on the graph. 'toggleothers' makes the clicked item the sole visible item on the graph. 'false' disable legend item click interactions."
               },
             ],
@@ -218,7 +218,7 @@ class Legend {
                 max : 3,
                 step : 0.01,
                 value : layout.legend !== undefined && layout.legend.x !== undefined ? layout.legend.x : this.defaultOptions().legend.x,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the x position (in normalized coordinates) of the legend. Defaults to '1.02' for vertical legends and defaults to '0' for horizontal legends."
               },
               {
@@ -229,7 +229,7 @@ class Legend {
                 max : 3,
                 step : 0.01,
                 value : layout.legend !== undefined && layout.legend.y !== undefined ? layout.legend.y : this.defaultOptions().legend.y,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the y position (in normalized coordinates) of the legend. Defaults to '1' for vertical legends, defaults to '-0.1' for horizontal legends on graphs w/o range sliders and defaults to '1.1' for horizontal legends on graph with one or multiple range sliders."
               },
             ],
@@ -242,7 +242,7 @@ class Legend {
                 title : "Background Color",
                 type : "color", 
                 value : layout.legend !== undefined && layout.legend.bgcolor !== undefined ? layout.legend.bgcolor : this.defaultOptions().legend.bgcolor,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the legend background color. Defaults to `layout.paper_bgcolor`."
               },
               {
@@ -250,7 +250,7 @@ class Legend {
                 title : "Legend Title",
                 type : "text", 
                 value : layout.legend !== undefined && layout.legend.title !== undefined && layout.legend.title.text !== undefined? layout.legend.title.text : this.defaultOptions().legend.title.text,
-                disabled: ! layout.showlegend ? true : false,
+                // disabled: ! layout.showlegend ? true : false,
                 hint: "Sets the title of the legend."
               },
             ],
@@ -264,7 +264,7 @@ class Legend {
                 type : "select",
                 options : fontFamily(),
                 value : layout.legend !== undefined && layout.legend.title !== undefined && layout.legend.title.font !== undefined && layout.legend.title.font.family !== undefined ? layout.legend.title.font.family : this.defaultOptions().legend.title.font.family,
-              disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
+              // disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
                 hint: "HTML font family - the typeface that will be applied by the web browser. The web browser will only be able to apply a font if it is available on the system which it operates. These include 'Arial', 'Balto', 'Courier New', 'Droid Sans',, 'Droid Serif', 'Droid Sans Mono', 'Gravitas One', 'Old Standard TT', 'Open Sans', 'Overpass', 'PT Sans Narrow', 'Raleway', 'Times New Roman'."
               },
               {
@@ -275,7 +275,7 @@ class Legend {
                 max : 100,
                 step : 0.5,
                 value : layout.legend !== undefined && layout.legend.title !== undefined && layout.legend.title.font !== undefined && layout.legend.title.font.size !== undefined ? layout.legend.title.font.size : this.defaultOptions().legend.title.font.size,
-              disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
+                // disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
                 hint : "number greater than or equal to 1"
               },
             ],
@@ -288,7 +288,7 @@ class Legend {
                 title : "Legend Title Font Color",
                 type : "color", 
                 value : layout.legend !== undefined && layout.legend.title !== undefined && layout.legend.title.font !== undefined && layout.legend.title.font.color !== undefined ? layout.legend.title.font.color : this.defaultOptions().legend.title.font.color,
-              disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
+              // disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
               },
               {
                 id : "layout[legend][title][side]",
@@ -300,7 +300,7 @@ class Legend {
                   "top left": "Top Left"
                 }, 
                 value : layout.legend !== undefined && layout.legend.title !== undefined && layout.legend.title.side !== undefined ? layout.legend.title.side  : this.defaultOptions().legend.title.side ,
-                disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
+                // disabled: ( ! layout.showlegend || ! layout.legend.title.text ) ? true : false,
                 hint: "Determines the location of legend's title with respect to the legend items. Defaulted to 'top' with `orientation` is 'h'. Defaulted to 'left' with `orientation` is 'v'. The 'top left' options could be used to expand legend area in both x and y sides."
               }
             ],
